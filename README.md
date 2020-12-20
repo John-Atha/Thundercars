@@ -11,4 +11,4 @@ The aim of the project is to create a website for EV Charging.
 Ioannis Athanasiou (giannisj3@gmail.com)\
 Athanasios Karavangelis (thanosblv@gmail.com)\
 Andreas Mantzoutas (anmantzoutas@gmail.com)\
-Antonis Tsitsis (antonyts1717@gmail.com)\
+Antonis Tsitsis (antonyts1717@gmail.com)
