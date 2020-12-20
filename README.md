@@ -1,6 +1,6 @@
 # Software Engineering ECE NTUA 2020-2021
 
-##thundercars.gr
+## thundercars.gr
 
 * Aim of the project 
 
