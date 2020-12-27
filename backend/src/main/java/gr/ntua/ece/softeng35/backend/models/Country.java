@@ -22,8 +22,12 @@ public class Country {
     /*@JoinColumn(name="address_fk", referencedColumnName = "id")*/
     /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "country_of_addres")
     private List<Address> addresses;*/
-    @OneToOne(mappedBy = "country")
-    private Address address;
+    
+    /*@OneToOne(mappedBy = "country")
+    private Address address;*/
+    
+    @OneToMany(mappedBy="country")
+    private Set<Address> addresses;
 
 
     Country() {}

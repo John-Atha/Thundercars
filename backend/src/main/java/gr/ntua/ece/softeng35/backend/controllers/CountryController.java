@@ -15,6 +15,10 @@ class CountryController {
         this.repository = repository;
     }
 
+
+    /* IMPORTANT FOR THE API: repository.findAll() has to be changed, 
+       returns error because a country can belong to many addresses */
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/countries")
     List<Country> all() {

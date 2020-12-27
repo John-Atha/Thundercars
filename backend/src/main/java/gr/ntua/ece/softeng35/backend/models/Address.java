@@ -61,8 +61,12 @@ public class Address {
     /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")*/
 
-    @OneToOne(cascade = CascadeType.ALL)
+    /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
+    private Country country;*/
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "country_id", nullable=true)
     private Country country;
     
 
