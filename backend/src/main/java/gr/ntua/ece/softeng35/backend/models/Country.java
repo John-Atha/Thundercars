@@ -2,7 +2,7 @@ package gr.ntua.ece.softeng35.backend.models;
 
 import java.util.*;
 import javax.persistence.*;
-
+//import org.springframework.data.annotation.*;
 @Entity
 public class Country {
     @Id
@@ -17,6 +17,14 @@ public class Country {
 
     @Column(unique = false, length = 10, nullable = true)
     private String ContinentCode;
+
+    /*@OneToMany(targetEntity=Address.class, cascade = CascadeType.ALL)*/
+    /*@JoinColumn(name="address_fk", referencedColumnName = "id")*/
+    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "country_of_addres")
+    private List<Address> addresses;*/
+    @OneToOne(mappedBy = "country")
+    private Address address;
+
 
     Country() {}
 
@@ -33,7 +41,7 @@ public class Country {
     public void setId(Integer id) {
         this.id=id;
     }
-
+        
     public String getTitle() {
         return this.Title;
     }
@@ -72,7 +80,7 @@ public class Country {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.Title, this.ISOCode, this.ContinentCode);
+        return Objects.hash( this.id, this.Title, this.ISOCode, this.ContinentCode);
     } 
 
     @Override
@@ -83,5 +91,5 @@ public class Country {
                             "ISOCode='" + this.ISOCode + "', " +
                             "ContinentCode='" + this.ContinentCode + "'}";
     }
-
+    
 }
