@@ -36,22 +36,22 @@ public class Address {
     @Column(unique = false, nullable = true )
     private Double Longtitude;
 
-    @Column(unique = true, length = 50, nullable = true )
+    @Column(unique = false, length = 50, nullable = true )
     private String ContactTelephone1;
 
-    @Column(unique = true, length = 50, nullable = true )
+    @Column(unique = false, length = 50, nullable = true )
     private String ContactTelephone2;
 
-    @Column(unique = true, length = 50, nullable = true )
+    @Column(unique = false, length = 50, nullable = true )
     private String ContactEmail;
 
-    @Column(unique = true, length = 100, nullable = true )
+    @Column(unique = false, length = 100, nullable = true )
     private String AccessComments;   
 
-    @Column(unique = true, length = 100, nullable = true )
+    @Column(unique = false, length = 100, nullable = true )
     private String RelatedURL;
 
-    @Column(unique = true, length = 100, nullable = true )
+    @Column(unique = false, length = 100, nullable = true )
     private String GeneralComments;
 
     /* @Column(nullable = true) */
