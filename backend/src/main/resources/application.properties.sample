@@ -1,0 +1,7 @@
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost/your-db-name
+spring.datasource.username=your-phpmyadmin-username
+spring.datasource.password=your-phpmyadmin-password
+
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=update

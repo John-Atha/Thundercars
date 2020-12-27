@@ -2,70 +2,52 @@ package gr.ntua.ece.softeng35.backend.controllers;
 
 import java.util.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.web.bind.annotation.*;
 
-import gr.ntua.ece.softeng20b.backend.models.Url;
-import gr.ntua.ece.softeng20b.backend.models.UrlRepository;
+import gr.ntua.ece.softeng35.backend.models.User;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class UrlController {
-  private final UrlRepository repository;
-  private static final Logger log =
-    LoggerFactory.getLogger(UrlController.class);
+class UserController {
+  private final UserRepository repository;
 
-  UrlController(UrlRepository repository) {
+  UserController(UserRepository repository) {
     this.repository = repository;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/urls")
-  List<Url> all() {
+  @GetMapping("/users")
+  List<User> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/urls")
-  Url newUrl(@RequestBody Url newUrl) {
-    log.info("POST /urls " + newUrl.toString());
-    newUrl.initialize();
-    return repository.save(newUrl);
+  @PostMapping("/users")
+  User newUser(@RequestBody User newUser) {
+    return repository.save(newUser);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/urls/{id}")
-  Url one(@PathVariable String id,
-          @RequestParam(required=false, defaultValue="false") Boolean click) {
-    log.info("GET /urls/" + id + " " + click.toString());
+  @GetMapping("/users/{id}")
+  User one(@PathVariable Integer id) {
     return repository.findById(id)
-      .map(url -> {
-        if (click) { url.incUsed(); return repository.save(url); }
-        else return url;
-      })
-      .orElseThrow(() -> new UrlNotFoundException(id));
+      .orElseThrow(() -> new UserNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/urls/{id}")
-  Url replaceUrl(@RequestBody Url newUrl, @PathVariable String id) {
-    log.info("PUT /urls/" + id + " " + newUrl.toString());
+  @PutMapping("/users/{id}")
+  User replaceUser(@RequestBody User newUser, @PathVariable Integer id) {
     return repository.findById(id)
-      .map(url -> {
-        url.setTarget(newUrl.getTarget());
-        url.setUsed(0);
-        if (newUrl.getUser() != null)
-          url.setUser(newUrl.getUser());
-        return repository.save(url);
+      .map(user -> {
+        user.setName(newUser.getName());
+        return repository.save(user);
       })
-      .orElseThrow(() -> new UrlNotFoundException(id));
+      .orElseThrow(() -> new UserNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/urls/{id}")
-  void deleteUrl(@PathVariable String id) {
-    log.info("DEL /urls/" + id);
+  @DeleteMapping("/users/{id}")
+  void deleteUser(@PathVariable Integer id) {
     repository.deleteById(id);
   }
 }

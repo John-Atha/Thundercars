@@ -1,4 +1,4 @@
-package gr.ntua.ece.soften35.backend.models;
+package gr.ntua.ece.softeng35.backend.models;
 
 import java.util.*;
 import javax.persistence.*;
