@@ -69,9 +69,7 @@ public class Address {
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 
-    @OneToMany(mappedBy="address")
-    private Set<User> users;
-    
+  
 
     Address() {}
 
@@ -226,5 +224,50 @@ public class Address {
         this.country=country;
     }
     
+    @Override
+    public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Address)) return false;
+            Address u = (Address) o;
+            return
+                    Objects.equals(this.id, u.id) &&  
+                    Objects.equals(this.Title, u.Title) &&
+                    Objects.equals(this.AddressLine1, u.AddressLine1) &&
+                    Objects.equals(this.Town, u.Town) &&
+                    Objects.equals(this.StateOrProvince, u.StateOrProvince) &&
+                    Objects.equals(this.PostCode, u.PostCode) &&
+                    Objects.equals(this.Latitude, u.Latitude) &&
+                    Objects.equals(this.Longtitude, u.Longtitude) &&
+                    Objects.equals(this.ContactTelephone1, u.ContactTelephone1) &&
+                    Objects.equals(this.ContactTelephone2, u.ContactTelephone2) &&
+                    Objects.equals(this.ContactEmail, u.ContactEmail) &&
+                    Objects.equals(this.AccessComments, u.AccessComments) &&
+                    Objects.equals(this.RelatedURL, u.RelatedURL) &&
+                    Objects.equals(this.GeneralComments, u.GeneralComments) &&
+                    Objects.equals(this.country, u.country);
+    }
+
+
+    @Override
+    public int hashCode() {
+            return Objects.hash(
+                    this.id,
+                    this.Title,
+                    this.AddressLine1,
+                    this.Town,
+                    this.StateOrProvince,
+                    this.PostCode,
+                    this.Latitude,
+                    this.Longtitude,
+                    this.ContactTelephone1,
+                    this.ContactTelephone2,
+                    this.ContactEmail,
+                    this.AccessComments,
+                    this.RelatedURL,
+                    this.GeneralComments,
+                    this.country);
+    }
+
+
 
 }
