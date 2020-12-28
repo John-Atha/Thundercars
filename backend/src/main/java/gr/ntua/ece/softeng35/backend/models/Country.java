@@ -29,6 +29,8 @@ public class Country {
     @OneToMany(mappedBy="country")
     private Set<Address> addresses;
 
+    @OneToMany(mappedBy="country")
+    private Set<UserAddress> useraddresses;
 
     Country() {}
 

@@ -12,28 +12,28 @@ public class User {
   @Column(unique = true, length = 50, nullable = false)
   private String username;
 
-  @Column(unique = true, length = 100, nullable = false)
+  @Column(unique = false, length = 100, nullable = false)
   private String password;
   
   @Column(unique = true, length = 50, nullable = false)
   private String email_addr;
 
-  @Column(unique = true, length = 30, nullable = false)
+  @Column(unique = false, length = 30, nullable = false)
   private String first_name;
 
-  @Column(unique = true, length = 30, nullable = false)
+  @Column(unique = false, length = 30, nullable = false)
   private String last_name;
 
   @Column(unique = false, length = 60, nullable = true)
   private Date date_of_birth;
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "address_id", nullable = true)
-  private Address address;
+  @JoinColumn(name = "user_address_id", nullable = true)
+  private UserAddress address;
 
   User() {}
 
-  public User(String username, String password, String email_addr, String first_name, String last_name, Date date_of_birth, Address address) {
+  public User(String username, String password, String email_addr, String first_name, String last_name, Date date_of_birth, UserAddress address) {
     this.username = username;
     this.password = password;
     this.email_addr = email_addr;
@@ -99,11 +99,11 @@ public void setDate_of_birth(Date date_of_birth) {
     this.date_of_birth=date_of_birth;
 }
 
-public Address getAddress() {
+public UserAddress getUserAddress() {
     return this.address;
 }
 
-public void setAddress(Address address) {
+public void setUserAddress(UserAddress address) {
     this.address=address;
 }
 
