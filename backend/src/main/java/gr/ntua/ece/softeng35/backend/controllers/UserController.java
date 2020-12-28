@@ -39,7 +39,7 @@ class UserController {
   User replaceUser(@RequestBody User newUser, @PathVariable Integer id) {
     return repository.findById(id)
       .map(user -> {
-        user.setName(newUser.getName());
+        user.setUsername(newUser.getUsername());
         return repository.save(user);
       })
       .orElseThrow(() -> new UserNotFoundException(id));

@@ -68,6 +68,9 @@ public class Address {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
+
+    @OneToMany(mappedBy="address")
+    private Set<User> users;
     
 
     Address() {}
