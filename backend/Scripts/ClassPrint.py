@@ -1,6 +1,7 @@
 # given the name of the entity, and its attributes it writes the code for the Constructor, 
 # the setters and getters, the equals overriding and the hashing overriding
 
+# FILL DATA ON LINES 63-64
 
 def Construct(Entity, AttributesList) :
     out1 = "\t"
@@ -57,9 +58,16 @@ def SetGet(AttributesList):
     for attr in AttributesList:
         SetGetText(attr)
 
+
+#   FILL THESE
 Entity = "User"
 L1 = [["username", "String"], ["password", "String"], ["email_addr", "String"], ["first_name", "String"], ["last_name", "String"], ["date_of_birth", "String"], ["address", "String"]]
-L2 = ["username", "password", "email_addr", "first_name", "last_name", "date_of_birth", "address"]
+
+L2 = []
+for i in L1:
+    L2.append(i[0])
+
+#L2 = ["username", "password", "email_addr", "first_name", "last_name", "date_of_birth", "address"]
 
 SetGet(L1)
 Construct(Entity, L1)
