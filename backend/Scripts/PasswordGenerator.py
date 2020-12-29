@@ -3,7 +3,7 @@ import string
 
 letters = list(string.ascii_letters)
 digits = list(string.digits)
-symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "-", "_"]
+symbols = ["!", "@", "#", "$", "_"]
 all = letters * 4 + digits  * 4 + symbols
 
 res = []
@@ -18,4 +18,4 @@ def password(n):
         res.append(temp)
     print(res)
 
-password(200)
+password(1200)

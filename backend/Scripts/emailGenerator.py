@@ -10,8 +10,8 @@ def email(n):
         name = random.choice(nameList) + str(number)
         org = "@" + random.choice(orgList) + ".com"
         if i!=n-1:
-            print('"' + name + org + '", ')
+            print('"' + name + org + '", ', end=" ")
         else:
             print('"' + name + org + '"]')
 
-email(200)
+email(1200)
