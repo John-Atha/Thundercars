@@ -24,12 +24,6 @@ public class UserAddress {
     @Column(unique = false, length = 100, nullable = true )
     private String PostCode;
 
-    @Column(unique = false, nullable = true )
-    private Double Latitude;
-
-    @Column(unique = false, nullable = true )
-    private Double Longtitude;
-
     @Column(unique = false, length = 50, nullable = true )
     private String ContactTelephone1;
 
@@ -57,15 +51,13 @@ public class UserAddress {
 
     UserAddress() {}
 
-    public UserAddress(Integer id, String AddressLine1, String Town, String StateOrProvince, String PostCode, Double latitude, 
-                    Double Longtitude, String ContactTelephone1, String ContactTelephone2, Country country) {
+    public UserAddress(Integer id, String AddressLine1, String Town, String StateOrProvince, String PostCode, String ContactTelephone1, 
+                        String ContactTelephone2, Country country) {
                         this.id = id;
                         this.AddressLine1 = AddressLine1;
                         this.Town = Town;
                         this.StateOrProvince = StateOrProvince;
                         this.PostCode = PostCode;
-                        this.Latitude = Latitude;
-                        this.Longtitude = Longtitude;
                         this.ContactTelephone1 = ContactTelephone1;
                         this.ContactTelephone2 = ContactTelephone2;
                         this.country = country;
@@ -111,22 +103,6 @@ public class UserAddress {
         this.PostCode=PostCode;
     }
 
-    public Double getLatitude() {
-        return this.Latitude;
-    }
-
-    public void setLatitude(Double Latitude) {
-        this.Latitude=Latitude;
-    }
-
-    public Double getLongtitude() {
-        return this.Longtitude;
-    }
-
-    public void setLongtitude(Double Longtitude) {
-        this.Longtitude=Longtitude;
-    }
-
     public String getContactTelephone1() {
         return this.ContactTelephone1;
     }
@@ -162,8 +138,6 @@ public class UserAddress {
                     Objects.equals(this.Town, u.Town) &&
                     Objects.equals(this.StateOrProvince, u.StateOrProvince) &&
                     Objects.equals(this.PostCode, u.PostCode) &&
-                    Objects.equals(this.Latitude, u.Latitude) &&
-                    Objects.equals(this.Longtitude, u.Longtitude) &&
                     Objects.equals(this.ContactTelephone1, u.ContactTelephone1) &&
                     Objects.equals(this.ContactTelephone2, u.ContactTelephone2) &&
                     Objects.equals(this.country, u.country);
@@ -177,8 +151,6 @@ public class UserAddress {
                     this.Town,
                     this.StateOrProvince,
                     this.PostCode,
-                    this.Latitude,
-                    this.Longtitude,
                     this.ContactTelephone1,
                     this.ContactTelephone2,
                     this.country);
