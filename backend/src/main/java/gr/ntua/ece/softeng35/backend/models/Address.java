@@ -45,7 +45,7 @@ public class Address {
     @Column(unique = false, length = 500, nullable = true )
     private String ContactEmail;
 
-    @Column(unique = false, length = 1000, nullable = true )
+    @Column(unique = false, length = 10000, nullable = true )
     private String AccessComments;   
 
     @Column(unique = false, length = 500, nullable = true )
