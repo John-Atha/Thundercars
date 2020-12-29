@@ -16,6 +16,9 @@ public class AcCharger{
 
     @OneToMany(mappedBy="ac_charger")
     private Set<Vehicle> vehicles;
+
+    @OneToOne(mappedBy="ac_charger")
+    private PowerPerChargingPoint powerperchargingpoints;
         
     AcCharger(){}
 
