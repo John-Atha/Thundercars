@@ -4,7 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-public class AcChargerPort {
+public class DcChargerPort {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -13,15 +13,15 @@ public class AcChargerPort {
     private String portname;
 
     @ManyToOne
-    @JoinColumn(name = "ac_charger_id", nullable = true )
-    private AcCharger ac_charger;
+    @JoinColumn(name = "dc_charger_id", nullable = true )
+    private DcCharger dc_charger;
 
-    AcChargerPort(){}
+    DcChargerPort() {}
     
-    public AcChargerPort(Integer id, String portname, AcCharger ac_charger) {
+    public DcChargerPort(Integer id, String portname, DcCharger dc_charger) {
             this.id = id;
             this.portname = portname;
-            this.ac_charger = ac_charger;
+            this.dc_charger = dc_charger;
     }
     
     public Integer getId() {
@@ -40,23 +40,23 @@ public class AcChargerPort {
             this.portname=portname;
     }
 
-    public AcCharger getAc_charger() {
-            return this.ac_charger;
+    public DcCharger getdc_charger() {
+            return this.dc_charger;
     }
 
-    public void setAc_charger(AcCharger ac_charger) {
-            this.ac_charger=ac_charger;
+    public void setdc_charger(DcCharger dc_charger) {
+            this.dc_charger=dc_charger;
     }
 
     @Override
     public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof AcChargerPort)) return false;
-            AcChargerPort u = (AcChargerPort) o;
+            if (!(o instanceof DcChargerPort)) return false;
+            DcChargerPort u = (DcChargerPort) o;
             return
                     Objects.equals(this.id, u.id) &&
                     Objects.equals(this.portname, u.portname) &&
-                    Objects.equals(this.ac_charger, u.ac_charger);
+                    Objects.equals(this.dc_charger, u.dc_charger);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class AcChargerPort {
             return Objects.hash(
                     this.id,
                     this.portname,
-                    this.ac_charger);
+                    this.dc_charger);
     }
 
     @Override
     public String toString() {
-            return "AcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', ac_charger=" + ac_charger +"}";
+            return "DcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', dc_charger=" + dc_charger +"}";
     }
 }

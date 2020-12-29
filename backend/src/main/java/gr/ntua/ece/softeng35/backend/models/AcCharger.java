@@ -20,7 +20,10 @@ public class AcCharger{
 
     @OneToOne(mappedBy="ac_charger")
     private PowerPerChargingPoint powerperchargingpoints;
-        
+
+    @OneToMany(mappedBy="ac_charger")
+    private Set<AcChargerPort> acchargerports;
+    
     AcCharger(){}
 
     public AcCharger(Integer id,Integer usable_phases, Double max_power) {
