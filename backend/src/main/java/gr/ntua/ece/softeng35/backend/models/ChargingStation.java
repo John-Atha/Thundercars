@@ -37,33 +37,33 @@ public class ChargingStation {
     private Address address;
 
     @Column(unique = false , length = 1000 , nullable = true)
-    public String comments;
+    private String comments;
 
     @Column(unique = false, length = 60, nullable = true)
-    public Date date_last_confirmed;
+    private Date date_last_confirmed;
 
     @Column(unique = false, length = 60, nullable = true)
-    public Date date_last_status_update;
+    private Date date_last_status_update;
 
     @Column(unique = false, length = 60, nullable = true)
-    public Date date_created;
+    private Date date_created;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "status_type_id" , nullable = false)
-    public StatusType status_type;
+    private StatusType status_type;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "submission_status_id" , nullable = false)
-    public SubmissionStatus submission_status;
+    private SubmissionStatus submission_status;
 
     // @Column(unique = false , nullable = true)
     // public Blob media_items;
 
     @Column(unique = false, nullable = true)
-	public Double rating;
+	private Double rating;
 
     @Column(unique = false, nullable = true)
-	public Double cost_per_kwh;
+	private Double cost_per_kwh;
 	
 	ChargingStation() {}
 
