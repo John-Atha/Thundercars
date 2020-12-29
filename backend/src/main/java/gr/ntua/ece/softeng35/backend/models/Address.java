@@ -2,7 +2,7 @@ package gr.ntua.ece.softeng35.backend.models;
 
 import java.util.*;
 import javax.persistence.*;
-import javax.persistence.OneToMany;
+
 //import org.springframework.data.annotation.*;
 //import javax.swing.plaf.nimbus.State;
 
@@ -68,6 +68,10 @@ public class Address {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
+
+
+	@OneToMany(mappedBy="address")
+	private Set<ChargingStation> charging_stations;
 
   
 
