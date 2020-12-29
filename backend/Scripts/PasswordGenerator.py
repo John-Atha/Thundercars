@@ -1,5 +1,12 @@
 import random
 import string
+import os
+
+path1 = "C:/Users/atha/Desktop/softeng/projectCode/backend/dbFillingSQL"
+filename1 = "passwords"
+filename1 = os.path.join(path1, filename1 + ".txt")
+f1 = open(filename1, "a", encoding='utf-8')
+
 
 letters = list(string.ascii_letters)
 digits = list(string.digits)
@@ -16,6 +23,6 @@ def password(n):
             if random.randrange(10)>=5:
                 temp = temp + (random.choice(all))
         res.append(temp)
-    print(res)
+    f1.write(str(res))
 
-password(1200)
+password(12000)

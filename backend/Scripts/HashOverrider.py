@@ -10,6 +10,7 @@ def hashOverride(AttributesList):
             out = out + ");\n\t}"
         print(out)
             
-L = ["username", "password", "email_addr", "first_name", "last_name", "date_of_birth", "address"]
+L = ["id", "Title", "AddressLine1", "Town", "StateOrProvince", "PostCode", "Latitude", "Longtitude", 
+"ContactTelephone1", "ContactTelephone2", "ContactEmail", "AccessComments", "RelatedURL", "GeneralComments", "country"]
 
 hashOverride(L)

@@ -13,8 +13,9 @@ def EqualsOverride(Entity, AttributesList):
             out = out + ";\n\t}"
         print(out)
 
-Entity = "User"
-L = ["username", "password", "email_addr", "first_name", "last_name", "date_of_birth", "address"]
+Entity = "Address"
+L = ["id", "Title", "AddressLine1", "Town", "StateOrProvince", "PostCode", "Latitude", "Longtitude", 
+"ContactTelephone1", "ContactTelephone2", "ContactEmail", "AccessComments", "RelatedURL", "GeneralComments", "country"]
 
 EqualsOverride(Entity, L)
     
