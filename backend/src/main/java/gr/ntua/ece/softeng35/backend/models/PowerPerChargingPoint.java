@@ -37,6 +37,8 @@ public class PowerPerChargingPoint {
     @Column(unique=false,nullable = true)
     private Double point430;
 
+    PowerPerChargingPoint(){}
+    
     public PowerPerChargingPoint(Integer id, AcCharger ac_charger, Double point20, Double point23, Double point37, Double point74, Double point110, Double point160, Double point220, Double point430) {        
                 this.id = id;
                 this.ac_charger = ac_charger;

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 public class AcCharger{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = false ,nullable = true)
@@ -22,7 +23,8 @@ public class AcCharger{
         
     AcCharger(){}
 
-    public AcCharger(Integer usable_phases, Double max_power) {
+    public AcCharger(Integer id,Integer usable_phases, Double max_power) {
+            this.id = id;
             this.usable_phases = usable_phases;
             this.max_power = max_power;
     }
@@ -57,6 +59,7 @@ public class AcCharger{
             if (!(o instanceof AcCharger)) return false;
             AcCharger u = (AcCharger) o;
             return
+                    Objects.equals(this.id,u.id) &&
                     Objects.equals(this.usable_phases, u.usable_phases) &&
                     Objects.equals(this.max_power, u.max_power);
     }
@@ -64,6 +67,7 @@ public class AcCharger{
     @Override
     public int hashCode() {
         return Objects.hash(
+                this.id,
                 this.usable_phases,
                 this.max_power);
     }

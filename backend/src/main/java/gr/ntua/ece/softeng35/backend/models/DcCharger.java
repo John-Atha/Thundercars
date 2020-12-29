@@ -17,6 +17,8 @@ public class DcCharger{
     @OneToMany(mappedBy="dc_charger")
     private Set<Vehicle> vehicles;
 
+    DcCharger(){}
+
     public DcCharger(Integer id, Double max_power, Boolean is_default_charging_curve) {
         this.id = id;
         this.max_power = max_power;
