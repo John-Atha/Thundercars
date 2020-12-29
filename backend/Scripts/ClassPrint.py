@@ -3,6 +3,7 @@
 
 # FILL DATA ON LINES 63-64
 
+
 def Construct(Entity, AttributesList) :
     out1 = "\t"
     out1 = out1 + "public " + Entity + "("
