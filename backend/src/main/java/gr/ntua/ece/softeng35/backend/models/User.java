@@ -31,6 +31,9 @@ public class User {
   @JoinColumn(name = "user_address_id", nullable = true)
   private UserAddress address;
 
+  @OneToMany(mappedBy="user")
+  private Set<Vehicle> vehicles;
+
   User() {}
 
   public User(String username, String password, String email_addr, String first_name, String last_name, Date date_of_birth, UserAddress address) {
