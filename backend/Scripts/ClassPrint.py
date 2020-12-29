@@ -2,7 +2,7 @@
 # the setters and getters, the equals overriding and the hashing overriding
 
 # FILL DATA ON LINES 63-64
-
+# thanos entered here
 def Construct(Entity, AttributesList) :
     out1 = "\t"
     out1 = out1 + "public " + Entity + "("
