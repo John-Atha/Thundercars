@@ -12,22 +12,22 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = false, length = 100, nullable = false)
+    @Column(unique = false, length = 500, nullable = false)
     private String Title;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String AddressLine1;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String AddressLine2;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String Town;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String StateOrProvince;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String PostCode;
 
     @Column(unique = false, nullable = true )
@@ -36,22 +36,22 @@ public class Address {
     @Column(unique = false, nullable = true )
     private Double Longtitude;
 
-    @Column(unique = false, length = 50, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String ContactTelephone1;
 
-    @Column(unique = false, length = 50, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String ContactTelephone2;
 
-    @Column(unique = false, length = 50, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String ContactEmail;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String AccessComments;   
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String RelatedURL;
 
-    @Column(unique = false, length = 100, nullable = true )
+    @Column(unique = false, length = 500, nullable = true )
     private String GeneralComments;
 
     /* @Column(nullable = true) */

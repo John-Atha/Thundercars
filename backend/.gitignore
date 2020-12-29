@@ -3,6 +3,7 @@ src/main/resources/application.properties
 
 HELP.md
 .gradle
+gradlew
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
