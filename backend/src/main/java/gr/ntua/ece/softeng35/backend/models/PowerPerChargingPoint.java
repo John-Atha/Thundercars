@@ -163,6 +163,7 @@ public class PowerPerChargingPoint {
                     this.point430);
     }
 
+    
     @Override 
     public String toString() {
         return "PowerPerChargingPoint{" + "id=" + this.id + ", ac_charger=" + this.ac_charger + "}";
