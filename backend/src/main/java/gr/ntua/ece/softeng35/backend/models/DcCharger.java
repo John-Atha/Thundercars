@@ -17,6 +17,9 @@ public class DcCharger{
     @OneToMany(mappedBy="dc_charger")
     private Set<Vehicle> vehicles;
 
+    @OneToMany(mappedBy="dc_charger")
+    private Set<DcChargerPort> dcchargerports;
+
     DcCharger(){}
 
     public DcCharger(Integer id, Double max_power, Boolean is_default_charging_curve) {
