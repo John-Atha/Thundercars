@@ -3,6 +3,7 @@ package gr.ntua.ece.softeng35.backend.models;
 import java.util.*;
 import javax.persistence.*;
 
+
 @Entity
 public class ChargingStation {
     
@@ -16,16 +17,15 @@ public class ChargingStation {
     /*
     @Column(unique = false, nullable = false)
     private Integer current_provider_id;
-    */
+	*/
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "current_provider_id", nullable = false)
+	private CurrentProvider current_provider;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "operator_id" , nullable = false)
     private Operator operator;
 
-    /*
-    @Column(unique = false, nullable = false)
-    private Integer station_owner_id;
-    */
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usage_type_id" , nullable = false)
@@ -64,6 +64,9 @@ public class ChargingStation {
 
     @Column(unique = false, nullable = true)
 	private Double cost_per_kwh;
+
+	@OneToMany(mappedBy="charging_station")
+	private Set<ChargingStationSpots> charging_station_spots;
 	
 	ChargingStation() {}
 
@@ -107,6 +110,14 @@ public class ChargingStation {
 
 	public void setOperator(Operator operator) {
 		this.operator=operator;
+	}
+
+	public CurrentProvider getCurrent_provider() {
+		return this.current_provider;
+	}
+
+	public void setCurrent_provider(CurrentProvider current_provider) {
+		this.current_provider=current_provider;
 	}
 
 	public UsageType getUsage_type() {
@@ -207,6 +218,7 @@ public class ChargingStation {
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.uuid, u.uuid) &&
 			Objects.equals(this.operator, u.operator) &&
+			Objects.equals(this.current_provider, u.current_provider) &&
 			Objects.equals(this.usage_type, u.usage_type) &&
 			Objects.equals(this.address, u.address) &&
 			Objects.equals(this.comments, u.comments) &&
@@ -226,6 +238,7 @@ public class ChargingStation {
 			this.id,
 			this.uuid,
 			this.operator,
+			this.current_provider,
 			this.usage_type,
 			this.address,
 			this.comments,
@@ -244,7 +257,7 @@ public class ChargingStation {
     @Override
     public String toString() {
         return "Charging Station{" + "ID='" + this.id + "', UUID='" + this.uuid + "', Operator='" + this.operator 
-        + "', Usage type='" + this.usage_type + "', Address='" + this.address + "', comments='"
+        + "', Current Provider='" + this.current_provider + "', type='" + this.usage_type + "', Address='" + this.address + "', comments='"
         + this.comments + "', Last Date Confirmed='" + this.date_last_confirmed +"', Last status Update Date='" 
         + this.date_last_status_update + "', Date Created='" + this.date_created + "', Status Type='" + this.status_type
         + "', Submission Status='" + this.submission_status + "', Rating='"+ this.rating + "', Cost per kWh='" 

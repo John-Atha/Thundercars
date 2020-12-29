@@ -15,7 +15,7 @@ public class StationOwner {
     @Column(unique = false, length = 100, nullable = false)
     private String password;
 
-    @Column(unique = true, length = 50, nullalble = false)
+    @Column(unique = true, length = 50, nullable = false)
     private String email_addr;
 
     @Column(unique = false, length = 30, nullable = false)
