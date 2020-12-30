@@ -13,7 +13,7 @@ public class AcChargerPort {
     private String portname;
 
     @ManyToOne
-    @JoinColumn(name = "ac_charger_id", nullable = true )
+    @JoinColumn(name = "ac_charger_id", nullable = false )
     private AcCharger ac_charger;
 
     AcChargerPort(){}
