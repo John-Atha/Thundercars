@@ -1,0 +1,11 @@
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1, "Submission Under Review", false);
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(50, "Imported and Under Review", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(100, "Imported and Published", true); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(200, "Submission Published", true); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(250, "Submission Rejected - Incomplete", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1000, "Delisted", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1001, "Delisted - Duplicate", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1002, "Delisted - No Longer Active/Decommissioned", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1005, "Delisted - Superseded by Update", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1010, "Delisted - Not Public Information/Is Private Residence", false); 
+INSERT INTO `db`.`submission_status`(`id`, `title`, `is_live`) VALUES(1020, "Delisted - Removed by Import Data Provider", false);
