@@ -38,7 +38,7 @@ public class Vehicle {
     private AcCharger ac_charger;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name= "dc_charger_id",nullable = false)
+    @JoinColumn(name= "dc_charger_id",nullable = true )
     private DcCharger dc_charger;
 
     Vehicle(){}
