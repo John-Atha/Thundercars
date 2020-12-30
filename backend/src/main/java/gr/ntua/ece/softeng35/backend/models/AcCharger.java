@@ -21,7 +21,7 @@ public class AcCharger{
     @OneToOne(mappedBy="ac_charger")
     private PowerPerChargingPoint powerperchargingpoints;
 
-    @OneToOne(mappedBy="ac_charger")
+    @OneToMany(mappedBy="ac_charger")
     private Set<AcChargerPort> acchargerports;
     
     AcCharger(){}
