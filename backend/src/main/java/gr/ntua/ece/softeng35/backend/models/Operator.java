@@ -14,28 +14,28 @@ public class Operator {
     @Column(unique = false, length = 50, nullable = true)
     private String title;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String website_url;
 
     @Column(unique = false, length = 100, nullable = true)
     private  String comments;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String primary_phone;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String secondary_phone;
 
     @Column(nullable = true)
     private boolean is_private_individual;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String booking_url;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String contact_email;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String fault_report_email;
 
     @Column(nullable = true)
