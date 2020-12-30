@@ -6,11 +6,8 @@ import javax.persistence.*;
 @Entity
 public class Vehicle {
     @Id
-    private String id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(unique = false, length=20, nullable = true)
     private String brand;
@@ -43,9 +40,8 @@ public class Vehicle {
 
     Vehicle(){}
 
-    public Vehicle(String id, User user, String brand, String brand_id, String type, String model, Integer release_year, Double usable_battery_size, Double energy_consumption, AcCharger ac_charger, DcCharger dc_charger) {
+    public Vehicle(Integer id, String brand, String brand_id, String type, String model, Integer release_year, Double usable_battery_size, Double energy_consumption, AcCharger ac_charger, DcCharger dc_charger) {
         this.id = id;
-        this.user = user;
         this.brand = brand;
         this.brand_id = brand_id;
         this.type = type;
@@ -57,20 +53,12 @@ public class Vehicle {
         this.dc_charger = dc_charger;
     }
 
-        public String getId() {
+        public Integer getId() {
                 return this.id;
         }
 
-        public void setId(String id) {
+        public void setId(Integer id) {
                 this.id=id;
-        }
-
-        public User getUser() {
-                return this.user;
-        }
-
-        public void setUser(User user) {
-                this.user=user;
         }
 
         public String getBrand() {
@@ -153,7 +141,6 @@ public class Vehicle {
                 Vehicle u = (Vehicle) o;
                 return
                         Objects.equals(this.id, u.id) &&
-                        Objects.equals(this.user, u.user) &&
                         Objects.equals(this.brand, u.brand) &&
                         Objects.equals(this.brand_id, u.brand_id) &&
                         Objects.equals(this.type, u.type) &&
@@ -169,7 +156,6 @@ public class Vehicle {
         public int hashCode() {
                 return Objects.hash(
                         this.id,
-                        this.user,
                         this.brand,
                         this.brand_id,
                         this.type,
@@ -182,6 +168,6 @@ public class Vehicle {
 
         @Override
         public String toString() {
-            return "Vehicle{" + "id='" + this.id + "', user='" + this.user + "', brand='" + this.brand + "', type='" + this.type + "', model='" + this.model + "'}";
+            return "Vehicle{" + "id='" + this.id + "', brand='" + this.brand + "', type='" + this.type + "', model='" + this.model + "'}";
         }
 }

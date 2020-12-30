@@ -29,18 +29,16 @@ class VehicleController {
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/vehicles/{id}")
-  Vehicle one(@PathVariable String id) {
+  Vehicle one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new VehicleNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/vehicles/{id}")
-  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable String id) {
+  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable Integer id) {
     return repository.findById(id)
       .map(vehicle -> {
-        if(vehicle.getUser()!=null)
-            vehicle.setUser(newVehicle.getUser());
         vehicle.setBrand(newVehicle.getBrand());
         vehicle.setBrand_id(newVehicle.getBrand_id());
         vehicle.setType(newVehicle.getType());
@@ -59,7 +57,7 @@ class VehicleController {
 
   @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/vehicles/{id}")
-  void deleteVehicle(@PathVariable String id) {
+  void deleteVehicle(@PathVariable Integer id) {
     repository.deleteById(id);
   }
 }
