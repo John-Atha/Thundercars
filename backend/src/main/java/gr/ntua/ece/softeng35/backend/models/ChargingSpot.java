@@ -10,11 +10,11 @@ public class ChargingSpot {
     private Integer id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "connection_type_id", nullable = false)
+	@JoinColumn(name = "connection_type_id", nullable = true)
     private ConnectionType connection_type;
     
     @ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "level_id", nullable = false)
+	@JoinColumn(name = "level_id", nullable = true)
 	private Level level;
 
     @Column(unique = false, nullable = true)
@@ -27,7 +27,7 @@ public class ChargingSpot {
     private Integer powerkw;
     
     @ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "current_type_id", nullable = false)
+	@JoinColumn(name = "current_type_id", nullable = true)
     private CurrentType current_type;
     
     @Column(unique = false, length = 500, nullable = true )

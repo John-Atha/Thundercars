@@ -28,7 +28,7 @@ public class ChargingStationSpots {
     @Column(unique = false, nullable = true)
     private Integer quantity_operational;
 
-    	ChargingStationSpots() {}
+    ChargingStationSpots() {}
 
 	public ChargingStationSpots(Integer id, ChargingStation charging_station, ChargingSpot charging_spot, Integer quantity, Integer quantity_available, Integer quantity_operational) {
 		this.id = id;
