@@ -25,4 +25,4 @@ def password(n):
         res.append(temp)
     f1.write(str(res))
 
-password(12000)
+password(7662)
