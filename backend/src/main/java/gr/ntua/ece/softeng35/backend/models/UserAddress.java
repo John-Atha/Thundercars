@@ -48,6 +48,8 @@ public class UserAddress {
     @OneToMany(mappedBy="address")
     private Set<User> users;
     
+    @OneToMany(mappedBy="address")
+    private Set<StationOwner> station_owner;
 
     UserAddress() {}
 
