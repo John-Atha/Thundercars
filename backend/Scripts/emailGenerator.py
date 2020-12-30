@@ -22,4 +22,4 @@ def email(n):
         else:
             f1.write('"' + name + org + '"]')
 
-email(12000)
+email(7662)

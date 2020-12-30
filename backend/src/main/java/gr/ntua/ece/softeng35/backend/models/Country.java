@@ -32,6 +32,10 @@ public class Country {
     @OneToMany(mappedBy="country")
     private Set<UserAddress> useraddresses;
 
+    @OneToMany(mappedBy="country")
+    private Set<CurrentProvider> current_providers;
+
+
     Country() {}
 
     public Country(String Title, String ISOCode, String ContinentCode) {

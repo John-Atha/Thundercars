@@ -24,16 +24,16 @@ public class StationOwner {
     @Column(unique = false, length = 30, nullable = false)
     private String last_name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = false)
-    private Address address;
+    private UserAddress address;
 
     @Column(unique = false, nullable = true)
     private Date date_of_birth;
 
     StationOwner() {}
 
-	public StationOwner(Integer id, String username, String password, String email_addr, String first_name, String last_name, Address address, Date date_of_birth) {
+	public StationOwner(Integer id, String username, String password, String email_addr, String first_name, String last_name, UserAddress address, Date date_of_birth) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -91,11 +91,11 @@ public class StationOwner {
 		this.last_name=last_name;
 	}
 
-	public Address getAddress() {
+	public UserAddress getAddress() {
 		return this.address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(UserAddress address) {
 		this.address=address;
 	}
 

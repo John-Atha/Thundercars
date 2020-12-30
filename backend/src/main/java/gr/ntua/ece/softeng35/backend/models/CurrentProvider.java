@@ -9,11 +9,15 @@ public class CurrentProvider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, length = 50, nullable = true)
+    @Column(unique = false, length = 50, nullable = true)
     private String name;
 
-	@OneToMany(mappedBy="current_provider")
-	private Set<ChargingStation> charging_stations;
+    @OneToMany(mappedBy="current_provider")
+    private Set<ChargingStation> charging_stations;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "country_id", nullable=true)
+    private Country country;
 
     CurrentProvider() {}
             
