@@ -14,6 +14,9 @@ public class ConnectionType {
 
     @Column(unique = false, length = 50, nullable = true)
 	private String formal_name;
+
+	@Column(unique = false, length = 50, nullable = true)
+	private String category;
 	
 	@OneToMany(mappedBy="connection_type")
 	private Set<ChargingSpot> charging_spots;
@@ -24,6 +27,7 @@ public class ConnectionType {
 		this.id = id;
 		this.title = title;
 		this.formal_name = formal_name;
+		this.category = category;
 	}
 	
 	public Integer getId() {
@@ -47,9 +51,16 @@ public class ConnectionType {
 	}
 
 	public void setFormal_name(String formal_name) {
-		this.formal_name=formal_name;
+		this.formal_name = formal_name;
 	}
 
+	public String getCategory() {
+		return this.category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -59,7 +70,9 @@ public class ConnectionType {
 		return
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
-			Objects.equals(this.formal_name, u.formal_name);
+			Objects.equals(this.formal_name, u.formal_name) &&
+			Objects.equals(this.category,u.category) ;
+
 	}
 
 	@Override
@@ -67,11 +80,12 @@ public class ConnectionType {
 		return Objects.hash(
 			this.id,
 			this.title,
-			this.formal_name);
+			this.formal_name,
+			this.category);
 	}
 
     @Override
     public String toString() {
-        return "Connection Type{" + "ID='" + this.id + "', Title='" + this.title + "', Formal name='" + this.formal_name +"'}";
+        return "Connection Type{" + "ID='" + this.id + "', Title='" + this.title + "', Formal name='" + this.formal_name +"', Category='"+this.category+"'}";
     }   
 }

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #First,you have to run Windows Powershell as administrator and execute the following command:
 #   > Set-ExecutionPolicy RemoteSigned
 
