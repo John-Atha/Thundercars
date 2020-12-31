@@ -31,6 +31,8 @@ public class ChargingStation {
     @JoinColumn(name = "usage_type_id" , nullable = true)
     private UsageType usage_type;
 
+	@OneToMany(mappedBy="charging_station")
+	private Set<ChargingProcess> charging_processes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = true)
