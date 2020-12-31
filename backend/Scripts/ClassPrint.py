@@ -62,8 +62,10 @@ def SetGet(AttributesList):
 
 
 #   FILL THESE
-Entity = "User"
-L1 = [["username", "String"], ["password", "String"], ["email_addr", "String"], ["first_name", "String"], ["last_name", "String"], ["date_of_birth", "String"], ["address", "String"]]
+Entity = "ChargingProcess"
+L1 = [["id", "Integer"], ["user", "User"], ["vehicle", "Vehicle"], ["charging_station", "ChargingStation"], ["charging_spot", "ChargingSpot"], ["connection_time", "Date"], ["disconnect_time", "Date"],
+      ["done_charging_time", "Date"], ["timezone", "String"], ["kwh_delivered", "Double"], ["cost", "Double"], ["payment_way", "String"], 
+      ["rating", "Double"], ["charging_program", "String"]]
 
 L2 = []
 for i in L1:
@@ -71,8 +73,8 @@ for i in L1:
 
 #L2 = ["username", "password", "email_addr", "first_name", "last_name", "date_of_birth", "address"]
 
-SetGet(L1)
 Construct(Entity, L1)
+SetGet(L1)
 print("")
 EqualsOverride(Entity, L2)
 print("")

@@ -40,6 +40,8 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle")
     private Set<UserHasVehicle> userhasvehicles;
+    @OneToMany(mappedBy="vehicle")
+    private Set<ChargingProcess> charging_processes;
 
     Vehicle(){}
 
