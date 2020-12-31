@@ -17,7 +17,7 @@ public class Operator {
     @Column(unique = false, length = 50, nullable = true)
     private String website_url;
 
-    @Column(unique = false, length = 100, nullable = true)
+    @Column(unique = false, length = 500, nullable = true)
     private  String comments;
 
     @Column(unique = false, length = 50, nullable = true)

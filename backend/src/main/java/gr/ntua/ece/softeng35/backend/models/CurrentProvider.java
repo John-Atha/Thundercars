@@ -9,7 +9,7 @@ public class CurrentProvider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = false, length = 50, nullable = true)
+    @Column(unique = false, length = 300, nullable = true)
     private String name;
 
     @OneToMany(mappedBy="current_provider")
