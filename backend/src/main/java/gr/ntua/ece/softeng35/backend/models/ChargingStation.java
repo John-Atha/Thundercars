@@ -11,7 +11,7 @@ public class ChargingStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, length = 50, nullable = false)
+    @Column(unique = true, length = 50, nullable = true)
     private String uuid;
 
     /*
@@ -19,21 +19,21 @@ public class ChargingStation {
     private Integer current_provider_id;
 	*/
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "current_provider_id", nullable = false)
+	@JoinColumn(name = "current_provider_id", nullable = true)
 	private CurrentProvider current_provider;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "operator_id" , nullable = false)
+    @JoinColumn(name = "operator_id" , nullable = true)
     private Operator operator;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usage_type_id" , nullable = false)
+    @JoinColumn(name = "usage_type_id" , nullable = true)
     private UsageType usage_type;
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = false)
+    @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = true)
     private Address address;
 
     @Column(unique = false , length = 1000 , nullable = true)
@@ -49,11 +49,11 @@ public class ChargingStation {
     private Date date_created;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "status_type_id" , nullable = false)
+    @JoinColumn(name = "status_type_id" , nullable = true)
     private StatusType status_type;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "submission_status_id" , nullable = false)
+    @JoinColumn(name = "submission_status_id" , nullable = true)
     private SubmissionStatus submission_status;
 
     // @Column(unique = false , nullable = true)

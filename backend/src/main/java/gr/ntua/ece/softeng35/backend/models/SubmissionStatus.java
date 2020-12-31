@@ -9,7 +9,7 @@ public class SubmissionStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = false, length = 50, nullable = true)
+    @Column(unique = false, length = 200, nullable = true)
     private String title;
 
     @Column(nullable = true)
