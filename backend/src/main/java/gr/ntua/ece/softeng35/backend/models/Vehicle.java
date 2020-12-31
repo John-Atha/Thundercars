@@ -38,6 +38,9 @@ public class Vehicle {
     @JoinColumn(name= "dc_charger_id",nullable = true )
     private DcCharger dc_charger;
 
+    @OneToMany(mappedBy="vehicle")
+    private Set<ChargingProcess> charging_processes;
+
     Vehicle(){}
 
     public Vehicle(Integer id, String brand, String brand_id, String type, String model, Integer release_year, Double usable_battery_size, Double energy_consumption, AcCharger ac_charger, DcCharger dc_charger) {

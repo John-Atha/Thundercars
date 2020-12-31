@@ -36,6 +36,9 @@ public class ChargingSpot {
 	@OneToMany(mappedBy="charging_spot")
 	private Set<ChargingStationSpots> charging_station_spots;
 
+	@OneToMany(mappedBy="charging_spot")
+	private Set<ChargingProcess> charging_processes;
+
     ChargingSpot() {}
 
 	public ChargingSpot(Integer id, ConnectionType connection_type, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType current_type, String comments) {
