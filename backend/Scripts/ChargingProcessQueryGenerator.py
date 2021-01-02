@@ -1,5 +1,4 @@
 import os
-limit=500
 
 # --- adjust the path ---
 path = "C:/Users/atha/Desktop/softeng/projectCode/backend/dbFillingSQL/ChargingProcessQueries/"
@@ -10,7 +9,12 @@ filename1 = "charging_process"
 filename1 = os.path.join(path, filename1 + ".sql")
 f1 = open(filename1, "a", encoding='utf-8')
 
-user=1
+first_user=1
+last_user=500
+
+
+limit = last_user+1
+user = first_user
 while user<limit:
     res = '''(SELECT `a`.`user`, `a`.`vehicle`, `b`.`station`, `b`.`spot`
     FROM
