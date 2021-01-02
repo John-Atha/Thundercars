@@ -10,13 +10,17 @@ SELECT `a`.`user`, `a`.`vehicle`, `b`.`station`, `b`.`spot`
         AND `dc_charger_port`.`dc_charger_id` = `dc_charger`.`id`
         AND `ac_charger_port`.`ac_charger_id` = `ac_charger`.`id`) AS `a`,
 
-      (SELECT `charging_station`.`id` AS `station`, `charging_station_spots`.`charging_spot_id` AS `spot`, `connection_type`.`category` AS `connection_category` 
-      FROM `charging_station`, `charging_station_spots`, `charging_spot`, `connection_type`
-      WHERE `charging_station_spots`.`charging_station_id` = `charging_station`.`id` 
+      (SELECT `user`.`id` as `user`, `user_address`.`id` AS `user_address`, `charging_station`.`id` AS `station`, `address`.`id` AS `station_address`, `charging_station_spots`.`charging_spot_id` AS `spot`, `connection_type`.`category` AS `connection_category` 
+      FROM `user`, `user_address`, `charging_station`, `address`, `charging_station_spots`, `charging_spot`, `connection_type`
+      WHERE `user`.`user_address_id` = `user_address`.`id`
+        AND  `charging_station`.`address_id` = `address`.`id`
+        AND `user_address`.`country_id` = `address`.`country_id`
+        AND `charging_station_spots`.`charging_station_id` = `charging_station`.`id` 
         AND `charging_spot`.`id` = `charging_station_spots`.`charging_spot_id` 
         AND `connection_type`.`id` = `charging_spot`.`connection_type_id` ) AS `b` 
       
-      WHERE `a`.`ac_charger_port` = `b`.`connection_category`
-        OR `a`.`dc_charger_port` = `b`.`connection_category`    
+      WHERE `a`.`user` = `b`.`user`
+        AND (`a`.`ac_charger_port` = `b`.`connection_category`
+        OR `a`.`dc_charger_port` = `b`.`connection_category`)    
       ORDER BY `a`.`user` ASC, `b`.`station` ASC
-      LIMIT 10;
+      LIMIT 5;
