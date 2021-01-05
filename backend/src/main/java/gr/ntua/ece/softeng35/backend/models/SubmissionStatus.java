@@ -18,6 +18,13 @@ public class SubmissionStatus {
 	@OneToMany(mappedBy="submission_status")
 	private Set<ChargingStation> charging_stations;
 
+    @PreRemove
+    private void removeSubmissionStatus(){
+        for (ChargingStation station : charging_stations) {
+            station.setSubmission_status(null);
+        }
+    }
+
 	SubmissionStatus() {}
 
     public SubmissionStatus(Integer id, String title, Boolean is_live) {

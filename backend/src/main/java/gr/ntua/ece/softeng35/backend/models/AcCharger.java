@@ -24,6 +24,16 @@ public class AcCharger{
     @OneToMany(mappedBy="ac_charger")
     private Set<AcChargerPort> acchargerports;
     
+    @PreRemove
+    private void removeAcCharger(){
+        for (Vehicle vehicle : vehicles) {
+            vehicle.setAc_charger(null);
+        }
+        for (AcChargerPort port : acchargerports) {
+            port.setAc_charger(null);
+        }
+    }
+
     AcCharger(){}
 
     public AcCharger(Integer id,Integer usable_phases, Double max_power) {

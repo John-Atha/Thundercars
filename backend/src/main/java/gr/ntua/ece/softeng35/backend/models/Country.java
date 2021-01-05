@@ -35,6 +35,18 @@ public class Country {
     @OneToMany(mappedBy="country")
     private Set<CurrentProvider> current_providers;
 
+    @PreRemove
+    private void removeCountry(){
+        for (UserAddress usAdd : useraddresses) {
+            usAdd.setCountry(null);
+        }
+        for (Address addr : addresses) {
+            addr.setCountry(null);
+        }
+        for (CurrentProvider curr : current_providers) {
+            curr.setCountry(null);
+        }
+    }
 
     Country() {}
 

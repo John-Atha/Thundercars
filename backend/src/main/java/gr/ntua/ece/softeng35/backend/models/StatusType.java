@@ -24,6 +24,13 @@ public class StatusType {
 	@OneToMany(mappedBy="status_type")
 	private Set<ChargingStation> charging_stations;
 
+    @PreRemove
+    private void removeStatusType(){
+        for (ChargingStation station : charging_stations) {
+            station.setStatus_type(null);
+        }
+    }
+
 	StatusType() {}
 	
     public StatusType(Integer id, String title, Boolean is_operational, Boolean is_user_selectable) {

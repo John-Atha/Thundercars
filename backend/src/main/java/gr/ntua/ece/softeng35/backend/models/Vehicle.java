@@ -43,6 +43,16 @@ public class Vehicle {
     @OneToMany(mappedBy="vehicle")
     private Set<ChargingProcess> charging_processes;
 
+    @PreRemove
+    private void removeVehicle(){
+        for (UserHasVehicle userHasVehicle : userhasvehicles) {
+            userHasVehicle.setVehicle(null);
+        }
+        for (ChargingProcess process : charging_processes) {
+          process.setVehicle(null);
+        }
+    }
+    
     Vehicle(){}
 
     public Vehicle(Integer id, String brand, String brand_id, String type, String model, Integer release_year, Double usable_battery_size, Double energy_consumption, AcCharger ac_charger, DcCharger dc_charger) {

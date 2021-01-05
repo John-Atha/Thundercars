@@ -18,6 +18,13 @@ public class CurrentType {
 	@OneToMany(mappedBy="current_type")
 	private Set<ChargingSpot> charging_spots;
 
+    @PreRemove
+    private void removeCurrentType(){
+        for (ChargingSpot spot : charging_spots) {
+            spot.setCurrent_type(null);
+        }
+    }
+
     CurrentType() {}
 
 	public CurrentType(Integer id, String title, String description) {

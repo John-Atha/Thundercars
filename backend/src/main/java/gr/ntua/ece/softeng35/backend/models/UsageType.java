@@ -20,6 +20,13 @@ public class UsageType {
 	@OneToMany(mappedBy="usage_type")
 	private Set<ChargingStation> charging_stations;
 
+	@PreRemove
+    private void removeUsageType(){
+        for (ChargingStation station : charging_stations) {
+            station.setUsage_type(null);
+        }
+    }
+
 	UsageType() {}
 
     public UsageType(Integer id, String title, Boolean is_membership_required) {

@@ -20,6 +20,19 @@ public class DcCharger{
     @OneToMany(mappedBy="dc_charger")
     private Set<DcChargerPort> dcchargerports;
 
+    @PreRemove
+    private void removeCountry(){
+        for (UserAddress usAdd : useraddresses) {
+            usAdd.setCountry(null);
+        }
+        for (Address addr : addresses) {
+            addr.setCountry(null);
+        }
+        for (CurrentProvider curr : current_providers) {
+            curr.setCountry(null);
+        }
+    }
+
     DcCharger(){}
 
     public DcCharger(Integer id, Double max_power, Boolean is_default_charging_curve) {

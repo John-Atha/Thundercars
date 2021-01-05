@@ -41,7 +41,7 @@ public class UserAddress {
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;*/
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 
@@ -50,6 +50,16 @@ public class UserAddress {
     
     @OneToMany(mappedBy="address")
     private Set<StationOwner> station_owner;
+
+    @PreRemove
+    private void removeUserAddress(){
+        for (User user : users) {
+            user.setUserAddress(null);
+        }
+        for (StationOwner owner : station_owner) {
+            owner.setAddress(null);
+        }
+    }
 
     UserAddress() {}
 

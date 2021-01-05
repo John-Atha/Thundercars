@@ -39,6 +39,16 @@ public class ChargingSpot {
 	@OneToMany(mappedBy="charging_spot")
 	private Set<ChargingProcess> charging_processes;
 
+    @PreRemove
+    private void removeSpot(){
+        for (ChargingStationSpots charging_station_spot : charging_station_spots) {
+            charging_station_spot.setCharging_spot(null);
+        }
+        for (ChargingProcess process : charging_processes) {
+            process.setCharging_spot(null);
+        }
+    }
+
     ChargingSpot() {}
 
 	public ChargingSpot(Integer id, ConnectionType connection_type, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType current_type, String comments) {

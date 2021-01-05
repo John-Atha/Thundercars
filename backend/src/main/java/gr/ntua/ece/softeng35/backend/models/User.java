@@ -19,7 +19,7 @@ public class User {
   private String email_addr;
 
   @Column(unique = false, length = 30, nullable = false)
-  private String first_name;
+  private String firstName;
 
   @Column(unique = false, length = 30, nullable = false)
   private String last_name;
@@ -27,7 +27,7 @@ public class User {
   @Column(unique = false, length = 60, nullable = true)
   private Date date_of_birth;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "user_address_id", nullable = true)
   private UserAddress address;
 
@@ -36,13 +36,23 @@ public class User {
   @OneToMany(mappedBy="user")
 	private Set<ChargingProcess> charging_processes ;
 
+  @PreRemove
+  private void removeUser(){
+      for (UserHasVehicle userHasVehicle : userhasvehicles) {
+          userHasVehicle.setUser(null);
+      }
+      for (ChargingProcess process : charging_processes) {
+        process.setUser(null);
+      }
+  }
+
   User() {}
 
-  public User(String username, String password, String email_addr, String first_name, String last_name, Date date_of_birth, UserAddress address) {
+  public User(String username, String password, String email_addr, String firstName, String last_name, Date date_of_birth, UserAddress address) {
     this.username = username;
     this.password = password;
     this.email_addr = email_addr;
-    this.first_name = first_name;
+    this.firstName = firstName;
     this.last_name = last_name;
     this.date_of_birth = date_of_birth;
     this.address = address;
@@ -80,12 +90,12 @@ public void setEmail_addr(String email_addr) {
     this.email_addr=email_addr;
 }
 
-public String getFirst_name() {
-    return this.first_name;
+public String getFirstName() {
+    return this.firstName;
 }
 
-public void setFirst_name(String first_name) {
-    this.first_name=first_name;
+public void setFirstName(String firstName) {
+    this.firstName=firstName;
 }
 
 public String getLast_name() {
@@ -121,7 +131,7 @@ public void setUserAddress(UserAddress address) {
                   Objects.equals(this.username, u.username) &&
                   Objects.equals(this.password, u.password) &&
                   Objects.equals(this.email_addr, u.email_addr) &&
-                  Objects.equals(this.first_name, u.first_name) &&
+                  Objects.equals(this.firstName, u.firstName) &&
                   Objects.equals(this.last_name, u.last_name) &&
                   Objects.equals(this.date_of_birth, u.date_of_birth) &&
                   Objects.equals(this.address, u.address);
@@ -133,7 +143,7 @@ public void setUserAddress(UserAddress address) {
                   this.username,
                   this.password,
                   this.email_addr,
-                  this.first_name,
+                  this.firstName,
                   this.last_name,
                   this.date_of_birth,
                   this.address);

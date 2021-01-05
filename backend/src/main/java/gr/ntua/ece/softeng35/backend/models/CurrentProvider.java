@@ -19,9 +19,15 @@ public class CurrentProvider {
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 
+    @PreRemove
+    private void removeCurrentProvider(){
+        for (ChargingStation station : charging_stations) {
+            station.setCurrent_provider(null);
+        }
+    }
+
     CurrentProvider() {}
             
-    
     public CurrentProvider(Integer id, String name) {
         this.id = id;
         this.name = name;
@@ -43,6 +49,14 @@ public class CurrentProvider {
             this.name=name;
     }
 
+    public Integer getCountry() {
+        return this.country;
+    }
+    
+    public void setCountry(Country country) {
+        this.country=country;
+    }
+
     @Override
     public boolean equals(Object o) {
             if (this == o) return true;
@@ -50,19 +64,21 @@ public class CurrentProvider {
             CurrentProvider u = (CurrentProvider) o;
             return
                     Objects.equals(this.id, u.id) &&
-                    Objects.equals(this.name, u.name);
+                    Objects.equals(this.name, u.name) &&
+                    Objects.equals(this.country, u.country);
     }
 
     @Override
     public int hashCode() {
             return Objects.hash(
                     this.id,
-                    this.name);
+                    this.name,
+                    this.country);
     }
 
     @Override
     public String toString() {
-      return "Current Provider{" + "ID=" + this.id + ", Name='" + this.name +"'}";
+      return "Current Provider{" + "ID=" + this.id + ", Name='" + this.name + "'', Country='" + this.country +"'}";
     }
 
 }

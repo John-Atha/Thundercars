@@ -70,6 +70,16 @@ public class ChargingStation {
 	@OneToMany(mappedBy="charging_station")
 	private Set<ChargingStationSpots> charging_station_spots;
 	
+    @PreRemove
+    private void removeStation(){
+        for (ChargingProcess process : charging_processes) {
+            process.setCharging_station(null);
+        }
+        for (ChargingStationSpots charging_station_spot : charging_station_spots) {
+            charging_station_spot.setCharging_station(null);
+		}
+    }
+
 	ChargingStation() {}
 
     public ChargingStation(Integer id, String uuid, Operator operator, UsageType usage_type, Address address, String comments, Date date_last_confirmed, Date date_last_status_update, Date date_created, StatusType status_type, SubmissionStatus submission_status, /*Blob media_items, */Double rating, Double cost_per_kwh) {

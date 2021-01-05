@@ -21,6 +21,13 @@ public class ConnectionType {
 	@OneToMany(mappedBy="connection_type")
 	private Set<ChargingSpot> charging_spots;
 
+    @PreRemove
+    private void removeConnectionType(){
+        for (ChargingSpot spot : charging_spots) {
+            spot.setConnection_type(null);
+        }
+    }
+
     ConnectionType() {}
 
 	public ConnectionType(Integer id, String title, String formal_name) {

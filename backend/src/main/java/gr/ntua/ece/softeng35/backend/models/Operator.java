@@ -44,6 +44,14 @@ public class Operator {
     @OneToMany(mappedBy="operator")
     private Set<ChargingStation> charging_stations ;
 
+    @PreRemove
+    private void removeOperator(){
+        for (ChargingStation station : charging_stations) {
+            station.setOperator(null);
+        }
+    }
+
+
     Operator() {}
 
     public Operator(Integer id, String title, String website_url, String comments, String primary_phone,

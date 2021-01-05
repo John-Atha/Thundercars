@@ -21,6 +21,13 @@ public class Level {
 	@OneToMany(mappedBy="level")
 	private Set<ChargingSpot> charging_spots;
 
+    @PreRemove
+    private void removeLevel(){
+        for (ChargingSpot spot : charging_spots) {
+            spot.setLevel(null);
+        }
+    }
+
     Level() {}
 
 	public Level(Integer id, String title, String comments, Boolean is_fast_charge_capable) {

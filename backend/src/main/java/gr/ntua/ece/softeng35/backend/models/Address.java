@@ -69,11 +69,15 @@ public class Address {
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 
-
 	@OneToMany(mappedBy="address")
 	private Set<ChargingStation> charging_stations;
 
-  
+    @PreRemove
+    private void removeAddress(){
+        for (ChargingStation station : charging_stations) {
+            station.setAddress(null);
+        }
+    }
 
     Address() {}
 
