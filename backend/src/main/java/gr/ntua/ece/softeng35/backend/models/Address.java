@@ -65,7 +65,7 @@ public class Address {
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;*/
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 

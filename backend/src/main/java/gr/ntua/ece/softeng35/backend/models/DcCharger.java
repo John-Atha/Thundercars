@@ -21,15 +21,12 @@ public class DcCharger{
     private Set<DcChargerPort> dcchargerports;
 
     @PreRemove
-    private void removeCountry(){
-        for (UserAddress usAdd : useraddresses) {
-            usAdd.setCountry(null);
+    private void removeDcCharger(){
+        for (Vehicle vehicle : vehicles) {
+            vehicle.setDc_charger(null);
         }
-        for (Address addr : addresses) {
-            addr.setCountry(null);
-        }
-        for (CurrentProvider curr : current_providers) {
-            curr.setCountry(null);
+        for (DcChargerPort port : dcchargerports) {
+            port.setdc_charger(null);
         }
     }
 

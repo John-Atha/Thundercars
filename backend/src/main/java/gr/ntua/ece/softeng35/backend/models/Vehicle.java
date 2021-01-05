@@ -30,11 +30,11 @@ public class Vehicle {
     @Column(unique = false, nullable = true)
     private Double energy_consumption;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name= "ac_charger_id",nullable = false)
     private AcCharger ac_charger;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name= "dc_charger_id",nullable = true )
     private DcCharger dc_charger;
 

@@ -9,12 +9,12 @@ public class UserHasVehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user", nullable = false )
+    @ManyToOne
+    @JoinColumn(name = "user", nullable = true )
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="vehicle", nullable = false)
+    @ManyToOne
+    @JoinColumn(name="vehicle", nullable = true )
     private Vehicle vehicle;
 
     UserHasVehicle() {}

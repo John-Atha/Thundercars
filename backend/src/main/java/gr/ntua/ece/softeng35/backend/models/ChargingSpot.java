@@ -9,11 +9,11 @@ public class ChargingSpot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "connection_type_id", nullable = true)
     private ConnectionType connection_type;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "level_id", nullable = true)
 	private Level level;
 
@@ -26,7 +26,7 @@ public class ChargingSpot {
     @Column(unique = false, nullable = true)
     private Integer powerkw;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "current_type_id", nullable = true)
     private CurrentType current_type;
     

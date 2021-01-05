@@ -24,8 +24,8 @@ public class StationOwner {
     @Column(unique = false, length = 30, nullable = false)
     private String last_name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "address_id", nullable = true)
     private UserAddress address;
 
     @Column(unique = false, nullable = true)

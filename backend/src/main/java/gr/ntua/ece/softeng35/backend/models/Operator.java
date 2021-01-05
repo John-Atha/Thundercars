@@ -27,7 +27,7 @@ public class Operator {
     private String secondary_phone;
 
     @Column(nullable = true)
-    private boolean is_private_individual;
+    private Boolean is_private_individual;
 
     @Column(unique = false, length = 200, nullable = true)
     private String booking_url;
@@ -39,7 +39,7 @@ public class Operator {
     private String fault_report_email;
 
     @Column(nullable = true)
-    private boolean is_restricted_edit;
+    private Boolean is_restricted_edit;
 
     @OneToMany(mappedBy="operator")
     private Set<ChargingStation> charging_stations ;

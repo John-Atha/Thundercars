@@ -10,20 +10,20 @@ public class ChargingProcess {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = true)
     private Vehicle vehicle;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "charging_station_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "charging_station_id", nullable = true)
     private ChargingStation charging_station;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "charging_spot_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "charging_spot_id", nullable = true)
     private ChargingSpot charging_spot;
 
     @Column(unique = false, nullable = false)

@@ -18,23 +18,23 @@ public class ChargingStation {
     @Column(unique = false, nullable = false)
     private Integer current_provider_id;
 	*/
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "current_provider_id", nullable = true)
 	private CurrentProvider current_provider;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "operator_id" , nullable = true)
     private Operator operator;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usage_type_id" , nullable = true)
     private UsageType usage_type;
 
 	@OneToMany(mappedBy="charging_station")
 	private Set<ChargingProcess> charging_processes;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = true)
     private Address address;
 
@@ -50,11 +50,11 @@ public class ChargingStation {
     @Column(unique = false, length = 60, nullable = true)
     private Date date_created;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "status_type_id" , nullable = true)
     private StatusType status_type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "submission_status_id" , nullable = true)
     private SubmissionStatus submission_status;
 

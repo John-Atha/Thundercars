@@ -11,11 +11,11 @@ public class ChargingStationSpots {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "charging_station_id", nullable = false)
     private ChargingStation charging_station;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
 	@JoinColumn(name = "charging_spot_id", nullable = false)
 	private ChargingSpot charging_spot;
 

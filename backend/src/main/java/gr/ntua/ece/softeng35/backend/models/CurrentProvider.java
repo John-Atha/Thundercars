@@ -15,7 +15,7 @@ public class CurrentProvider {
     @OneToMany(mappedBy="current_provider")
     private Set<ChargingStation> charging_stations;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_id", nullable=true)
     private Country country;
 
@@ -49,7 +49,7 @@ public class CurrentProvider {
             this.name=name;
     }
 
-    public Integer getCountry() {
+    public Country getCountry() {
         return this.country;
     }
     
