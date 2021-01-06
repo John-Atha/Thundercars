@@ -40,11 +40,11 @@ public class DcChargerPort {
             this.portname=portname;
     }
 
-    public DcCharger getdc_charger() {
+    public DcCharger getDc_charger() {
             return this.dc_charger;
     }
 
-    public void setdc_charger(DcCharger dc_charger) {
+    public void setDc_charger(DcCharger dc_charger) {
             this.dc_charger=dc_charger;
     }
 

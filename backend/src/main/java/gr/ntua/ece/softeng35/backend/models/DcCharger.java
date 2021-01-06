@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 public class DcCharger{
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = false ,nullable = true)
@@ -26,7 +27,7 @@ public class DcCharger{
             vehicle.setDc_charger(null);
         }
         for (DcChargerPort port : dcchargerports) {
-            port.setdc_charger(null);
+            port.setDc_charger(null);
         }
     }
 

@@ -1,13 +1,13 @@
-Entity = "StationOwner"
+Entity = "UserHasVehicle"
 L1 = [["id", "---"], 
-     ["username", "----"],
-     ["password", "---"],
-     ["email_addr", "---"],
-     ["first_name", "---"],
-     ["last_name", "---"],
-     ["address", "---"],
-     ["date_of_birth", "---"]
-]
+     ["user", "----"],
+     ["vehicle", "---"]]
+     #["email_addr", "---"],
+     #["first_name", "---"],
+     #["last_name", "---"],
+     #["address", "---"],
+     #["date_of_birth", "---"]
+#]
 
 L2 = []
 for i in L1:
@@ -55,7 +55,7 @@ post = '''
   %s new%s(@RequestBody %s new%s) {
     return repository.save(new%s);
   }
-''' %(Low(Entity)+"es", Up(Entity), Up(Entity), Up(Entity), Up(Entity), Up(Entity))
+''' %(Low(Entity)+"", Up(Entity), Up(Entity), Up(Entity), Up(Entity), Up(Entity))
 
 
 getCertain= '''
@@ -65,7 +65,7 @@ getCertain= '''
     return repository.findById(id)
       .orElseThrow(() -> new %sNotFoundException(id));
   }
-''' %(Low(Entity)+"es", Up(Entity), Up(Entity))
+''' %(Low(Entity)+"", Up(Entity), Up(Entity))
 
 
 Body=""
@@ -86,7 +86,7 @@ put = '''
       })
       .orElseThrow(() -> new %sNotFoundException(id));
   }
-''' %(Low(Entity)+"es", Up(Entity), Up(Entity), Up(Entity), Up(Entity), Low(Entity), Body, Low(Entity), Up(Entity))
+''' %(Low(Entity)+"", Up(Entity), Up(Entity), Up(Entity), Up(Entity), Low(Entity), Body, Low(Entity), Up(Entity))
 
 delete = '''
   @CrossOrigin(origins = "http://localhost:3000")
