@@ -1,12 +1,18 @@
-Entity = "UserHasVehicle"
+Entity = "ChargingProcess"
 L1 = [["id", "---"], 
      ["user", "----"],
-     ["vehicle", "---"]]
-     #["email_addr", "---"],
-     #["first_name", "---"],
-     #["last_name", "---"],
-     #["address", "---"],
-     #["date_of_birth", "---"]
+     ["vehicle", "---"],
+     ["charging_station", "---"],
+     ["charging_spot", "---"],
+     ["connection_time", "---"],
+     ["disconnect_time", "---"],
+     ["done_charging_team", "---"],
+     ["timezone","---"],
+     ["kwh_delivered","---"],
+     ["cost","---"],
+     ["payment_way","---"],
+     ["rating","---"],
+     ["charging_program","---"]]
 #]
 
 L2 = []
