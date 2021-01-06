@@ -1,7 +1,12 @@
-Entity = "CurrentProvider"
+Entity = "StationOwner"
 L1 = [["id", "---"], 
-     ["name", "----"],
-     ["country", "---"]
+     ["username", "----"],
+     ["password", "---"],
+     ["email_addr", "---"],
+     ["first_name", "---"],
+     ["last_name", "---"],
+     ["address", "---"],
+     ["date_of_birth", "---"]
 ]
 
 L2 = []
