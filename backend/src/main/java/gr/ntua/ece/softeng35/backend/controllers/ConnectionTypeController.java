@@ -16,31 +16,31 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/connectiontypes")
+  @GetMapping("/evcharge/api/connectiontypes")
   List<ConnectionType> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/connectiontypes")
+  @PostMapping("/evcharge/api/connectiontypes")
   ConnectionType newConnectionType(@RequestBody ConnectionType newConnectionType) {
     return repository.save(newConnectionType);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/connectiontypes/{id}")
+  @GetMapping("/evcharge/api/connectiontypes/{id}")
   ConnectionType one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ConnectionTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/connectiontypes/{id}")
+  @PutMapping("/evcharge/api/connectiontypes/{id}")
   ConnectionType replaceConnectionType(@RequestBody ConnectionType newConnectionType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(connectionType -> {
         connectionType.setTitle(newConnectionType.getTitle());
-connectionType.setFormal_name(newConnectionType.getFormal_name());
+connectionType.setFormalName(newConnectionType.getFormalName());
 connectionType.setCategory(newConnectionType.getCategory());
 
         return repository.save(connectionType);
@@ -49,7 +49,7 @@ connectionType.setCategory(newConnectionType.getCategory());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/connectiontypes/{id}")
+  @DeleteMapping("/evcharge/api/connectiontypes/{id}")
   void deleteConnectionType(@PathVariable Integer id) {
     repository.deleteById(id);
   }

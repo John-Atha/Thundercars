@@ -16,31 +16,31 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/acchargers")
+  @GetMapping("/evcharge/api/acchargers")
   List<AcCharger> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/acchargers")
+  @PostMapping("/evcharge/api/acchargers")
   AcCharger newAcCharger(@RequestBody AcCharger newAcCharger) {
     return repository.save(newAcCharger);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/acchargers/{id}")
+  @GetMapping("/evcharge/api/acchargers/{id}")
   AcCharger one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new AcChargerNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/acchargers/{id}")
+  @PutMapping("/evcharge/api/acchargers/{id}")
   AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id) {
     return repository.findById(id)
       .map(acCharger -> {
-        acCharger.setUsable_phases(newAccharger.getUsable_phases());
-        acCharger.setMax_power(newAccharger.getMax_power());
+        acCharger.setUsablePhases(newAccharger.getUsablePhases());
+        acCharger.setMaxPower(newAccharger.getMaxPower());
 
         return repository.save(acCharger);
       })
@@ -48,7 +48,7 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/acchargers/{id}")
+  @DeleteMapping("/evcharge/api/acchargers/{id}")
   void deleteAcCharger(@PathVariable Integer id) {
     repository.deleteById(id);
   }

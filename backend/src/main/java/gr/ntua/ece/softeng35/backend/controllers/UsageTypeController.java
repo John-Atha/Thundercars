@@ -16,38 +16,38 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/usagetypes")
+  @GetMapping("/evcharge/api/usagetypes")
   List<UsageType> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/usagetypes")
+  @PostMapping("/evcharge/api/usagetypes")
   UsageType newUsageType(@RequestBody UsageType newUsageType) {
     return repository.save(newUsageType);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/usagetypes/{id}")
+  @GetMapping("/evcharge/api/usagetypes/{id}")
   UsageType one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UsageTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/usagetypes/{id}")
+  @PutMapping("/evcharge/api/usagetypes/{id}")
   UsageType replaceUsageType(@RequestBody UsageType newUsageType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(usageType -> {
         usageType.setTitle(newUsageType.getTitle());
-        usageType.setIs_membership_required(newUsageType.getIs_membership_required());
+        usageType.setIsMembershipRequired(newUsageType.getIsMembershipRequired());
         return repository.save(usageType);
       })
       .orElseThrow(() -> new UsageTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/usagetypes/{id}")
+  @DeleteMapping("/evcharge/api/usagetypes/{id}")
   void deleteUsageType(@PathVariable Integer id) {
     repository.deleteById(id);
   }

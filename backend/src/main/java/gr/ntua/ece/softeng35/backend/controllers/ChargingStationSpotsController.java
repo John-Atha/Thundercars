@@ -16,42 +16,41 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/chargingstationspots")
+  @GetMapping("/evcharge/api/chargingstationspots")
   List<ChargingStationSpots> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/chargingstationspots")
+  @PostMapping("/evcharge/api/chargingstationspots")
   ChargingStationSpots newChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots) {
     return repository.save(newChargingStationSpots);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/chargingstationspots/{id}")
+  @GetMapping("/evcharge/api/chargingstationspots/{id}")
   ChargingStationSpots one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ChargingStationSpotsNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/chargingstationspots/{id}")
+  @PutMapping("/evcharge/api/chargingstationspots/{id}")
   ChargingStationSpots replaceChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable Integer id) {
     return repository.findById(id)
       .map(chargingStationSpots -> {
-        chargingStationSpots.setCharging_station(newChargingStationSpots.getCharging_station());
-chargingStationSpots.setCharging_spot(newChargingStationSpots.getCharging_spot());
-chargingStationSpots.setQuantity(newChargingStationSpots.getQuantity());
-chargingStationSpots.setQuantity_available(newChargingStationSpots.getQuantity_available());
-chargingStationSpots.setQuantity_operational(newChargingStationSpots.getQuantity_operational());
-
+        chargingStationSpots.setChargingStation(newChargingStationSpots.getChargingStation());
+        chargingStationSpots.setChargingSpot(newChargingStationSpots.getChargingSpot());
+        chargingStationSpots.setQuantity(newChargingStationSpots.getQuantity());
+        chargingStationSpots.setQuantityAvailable(newChargingStationSpots.getQuantityAvailable());
+        chargingStationSpots.setQuantityOperational(newChargingStationSpots.getQuantityOperational());
         return repository.save(chargingStationSpots);
       })
       .orElseThrow(() -> new ChargingStationSpotsNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/chargingstationspots/{id}")
+  @DeleteMapping("/evcharge/api/chargingstationspots/{id}")
   void deleteChargingStationSpots(@PathVariable Integer id) {
     repository.deleteById(id);
   }

@@ -16,26 +16,26 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/useraddresses")
+  @GetMapping("/evcharge/api/useraddresses")
   List<UserAddress> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/useraddresses")
+  @PostMapping("/evcharge/api/useraddresses")
   UserAddress newUserAddress(@RequestBody UserAddress newUserAddress) {
     return repository.save(newUserAddress);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/useraddresses/{id}")
+  @GetMapping("/evcharge/api/useraddresses/{id}")
   UserAddress one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UserAddressNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/useraddresses/{id}")
+  @PutMapping("/evcharge/api/useraddresses/{id}")
   UserAddress replaceUserAddress(@RequestBody UserAddress newUserAddress, @PathVariable Integer id) {
     return repository.findById(id)
       .map(userAddress -> {
@@ -52,7 +52,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/useraddresses/{id}")
+  @DeleteMapping("/evcharge/api/useraddresses/{id}")
   void deleteUserAddress(@PathVariable Integer id) {
     repository.deleteById(id);
   }

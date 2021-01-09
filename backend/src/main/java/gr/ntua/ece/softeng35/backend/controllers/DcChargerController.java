@@ -16,31 +16,31 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/dcchargers")
+  @GetMapping("/evcharge/api/dcchargers")
   List<DcCharger> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/dcchargers")
+  @PostMapping("/evcharge/api/dcchargers")
   DcCharger newDcCharger(@RequestBody DcCharger newDcCharger) {
     return repository.save(newDcCharger);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/dcchargers/{id}")
+  @GetMapping("/evcharge/api/dcchargers/{id}")
   DcCharger one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new DcChargerNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/dcchargers/{id}")
+  @PutMapping("/evcharge/api/dcchargers/{id}")
   DcCharger replaceDcCharger(@RequestBody DcCharger newDccharger, @PathVariable Integer id) {
     return repository.findById(id)
       .map(dcCharger -> {
-        dcCharger.setMax_power(newDccharger.getMax_power());
-dcCharger.setIs_default_charging_curve(newDccharger.getIs_default_charging_curve());
+        dcCharger.setMaxPower(newDccharger.getMaxPower());
+dcCharger.setIsDefaultChargingCurve(newDccharger.getIsDefaultChargingCurve());
 
         return repository.save(dcCharger);
       })
@@ -48,7 +48,7 @@ dcCharger.setIs_default_charging_curve(newDccharger.getIs_default_charging_curve
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/dcchargers/{id}")
+  @DeleteMapping("/evcharge/api/dcchargers/{id}")
   void deleteDcCharger(@PathVariable Integer id) {
     repository.deleteById(id);
   }

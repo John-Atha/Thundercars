@@ -16,35 +16,35 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/chargingspots")
+  @GetMapping("/evcharge/api/chargingspots")
   List<ChargingSpot> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/chargingspots")
+  @PostMapping("/evcharge/api/chargingspots")
   ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot) {
     return repository.save(newChargingSpot);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/chargingspots/{id}")
+  @GetMapping("/evcharge/api/chargingspots/{id}")
   ChargingSpot one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ChargingSpotNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/chargingspots/{id}")
+  @PutMapping("/evcharge/api/chargingspots/{id}")
   ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id) {
     return repository.findById(id)
       .map(chargingSpot -> {
-        chargingSpot.setConnection_type(newChargingSpot.getConnection_type());
+        chargingSpot.setConnectionType(newChargingSpot.getConnectionType());
 chargingSpot.setLevel(newChargingSpot.getLevel());
 chargingSpot.setAmps(newChargingSpot.getAmps());
 chargingSpot.setVoltage(newChargingSpot.getVoltage());
 chargingSpot.setPowerkw(newChargingSpot.getPowerkw());
-chargingSpot.setCurrent_type(newChargingSpot.getCurrent_type());
+chargingSpot.setCurrentType(newChargingSpot.getCurrentType());
 chargingSpot.setComments(newChargingSpot.getComments());
 
         return repository.save(chargingSpot);
@@ -53,7 +53,7 @@ chargingSpot.setComments(newChargingSpot.getComments());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/chargingspots/{id}")
+  @DeleteMapping("/evcharge/api/chargingspots/{id}")
   void deleteChargingSpot(@PathVariable Integer id) {
     repository.deleteById(id);
   }

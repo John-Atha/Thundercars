@@ -16,26 +16,26 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/currentproviders")
+  @GetMapping("/evcharge/api/currentproviders")
   List<CurrentProvider> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/currentproviders")
+  @PostMapping("/evcharge/api/currentproviders")
   CurrentProvider newCurrentProvider(@RequestBody CurrentProvider newCurrentProvider) {
     return repository.save(newCurrentProvider);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/currentproviders/{id}")
+  @GetMapping("/evcharge/api/currentproviders/{id}")
   CurrentProvider one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new CurrentProviderNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/currentproviders/{id}")
+  @PutMapping("/evcharge/api/currentproviders/{id}")
   CurrentProvider replaceCurrentProvider(@RequestBody CurrentProvider newCurrentProvider, @PathVariable Integer id) {
     return repository.findById(id)
       .map(currentProvider -> {
@@ -47,7 +47,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/currentproviders/{id}")
+  @DeleteMapping("/evcharge/api/currentproviders/{id}")
   void deleteCurrentProvider(@PathVariable Integer id) {
     repository.deleteById(id);
   }

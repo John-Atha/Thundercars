@@ -16,26 +16,26 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/addresses")
+  @GetMapping("/evcharge/api/addresses")
   List<Address> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/addresses")
+  @PostMapping("/evcharge/api/addresses")
   Address newAddress(@RequestBody Address newAddress) {
     return repository.save(newAddress);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/addresses/{id}")
+  @GetMapping("/evcharge/api/addresses/{id}")
   Address one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new AddressNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/addresses/{id}")
+  @PutMapping("/evcharge/api/addresses/{id}")
   Address replaceAddress(@RequestBody Address newAddress, @PathVariable Integer id) {
     return repository.findById(id)
       .map(address -> {
@@ -60,7 +60,7 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/addresses/{id}")
+  @DeleteMapping("/evcharge/api/addresses/{id}")
   void deleteAddress(@PathVariable Integer id) {
     repository.deleteById(id);
   }

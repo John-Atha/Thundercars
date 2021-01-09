@@ -16,31 +16,31 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/acchargerports")
+  @GetMapping("/evcharge/api/acchargerports")
   List<AcChargerPort> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/acchargerports")
+  @PostMapping("/evcharge/api/acchargerports")
   AcChargerPort newAcChargerPort(@RequestBody AcChargerPort newAcChargerPort) {
     return repository.save(newAcChargerPort);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/acchargerports/{id}")
+  @GetMapping("/evcharge/api/acchargerports/{id}")
   AcChargerPort one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new AcChargerPortNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/acchargerports/{id}")
+  @PutMapping("/evcharge/api/acchargerports/{id}")
   AcChargerPort replaceAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable Integer id) {
     return repository.findById(id)
       .map(acChargerPort -> {
         acChargerPort.setPortname(newAcChargerPort.getPortname());
-        acChargerPort.setAc_charger(newAcChargerPort.getAc_charger());
+        acChargerPort.setAcCharger(newAcChargerPort.getAcCharger());
 
         return repository.save(acChargerPort);
       })
@@ -48,7 +48,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/acchargerports/{id}")
+  @DeleteMapping("/evcharge/api/acchargerports/{id}")
   void deleteAcChargerPort(@PathVariable Integer id) {
     repository.deleteById(id);
   }

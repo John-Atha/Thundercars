@@ -20,26 +20,26 @@ class CountryController {
        returns error because a country can belong to many addresses */
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/countries")
+    @GetMapping("/evcharge/api/countries")
     List<Country> all() {
         return repository.findAll();
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/countries")
+    @PostMapping("/evcharge/api/countries")
     Country newCountry(@RequestBody Country newCountry) {
         return repository.save(newCountry);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/countries/{id}")
+    @GetMapping("/evcharge/api/countries/{id}")
     Country one(@PathVariable Integer id) {
         return repository.findById(id)
             .orElseThrow(() -> new CountryNotFoundException(id));
     }
     
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/countries/{id}")
+    @PutMapping("/evcharge/api/countries/{id}")
     Country replaceCountry(@RequestBody Country newCountry, @PathVariable Integer id) {
         return repository.findById(id)
             .map(country -> {
@@ -52,7 +52,7 @@ class CountryController {
     }   
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @DeleteMapping("/countries/{id}")
+    @DeleteMapping("/evcharge/api/countries/{id}")
     void deleteCountry(@PathVariable Integer id) {
         repository.deleteById(id);
     }

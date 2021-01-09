@@ -17,43 +17,43 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/stationowners")
+  @GetMapping("/evcharge/api/stationowners")
   List<StationOwner> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/stationowners")
+  @PostMapping("/evcharge/api/stationowners")
   StationOwner newStationOwner(@RequestBody StationOwner newStationOwner) {
     return repository.save(newStationOwner);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/stationowners/{id}")
+  @GetMapping("/evcharge/api/stationowners/{id}")
   StationOwner one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/stationowners/{id}")
+  @PutMapping("/evcharge/api/stationowners/{id}")
   StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id) {
     return repository.findById(id)
       .map(stationOwner -> {
         stationOwner.setUsername(newStationOwner.getUsername());
         stationOwner.setPassword(newStationOwner.getPassword());
-        stationOwner.setEmail_addr(newStationOwner.getEmail_addr());
-        stationOwner.setFirst_name(newStationOwner.getFirst_name());
-        stationOwner.setLast_name(newStationOwner.getLast_name());
+        stationOwner.setEmailAddr(newStationOwner.getEmailAddr());
+        stationOwner.setFirstName(newStationOwner.getFirstName());
+        stationOwner.setLastName(newStationOwner.getLastName());
         stationOwner.setAddress(newStationOwner.getAddress());
-        stationOwner.setDate_of_birth(newStationOwner.getDate_of_birth());
+        stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
         return repository.save(stationOwner);
       })
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/stationowners/{id}")
+  @DeleteMapping("/evcharge/api/stationowners/{id}")
   void deleteStationOwner(@PathVariable Integer id) {
     repository.deleteById(id);
   }

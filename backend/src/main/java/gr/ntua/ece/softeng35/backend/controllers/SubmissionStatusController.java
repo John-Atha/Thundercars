@@ -16,31 +16,31 @@ class SubmissionStatusController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/submissionstatus")
+  @GetMapping("/evcharge/api/submissionstatus")
   List<SubmissionStatus> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/submissionstatus")
+  @PostMapping("/evcharge/api/submissionstatus")
   SubmissionStatus newSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus) {
     return repository.save(newSubmissionStatus);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/submissionstatus/{id}")
+  @GetMapping("/evcharge/api/submissionstatus/{id}")
   SubmissionStatus one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new SubmissionStatusNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/submissionstatus/{id}")
+  @PutMapping("/evcharge/api/submissionstatus/{id}")
   SubmissionStatus replaceSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus, @PathVariable Integer id) {
     return repository.findById(id)
       .map(submissionStatus -> {
         submissionStatus.setTitle(newSubmissionStatus.getTitle());
-submissionStatus.setIs_live(newSubmissionStatus.getIs_live());
+submissionStatus.setIsLive(newSubmissionStatus.getIsLive());
 
         return repository.save(submissionStatus);
       })
@@ -48,7 +48,7 @@ submissionStatus.setIs_live(newSubmissionStatus.getIs_live());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/submissionstatus/{id}")
+  @DeleteMapping("/evcharge/api/submissionstatus/{id}")
   void deleteSubmissionStatus(@PathVariable Integer id) {
     repository.deleteById(id);
   }

@@ -16,32 +16,32 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/levels")
+  @GetMapping("/evcharge/api/levels")
   List<Level> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/levels")
+  @PostMapping("/evcharge/api/levels")
   Level newLevel(@RequestBody Level newLevel) {
     return repository.save(newLevel);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/levels/{id}")
+  @GetMapping("/evcharge/api/levels/{id}")
   Level one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new LevelNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/levels/{id}")
+  @PutMapping("/evcharge/api/levels/{id}")
   Level replaceLevel(@RequestBody Level newLevel, @PathVariable Integer id) {
     return repository.findById(id)
       .map(level -> {
         level.setTitle(newLevel.getTitle());
         level.setComments(newLevel.getComments());
-        level.setIs_fast_charge_capable(newLevel.getIs_fast_charge_capable());
+        level.setIsFastChargeCapable(newLevel.getIsFastChargeCapable());
 
         return repository.save(level);
       })
@@ -49,7 +49,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/levels/{id}")
+  @DeleteMapping("/evcharge/api/levels/{id}")
   void deleteLevel(@PathVariable Integer id) {
     repository.deleteById(id);
   }

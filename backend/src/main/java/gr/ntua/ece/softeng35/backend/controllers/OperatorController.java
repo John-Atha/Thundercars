@@ -16,46 +16,46 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/operators")
+  @GetMapping("/evcharge/api/operators")
   List<Operator> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/operators")
+  @PostMapping("/evcharge/api/operators")
   Operator newOperator(@RequestBody Operator newOperator) {
     return repository.save(newOperator);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/operators/{id}")
+  @GetMapping("/evcharge/api/operators/{id}")
   Operator one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new OperatorNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/operators/{id}")
+  @PutMapping("/evcharge/api/operators/{id}")
   Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id) {
     return repository.findById(id)
       .map(operator -> {
         operator.setTitle(newOperator.getTitle());
-        operator.setWebsite_url(newOperator.getWebsite_url());
+        operator.setWebsiteUrl(newOperator.getWebsiteUrl());
         operator.setComments(newOperator.getComments());
-        operator.setPrimary_phone(newOperator.getPrimary_phone());
-        operator.setSecondary_phone(newOperator.getSecondary_phone());
-        operator.setIs_private_individual(newOperator.getIs_private_individual());
-        operator.setBooking_url(newOperator.getBooking_url());
-        operator.setContact_email(newOperator.getContact_email());
-        operator.setFault_report_email(newOperator.getFault_report_email());
-        operator.setIs_restricted_edit(newOperator.getIs_restricted_edit());
+        operator.setPrimaryPhone(newOperator.getPrimaryPhone());
+        operator.setSecondaryPhone(newOperator.getSecondaryPhone());
+        operator.setIsPrivateIndividual(newOperator.getIsPrivateIndividual());
+        operator.setBookingUrl(newOperator.getBookingUrl());
+        operator.setContactEmail(newOperator.getContactEmail());
+        operator.setFaultReportEmail(newOperator.getFaultReportEmail());
+        operator.setIsRestrictedEdit(newOperator.getIsRestrictedEdit());
         return repository.save(operator);
       })
       .orElseThrow(() -> new OperatorNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/operators/{id}")
+  @DeleteMapping("/evcharge/api/operators/{id}")
   void deleteOperator(@PathVariable Integer id) {
     repository.deleteById(id);
   }

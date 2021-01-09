@@ -16,30 +16,30 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/powerperchargingpoint")
+  @GetMapping("/evcharge/api/powerperchargingpoint")
   List<PowerPerChargingPoint> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/powerperchargingpoint")
+  @PostMapping("/evcharge/api/powerperchargingpoint")
   PowerPerChargingPoint newPowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint) {
     return repository.save(newPowerPerChargingPoint);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/powerperchargingpoint/{id}")
+  @GetMapping("/evcharge/api/powerperchargingpoint/{id}")
   PowerPerChargingPoint one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new PowerPerChargingPointNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/powerperchargingpoint/{id}")
+  @PutMapping("/evcharge/api/powerperchargingpoint/{id}")
   PowerPerChargingPoint replacePowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint, @PathVariable Integer id) {
     return repository.findById(id)
       .map(powerPerChargingPoint -> {
-        powerPerChargingPoint.setAc_charger(newPowerPerChargingPoint.getAc_charger());
+        powerPerChargingPoint.setAcCharger(newPowerPerChargingPoint.getAcCharger());
  powerPerChargingPoint.setPoint20(newPowerPerChargingPoint.getPoint20());
  powerPerChargingPoint.setPoint23(newPowerPerChargingPoint.getPoint23());
  powerPerChargingPoint.setPoint37(newPowerPerChargingPoint.getPoint37());
@@ -55,7 +55,7 @@ powerPerChargingPoint.setPoint430(newPowerPerChargingPoint.getPoint430());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/powerperchargingpoint/{id}")
+  @DeleteMapping("/evcharge/api/powerperchargingpoint/{id}")
   void deletePowerPerChargingPoint(@PathVariable Integer id) {
     repository.deleteById(id);
   }

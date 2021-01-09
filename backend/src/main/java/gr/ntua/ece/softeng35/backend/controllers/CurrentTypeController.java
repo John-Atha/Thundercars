@@ -16,26 +16,26 @@ class CurrentTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/currenttypes")
+  @GetMapping("/evcharge/api/currenttypes")
   List<CurrentType> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/currenttypes")
+  @PostMapping("/evcharge/api/currenttypes")
   CurrentType newCurrentType(@RequestBody CurrentType newCurrentType) {
     return repository.save(newCurrentType);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/currenttypes/{id}")
+  @GetMapping("/evcharge/api/currenttypes/{id}")
   CurrentType one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new CurrentTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/currenttypes/{id}")
+  @PutMapping("/evcharge/api/currenttypes/{id}")
   CurrentType replaceCurrentType(@RequestBody CurrentType newCurrentType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(currentType -> {
@@ -48,7 +48,7 @@ currentType.setDescription(newCurrentType.getDescription());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/currenttypes/{id}")
+  @DeleteMapping("/evcharge/api/currenttypes/{id}")
   void deleteCurrentType(@PathVariable Integer id) {
     repository.deleteById(id);
   }
