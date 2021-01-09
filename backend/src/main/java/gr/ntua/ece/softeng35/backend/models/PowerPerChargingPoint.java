@@ -11,7 +11,7 @@ public class PowerPerChargingPoint {
 
     @OneToOne
     @JoinColumn(name= "ac_charger_id",nullable = false)
-    private AcCharger ac_charger;
+    private AcCharger acCharger;
 
     @Column(unique=false,nullable = true)
     private Double point20;
@@ -39,9 +39,9 @@ public class PowerPerChargingPoint {
 
     PowerPerChargingPoint(){}
     
-    public PowerPerChargingPoint(Integer id, AcCharger ac_charger, Double point20, Double point23, Double point37, Double point74, Double point110, Double point160, Double point220, Double point430) {        
+    public PowerPerChargingPoint(Integer id, AcCharger acCharger, Double point20, Double point23, Double point37, Double point74, Double point110, Double point160, Double point220, Double point430) {        
                 this.id = id;
-                this.ac_charger = ac_charger;
+                this.acCharger = acCharger;
                 this.point20 = point20;
                 this.point23 = point23;
                 this.point37 = point37;
@@ -60,12 +60,12 @@ public class PowerPerChargingPoint {
             this.id=id;
     }
 
-    public AcCharger getAc_charger() {
-            return this.ac_charger;
+    public AcCharger getAcCharger() {
+            return this.acCharger;
     }
 
-    public void setAc_charger(AcCharger ac_charger) {
-            this.ac_charger=ac_charger;
+    public void setAcCharger(AcCharger acCharger) {
+            this.acCharger=acCharger;
     }
 
     public Double getPoint20() {
@@ -139,7 +139,7 @@ public class PowerPerChargingPoint {
             PowerPerChargingPoint u = (PowerPerChargingPoint) o;
             return
                     Objects.equals(this.id, u.id) &&
-                    Objects.equals(this.ac_charger, u.ac_charger) &&
+                    Objects.equals(this.acCharger, u.acCharger) &&
                     Objects.equals(this.point20, u.point20) &&
                     Objects.equals(this.point23, u.point23) &&
                     Objects.equals(this.point37, u.point37) &&
@@ -154,7 +154,7 @@ public class PowerPerChargingPoint {
     public int hashCode() {
             return Objects.hash(
                     this.id,
-                    this.ac_charger,
+                    this.acCharger,
                     this.point20,
                     this.point23,
                     this.point37,
@@ -168,7 +168,7 @@ public class PowerPerChargingPoint {
     
     @Override 
     public String toString() {
-        return "PowerPerChargingPoint{" + "id=" + this.id + ", ac_charger=" + this.ac_charger + "}";
+        return "PowerPerChargingPoint{" + "id=" + this.id + ", acCharger=" + this.acCharger + "}";
     }
 
 }

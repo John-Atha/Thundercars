@@ -11,7 +11,7 @@ public class ChargingSpot {
 
     @ManyToOne
 	@JoinColumn(name = "connection_type_id", nullable = true)
-    private ConnectionType connection_type;
+    private ConnectionType connectionType;
     
     @ManyToOne
 	@JoinColumn(name = "level_id", nullable = true)
@@ -28,37 +28,37 @@ public class ChargingSpot {
     
     @ManyToOne
 	@JoinColumn(name = "current_type_id", nullable = true)
-    private CurrentType current_type;
+    private CurrentType currentType;
     
     @Column(unique = false, length = 500, nullable = true )
 	private String comments;
 	
-	@OneToMany(mappedBy="charging_spot")
-	private Set<ChargingStationSpots> charging_station_spots;
+	@OneToMany(mappedBy="chargingSpot")
+	private Set<ChargingStationSpots> chargingStationSpots;
 
-	@OneToMany(mappedBy="charging_spot")
-	private Set<ChargingProcess> charging_processes;
+	@OneToMany(mappedBy="chargingSpot")
+	private Set<ChargingProcess> chargingProcesses;
 
     @PreRemove
     private void removeSpot(){
-        for (ChargingStationSpots charging_station_spot : charging_station_spots) {
-            charging_station_spot.setCharging_spot(null);
+        for (ChargingStationSpots chargingStationSpot : chargingStationSpots) {
+            chargingStationSpot.setChargingSpot(null);
         }
-        for (ChargingProcess process : charging_processes) {
-            process.setCharging_spot(null);
+        for (ChargingProcess process : chargingProcesses) {
+            process.setChargingSpot(null);
         }
     }
 
     ChargingSpot() {}
 
-	public ChargingSpot(Integer id, ConnectionType connection_type, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType current_type, String comments) {
+	public ChargingSpot(Integer id, ConnectionType connectionType, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType currentType, String comments) {
 		this.id = id;
-		this.connection_type = connection_type;
+		this.connectionType = connectionType;
 		this.level = level;
 		this.amps = amps;
 		this.voltage = voltage;
 		this.powerkw = powerkw;
-		this.current_type = current_type;
+		this.currentType = currentType;
 		this.comments = comments;
 	}
 
@@ -70,12 +70,12 @@ public class ChargingSpot {
 		this.id=id;
 	}
 
-	public ConnectionType getConnection_type() {
-		return this.connection_type;
+	public ConnectionType getConnectionType() {
+		return this.connectionType;
 	}
 
-	public void setConnection_type(ConnectionType connection_type) {
-		this.connection_type=connection_type;
+	public void setConnectionType(ConnectionType connectionType) {
+		this.connectionType=connectionType;
 	}
 
 	public Level getLevel() {
@@ -110,12 +110,12 @@ public class ChargingSpot {
 		this.powerkw=powerkw;
 	}
 
-	public CurrentType getCurrent_type() {
-		return this.current_type;
+	public CurrentType getCurrentType() {
+		return this.currentType;
 	}
 
-	public void setCurrent_type(CurrentType current_type) {
-		this.current_type=current_type;
+	public void setCurrentType(CurrentType currentType) {
+		this.currentType=currentType;
 	}
 
 	public String getComments() {
@@ -134,12 +134,12 @@ public class ChargingSpot {
 		ChargingSpot u = (ChargingSpot) o;
 		return
 			Objects.equals(this.id, u.id) &&
-			Objects.equals(this.connection_type, u.connection_type) &&
+			Objects.equals(this.connectionType, u.connectionType) &&
 			Objects.equals(this.level, u.level) &&
 			Objects.equals(this.amps, u.amps) &&
 			Objects.equals(this.voltage, u.voltage) &&
 			Objects.equals(this.powerkw, u.powerkw) &&
-			Objects.equals(this.current_type, u.current_type) &&
+			Objects.equals(this.currentType, u.currentType) &&
 			Objects.equals(this.comments, u.comments);
 	}
 
@@ -147,19 +147,19 @@ public class ChargingSpot {
 	public int hashCode() {
 		return Objects.hash(
 			this.id,
-			this.connection_type,
+			this.connectionType,
 			this.level,
 			this.amps,
 			this.voltage,
 			this.powerkw,
-			this.current_type,
+			this.currentType,
 			this.comments);
     }
     
     @Override
     public String toString() {
-        return "Charging Spot{" + "ID='" + this.id + "', Connection Type='" + this.connection_type 
+        return "Charging Spot{" + "ID='" + this.id + "', Connection Type='" + this.connectionType 
         + "', Level='" + this.level + "', Amperes='" + this.amps + "', Voltage='" + this.voltage 
-        + "', Power (kw)='" + this.powerkw + "', current_type='"+ this.current_type + "', comments='" + this.comments +"'}";
+        + "', Power (kw)='" + this.powerkw + "', currentType='"+ this.currentType + "', comments='" + this.comments +"'}";
     }                        
 }

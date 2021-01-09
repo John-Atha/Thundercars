@@ -15,38 +15,38 @@ public class Operator {
     private String title;
 
     @Column(unique = false, length = 200, nullable = true)
-    private String website_url;
+    private String websiteUrl;
 
     @Column(unique = false, length = 500, nullable = true)
     private  String comments;
 
     @Column(unique = false, length = 150, nullable = true)
-    private String primary_phone;
+    private String primaryPhone;
 
     @Column(unique = false, length = 150, nullable = true)
-    private String secondary_phone;
+    private String secondaryPhone;
 
     @Column(nullable = true)
-    private Boolean is_private_individual;
+    private Boolean isPrivateIndividual;
 
     @Column(unique = false, length = 200, nullable = true)
-    private String booking_url;
+    private String bookingUrl;
 
     @Column(unique = false, length = 200, nullable = true)
-    private String contact_email;
+    private String contactEmail;
 
     @Column(unique = false, length = 200, nullable = true)
-    private String fault_report_email;
+    private String FaultReportEmail;
 
     @Column(nullable = true)
-    private Boolean is_restricted_edit;
+    private Boolean isRestrictedEdit;
 
     @OneToMany(mappedBy="operator")
-    private Set<ChargingStation> charging_stations ;
+    private Set<ChargingStation> chargingStations ;
 
     @PreRemove
     private void removeOperator(){
-        for (ChargingStation station : charging_stations) {
+        for (ChargingStation station : chargingStations) {
             station.setOperator(null);
         }
     }
@@ -54,21 +54,21 @@ public class Operator {
 
     Operator() {}
 
-    public Operator(Integer id, String title, String website_url, String comments, String primary_phone,
-                        String secondary_phone, Boolean is_private_individual, String booking_url,
-                        String contact_email, String fault_report_email, Boolean is_restricted_edit ){
+    public Operator(Integer id, String title, String websiteUrl, String comments, String primaryPhone,
+                        String secondaryPhone, Boolean isPrivateIndividual, String bookingUrl,
+                        String contactEmail, String FaultReportEmail, Boolean isRestrictedEdit ){
                         
                         this.id = id;
                         this.title = title;
-                        this.website_url = website_url;
+                        this.websiteUrl = websiteUrl;
                         this.comments = comments;
-                        this.primary_phone = primary_phone;
-                        this.secondary_phone = secondary_phone;
-                        this.is_private_individual = is_private_individual;
-                        this.booking_url = booking_url;
-                        this.contact_email = contact_email;
-                        this.fault_report_email = fault_report_email;
-                        this.is_restricted_edit = is_restricted_edit;
+                        this.primaryPhone = primaryPhone;
+                        this.secondaryPhone = secondaryPhone;
+                        this.isPrivateIndividual = isPrivateIndividual;
+                        this.bookingUrl = bookingUrl;
+                        this.contactEmail = contactEmail;
+                        this.FaultReportEmail = FaultReportEmail;
+                        this.isRestrictedEdit = isRestrictedEdit;
                                                 
                         }
 
@@ -88,12 +88,12 @@ public class Operator {
         this.title=title;
     }
 
-    public String getWebsite_url() {
-        return this.website_url;
+    public String getWebsiteUrl() {
+        return this.websiteUrl;
     }
 
-    public void setWebsite_url(String website_url) {
-        this.website_url=website_url;
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl=websiteUrl;
     }
 
     public String getComments() {
@@ -104,60 +104,60 @@ public class Operator {
         this.comments=comments;
     }
 
-    public String getPrimary_phone() {
-        return this.primary_phone;
+    public String getPrimaryPhone() {
+        return this.primaryPhone;
     }
 
-    public void setPrimary_phone(String primary_phone) {
-        this.primary_phone=primary_phone;
+    public void setPrimaryPhone(String primaryPhone) {
+        this.primaryPhone=primaryPhone;
     }
 
-    public String getSecondary_phone() {
-        return this.secondary_phone;
+    public String getSecondaryPhone() {
+        return this.secondaryPhone;
     }
 
-    public void setSecondary_phone(String secondary_phone) {
-        this.secondary_phone=secondary_phone;
+    public void setSecondaryPhone(String secondaryPhone) {
+        this.secondaryPhone=secondaryPhone;
     }
 
-    public Boolean getIs_private_individual() {
-        return this.is_private_individual;
+    public Boolean getIsPrivateIndividual() {
+        return this.isPrivateIndividual;
     }
 
-    public void setIs_private_individual(Boolean is_private_individual) {
-        this.is_private_individual=is_private_individual;
+    public void setIsPrivateIndividual(Boolean isPrivateIndividual) {
+        this.isPrivateIndividual=isPrivateIndividual;
     }
 
-    public String getBooking_url() {
-        return this.booking_url;
+    public String getBookingUrl() {
+        return this.bookingUrl;
     }
 
-    public void setBooking_url(String booking_url) {
-        this.booking_url=booking_url;
+    public void setBookingUrl(String bookingUrl) {
+        this.bookingUrl=bookingUrl;
     }
 
-    public String getContact_email() {
-        return this.contact_email;
+    public String getContactEmail() {
+        return this.contactEmail;
     }
 
-    public void setContact_email(String contact_email) {
-        this.contact_email=contact_email;
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail=contactEmail;
     }
 
-    public String getFault_report_email() {
-        return this.fault_report_email;
+    public String getFaultReportEmail() {
+        return this.FaultReportEmail;
     }
 
-    public void setFault_report_email(String fault_report_email) {
-        this.fault_report_email=fault_report_email;
+    public void setFaultReportEmail(String FaultReportEmail) {
+        this.FaultReportEmail=FaultReportEmail;
     }
 
-    public Boolean getIs_restricted_edit() {
-        return this.is_restricted_edit;
+    public Boolean getIsRestrictedEdit() {
+        return this.isRestrictedEdit;
     }
 
-    public void setIs_restricted_edit(Boolean is_restricted_edit) {
-        this.is_restricted_edit=is_restricted_edit;
+    public void setIsRestrictedEdit(Boolean isRestrictedEdit) {
+        this.isRestrictedEdit=isRestrictedEdit;
     }
                     
                     
@@ -169,15 +169,15 @@ public class Operator {
         return
             Objects.equals(this.id, u.id) &&
             Objects.equals(this.title, u.title) &&
-            Objects.equals(this.website_url, u.website_url) &&
+            Objects.equals(this.websiteUrl, u.websiteUrl) &&
             Objects.equals(this.comments, u.comments) &&
-            Objects.equals(this.primary_phone, u.primary_phone) &&
-            Objects.equals(this.secondary_phone, u.secondary_phone) &&
-            Objects.equals(this.is_private_individual, u.is_private_individual) &&
-            Objects.equals(this.booking_url, u.booking_url) &&
-            Objects.equals(this.contact_email, u.contact_email) &&
-            Objects.equals(this.fault_report_email, u.fault_report_email) &&
-            Objects.equals(this.is_restricted_edit, u.is_restricted_edit);
+            Objects.equals(this.primaryPhone, u.primaryPhone) &&
+            Objects.equals(this.secondaryPhone, u.secondaryPhone) &&
+            Objects.equals(this.isPrivateIndividual, u.isPrivateIndividual) &&
+            Objects.equals(this.bookingUrl, u.bookingUrl) &&
+            Objects.equals(this.contactEmail, u.contactEmail) &&
+            Objects.equals(this.FaultReportEmail, u.FaultReportEmail) &&
+            Objects.equals(this.isRestrictedEdit, u.isRestrictedEdit);
     }
 
     @Override
@@ -185,23 +185,23 @@ public class Operator {
         return Objects.hash(
             this.id,
             this.title,
-            this.website_url,
+            this.websiteUrl,
             this.comments,
-            this.primary_phone,
-            this.secondary_phone,
-            this.is_private_individual,
-            this.booking_url,
-            this.contact_email,
-            this.fault_report_email,
-            this.is_restricted_edit);
+            this.primaryPhone,
+            this.secondaryPhone,
+            this.isPrivateIndividual,
+            this.bookingUrl,
+            this.contactEmail,
+            this.FaultReportEmail,
+            this.isRestrictedEdit);
     }
 
     @Override
     public String toString() {
-        return "Operator{" + "id='" + this.id + "', title='" + this.title + "', website_url='" + this.website_url 
-        + "', comments='" + this.comments + "', primary_phone='" + this.primary_phone + "', secondary_phone='"
-        + this.secondary_phone + "', is_private_individual='" + this.is_private_individual +"', booking_url='" 
-        + this.booking_url + "', contact_email='" + this.contact_email + "', fault_report_email='" + this.fault_report_email
-        + "', is_restricted_edit='" + this.is_restricted_edit + "'}";
+        return "Operator{" + "id='" + this.id + "', title='" + this.title + "', websiteUrl='" + this.websiteUrl 
+        + "', comments='" + this.comments + "', primaryPhone='" + this.primaryPhone + "', secondaryPhone='"
+        + this.secondaryPhone + "', isPrivateIndividual='" + this.isPrivateIndividual +"', bookingUrl='" 
+        + this.bookingUrl + "', contactEmail='" + this.contactEmail + "', FaultReportEmail='" + this.FaultReportEmail
+        + "', isRestrictedEdit='" + this.isRestrictedEdit + "'}";
     }                        
 }                        

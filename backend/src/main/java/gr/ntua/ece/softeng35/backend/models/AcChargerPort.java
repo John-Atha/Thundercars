@@ -14,14 +14,14 @@ public class AcChargerPort {
 
     @ManyToOne
     @JoinColumn(name = "ac_charger_id", nullable = false )
-    private AcCharger ac_charger;
+    private AcCharger acCharger;
 
     AcChargerPort(){}
     
-    public AcChargerPort(Integer id, String portname, AcCharger ac_charger) {
+    public AcChargerPort(Integer id, String portname, AcCharger acCharger) {
             this.id = id;
             this.portname = portname;
-            this.ac_charger = ac_charger;
+            this.acCharger = acCharger;
     }
     
     public Integer getId() {
@@ -40,12 +40,12 @@ public class AcChargerPort {
             this.portname=portname;
     }
 
-    public AcCharger getAc_charger() {
-            return this.ac_charger;
+    public AcCharger getAcCharger() {
+            return this.acCharger;
     }
 
-    public void setAc_charger(AcCharger ac_charger) {
-            this.ac_charger=ac_charger;
+    public void setAcCharger(AcCharger acCharger) {
+            this.acCharger=acCharger;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AcChargerPort {
             return
                     Objects.equals(this.id, u.id) &&
                     Objects.equals(this.portname, u.portname) &&
-                    Objects.equals(this.ac_charger, u.ac_charger);
+                    Objects.equals(this.acCharger, u.acCharger);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class AcChargerPort {
             return Objects.hash(
                     this.id,
                     this.portname,
-                    this.ac_charger);
+                    this.acCharger);
     }
 
     @Override
     public String toString() {
-            return "AcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', ac_charger=" + ac_charger +"}";
+            return "AcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', acCharger=" + acCharger +"}";
     }
 }

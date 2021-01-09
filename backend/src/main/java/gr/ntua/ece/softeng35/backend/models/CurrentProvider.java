@@ -12,8 +12,8 @@ public class CurrentProvider {
     @Column(unique = false, length = 300, nullable = true)
     private String name;
 
-    @OneToMany(mappedBy="current_provider")
-    private Set<ChargingStation> charging_stations;
+    @OneToMany(mappedBy="currentProvider")
+    private Set<ChargingStation> chargingStations;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable=true)
@@ -21,8 +21,8 @@ public class CurrentProvider {
 
     @PreRemove
     private void removeCurrentProvider(){
-        for (ChargingStation station : charging_stations) {
-            station.setCurrent_provider(null);
+        for (ChargingStation station : chargingStations) {
+            station.setCurrentProvider(null);
         }
     }
 

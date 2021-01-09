@@ -33,7 +33,7 @@ public class Country {
     private Set<UserAddress> useraddresses;
 
     @OneToMany(mappedBy="country")
-    private Set<CurrentProvider> current_providers;
+    private Set<CurrentProvider> currentProviders;
 
     @PreRemove
     private void removeCountry(){
@@ -43,7 +43,7 @@ public class Country {
         for (Address addr : addresses) {
             addr.setCountry(null);
         }
-        for (CurrentProvider curr : current_providers) {
+        for (CurrentProvider curr : currentProviders) {
             curr.setCountry(null);
         }
     }

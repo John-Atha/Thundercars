@@ -16,28 +16,28 @@ public class StatusType {
     private String title;
 
     @Column(nullable = true)
-    private Boolean is_operational;
+    private Boolean isOperational;
     
     @Column(nullable = true)
-	private Boolean is_user_selectable;
+	private Boolean isUserSelectable;
 	
-	@OneToMany(mappedBy="status_type")
-	private Set<ChargingStation> charging_stations;
+	@OneToMany(mappedBy="statusType")
+	private Set<ChargingStation> chargingStations;
 
     @PreRemove
     private void removeStatusType(){
-        for (ChargingStation station : charging_stations) {
-            station.setStatus_type(null);
+        for (ChargingStation station : chargingStations) {
+            station.setStatusType(null);
         }
     }
 
 	StatusType() {}
 	
-    public StatusType(Integer id, String title, Boolean is_operational, Boolean is_user_selectable) {
+    public StatusType(Integer id, String title, Boolean isOperational, Boolean isUserSelectable) {
 		this.id = id;
 		this.title = title;
-		this.is_operational = is_operational;
-		this.is_user_selectable = is_user_selectable;
+		this.isOperational = isOperational;
+		this.isUserSelectable = isUserSelectable;
 	}
 	public Integer getId() {
 		return this.id;
@@ -55,20 +55,20 @@ public class StatusType {
 		this.title=title;
 	}
 
-	public Boolean getIs_operational() {
-		return this.is_operational;
+	public Boolean getIsOperational() {
+		return this.isOperational;
 	}
 
-	public void setIs_operational(Boolean is_operational) {
-		this.is_operational=is_operational;
+	public void setIsOperational(Boolean isOperational) {
+		this.isOperational=isOperational;
 	}
 
-	public Boolean getIs_user_selectable() {
-		return this.is_user_selectable;
+	public Boolean getIsUserSelectable() {
+		return this.isUserSelectable;
 	}
 
-	public void setIs_user_selectable(Boolean is_user_selectable) {
-		this.is_user_selectable=is_user_selectable;
+	public void setIsUserSelectable(Boolean isUserSelectable) {
+		this.isUserSelectable=isUserSelectable;
 	}
 
 	@Override
@@ -79,8 +79,8 @@ public class StatusType {
 		return
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
-			Objects.equals(this.is_operational, u.is_operational) &&
-			Objects.equals(this.is_user_selectable, u.is_user_selectable);
+			Objects.equals(this.isOperational, u.isOperational) &&
+			Objects.equals(this.isUserSelectable, u.isUserSelectable);
 	}
 
 	@Override
@@ -88,13 +88,13 @@ public class StatusType {
 		return Objects.hash(
 			this.id,
 			this.title,
-			this.is_operational,
-			this.is_user_selectable);
+			this.isOperational,
+			this.isUserSelectable);
 	}
     
     @Override
     public String toString() {
-      return "StatusType{" + "id=" + this.id + ", title='" + this.title + ", is_operational='" + this.is_operational 
-            + "', is_user_selectable='" + this.is_user_selectable + "'}";
+      return "StatusType{" + "id=" + this.id + ", title='" + this.title + ", isOperational='" + this.isOperational 
+            + "', isUserSelectable='" + this.isUserSelectable + "'}";
     }
 }

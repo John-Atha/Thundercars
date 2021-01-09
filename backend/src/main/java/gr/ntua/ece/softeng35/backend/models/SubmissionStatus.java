@@ -13,24 +13,24 @@ public class SubmissionStatus {
     private String title;
 
     @Column(nullable = true)
-	private Boolean is_live;
+	private Boolean isLive;
 	
-	@OneToMany(mappedBy="submission_status")
-	private Set<ChargingStation> charging_stations;
+	@OneToMany(mappedBy="submissionStatus")
+	private Set<ChargingStation> chargingStations;
 
     @PreRemove
     private void removeSubmissionStatus(){
-        for (ChargingStation station : charging_stations) {
-            station.setSubmission_status(null);
+        for (ChargingStation station : chargingStations) {
+            station.setSubmissionStatus(null);
         }
     }
 
 	SubmissionStatus() {}
 
-    public SubmissionStatus(Integer id, String title, Boolean is_live) {
+    public SubmissionStatus(Integer id, String title, Boolean isLive) {
 		this.id = id;
 		this.title = title;
-		this.is_live = is_live;
+		this.isLive = isLive;
 	}
 	public Integer getId() {
 		return this.id;
@@ -48,12 +48,12 @@ public class SubmissionStatus {
 		this.title=title;
 	}
 
-	public Boolean getIs_live() {
-		return this.is_live;
+	public Boolean getIsLive() {
+		return this.isLive;
 	}
 
-	public void setIs_live(Boolean is_live) {
-		this.is_live=is_live;
+	public void setIsLive(Boolean isLive) {
+		this.isLive=isLive;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SubmissionStatus {
 		return
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
-			Objects.equals(this.is_live, u.is_live);
+			Objects.equals(this.isLive, u.isLive);
 	}
 
 	@Override
@@ -72,11 +72,11 @@ public class SubmissionStatus {
 		return Objects.hash(
 			this.id,
 			this.title,
-			this.is_live);
+			this.isLive);
     }
     
     @Override
     public String toString() {
-	  return "Submission Status{" + "id=" + this.id + ", title='" + this.title + ", is_live='" + this.is_live +"'}";
+	  return "Submission Status{" + "id=" + this.id + ", title='" + this.title + ", isLive='" + this.isLive +"'}";
     }
 }

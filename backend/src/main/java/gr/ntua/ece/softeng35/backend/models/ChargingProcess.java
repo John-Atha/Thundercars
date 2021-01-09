@@ -19,57 +19,57 @@ public class ChargingProcess {
     private Vehicle vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "charging_station_id", nullable = true)
-    private ChargingStation charging_station;
+    @JoinColumn(name = "chargingStation_id", nullable = true)
+    private ChargingStation chargingStation;
 
     @ManyToOne
-    @JoinColumn(name = "charging_spot_id", nullable = true)
-    private ChargingSpot charging_spot;
+    @JoinColumn(name = "chargingSpot_id", nullable = true)
+    private ChargingSpot chargingSpot;
 
     @Column(unique = false, nullable = false)
-    private Date connection_time;
+    private Date connectionTime;
 
     @Column(unique = false, nullable = false)
-    private Date disconnect_time;
+    private Date disconnectTime;
 
     @Column(unique = false, nullable = false)
-    private Date done_charging_time;
+    private Date doneChargingTime;
 
     @Column(unique = false, nullable = false)
     private String timezone;
 
     @Column(unique = false, nullable = false)
-    private Double kwh_delivered;
+    private Double kwhDelivered;
 
     @Column(unique = false, nullable = false)
     private Double cost;
 
     @Column(unique = false, nullable = false)
-    private String payment_way;
+    private String paymentWay;
 
     @Column(unique = false, nullable = false)
     private Double rating;
 
     @Column(unique = false, nullable = false)
-    private String charging_program;
+    private String chargingProgram;
 
     ChargingProcess() {}
 
-    public ChargingProcess(Integer id, User user, Vehicle vehicle, ChargingStation charging_station, ChargingSpot charging_spot, Date connection_time, Date disconnect_time, Date done_charging_time, String timezone, Double kwh_delivered, Double cost, String payment_way, Double rating, String charging_program) {
+    public ChargingProcess(Integer id, User user, Vehicle vehicle, ChargingStation chargingStation, ChargingSpot chargingSpot, Date connectionTime, Date disconnectTime, Date doneChargingTime, String timezone, Double kwhDelivered, Double cost, String paymentWay, Double rating, String chargingProgram) {
         this.id = id;
         this.user = user;
         this.vehicle = vehicle;
-        this.charging_station = charging_station;
-        this.charging_spot = charging_spot;
-        this.connection_time = connection_time;
-        this.disconnect_time = disconnect_time;
-        this.done_charging_time = done_charging_time;
+        this.chargingStation = chargingStation;
+        this.chargingSpot = chargingSpot;
+        this.connectionTime = connectionTime;
+        this.disconnectTime = disconnectTime;
+        this.doneChargingTime = doneChargingTime;
         this.timezone = timezone;
-        this.kwh_delivered = kwh_delivered;
+        this.kwhDelivered = kwhDelivered;
         this.cost = cost;
-        this.payment_way = payment_way;
+        this.paymentWay = paymentWay;
         this.rating = rating;
-        this.charging_program = charging_program;
+        this.chargingProgram = chargingProgram;
     }
 
     public Integer getId() {
@@ -96,44 +96,44 @@ public class ChargingProcess {
             this.vehicle=vehicle;
     }
 
-    public ChargingStation getCharging_station() {
-            return this.charging_station;
+    public ChargingStation getChargingStation() {
+            return this.chargingStation;
     }
 
-    public void setCharging_station(ChargingStation charging_station) {
-            this.charging_station=charging_station;
+    public void setChargingStation(ChargingStation chargingStation) {
+            this.chargingStation=chargingStation;
     }
 
-    public ChargingSpot getCharging_spot() {
-            return this.charging_spot;
+    public ChargingSpot getChargingSpot() {
+            return this.chargingSpot;
     }
 
-    public void setCharging_spot(ChargingSpot charging_spot) {
-            this.charging_spot=charging_spot;
+    public void setChargingSpot(ChargingSpot chargingSpot) {
+            this.chargingSpot=chargingSpot;
     }
 
-    public Date getConnection_time() {
-            return this.connection_time;
+    public Date getConnectionTime() {
+            return this.connectionTime;
     }
 
-    public void setConnection_time(Date connection_time) {
-            this.connection_time=connection_time;
+    public void setConnectionTime(Date connectionTime) {
+            this.connectionTime=connectionTime;
     }
 
-    public Date getDisconnect_time() {
-            return this.disconnect_time;
+    public Date getDisconnectTime() {
+            return this.disconnectTime;
     }
 
-    public void setDisconnect_time(Date disconnect_time) {
-            this.disconnect_time=disconnect_time;
+    public void setDisconnectTime(Date disconnectTime) {
+            this.disconnectTime=disconnectTime;
     }
 
-    public Date getDone_charging_time() {
-            return this.done_charging_time;
+    public Date getDoneChargingTime() {
+            return this.doneChargingTime;
     }
 
-    public void setDone_charging_time(Date done_charging_time) {
-            this.done_charging_time=done_charging_time;
+    public void setDoneChargingTime(Date doneChargingTime) {
+            this.doneChargingTime=doneChargingTime;
     }
 
     public String getTimezone() {
@@ -144,12 +144,12 @@ public class ChargingProcess {
             this.timezone=timezone;
     }
 
-    public Double getKwh_delivered() {
-            return this.kwh_delivered;
+    public Double getKwhDelivered() {
+            return this.kwhDelivered;
     }
 
-    public void setKwh_delivered(Double kwh_delivered) {
-            this.kwh_delivered=kwh_delivered;
+    public void setKwhDelivered(Double kwhDelivered) {
+            this.kwhDelivered=kwhDelivered;
     }
 
     public Double getCost() {
@@ -160,12 +160,12 @@ public class ChargingProcess {
             this.cost=cost;
     }
 
-    public String getPayment_way() {
-            return this.payment_way;
+    public String getPaymentWay() {
+            return this.paymentWay;
     }
 
-    public void setPayment_way(String payment_way) {
-            this.payment_way=payment_way;
+    public void setPaymentWay(String paymentWay) {
+            this.paymentWay=paymentWay;
     }
 
     public Double getRating() {
@@ -176,12 +176,12 @@ public class ChargingProcess {
             this.rating=rating;
     }
 
-    public String getCharging_program() {
-            return this.charging_program;
+    public String getChargingProgram() {
+            return this.chargingProgram;
     }
 
-    public void setCharging_program(String charging_program) {
-            this.charging_program=charging_program;
+    public void setChargingProgram(String chargingProgram) {
+            this.chargingProgram=chargingProgram;
     }
 
 
@@ -194,17 +194,17 @@ public class ChargingProcess {
                     Objects.equals(this.id, u.id) &&
                     Objects.equals(this.user, u.user) &&
                     Objects.equals(this.vehicle, u.vehicle) &&
-                    Objects.equals(this.charging_station, u.charging_station) &&
-                    Objects.equals(this.charging_spot, u.charging_spot) &&
-                    Objects.equals(this.connection_time, u.connection_time) &&
-                    Objects.equals(this.disconnect_time, u.disconnect_time) &&
-                    Objects.equals(this.done_charging_time, u.done_charging_time) &&
+                    Objects.equals(this.chargingStation, u.chargingStation) &&
+                    Objects.equals(this.chargingSpot, u.chargingSpot) &&
+                    Objects.equals(this.connectionTime, u.connectionTime) &&
+                    Objects.equals(this.disconnectTime, u.disconnectTime) &&
+                    Objects.equals(this.doneChargingTime, u.doneChargingTime) &&
                     Objects.equals(this.timezone, u.timezone) &&
-                    Objects.equals(this.kwh_delivered, u.kwh_delivered) &&
+                    Objects.equals(this.kwhDelivered, u.kwhDelivered) &&
                     Objects.equals(this.cost, u.cost) &&
-                    Objects.equals(this.payment_way, u.payment_way) &&
+                    Objects.equals(this.paymentWay, u.paymentWay) &&
                     Objects.equals(this.rating, u.rating) &&
-                    Objects.equals(this.charging_program, u.charging_program);
+                    Objects.equals(this.chargingProgram, u.chargingProgram);
     }
 
     @Override
@@ -213,27 +213,27 @@ public class ChargingProcess {
                     this.id,
                     this.user,
                     this.vehicle,
-                    this.charging_station,
-                    this.charging_spot,
-                    this.connection_time,
-                    this.disconnect_time,
-                    this.done_charging_time,
+                    this.chargingStation,
+                    this.chargingSpot,
+                    this.connectionTime,
+                    this.disconnectTime,
+                    this.doneChargingTime,
                     this.timezone,
-                    this.kwh_delivered,
+                    this.kwhDelivered,
                     this.cost,
-                    this.payment_way,
+                    this.paymentWay,
                     this.rating,
-                    this.charging_program);
+                    this.chargingProgram);
     }
 
 
     @Override
     public String toString() {
         return "Charging Process{" + "ID='" + this.id + "', User='" + this.user
-        + "', Vehicle='" + this.vehicle + "', Charging Station'" + this.charging_station + "', Chraging Spot='" + this.charging_spot 
-        + "', Connection Time='" + this.connection_time + "', Disconnect Time='"+ this.disconnect_time + "', Done Charging Time ='" + this.done_charging_time
-        + "', Timezone='" + this.timezone + "', kWh Delivered='"+ this.kwh_delivered + "', Cost ='" + this.cost
-        + "', Payment='" + this.payment_way + "', Rating='"+ this.rating + "', Charging Program='" + this.charging_program + "'}";
+        + "', Vehicle='" + this.vehicle + "', Charging Station'" + this.chargingStation + "', Chraging Spot='" + this.chargingSpot 
+        + "', Connection Time='" + this.connectionTime + "', Disconnect Time='"+ this.disconnectTime + "', Done Charging Time ='" + this.doneChargingTime
+        + "', Timezone='" + this.timezone + "', kWh Delivered='"+ this.kwhDelivered + "', Cost ='" + this.cost
+        + "', Payment='" + this.paymentWay + "', Rating='"+ this.rating + "', Charging Program='" + this.chargingProgram + "'}";
     }
 
 

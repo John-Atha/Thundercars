@@ -13,7 +13,7 @@ public class Vehicle {
     private String brand;
 
     @Column(unique = false, length=50, nullable = true)
-    private String brand_id;
+    private String brandId;
 
     @Column(unique = false, length=10, nullable = true)
     private String type;
@@ -22,50 +22,50 @@ public class Vehicle {
     private String model;
 
     @Column(unique = false, nullable = true)
-    private Integer release_year;
+    private Integer releaseYear;
 
     @Column(unique = false, nullable = true)
-    private Double usable_battery_size;
+    private Double usableBatterySize;
 
     @Column(unique = false, nullable = true)
-    private Double energy_consumption;
+    private Double energyConsumption;
 
     @ManyToOne
     @JoinColumn(name= "ac_charger_id",nullable = false)
-    private AcCharger ac_charger;
+    private AcCharger acCharger;
 
     @ManyToOne
-    @JoinColumn(name= "dc_charger_id",nullable = true )
-    private DcCharger dc_charger;
+    @JoinColumn(name= "dc_harger_id",nullable = true )
+    private DcCharger dcCharger;
 
     @OneToMany(mappedBy = "vehicle")
     private Set<UserHasVehicle> userhasvehicles;
     @OneToMany(mappedBy="vehicle")
-    private Set<ChargingProcess> charging_processes;
+    private Set<ChargingProcess> chargingProcesses;
 
     @PreRemove
     private void removeVehicle(){
         for (UserHasVehicle userHasVehicle : userhasvehicles) {
             userHasVehicle.setVehicle(null);
         }
-        for (ChargingProcess process : charging_processes) {
+        for (ChargingProcess process : chargingProcesses) {
           process.setVehicle(null);
         }
     }
     
     Vehicle(){}
 
-    public Vehicle(Integer id, String brand, String brand_id, String type, String model, Integer release_year, Double usable_battery_size, Double energy_consumption, AcCharger ac_charger, DcCharger dc_charger) {
+    public Vehicle(Integer id, String brand, String brandId, String type, String model, Integer releaseYear, Double usableBatterySize, Double energyConsumption, AcCharger acCharger, DcCharger dcCharger) {
         this.id = id;
         this.brand = brand;
-        this.brand_id = brand_id;
+        this.brandId = brandId;
         this.type = type;
         this.model = model;
-        this.release_year = release_year;
-        this.usable_battery_size = usable_battery_size;
-        this.energy_consumption = energy_consumption;
-        this.ac_charger = ac_charger;
-        this.dc_charger = dc_charger;
+        this.releaseYear = releaseYear;
+        this.usableBatterySize = usableBatterySize;
+        this.energyConsumption = energyConsumption;
+        this.acCharger = acCharger;
+        this.dcCharger = dcCharger;
     }
 
         public Integer getId() {
@@ -84,12 +84,12 @@ public class Vehicle {
                 this.brand=brand;
         }
 
-        public String getBrand_id() {
-                return this.brand_id;
+        public String getBrandId() {
+                return this.brandId;
         }
 
-        public void setBrand_id(String brand_id) {
-                this.brand_id=brand_id;
+        public void setBrandId(String brandId) {
+                this.brandId=brandId;
         }
 
         public String getType() {
@@ -108,44 +108,44 @@ public class Vehicle {
                 this.model=model;
         }
 
-        public Integer getRelease_year() {
-                return this.release_year;
+        public Integer getReleaseYear() {
+                return this.releaseYear;
         }
 
-        public void setRelease_year(Integer release_year) {
-                this.release_year=release_year;
+        public void setReleaseYear(Integer releaseYear) {
+                this.releaseYear=releaseYear;
         }
 
-        public Double getUsable_battery_size() {
-                return this.usable_battery_size;
+        public Double getUsableBatterySize() {
+                return this.usableBatterySize;
         }
 
-        public void setUsable_battery_size(Double usable_battery_size) {
-                this.usable_battery_size=usable_battery_size;
+        public void setUsableBatterySize(Double usableBatterySize) {
+                this.usableBatterySize=usableBatterySize;
         }
 
-        public Double getEnergy_consumption() {
-                return this.energy_consumption;
+        public Double getEnergyConsumption() {
+                return this.energyConsumption;
         }
 
-        public void setEnergy_consumption(Double energy_consumption) {
-                this.energy_consumption=energy_consumption;
+        public void setEnergyConsumption(Double energyConsumption) {
+                this.energyConsumption=energyConsumption;
         }
 
-        public AcCharger getAc_charger() {
-                return this.ac_charger;
+        public AcCharger getAcCharger() {
+                return this.acCharger;
         }
 
-        public void setAc_charger(AcCharger ac_charger) {
-                this.ac_charger=ac_charger;
+        public void setAcCharger(AcCharger acCharger) {
+                this.acCharger=acCharger;
         }
 
-        public DcCharger getDc_charger() {
-                return this.dc_charger;
+        public DcCharger getDcCharger() {
+                return this.dcCharger;
         }
 
-        public void setDc_charger(DcCharger dc_charger) {
-                this.dc_charger=dc_charger;
+        public void setDcCharger(DcCharger dcCharger) {
+                this.dcCharger=dcCharger;
         }
 
 
@@ -157,14 +157,14 @@ public class Vehicle {
                 return
                         Objects.equals(this.id, u.id) &&
                         Objects.equals(this.brand, u.brand) &&
-                        Objects.equals(this.brand_id, u.brand_id) &&
+                        Objects.equals(this.brandId, u.brandId) &&
                         Objects.equals(this.type, u.type) &&
                         Objects.equals(this.model, u.model) &&
-                        Objects.equals(this.release_year, u.release_year) &&
-                        Objects.equals(this.usable_battery_size, u.usable_battery_size) &&
-                        Objects.equals(this.energy_consumption, u.energy_consumption) &&
-                        Objects.equals(this.ac_charger, u.ac_charger) &&
-                        Objects.equals(this.dc_charger, u.dc_charger);
+                        Objects.equals(this.releaseYear, u.releaseYear) &&
+                        Objects.equals(this.usableBatterySize, u.usableBatterySize) &&
+                        Objects.equals(this.energyConsumption, u.energyConsumption) &&
+                        Objects.equals(this.acCharger, u.acCharger) &&
+                        Objects.equals(this.dcCharger, u.dcCharger);
         }
 
         @Override
@@ -172,13 +172,13 @@ public class Vehicle {
                 return Objects.hash(
                         this.id,
                         this.brand,
-                        this.brand_id,
+                        this.brandId,
                         this.type,
                         this.model,
-                        this.release_year,
-                        this.usable_battery_size,
-                        this.energy_consumption,
-                        this.ac_charger);
+                        this.releaseYear,
+                        this.usableBatterySize,
+                        this.energyConsumption,
+                        this.acCharger);
         }
 
         @Override

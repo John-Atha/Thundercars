@@ -16,16 +16,16 @@ public class User {
   private String password;
   
   @Column(unique = true, length = 50, nullable = false)
-  private String email_addr;
+  private String emailAddr;
 
   @Column(unique = false, length = 30, nullable = false)
   private String firstName;
 
   @Column(unique = false, length = 30, nullable = false)
-  private String last_name;
+  private String lastName;
 
   @Column(unique = false, length = 60, nullable = true)
-  private Date date_of_birth;
+  private Date dateOfBirth;
 
   @ManyToOne
   @JoinColumn(name = "user_address_id", nullable = true)
@@ -34,27 +34,27 @@ public class User {
   @OneToMany(mappedBy = "user")
   private Set<UserHasVehicle> userhasvehicles;
   @OneToMany(mappedBy="user")
-	private Set<ChargingProcess> charging_processes ;
+	private Set<ChargingProcess> chargingProcesses ;
 
   @PreRemove
   private void removeUser(){
       for (UserHasVehicle userHasVehicle : userhasvehicles) {
           userHasVehicle.setUser(null);
       }
-      for (ChargingProcess process : charging_processes) {
+      for (ChargingProcess process : chargingProcesses) {
         process.setUser(null);
       }
   }
 
   User() {}
 
-  public User(String username, String password, String email_addr, String firstName, String last_name, Date date_of_birth, UserAddress address) {
+  public User(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address) {
     this.username = username;
     this.password = password;
-    this.email_addr = email_addr;
+    this.emailAddr = emailAddr;
     this.firstName = firstName;
-    this.last_name = last_name;
-    this.date_of_birth = date_of_birth;
+    this.lastName = lastName;
+    this.dateOfBirth = dateOfBirth;
     this.address = address;
 }
 
@@ -82,12 +82,12 @@ public void setPassword(String password) {
     this.password=password;
 }
 
-public String getEmail_addr() {
-    return this.email_addr;
+public String getEmailAddr() {
+    return this.emailAddr;
 }
 
-public void setEmail_addr(String email_addr) {
-    this.email_addr=email_addr;
+public void setEmailAddr(String emailAddr) {
+    this.emailAddr=emailAddr;
 }
 
 public String getFirstName() {
@@ -98,20 +98,20 @@ public void setFirstName(String firstName) {
     this.firstName=firstName;
 }
 
-public String getLast_name() {
-    return this.last_name;
+public String getLastName() {
+    return this.lastName;
 }
 
-public void setLast_name(String last_name) {
-    this.last_name=last_name;
+public void setLastName(String lastName) {
+    this.lastName=lastName;
 }
 
-public Date getDate_of_birth() {
-    return this.date_of_birth;
+public Date getDateOfBirth() {
+    return this.dateOfBirth;
 }
 
-public void setDate_of_birth(Date date_of_birth) {
-    this.date_of_birth=date_of_birth;
+public void setDateOfBirth(Date dateOfBirth) {
+    this.dateOfBirth=dateOfBirth;
 }
 
 public UserAddress getUserAddress() {
@@ -130,10 +130,10 @@ public void setUserAddress(UserAddress address) {
           return
                   Objects.equals(this.username, u.username) &&
                   Objects.equals(this.password, u.password) &&
-                  Objects.equals(this.email_addr, u.email_addr) &&
+                  Objects.equals(this.emailAddr, u.emailAddr) &&
                   Objects.equals(this.firstName, u.firstName) &&
-                  Objects.equals(this.last_name, u.last_name) &&
-                  Objects.equals(this.date_of_birth, u.date_of_birth) &&
+                  Objects.equals(this.lastName, u.lastName) &&
+                  Objects.equals(this.dateOfBirth, u.dateOfBirth) &&
                   Objects.equals(this.address, u.address);
   }
 
@@ -142,10 +142,10 @@ public void setUserAddress(UserAddress address) {
           return Objects.hash(
                   this.username,
                   this.password,
-                  this.email_addr,
+                  this.emailAddr,
                   this.firstName,
-                  this.last_name,
-                  this.date_of_birth,
+                  this.lastName,
+                  this.dateOfBirth,
                   this.address);
   }
 

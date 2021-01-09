@@ -10,33 +10,33 @@ public class DcCharger{
     private Integer id;
 
     @Column(unique = false ,nullable = true)
-    private Double max_power;
+    private Double maxPower;
 
     @Column(unique = false ,nullable = true)
-    private Boolean is_default_charging_curve;
+    private Boolean isDefaultChargingCurve;
 
-    @OneToMany(mappedBy="dc_charger")
+    @OneToMany(mappedBy="dcCharger")
     private Set<Vehicle> vehicles;
 
-    @OneToMany(mappedBy="dc_charger")
+    @OneToMany(mappedBy="dcCharger")
     private Set<DcChargerPort> dcchargerports;
 
     @PreRemove
     private void removeDcCharger(){
         for (Vehicle vehicle : vehicles) {
-            vehicle.setDc_charger(null);
+            vehicle.setDcCharger(null);
         }
         for (DcChargerPort port : dcchargerports) {
-            port.setDc_charger(null);
+            port.setDcCharger(null);
         }
     }
 
     DcCharger(){}
 
-    public DcCharger(Integer id, Double max_power, Boolean is_default_charging_curve) {
+    public DcCharger(Integer id, Double maxPower, Boolean isDefaultChargingCurve) {
         this.id = id;
-        this.max_power = max_power;
-        this.is_default_charging_curve = is_default_charging_curve;
+        this.maxPower = maxPower;
+        this.isDefaultChargingCurve = isDefaultChargingCurve;
     }
 
     public Integer getId() {
@@ -47,20 +47,20 @@ public class DcCharger{
         this.id=id;
     }
 
-    public Double getMax_power() {
-        return this.max_power;
+    public Double getMaxPower() {
+        return this.maxPower;
     }
 
-    public void setMax_power(Double max_power) {
-        this.max_power=max_power;
+    public void setMaxPower(Double maxPower) {
+        this.maxPower=maxPower;
     }
 
-    public Boolean getIs_default_charging_curve() {
-        return this.is_default_charging_curve;
+    public Boolean getIsDefaultChargingCurve() {
+        return this.isDefaultChargingCurve;
     }
 
-    public void setIs_default_charging_curve(Boolean is_default_charging_curve) {
-        this.is_default_charging_curve=is_default_charging_curve;
+    public void setIsDefaultChargingCurve(Boolean isDefaultChargingCurve) {
+        this.isDefaultChargingCurve=isDefaultChargingCurve;
     }
 
 
@@ -71,20 +71,20 @@ public class DcCharger{
         DcCharger u = (DcCharger) o;
         return
                 Objects.equals(this.id, u.id) &&
-                Objects.equals(this.max_power, u.max_power) &&
-                Objects.equals(this.is_default_charging_curve, u.is_default_charging_curve);
+                Objects.equals(this.maxPower, u.maxPower) &&
+                Objects.equals(this.isDefaultChargingCurve, u.isDefaultChargingCurve);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
-                this.max_power,
-                this.is_default_charging_curve);
+                this.maxPower,
+                this.isDefaultChargingCurve);
     }
 
     @Override
     public String toString() {
-        return "DcCharger{" + "id=" + this.id +", max_power='" + this.max_power + "',is_default_charging_curve=" + this.is_default_charging_curve + "}";
+        return "DcCharger{" + "id=" + this.id +", maxPower='" + this.maxPower + "',isDefaultChargingCurve=" + this.isDefaultChargingCurve + "}";
     }
 } 

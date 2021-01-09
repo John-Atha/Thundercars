@@ -13,30 +13,30 @@ public class ChargingStationSpots {
 
     @ManyToOne
 	@JoinColumn(name = "charging_station_id", nullable = false)
-    private ChargingStation charging_station;
+    private ChargingStation chargingStation;
     
     @ManyToOne
 	@JoinColumn(name = "charging_spot_id", nullable = false)
-	private ChargingSpot charging_spot;
+	private ChargingSpot chargingSpot;
 
     @Column(unique = false, nullable = true)
     private Integer quantity;
 
     @Column(unique = false, nullable = true)
-    private Integer quantity_available;
+    private Integer quantityAvailable;
 
     @Column(unique = false, nullable = true)
-    private Integer quantity_operational;
+    private Integer quantityOperational;
 
     ChargingStationSpots() {}
 
-	public ChargingStationSpots(Integer id, ChargingStation charging_station, ChargingSpot charging_spot, Integer quantity, Integer quantity_available, Integer quantity_operational) {
+	public ChargingStationSpots(Integer id, ChargingStation chargingStation, ChargingSpot chargingSpot, Integer quantity, Integer quantityAvailable, Integer quantityOperational) {
 		this.id = id;
-		this.charging_station = charging_station;
-		this.charging_spot = charging_spot;
+		this.chargingStation = chargingStation;
+		this.chargingSpot = chargingSpot;
 		this.quantity = quantity;
-		this.quantity_available = quantity_available;
-		this.quantity_operational = quantity_operational;
+		this.quantityAvailable = quantityAvailable;
+		this.quantityOperational = quantityOperational;
 	}
 
 	public Integer getId() {
@@ -47,20 +47,20 @@ public class ChargingStationSpots {
 		this.id=id;
 	}
 
-	public ChargingStation getCharging_station() {
-		return this.charging_station;
+	public ChargingStation getChargingStation() {
+		return this.chargingStation;
 	}
 
-	public void setCharging_station(ChargingStation charging_station) {
-		this.charging_station=charging_station;
+	public void setChargingStation(ChargingStation chargingStation) {
+		this.chargingStation=chargingStation;
 	}
 
-	public ChargingSpot getCharging_spot() {
-		return this.charging_spot;
+	public ChargingSpot getChargingSpot() {
+		return this.chargingSpot;
 	}
 
-	public void setCharging_spot(ChargingSpot charging_spot) {
-		this.charging_spot=charging_spot;
+	public void setChargingSpot(ChargingSpot chargingSpot) {
+		this.chargingSpot=chargingSpot;
 	}
 
 	public Integer getQuantity() {
@@ -71,20 +71,20 @@ public class ChargingStationSpots {
 		this.quantity=quantity;
 	}
 
-	public Integer getQuantity_available() {
-		return this.quantity_available;
+	public Integer getQuantityAvailable() {
+		return this.quantityAvailable;
 	}
 
-	public void setQuantity_available(Integer quantity_available) {
-		this.quantity_available=quantity_available;
+	public void setQuantityAvailable(Integer quantityAvailable) {
+		this.quantityAvailable=quantityAvailable;
 	}
 
-	public Integer getQuantity_operational() {
-		return this.quantity_operational;
+	public Integer getQuantityOperational() {
+		return this.quantityOperational;
 	}
 
-	public void setQuantity_operational(Integer quantity_operational) {
-		this.quantity_operational=quantity_operational;
+	public void setQuantityOperational(Integer quantityOperational) {
+		this.quantityOperational=quantityOperational;
 	}
 
 
@@ -95,28 +95,28 @@ public class ChargingStationSpots {
 		ChargingStationSpots u = (ChargingStationSpots) o;
 		return
 			Objects.equals(this.id, u.id) &&
-			Objects.equals(this.charging_station, u.charging_station) &&
-			Objects.equals(this.charging_spot, u.charging_spot) &&
+			Objects.equals(this.chargingStation, u.chargingStation) &&
+			Objects.equals(this.chargingSpot, u.chargingSpot) &&
 			Objects.equals(this.quantity, u.quantity) &&
-			Objects.equals(this.quantity_available, u.quantity_available) &&
-			Objects.equals(this.quantity_operational, u.quantity_operational);
+			Objects.equals(this.quantityAvailable, u.quantityAvailable) &&
+			Objects.equals(this.quantityOperational, u.quantityOperational);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(
 			this.id,
-			this.charging_station,
-			this.charging_spot,
+			this.chargingStation,
+			this.chargingSpot,
 			this.quantity,
-			this.quantity_available,
-			this.quantity_operational);
+			this.quantityAvailable,
+			this.quantityOperational);
     }
 
     @Override
     public String toString() {
-        return "Charging Station Spot{" + "ID='" + this.id + "', Charging Station='" + this.charging_station 
-        + "', Charging Spot='" + this.charging_spot + "', Quantity='" + this.quantity + "', Quantity Available='" 
-        + this.quantity_available + "', Quantity Operational='" + this.quantity_operational +"'}";
+        return "Charging Station Spot{" + "ID='" + this.id + "', Charging Station='" + this.chargingStation 
+        + "', Charging Spot='" + this.chargingSpot + "', Quantity='" + this.quantity + "', Quantity Available='" 
+        + this.quantityAvailable + "', Quantity Operational='" + this.quantityOperational +"'}";
     } 
 }

@@ -14,14 +14,14 @@ public class DcChargerPort {
 
     @ManyToOne
     @JoinColumn(name = "dc_charger_id", nullable = true )
-    private DcCharger dc_charger;
+    private DcCharger dcCharger;
 
     DcChargerPort() {}
     
-    public DcChargerPort(Integer id, String portname, DcCharger dc_charger) {
+    public DcChargerPort(Integer id, String portname, DcCharger dcCharger) {
             this.id = id;
             this.portname = portname;
-            this.dc_charger = dc_charger;
+            this.dcCharger = dcCharger;
     }
     
     public Integer getId() {
@@ -40,12 +40,12 @@ public class DcChargerPort {
             this.portname=portname;
     }
 
-    public DcCharger getDc_charger() {
-            return this.dc_charger;
+    public DcCharger getDcCharger() {
+            return this.dcCharger;
     }
 
-    public void setDc_charger(DcCharger dc_charger) {
-            this.dc_charger=dc_charger;
+    public void setDcCharger(DcCharger dcCharger) {
+            this.dcCharger=dcCharger;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DcChargerPort {
             return
                     Objects.equals(this.id, u.id) &&
                     Objects.equals(this.portname, u.portname) &&
-                    Objects.equals(this.dc_charger, u.dc_charger);
+                    Objects.equals(this.dcCharger, u.dcCharger);
     }
 
     @Override
@@ -64,11 +64,11 @@ public class DcChargerPort {
             return Objects.hash(
                     this.id,
                     this.portname,
-                    this.dc_charger);
+                    this.dcCharger);
     }
 
     @Override
     public String toString() {
-            return "DcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', dc_charger=" + dc_charger +"}";
+            return "DcChargerPort{" + "id=" + this.id + ", portname='" + this.portname +"', dcCharger=" + dcCharger +"}";
     }
 }

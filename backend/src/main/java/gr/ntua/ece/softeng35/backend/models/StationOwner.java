@@ -16,32 +16,32 @@ public class StationOwner {
     private String password;
 
     @Column(unique = true, length = 50, nullable = false)
-    private String email_addr;
+    private String emailAddr;
 
     @Column(unique = false, length = 30, nullable = false)
-    private String first_name;
+    private String firstName;
 
     @Column(unique = false, length = 30, nullable = false)
-    private String last_name;
+    private String lastName;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = true)
     private UserAddress address;
 
     @Column(unique = false, nullable = true)
-    private Date date_of_birth;
+    private Date dateOfBirth;
 
     StationOwner() {}
 
-	public StationOwner(Integer id, String username, String password, String email_addr, String first_name, String last_name, UserAddress address, Date date_of_birth) {
+	public StationOwner(Integer id, String username, String password, String emailAddr, String firstName, String lastName, UserAddress address, Date dateOfBirth) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.email_addr = email_addr;
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.emailAddr = emailAddr;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.address = address;
-		this.date_of_birth = date_of_birth;
+		this.dateOfBirth = dateOfBirth;
 	}
 	public Integer getId() {
 		return this.id;
@@ -67,28 +67,28 @@ public class StationOwner {
 		this.password=password;
 	}
 
-	public String getEmail_addr() {
-		return this.email_addr;
+	public String getEmailAddr() {
+		return this.emailAddr;
 	}
 
-	public void setEmail_addr(String email_addr) {
-		this.email_addr=email_addr;
+	public void setEmailAddr(String emailAddr) {
+		this.emailAddr=emailAddr;
 	}
 
-	public String getFirst_name() {
-		return this.first_name;
+	public String getFirstName() {
+		return this.firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name=first_name;
+	public void setFirstName(String firstName) {
+		this.firstName=firstName;
 	}
 
-	public String getLast_name() {
-		return this.last_name;
+	public String getLastName() {
+		return this.lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name=last_name;
+	public void setLastName(String lastName) {
+		this.lastName=lastName;
 	}
 
 	public UserAddress getAddress() {
@@ -99,12 +99,12 @@ public class StationOwner {
 		this.address=address;
 	}
 
-	public Date getDate_of_birth() {
-		return this.date_of_birth;
+	public Date getDateOfBirth() {
+		return this.dateOfBirth;
 	}
 
-	public void setDate_of_birth(Date date_of_birth) {
-		this.date_of_birth=date_of_birth;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth=dateOfBirth;
 	}
 
 
@@ -117,11 +117,11 @@ public class StationOwner {
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.username, u.username) &&
 			Objects.equals(this.password, u.password) &&
-			Objects.equals(this.email_addr, u.email_addr) &&
-			Objects.equals(this.first_name, u.first_name) &&
-			Objects.equals(this.last_name, u.last_name) &&
+			Objects.equals(this.emailAddr, u.emailAddr) &&
+			Objects.equals(this.firstName, u.firstName) &&
+			Objects.equals(this.lastName, u.lastName) &&
 			Objects.equals(this.address, u.address) &&
-			Objects.equals(this.date_of_birth, u.date_of_birth);
+			Objects.equals(this.dateOfBirth, u.dateOfBirth);
 	}
 
 	@Override
@@ -130,17 +130,17 @@ public class StationOwner {
 			this.id,
 			this.username,
 			this.password,
-			this.email_addr,
-			this.first_name,
-			this.last_name,
+			this.emailAddr,
+			this.firstName,
+			this.lastName,
 			this.address,
-			this.date_of_birth);
+			this.dateOfBirth);
     }
     
     @Override
     public String toString() {
         return "Station Owner{" + "ID='" + this.id + "', Username='" + this.username + "', Password='" + this.password 
-        + "', Email Address='" + this.email_addr + "', First Name='" + this.first_name + "', Last Name='" + this.last_name 
-        + "', Address='" + this.address +"', Date of Birth='" + this.date_of_birth +"'}";
+        + "', Email Address='" + this.emailAddr + "', First Name='" + this.firstName + "', Last Name='" + this.lastName 
+        + "', Address='" + this.address +"', Date of Birth='" + this.dateOfBirth +"'}";
     }
 }

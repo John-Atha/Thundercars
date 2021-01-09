@@ -15,24 +15,24 @@ public class UsageType {
     private String title;
 
     @Column(nullable = true)
-	private Boolean is_membership_required;
+	private Boolean isMembershipRequired;
 	
-	@OneToMany(mappedBy="usage_type")
-	private Set<ChargingStation> charging_stations;
+	@OneToMany(mappedBy="usageType")
+	private Set<ChargingStation> chargingStations;
 
 	@PreRemove
     private void removeUsageType(){
-        for (ChargingStation station : charging_stations) {
-            station.setUsage_type(null);
+        for (ChargingStation station : chargingStations) {
+            station.setUsageType(null);
         }
     }
 
 	UsageType() {}
 
-    public UsageType(Integer id, String title, Boolean is_membership_required) {
+    public UsageType(Integer id, String title, Boolean isMembershipRequired) {
 		this.id = id;
 		this.title = title;
-		this.is_membership_required = is_membership_required;
+		this.isMembershipRequired = isMembershipRequired;
 	}
 	public Integer getId() {
 		return this.id;
@@ -50,12 +50,12 @@ public class UsageType {
 		this.title=title;
 	}
 
-	public Boolean getIs_membership_required() {
-		return this.is_membership_required;
+	public Boolean getIsMembershipRequired() {
+		return this.isMembershipRequired;
 	}
 
-	public void setIs_membership_required(Boolean is_membership_required) {
-		this.is_membership_required=is_membership_required;
+	public void setIsMembershipRequired(Boolean isMembershipRequired) {
+		this.isMembershipRequired=isMembershipRequired;
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class UsageType {
 		return
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
-			Objects.equals(this.is_membership_required, u.is_membership_required);
+			Objects.equals(this.isMembershipRequired, u.isMembershipRequired);
 	}
 
 	@Override
@@ -74,11 +74,11 @@ public class UsageType {
 		return Objects.hash(
 			this.id,
 			this.title,
-			this.is_membership_required);
+			this.isMembershipRequired);
     }
     
     @Override
     public String toString() {
-      return "UsageType{" + "id=" + this.id + ", title='" + this.title + ", is_membership_required='" + this.is_membership_required +"'}";
+      return "UsageType{" + "id=" + this.id + ", title='" + this.title + ", isMembershipRequired='" + this.isMembershipRequired +"'}";
     }
 }

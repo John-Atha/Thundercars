@@ -13,27 +13,27 @@ public class ConnectionType {
     private String title;
 
     @Column(unique = false, length = 50, nullable = true)
-	private String formal_name;
+	private String formalName;
 
 	@Column(unique = false, length = 50, nullable = true)
 	private String category;
 	
-	@OneToMany(mappedBy="connection_type")
-	private Set<ChargingSpot> charging_spots;
+	@OneToMany(mappedBy="connectionType")
+	private Set<ChargingSpot> chargingSpots;
 
     @PreRemove
     private void removeConnectionType(){
-        for (ChargingSpot spot : charging_spots) {
-            spot.setConnection_type(null);
+        for (ChargingSpot spot : chargingSpots) {
+            spot.setConnectionType(null);
         }
     }
 
     ConnectionType() {}
 
-	public ConnectionType(Integer id, String title, String formal_name) {
+	public ConnectionType(Integer id, String title, String formalName) {
 		this.id = id;
 		this.title = title;
-		this.formal_name = formal_name;
+		this.formalName = formalName;
 		this.category = category;
 	}
 	
@@ -53,12 +53,12 @@ public class ConnectionType {
 		this.title=title;
 	}
 
-	public String getFormal_name() {
-		return this.formal_name;
+	public String getFormalName() {
+		return this.formalName;
 	}
 
-	public void setFormal_name(String formal_name) {
-		this.formal_name = formal_name;
+	public void setFormalName(String formalName) {
+		this.formalName = formalName;
 	}
 
 	public String getCategory() {
@@ -77,7 +77,7 @@ public class ConnectionType {
 		return
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
-			Objects.equals(this.formal_name, u.formal_name) &&
+			Objects.equals(this.formalName, u.formalName) &&
 			Objects.equals(this.category,u.category) ;
 
 	}
@@ -87,12 +87,12 @@ public class ConnectionType {
 		return Objects.hash(
 			this.id,
 			this.title,
-			this.formal_name,
+			this.formalName,
 			this.category);
 	}
 
     @Override
     public String toString() {
-        return "Connection Type{" + "ID='" + this.id + "', Title='" + this.title + "', Formal name='" + this.formal_name +"', Category='"+this.category+"'}";
+        return "Connection Type{" + "ID='" + this.id + "', Title='" + this.title + "', Formal name='" + this.formalName +"', Category='"+this.category+"'}";
     }   
 }

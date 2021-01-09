@@ -10,36 +10,36 @@ public class AcCharger{
     private Integer id;
 
     @Column(unique = false ,nullable = true)
-    private Integer usable_phases;
+    private Integer usablePhases;
 
     @Column(unique=false, nullable = true)
-    private Double max_power; 
+    private Double maxPower; 
 
-    @OneToMany(mappedBy="ac_charger")
+    @OneToMany(mappedBy="acCharger")
     private Set<Vehicle> vehicles;
 
-    @OneToOne(mappedBy="ac_charger")
+    @OneToOne(mappedBy="acCharger")
     private PowerPerChargingPoint powerperchargingpoints;
 
-    @OneToMany(mappedBy="ac_charger")
+    @OneToMany(mappedBy="acCharger")
     private Set<AcChargerPort> acchargerports;
     
     @PreRemove
     private void removeAcCharger(){
         for (Vehicle vehicle : vehicles) {
-            vehicle.setAc_charger(null);
+            vehicle.setAcCharger(null);
         }
         for (AcChargerPort port : acchargerports) {
-            port.setAc_charger(null);
+            port.setAcCharger(null);
         }
     }
 
     AcCharger(){}
 
-    public AcCharger(Integer id,Integer usable_phases, Double max_power) {
+    public AcCharger(Integer id,Integer usablePhases, Double maxPower) {
             this.id = id;
-            this.usable_phases = usable_phases;
-            this.max_power = max_power;
+            this.usablePhases = usablePhases;
+            this.maxPower = maxPower;
     }
 
     public Integer getId() {
@@ -50,20 +50,20 @@ public class AcCharger{
         this.id = id;
     }
 
-    public Integer getUsable_phases() {
-            return this.usable_phases;
+    public Integer getUsablePhases() {
+            return this.usablePhases;
     }
 
-    public void setUsable_phases(Integer usable_phases) {
-            this.usable_phases=usable_phases;
+    public void setUsablePhases(Integer usablePhases) {
+            this.usablePhases=usablePhases;
     }
 
-    public Double getMax_power() {
-            return this.max_power;
+    public Double getMaxPower() {
+            return this.maxPower;
     }
 
-    public void setMax_power(Double max_power) {
-            this.max_power=max_power;
+    public void setMaxPower(Double maxPower) {
+            this.maxPower=maxPower;
     }
 
     @Override
@@ -73,21 +73,21 @@ public class AcCharger{
             AcCharger u = (AcCharger) o;
             return
                     Objects.equals(this.id,u.id) &&
-                    Objects.equals(this.usable_phases, u.usable_phases) &&
-                    Objects.equals(this.max_power, u.max_power);
+                    Objects.equals(this.usablePhases, u.usablePhases) &&
+                    Objects.equals(this.maxPower, u.maxPower);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
                 this.id,
-                this.usable_phases,
-                this.max_power);
+                this.usablePhases,
+                this.maxPower);
     }
 
 
     @Override
     public String toString() {
-        return "AcCharger{" + "id=" + this.id + ", usable_phases="+ this.usable_phases +", max_power='" + this.max_power + "'}";
+        return "AcCharger{" + "id=" + this.id + ", usablePhases="+ this.usablePhases +", maxPower='" + this.maxPower + "'}";
     }
 } 

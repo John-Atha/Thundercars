@@ -49,14 +49,14 @@ public class UserAddress {
     private Set<User> users;
     
     @OneToMany(mappedBy="address")
-    private Set<StationOwner> station_owner;
+    private Set<StationOwner> stationOwner;
 
     @PreRemove
     private void removeUserAddress(){
         for (User user : users) {
             user.setUserAddress(null);
         }
-        for (StationOwner owner : station_owner) {
+        for (StationOwner owner : stationOwner) {
             owner.setAddress(null);
         }
     }

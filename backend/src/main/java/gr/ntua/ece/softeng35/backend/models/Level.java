@@ -16,25 +16,25 @@ public class Level {
     private String comments;
 
     @Column(nullable = true )
-	private Boolean is_fast_charge_capable;
+	private Boolean isFastChargeCapable;
 	
 	@OneToMany(mappedBy="level")
-	private Set<ChargingSpot> charging_spots;
+	private Set<ChargingSpot> chargingSpots;
 
     @PreRemove
     private void removeLevel(){
-        for (ChargingSpot spot : charging_spots) {
+        for (ChargingSpot spot : chargingSpots) {
             spot.setLevel(null);
         }
     }
 
     Level() {}
 
-	public Level(Integer id, String title, String comments, Boolean is_fast_charge_capable) {
+	public Level(Integer id, String title, String comments, Boolean isFastChargeCapable) {
 		this.id = id;
 		this.title = title;
 		this.comments = comments;
-		this.is_fast_charge_capable = is_fast_charge_capable;
+		this.isFastChargeCapable = isFastChargeCapable;
     }
     
 	public Integer getId() {
@@ -61,12 +61,12 @@ public class Level {
 		this.comments=comments;
 	}
 
-	public Boolean getIs_fast_charge_capable() {
-		return this.is_fast_charge_capable;
+	public Boolean getIsFastChargeCapable() {
+		return this.isFastChargeCapable;
 	}
 
-	public void setIs_fast_charge_capable(Boolean is_fast_charge_capable) {
-		this.is_fast_charge_capable=is_fast_charge_capable;
+	public void setIsFastChargeCapable(Boolean isFastChargeCapable) {
+		this.isFastChargeCapable=isFastChargeCapable;
 	}
 
 
@@ -79,7 +79,7 @@ public class Level {
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.title, u.title) &&
 			Objects.equals(this.comments, u.comments) &&
-			Objects.equals(this.is_fast_charge_capable, u.is_fast_charge_capable);
+			Objects.equals(this.isFastChargeCapable, u.isFastChargeCapable);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class Level {
 			this.id,
 			this.title,
 			this.comments,
-			this.is_fast_charge_capable);
+			this.isFastChargeCapable);
 	}
 
     @Override
     public String toString() {
       return "Level {" + "ID=" + this.id + ", Title='" + this.title + ", Comments='" + this.comments 
-            + "', Is fast charge supported='" + this.is_fast_charge_capable + "'}";
+            + "', Is fast charge supported='" + this.isFastChargeCapable + "'}";
     }
 }

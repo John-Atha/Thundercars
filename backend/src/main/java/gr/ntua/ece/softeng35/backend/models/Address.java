@@ -70,11 +70,11 @@ public class Address {
     private Country country;
 
 	@OneToMany(mappedBy="address")
-	private Set<ChargingStation> charging_stations;
+	private Set<ChargingStation> chargingStations;
 
     @PreRemove
     private void removeAddress(){
-        for (ChargingStation station : charging_stations) {
+        for (ChargingStation station : chargingStations) {
             station.setAddress(null);
         }
     }

@@ -16,11 +16,11 @@ public class ChargingStation {
 
     /*
     @Column(unique = false, nullable = false)
-    private Integer current_provider_id;
+    private Integer currentProvider_id;
 	*/
 	@ManyToOne
 	@JoinColumn(name = "current_provider_id", nullable = true)
-	private CurrentProvider current_provider;
+	private CurrentProvider currentProvider;
 
     @ManyToOne
     @JoinColumn(name = "operator_id" , nullable = true)
@@ -29,10 +29,10 @@ public class ChargingStation {
 
     @ManyToOne
     @JoinColumn(name = "usage_type_id" , nullable = true)
-    private UsageType usage_type;
+    private UsageType usageType;
 
-	@OneToMany(mappedBy="charging_station")
-	private Set<ChargingProcess> charging_processes;
+	@OneToMany(mappedBy="chargingStation")
+	private Set<ChargingProcess> chargingProcesses;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id" , nullable = true)
@@ -42,21 +42,21 @@ public class ChargingStation {
     private String comments;
 
     @Column(unique = false, length = 60, nullable = true)
-    private Date date_last_confirmed;
+    private Date dateLastConfirmed;
 
     @Column(unique = false, length = 60, nullable = true)
-    private Date date_last_status_update;
+    private Date dateLastStatusUpdate;
 
     @Column(unique = false, length = 60, nullable = true)
-    private Date date_created;
+    private Date dateCreated;
 
     @ManyToOne
     @JoinColumn(name = "status_type_id" , nullable = true)
-    private StatusType status_type;
+    private StatusType statusType;
 
     @ManyToOne
     @JoinColumn(name = "submission_status_id" , nullable = true)
-    private SubmissionStatus submission_status;
+    private SubmissionStatus submissionStatus;
 
     // @Column(unique = false , nullable = true)
     // public Blob media_items;
@@ -65,38 +65,38 @@ public class ChargingStation {
 	private Double rating;
 
     @Column(unique = false, nullable = true)
-	private Double cost_per_kwh;
+	private Double costPerKwh;
 
-	@OneToMany(mappedBy="charging_station")
-	private Set<ChargingStationSpots> charging_station_spots;
+	@OneToMany(mappedBy="chargingStation")
+	private Set<ChargingStationSpots> chargingStationSpots;
 	
     @PreRemove
     private void removeStation(){
-        for (ChargingProcess process : charging_processes) {
-            process.setCharging_station(null);
+        for (ChargingProcess process : chargingProcesses) {
+            process.setChargingStation(null);
         }
-        for (ChargingStationSpots charging_station_spot : charging_station_spots) {
-            charging_station_spot.setCharging_station(null);
+        for (ChargingStationSpots chargingStationSpot : chargingStationSpots) {
+            chargingStationSpot.setChargingStation(null);
 		}
     }
 
 	ChargingStation() {}
 
-    public ChargingStation(Integer id, String uuid, Operator operator, UsageType usage_type, Address address, String comments, Date date_last_confirmed, Date date_last_status_update, Date date_created, StatusType status_type, SubmissionStatus submission_status, /*Blob media_items, */Double rating, Double cost_per_kwh) {
+    public ChargingStation(Integer id, String uuid, Operator operator, UsageType usageType, Address address, String comments, Date dateLastConfirmed, Date dateLastStatusUpdate, Date dateCreated, StatusType statusType, SubmissionStatus submissionStatus, /*Blob media_items, */Double rating, Double costPerKwh) {
 		this.id = id;
 		this.uuid = uuid;
 		this.operator = operator;
-		this.usage_type = usage_type;
+		this.usageType = usageType;
 		this.address = address;
 		this.comments = comments;
-		this.date_last_confirmed = date_last_confirmed;
-		this.date_last_status_update = date_last_status_update;
-		this.date_created = date_created;
-		this.status_type = status_type;
-		this.submission_status = submission_status;
+		this.dateLastConfirmed = dateLastConfirmed;
+		this.dateLastStatusUpdate = dateLastStatusUpdate;
+		this.dateCreated = dateCreated;
+		this.statusType = statusType;
+		this.submissionStatus = submissionStatus;
 	//	this.media_items = media_items;
 		this.rating = rating;
-		this.cost_per_kwh = cost_per_kwh;
+		this.costPerKwh = costPerKwh;
 	}
     
     
@@ -124,20 +124,20 @@ public class ChargingStation {
 		this.operator=operator;
 	}
 
-	public CurrentProvider getCurrent_provider() {
-		return this.current_provider;
+	public CurrentProvider getCurrentProvider() {
+		return this.currentProvider;
 	}
 
-	public void setCurrent_provider(CurrentProvider current_provider) {
-		this.current_provider=current_provider;
+	public void setCurrentProvider(CurrentProvider currentProvider) {
+		this.currentProvider=currentProvider;
 	}
 
-	public UsageType getUsage_type() {
-		return this.usage_type;
+	public UsageType getUsageType() {
+		return this.usageType;
 	}
 
-	public void setUsage_type(UsageType usage_type) {
-		this.usage_type=usage_type;
+	public void setUsageType(UsageType usageType) {
+		this.usageType=usageType;
 	}
 
 	public Address getAddress() {
@@ -156,44 +156,44 @@ public class ChargingStation {
 		this.comments=comments;
 	}
 
-	public Date getDate_last_confirmed() {
-		return this.date_last_confirmed;
+	public Date getDateLastConfirmed() {
+		return this.dateLastConfirmed;
 	}
 
-	public void setDate_last_confirmed(Date date_last_confirmed) {
-		this.date_last_confirmed=date_last_confirmed;
+	public void setDateLastConfirmed(Date dateLastConfirmed) {
+		this.dateLastConfirmed=dateLastConfirmed;
 	}
 
-	public Date getDate_last_status_update() {
-		return this.date_last_status_update;
+	public Date getDateLastStatusUpdate() {
+		return this.dateLastStatusUpdate;
 	}
 
-	public void setDate_last_status_update(Date date_last_status_update) {
-		this.date_last_status_update=date_last_status_update;
+	public void setDateLastStatusUpdate(Date dateLastStatusUpdate) {
+		this.dateLastStatusUpdate=dateLastStatusUpdate;
 	}
 
-	public Date getDate_created() {
-		return this.date_created;
+	public Date getDateCreated() {
+		return this.dateCreated;
 	}
 
-	public void setDate_created(Date date_created) {
-		this.date_created=date_created;
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated=dateCreated;
 	}
 
-	public StatusType getStatus_type() {
-		return this.status_type;
+	public StatusType getStatusType() {
+		return this.statusType;
 	}
 
-	public void setStatus_type(StatusType status_type) {
-		this.status_type=status_type;
+	public void setStatusType(StatusType statusType) {
+		this.statusType=statusType;
 	}
 
-	public SubmissionStatus getSubmission_status() {
-		return this.submission_status;
+	public SubmissionStatus getSubmissionStatus() {
+		return this.submissionStatus;
 	}
 
-	public void setSubmission_status(SubmissionStatus submission_status) {
-		this.submission_status=submission_status;
+	public void setSubmissionStatus(SubmissionStatus submissionStatus) {
+		this.submissionStatus=submissionStatus;
 	}
 
 	// public Blob getMedia_items() {
@@ -212,12 +212,12 @@ public class ChargingStation {
 		this.rating=rating;
 	}
 
-	public Double getCost_per_kwh() {
-		return this.cost_per_kwh;
+	public Double getCostPerKwh() {
+		return this.costPerKwh;
 	}
 
-	public void setCost_per_kwh(Double cost_per_kwh) {
-		this.cost_per_kwh=cost_per_kwh;
+	public void setCostPerKwh(Double costPerKwh) {
+		this.costPerKwh=costPerKwh;
 	}
 
 
@@ -230,18 +230,18 @@ public class ChargingStation {
 			Objects.equals(this.id, u.id) &&
 			Objects.equals(this.uuid, u.uuid) &&
 			Objects.equals(this.operator, u.operator) &&
-			Objects.equals(this.current_provider, u.current_provider) &&
-			Objects.equals(this.usage_type, u.usage_type) &&
+			Objects.equals(this.currentProvider, u.currentProvider) &&
+			Objects.equals(this.usageType, u.usageType) &&
 			Objects.equals(this.address, u.address) &&
 			Objects.equals(this.comments, u.comments) &&
-			Objects.equals(this.date_last_confirmed, u.date_last_confirmed) &&
-			Objects.equals(this.date_last_status_update, u.date_last_status_update) &&
-			Objects.equals(this.date_created, u.date_created) &&
-			Objects.equals(this.status_type, u.status_type) &&
-			Objects.equals(this.submission_status, u.submission_status) &&
+			Objects.equals(this.dateLastConfirmed, u.dateLastConfirmed) &&
+			Objects.equals(this.dateLastStatusUpdate, u.dateLastStatusUpdate) &&
+			Objects.equals(this.dateCreated, u.dateCreated) &&
+			Objects.equals(this.statusType, u.statusType) &&
+			Objects.equals(this.submissionStatus, u.submissionStatus) &&
 		//	Objects.equals(this.media_items, u.media_items) &&
 			Objects.equals(this.rating, u.rating) &&
-			Objects.equals(this.cost_per_kwh, u.cost_per_kwh);
+			Objects.equals(this.costPerKwh, u.costPerKwh);
 	}
 
 	@Override
@@ -250,18 +250,18 @@ public class ChargingStation {
 			this.id,
 			this.uuid,
 			this.operator,
-			this.current_provider,
-			this.usage_type,
+			this.currentProvider,
+			this.usageType,
 			this.address,
 			this.comments,
-			this.date_last_confirmed,
-			this.date_last_status_update,
-			this.date_created,
-			this.status_type,
-			this.submission_status,
+			this.dateLastConfirmed,
+			this.dateLastStatusUpdate,
+			this.dateCreated,
+			this.statusType,
+			this.submissionStatus,
 		//	this.media_items,
 			this.rating,
-			this.cost_per_kwh);
+			this.costPerKwh);
 	}
 
 
@@ -269,10 +269,10 @@ public class ChargingStation {
     @Override
     public String toString() {
         return "Charging Station{" + "ID='" + this.id + "', UUID='" + this.uuid + "', Operator='" + this.operator 
-        + "', Current Provider='" + this.current_provider + "', type='" + this.usage_type + "', Address='" + this.address + "', comments='"
-        + this.comments + "', Last Date Confirmed='" + this.date_last_confirmed +"', Last status Update Date='" 
-        + this.date_last_status_update + "', Date Created='" + this.date_created + "', Status Type='" + this.status_type
-        + "', Submission Status='" + this.submission_status + "', Rating='"+ this.rating + "', Cost per kWh='" 
-        + this.cost_per_kwh +"'}";
+        + "', Current Provider='" + this.currentProvider + "', type='" + this.usageType + "', Address='" + this.address + "', comments='"
+        + this.comments + "', Last Date Confirmed='" + this.dateLastConfirmed +"', Last status Update Date='" 
+        + this.dateLastStatusUpdate + "', Date Created='" + this.dateCreated + "', Status Type='" + this.statusType
+        + "', Submission Status='" + this.submissionStatus + "', Rating='"+ this.rating + "', Cost per kWh='" 
+        + this.costPerKwh +"'}";
     }                        
 }

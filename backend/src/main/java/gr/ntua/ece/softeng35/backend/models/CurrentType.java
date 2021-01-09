@@ -15,13 +15,13 @@ public class CurrentType {
     @Column(unique = false, length = 50, nullable = true )
 	private String description;    
 	
-	@OneToMany(mappedBy="current_type")
-	private Set<ChargingSpot> charging_spots;
+	@OneToMany(mappedBy="currentType")
+	private Set<ChargingSpot> chargingSpots;
 
     @PreRemove
     private void removeCurrentType(){
-        for (ChargingSpot spot : charging_spots) {
-            spot.setCurrent_type(null);
+        for (ChargingSpot spot : chargingSpots) {
+            spot.setCurrentType(null);
         }
     }
 
