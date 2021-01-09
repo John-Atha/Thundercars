@@ -6,3 +6,4 @@ spring.datasource.password=your-phpmyadmin-password
 spring.jpa.generate-ddl=true
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.jdbc.time_zone = UTC
+server.port=8765
