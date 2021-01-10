@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
+import java.math.*;
 
 @RestController
 class ChargingProcessController {
@@ -30,24 +31,107 @@ class ChargingProcessController {
   @GetMapping(value = {"/evcharge/api/SessionsPerStation","/evcharge/api/SessionsPerStation/{stationId}",
                        "/evcharge/api/SessionsPerStation/{stationId}/{startDate}/{endDate}",
                        "/evcharge/api/SessionsPerStation/{stationId}/{startDate}",})
-  List<Integer> stationProcess(@PathVariable(required=false) Integer stationId,
-                                       @PathVariable(required=false) String startDate, 
-                                       @PathVariable(required=false) String endDate) {
+  List<Object> stationProcess(@PathVariable Optional<Integer> stationId,
+                                       @PathVariable Optional<String> startDate, 
+                                       @PathVariable Optional<String> endDate) {
     
-    Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate, DateTimeFormatter.BASIC_ISO_DATE));
-    Date date2 = java.sql.Date.valueOf(LocalDate.parse(endDate, DateTimeFormatter.BASIC_ISO_DATE));
-    
-    /*if (stationId==null) {
-      return repository.findAll();
-    }*/
-    if (stationId!=null && (startDate==null || endDate==null)) {
-      return repository.findByChargingStation_Id(stationId);
+    if (stationId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      List<List<Object>> temp = repository.findByStation(stationId.get());
+      List<Object> res = new ArrayList();
+      
+      /* retrieve sessions groupped by station-spot */
+      List<List<Object>> PointsSessions = repository.findByStationGroupPoints(stationId.get());
+      
+      if (temp.size()>0) {
+        Double totalkWh = 0.0;
+        Long sessions = 0L;
+        
+        /* total Station kWh compute */
+        for (List<Object> nested : PointsSessions) {
+          totalkWh = totalkWh + (Double) nested.get(2);
+        }
+        /* total Station Sessions compute */
+        for (List<Object> nested : PointsSessions) {
+          sessions = sessions + (Long) nested.get(1);
+        }
+
+        res.add(temp.get(0).get(1));  // station id
+        res.add(temp.get(0).get(2));  // operator title
+        res.add(temp.get(0).get(3));  // current time
+        res.add(totalkWh);            // total kWh
+        res.add(sessions);         // sessions counter
+        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(PointsSessions);  
+      }    
+      return res;
     }
-    else if (stationId!=null && startDate!=null && endDate==null) {
-      return repository.findByChargingStation_IdAndConnectionTimeGreaterThanEqual(stationId, date1);
+    else if (stationId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
+
+      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      List<List<Object>> temp = repository.findByStationAndStartDate(stationId.get(), date1);
+      List<Object> res = new ArrayList();
+      
+      /* retrieve sessions groupped by station-spot */
+      List<List<Object>> PointsSessions = repository.findByStationStartDateGroupPoints(stationId.get(), date1);
+
+      if (temp.size()>0) {
+        Double totalkWh = 0.0;
+        Long sessions = 0L;  
+       
+        /* total Station kWh compute */
+        for (List<Object> nested : PointsSessions) {
+          totalkWh = totalkWh + (Double) nested.get(2);
+        }
+        /* total Station Sessions compute */
+        for (List<Object> nested : PointsSessions) {
+          sessions = sessions + (Long) nested.get(1);
+        }
+        
+        res.add(temp.get(0).get(1));  // station id
+        res.add(temp.get(0).get(2));  // operator title
+        res.add(temp.get(0).get(3));  // current time
+        res.add(date1.toString());    // start date
+        res.add(totalkWh);            // total kWh
+        res.add(sessions);         // sessions counter
+        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(PointsSessions);
+      }
+      return res;
     }
     else {
-      return repository.findByChargingStation_IdAndConnectionTimeGreaterThanEqualAndDisconnectTimeLessThanEqual(stationId, date1, date2);
+      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      Date date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      
+      List<List<Object>> temp = repository.findByStationAndTimestamp(stationId.get(), date1, date2);
+      List<Object> res = new ArrayList();
+      
+      /* retrieve sessions groupped by station-spot */
+      List<List<Object>> PointsSessions = repository.findByStationBothDatesGroupPoints(stationId.get(), date1, date2);
+
+      if (temp.size()>0) {
+        Double totalkWh = 0.0;
+        Long sessions = 0L;
+        
+        /* total Station kWh compute */
+        for (List<Object> nested : PointsSessions) {
+          totalkWh = totalkWh + (Double) nested.get(2);
+        }
+        /* total Station Sessions compute */
+        for (List<Object> nested : PointsSessions) {
+          sessions = sessions + (Long) nested.get(1);
+        }
+
+        res.add(temp.get(0).get(1));  // station id
+        res.add(temp.get(0).get(2));  // operator title
+        res.add(temp.get(0).get(3));  // current time
+        res.add(date1.toString());    // start date
+        res.add(date2.toString());    // end date
+        res.add(totalkWh);            // total kWh
+        res.add(sessions);         // sessions counter
+        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(PointsSessions);  
+      }
+      return res;
     }
   }
 
