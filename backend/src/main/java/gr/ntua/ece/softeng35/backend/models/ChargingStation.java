@@ -26,7 +26,7 @@ public class ChargingStation {
     @JoinColumn(name = "operator_id" , nullable = true)
     private Operator operator;
 
-
+	
     @ManyToOne
     @JoinColumn(name = "usage_type_id" , nullable = true)
     private UsageType usageType;

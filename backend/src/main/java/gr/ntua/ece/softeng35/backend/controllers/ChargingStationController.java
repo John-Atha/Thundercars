@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.ChargingStation;
 import gr.ntua.ece.softeng35.backend.models.ChargingStationRepository;
+import gr.ntua.ece.softeng35.backend.models.ChargingStationSome;
 
 @RestController
 class ChargingStationController {
