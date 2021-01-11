@@ -3,6 +3,7 @@ package gr.ntua.ece.softeng35.backend.controllers;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
 import gr.ntua.ece.softeng35.backend.models.ChargingProcess;
 import gr.ntua.ece.softeng35.backend.models.ChargingProcessRepository;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.math.*;
+import java.lang.*;
 
 @RestController
 class ChargingProcessController {
@@ -29,6 +31,11 @@ class ChargingProcessController {
   List<ChargingProcess> all() {
     return repository.findAll();
   }
+
+
+  //public ResponseEntity noData() {
+  //  return new ResponseEntity("No data", HttpStatus.PAYMENT_REQUIRED);
+  //}
 
 
   /* Returns a list like : [ Station Id, Spot Id, Operator Title, (Browser) Request Time, 
@@ -54,7 +61,7 @@ class ChargingProcessController {
       for (Integer i=1; i<42979; i++) {
         Integer stationId =  (Integer) repository.findStationFromTogether(i);
         if (stationId==null) {
-          List<Object> res = new ArrayList();   // BAD REQUEST
+          List<Object> res = new ArrayList();   
           all.add(res);
           continue;
         }
@@ -78,10 +85,18 @@ class ChargingProcessController {
         all.add(res);
       }
       
-      return all;
+      if (all.size()==0) {
+        throw new NoDataFoundException();
+      }
+      else {
+        return all;
+      }
     }
 
     else if (stationSpotId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+        throw new BadRequestException();
+      }
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
         List<Object> res = new ArrayList();   // BAD REQUEST
@@ -108,11 +123,21 @@ class ChargingProcessController {
     }
 
     else if (stationSpotId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      try {  
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
-        List<Object> res = new ArrayList();   // BAD REQUEST
-        return res;
+        throw new BadRequestException();
+        //List<Object> res = new ArrayList(); 
+        //return res;
       }
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
@@ -136,12 +161,22 @@ class ChargingProcessController {
     }
 
     else {
-      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
-      Date date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+        throw new BadRequestException();
+      }
+      Date date1, date2;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+        date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
-        List<Object> res = new ArrayList();   // BAD REQUEST
-        return res;
+        //List<Object> res = new ArrayList();
+        //return res;
+        throw new BadRequestException();
       }
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
@@ -159,6 +194,7 @@ class ChargingProcessController {
       res.add(Operator);                // operator id
       res.add(CurrTime);                // current time
       res.add(date1.toString());        // start date
+      res.add(date2.toString());        // end date
       res.add(processes.size());        // number of processes
       res.add(processes);               // processes list
       return res;
@@ -181,7 +217,7 @@ class ChargingProcessController {
   @GetMapping(value = {"/evcharge/api/SessionsPerStation","/evcharge/api/SessionsPerStation/{stationId}",
                        "/evcharge/api/SessionsPerStation/{stationId}/{startDate}/{endDate}",
                        "/evcharge/api/SessionsPerStation/{stationId}/{startDate}",})
-  List<Object> stationProcess(@PathVariable Optional<Integer> stationId,
+  public List<Object> stationProcess(@PathVariable Optional<Integer> stationId,
                                        @PathVariable Optional<String> startDate, 
                                        @PathVariable Optional<String> endDate) {
 
@@ -198,7 +234,7 @@ class ChargingProcessController {
           flag = true;
           temp = repository.findByStation2(i);
           if (temp.size()==0) {
-            all.add(res);           // WRONG STATION ID
+            all.add(res);           // NO DATA
             continue;
           }
           temp.get(0).add(3, 0);
@@ -250,24 +286,39 @@ class ChargingProcessController {
           }
           res.add(totalkWh);            // total kWh
           res.add(sessions);         // sessions counter
-          res.add(temp.get(0).get(5));  // number of distinct spots used
+          res.add(temp.get(0).get(4));  // number of distinct spots used
           res.add(PointsSessions);  
         } 
         
         all.add(res);
       }
-      return all;
+      //return new ResponseEntity("No data", HttpStatus.PAYMENT_REQUIRED);
+      if (all.size()==0) {
+        throw new NoDataFoundException();
+      }
+      else {
+        return all;
+      }
     }                                    
 
     else if (stationId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
       List<List<Object>> temp = repository.findByStation(stationId.get());
       List<Object> res = new ArrayList();
       Boolean flag = false;
+      //res.add(temp);
+      //return res;
+
       if (temp.get(0).get(0)==null) {
         flag = true;
         temp = repository.findByStation2(stationId.get());
         if (temp.size()==0) {
-          return res;           // WRONG STATION ID
+          //return noData();
+            throw new NoDataFoundException();
+            //return new ResponseEntity("No data", HttpStatus.PAYMENT_REQUIRED);
+          //return res;           // WRONG STATION ID
         }
         temp.get(0).add(3, 0);
         temp.get(0).add(3, 0);
@@ -289,15 +340,6 @@ class ChargingProcessController {
           sessions = sessions + (Long) nested.get(1);
         }
 
-        /*for (List<Object> nested : PointsSessions) {
-          String spotid = nested.get(0).toString();
-          String stationid = stationId.get().toString();
-          nested.remove(0);
-          String stationspotid = stationid+"-"+spotid;
-          nested.add(0, stationspotid);
-        }
-        */
-
         for (List<Object> nested : PointsSessions) {
           Integer spotid = (Integer) nested.get(0);
           Integer stationid = (Integer) stationId.get();
@@ -306,6 +348,7 @@ class ChargingProcessController {
           nested.add(0, stationspotid);
         }
 
+         // res.add(temp);
         if (flag==true) {
           res.add(temp.get(0).get(0));  // station id
           res.add(temp.get(0).get(1));  // operator title
@@ -318,15 +361,30 @@ class ChargingProcessController {
         }
         res.add(totalkWh);            // total kWh
         res.add(sessions);         // sessions counter
-        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(temp.get(0).get(4));  // number of distinct spots used
         res.add(PointsSessions);  
       }    
-      return res;
+      if (res.size()==0) {
+        //return new ResponseEntity<Object>("No data", HttpStatus.PAYMENT_REQUIRED);
+        throw new NoDataFoundException();
+      }
+      else {
+        //return new ResponseEntity<Object>(res, HttpStatus.OK);
+        return res;
+      }
     }
 
     else if (stationId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-
-      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
       List<List<Object>> temp = repository.findByStationAndStartDate(stationId.get(), date1);
       List<Object> res = new ArrayList();
       Boolean flag = false;
@@ -334,7 +392,9 @@ class ChargingProcessController {
         flag = true;
         temp = repository.findByStation2(stationId.get());
         if (temp.size()==0) {
-          return res;           // WRONG STATION ID
+          throw new NoDataFoundException();
+          //return new ResponseEntity<Object>(res, HttpStatus.OK);
+          //return res;           // WRONG STATION ID
         }
         temp.get(0).add(3, 0);
         temp.get(0).add(3, 0);
@@ -355,15 +415,6 @@ class ChargingProcessController {
         for (List<Object> nested : PointsSessions) {
           sessions = sessions + (Long) nested.get(1);
         }
-
-        /*for (List<Object> nested : PointsSessions) {
-          String spotid = nested.get(0).toString();
-          String stationid = stationId.get().toString();
-          nested.remove(0);
-          String stationspotid = stationid+"-"+spotid;
-          nested.add(0, stationspotid);
-        }
-        */
 
         for (List<Object> nested : PointsSessions) {
           Integer spotid = (Integer) nested.get(0);
@@ -386,15 +437,25 @@ class ChargingProcessController {
         res.add(date1.toString());    // start date
         res.add(totalkWh);            // total kWh
         res.add(sessions);         // sessions counter
-        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(temp.get(0).get(4));  // number of distinct spots used
         res.add(PointsSessions);
       }
+      //return new ResponseEntity<Object>(res, HttpStatus.OK);
       return res;
     }
 
     else {
-      Date date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
-      Date date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
+      Date date1, date2;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+        date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
       List<List<Object>> temp = repository.findByStationAndTimestamp(stationId.get(), date1, date2);
       List<Object> res = new ArrayList();
       Boolean flag = false;
@@ -402,7 +463,9 @@ class ChargingProcessController {
         flag = true;
         temp = repository.findByStation2(stationId.get());
         if (temp.size()==0) {
-          return res;           // WRONG STATION ID
+          throw new NoDataFoundException();
+          //return new ResponseEntity<Object>(res, HttpStatus.OK);
+          //return res;           // WRONG STATION ID
         }
         temp.get(0).add(3, 0);
         temp.get(0).add(3, 0);
@@ -424,16 +487,6 @@ class ChargingProcessController {
         for (List<Object> nested : PointsSessions) {
           sessions = sessions + (Long) nested.get(1);
         }
-
-        /*
-        for (List<Object> nested : PointsSessions) {
-          String spotid = nested.get(0).toString();
-          String stationid = stationId.get().toString();
-          nested.remove(0);
-          String stationspotid = stationid+"-"+spotid;
-          nested.add(0, stationspotid);
-        }
-        */
 
         for (List<Object> nested : PointsSessions) {
           Integer spotid = (Integer) nested.get(0);
@@ -458,9 +511,10 @@ class ChargingProcessController {
         res.add(date2.toString());    // end date
         res.add(totalkWh);            // total kWh
         res.add(sessions);         // sessions counter
-        res.add(temp.get(0).get(5));  // number of distinct spots used
+        res.add(temp.get(0).get(4));  // number of distinct spots used
         res.add(PointsSessions);  
       }
+      //return new ResponseEntity<Object>(res, HttpStatus.OK);
       return res;
     }
   }
