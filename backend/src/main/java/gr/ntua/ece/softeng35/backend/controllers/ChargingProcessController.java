@@ -1239,7 +1239,7 @@ class ChargingProcessController {
         ChargingSessionsList.add(session);
       }
 
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
@@ -1317,7 +1317,7 @@ class ChargingProcessController {
         ChargingSessionsList.add(session);
       }
 
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
@@ -1394,7 +1394,7 @@ class ChargingProcessController {
         ChargingSessionsList.add(session);
       }
 
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
