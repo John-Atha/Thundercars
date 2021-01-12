@@ -62,5 +62,26 @@ public interface ChargingProcessRepository extends JpaRepository<ChargingProcess
     @Query( value = "SELECT u.id, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.chargingProgram, u.kwhDelivered, u.paymentWay, u.vehicle.type FROM ChargingProcess u WHERE u.chargingStation.id= ?1 AND u.chargingSpot.id= ?2 AND u.connectionTime >= ?3 AND u.disconnectTime <= ?4")
     List<List<Object>> findBySpotAndBothDates(Integer chargingStation, Integer chargingSpot, Date startDate, Date endDate);
 
+//------------------------------------
+//------------------------------------
+
+    @Query( value = "SELECT u.user.id FROM UserHasVehicle u WHERE u.id= ?1")
+    Integer findUserByUserVehicle(Integer userVehicleId);
+
+    @Query( value = "SELECT u.vehicle.id FROM UserHasVehicle u WHERE u.id= ?1")
+    Integer findVehicleByUserVehicle(Integer userVehicleId);
+
+    @Query( value = "SELECT CURRENT_TIME FROM UserHasVehicle u WHERE u.id= ?1")
+    Object findTime2(Integer userHasVehicleId);
+
+    @Query(value = "SELECT u.id, u.chargingStation.currentProvider.name, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.chargingStation.id, u.chargingSpot.id FROM ChargingProcess u WHERE u.user.id= ?1 AND u.vehicle.id= ?2")
+    List<List<Object>> findSessionsByUserAndVehicle(Integer userId, Integer vehicleId);
+
+    @Query(value = "SELECT u.id, u.chargingStation.currentProvider.name, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.chargingStation.id, u.chargingSpot.id FROM ChargingProcess u WHERE u.user.id= ?1 AND u.vehicle.id= ?2 AND u.connectionTime>= ?3")
+    List<List<Object>> findSessionsByUserAndVehicleAndStartDate(Integer userId, Integer vehicleId, Date startDate);
+
+    @Query(value = "SELECT u.id, u.chargingStation.currentProvider.name, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.chargingStation.id, u.chargingSpot.id FROM ChargingProcess u WHERE u.user.id= ?1 AND u.vehicle.id= ?2 AND u.connectionTime>= ?3 AND u.disconnectTime<= ?4")
+    List<List<Object>> findSessionsByUserAndVehicleAndBothDates(Integer userId, Integer vehicleId, Date startDate, Date endDate);
+
 
 }

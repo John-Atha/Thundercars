@@ -141,6 +141,11 @@ class ChargingProcessController {
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
       List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+      
       String Operator = (String) repository.findOperator(stationId);
       Object CurrTime = repository.findTime(stationId);
       List<Object> res = new ArrayList();
@@ -205,6 +210,11 @@ class ChargingProcessController {
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
       List<List<Object>> processes = repository.findBySpotAndStartDate(stationId, spotIdReal, date1);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
       String Operator = (String) repository.findOperator(stationId);
       Object CurrTime = repository.findTime(stationId);
       List<Object> res = new ArrayList();
@@ -269,6 +279,11 @@ class ChargingProcessController {
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
       List<List<Object>> processes = repository.findBySpotAndBothDates(stationId, spotIdReal, date1, date2);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
       String Operator = (String) repository.findOperator(stationId);
       Object CurrTime = repository.findTime(stationId);
       List<Object> res = new ArrayList();
@@ -532,7 +547,6 @@ class ChargingProcessController {
       /* retrieve sessions groupped by station-spot */
       List<List<Object>> PointsSessions = repository.findByStationStartDateGroupPoints(stationId.get(), date1);
 
-      
       Double totalkWh = 0.0;
       Long sessions = 0L;  
       
@@ -628,6 +642,10 @@ class ChargingProcessController {
       /* retrieve sessions groupped by station-spot */
       List<List<Object>> PointsSessions = repository.findByStationBothDatesGroupPoints(stationId.get(), date1, date2);
 
+      if (PointsSessions.size()==0) {
+        throw new NoDataFoundException();
+      }
+
       Double totalkWh = 0.0;
       Long sessions = 0L;
       
@@ -687,6 +705,410 @@ class ChargingProcessController {
     } 
   }
 
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping(value = { "evcharge/api/SessionsPerEV", "evcharge/api/SessionsPerEV/{userHasVehicleId}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"})
+  JsonNode vehicleProcess(@PathVariable Optional<Integer> userHasVehicleId,
+                          @PathVariable Optional<String> startDate,
+                          @PathVariable Optional<String> endDate) {
+
+    if (!userHasVehicleId.isPresent()) {
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode allVehicles = mapper.createObjectNode();
+      ArrayNode allData = mapper.createArrayNode();
+      
+      for (Integer i=1; i<13201; i++) {
+        ObjectNode answer = mapper.createObjectNode();
+        ObjectNode allSessions = mapper.createObjectNode();
+        ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
+        Integer userId = repository.findUserByUserVehicle(i);
+        Integer vehicleId = repository.findVehicleByUserVehicle(i);
+        if (vehicleId==null || userId==null) {
+          continue;
+        }
+
+        Object currTime = repository.findTime2(i);
+        List<List<Object>> processes = repository.findSessionsByUserAndVehicle(userId, vehicleId);
+        if (processes.size()==0) {
+          continue;
+        }
+        Integer counter=1;
+        Double totalkWh=0.0;
+        Integer spotsUsed = 0;
+        if (processes.size()>0) {
+          spotsUsed = 1;
+        }
+        Integer prevStation = (Integer) processes.get(0).get(8); 
+        Integer prevSpot = (Integer) processes.get(0).get(9);
+
+        for (List<Object> nested : processes) {
+          nested.add(0, counter);
+          totalkWh += (Double) nested.get(6);
+          if ((Integer)nested.get(9)!=prevStation || (Integer)nested.get(10)!=prevSpot) {
+            spotsUsed++;
+          }
+          prevStation = (Integer) nested.get(9);  
+          prevSpot = (Integer) nested.get(10);  
+          counter++;
+        }
+
+        counter--;
+        answer.put("VehicleId", i);
+        //answer.put("UserId", (Integer) userId);
+        answer.put("RequestTime",  currTime.toString());
+        answer.put("TotalkWhConsumed", totalkWh);
+        answer.put("VisitedPoints", spotsUsed);
+        answer.put("Sessions", counter);
+        for (List<Object> nested : processes) {
+          ObjectNode session = mapper.createObjectNode();
+          session.put("SessionIndex", (Integer) nested.get(0));
+          session.put("SessionId", (Integer) nested.get(1));
+          session.put("EnergyProvider", (String) nested.get(2));
+          session.put("StartedOn", nested.get(3).toString());
+          session.put("ChargedOn", nested.get(4).toString());
+          session.put("FinishedOn", nested.get(5).toString());
+          session.put("kWhDelivered", (Double) nested.get(6));
+          session.put("PricePolicyRef", (String) nested.get(7));
+          Double costPerkWh = 0.0;
+          if ( (String) nested.get(7)=="slow") {
+            costPerkWh = 0.133;
+          }
+          else if ( (String) nested.get(7)=="medium") {
+            costPerkWh = 0.142;
+          }
+          else {
+            costPerkWh = 0.158;
+          }
+          session.put("CostPerkWh", costPerkWh);
+          session.put("SessionCost", (Double) nested.get(8));
+          ChargingSessionsList.add(session);
+        }
+        
+        answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+
+        allData.add(answer);
+      }
+      allVehicles.put("EVChargingSessions", allData);
+      String ugly = allVehicles.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    }
+
+    else if (userHasVehicleId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+        throw new BadRequestException();
+      }
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      
+      Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
+      Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
+      if (vehicleId==null || userId==null) {
+        throw new NoDataFoundException();
+      }
+
+      Object currTime = repository.findTime2(userHasVehicleId.get());
+
+      List<List<Object>> processes = repository.findSessionsByUserAndVehicle(userId, vehicleId);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      Integer counter=1;
+      Double totalkWh=0.0;
+      Integer spotsUsed = 0;
+      if (processes.size()>0) {
+        spotsUsed = 1;
+      }
+      Integer prevStation = (Integer) processes.get(0).get(8); 
+      Integer prevSpot = (Integer) processes.get(0).get(9);
+ 
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        totalkWh += (Double) nested.get(6);
+        if ((Integer)nested.get(9)!=prevStation || (Integer)nested.get(10)!=prevSpot) {
+          spotsUsed++;
+        }
+        prevStation = (Integer) nested.get(9);  
+        prevSpot = (Integer) nested.get(10);  
+        counter++;
+      }
+
+
+      counter--;
+      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      //answer.put("UserId", (Integer) userId);
+      answer.put("RequestTime",  currTime.toString());
+      answer.put("TotalkWhConsumed", totalkWh);
+      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Sessions", counter);
+      
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("SessionIndex", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("EnergyProvider", (String) nested.get(2));
+        session.put("StartedOn", nested.get(3).toString());
+        session.put("ChargedOn", nested.get(4).toString());
+        session.put("FinishedOn", nested.get(5).toString());
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PricePolicyRef", (String) nested.get(7));
+        Double costPerkWh = 0.0;
+        if ( (String) nested.get(7)=="slow") {
+          costPerkWh = 0.133;
+        }
+        else if ( (String) nested.get(7)=="medium") {
+          costPerkWh = 0.142;
+        }
+        else {
+          costPerkWh = 0.158;
+        }
+        session.put("CostPerkWh", costPerkWh);
+        session.put("SessionCost", (Double) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+      
+      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    }
+
+    else if (userHasVehicleId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
+      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      try {  
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      
+      Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
+      Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
+      if (vehicleId==null || userId==null) {
+        throw new NoDataFoundException();
+      }
+
+      Object currTime = repository.findTime2(userHasVehicleId.get());
+
+      List<List<Object>> processes = repository.findSessionsByUserAndVehicleAndStartDate(userId, vehicleId, date1);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      Integer counter=1;
+      Double totalkWh=0.0;
+      Integer spotsUsed = 0;
+      if (processes.size()>0) {
+        spotsUsed = 1;
+      }
+      Integer prevStation = (Integer) processes.get(0).get(8); 
+      Integer prevSpot = (Integer) processes.get(0).get(9);
+
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        totalkWh += (Double) nested.get(6);
+        if ((Integer)nested.get(9)!=prevStation || (Integer)nested.get(10)!=prevSpot) {
+          spotsUsed++;
+        }
+        prevStation = (Integer) nested.get(9);  
+        prevSpot = (Integer) nested.get(10);  
+        counter++;
+      }
+
+      counter--;
+      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      //answer.put("UserId", (Integer) userId);
+      answer.put("RequestTime",  currTime.toString());
+      answer.put("StartDate",  date1.toString());
+      answer.put("TotalkWhConsumed", totalkWh);
+      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Sessions", counter);
+      
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("SessionIndex", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("EnergyProvider", (String) nested.get(2));
+        session.put("StartedOn", nested.get(3).toString());
+        session.put("ChargedOn", nested.get(4).toString());
+        session.put("FinishedOn", nested.get(5).toString());
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PricePolicyRef", (String) nested.get(7));
+        Double costPerkWh = 0.0;
+        if ( (String) nested.get(7)=="slow") {
+          costPerkWh = 0.133;
+        }
+        else if ( (String) nested.get(7)=="medium") {
+          costPerkWh = 0.142;
+        }
+        else {
+          costPerkWh = 0.158;
+        }
+        session.put("CostPerkWh", costPerkWh);
+        session.put("SessionCost", (Double) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+      
+      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    }
+
+    else {
+      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      Date date2;
+      try {  
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+        date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      
+      Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
+      Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
+      if (vehicleId==null || userId==null) {
+        throw new NoDataFoundException();
+      }
+
+      Object currTime = repository.findTime2(userHasVehicleId.get());
+
+      List<List<Object>> processes = repository.findSessionsByUserAndVehicleAndBothDates(userId, vehicleId, date1, date2);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      Integer counter=1;
+      Double totalkWh=0.0;
+      Integer spotsUsed = 0;
+      if (processes.size()>0) {
+        spotsUsed = 1;
+      }
+      Integer prevStation = (Integer) processes.get(0).get(8); 
+      Integer prevSpot = (Integer) processes.get(0).get(9);
+
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        totalkWh += (Double) nested.get(6);
+        if ((Integer)nested.get(9)!=prevStation || (Integer)nested.get(10)!=prevSpot) {
+          spotsUsed++;
+        }
+        prevStation = (Integer) nested.get(9);  
+        prevSpot = (Integer) nested.get(10);  
+        counter++;
+      }
+
+      counter--;
+      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      //answer.put("UserId", (Integer) userId);
+      answer.put("RequestTime",  currTime.toString());
+      answer.put("StartDate",  date1.toString());
+      answer.put("EndDate",  date2.toString());
+      answer.put("TotalkWhConsumed", totalkWh);
+      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Sessions", counter);
+      
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("SessionIndex", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("EnergyProvider", (String) nested.get(2));
+        session.put("StartedOn", nested.get(3).toString());
+        session.put("ChargedOn", nested.get(4).toString());
+        session.put("FinishedOn", nested.get(5).toString());
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PricePolicyRef", (String) nested.get(7));
+        Double costPerkWh = 0.0;
+        if ( (String) nested.get(7)=="slow") {
+          costPerkWh = 0.133;
+        }
+        else if ( (String) nested.get(7)=="medium") {
+          costPerkWh = 0.142;
+        }
+        else {
+          costPerkWh = 0.158;
+        }
+        session.put("CostPerkWh", costPerkWh);
+        session.put("SessionCost", (Double) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+      
+      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    }
+
+  
+                          
+  }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/evcharge/api/chargingprocesses")
   ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess) {
