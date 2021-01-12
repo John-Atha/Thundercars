@@ -92,7 +92,7 @@ class ChargingProcessController {
         answer.put("StationId", stationId);
         answer.put("SpotId", spotId);
         answer.put("Operator", Operator);
-        answer.put("CurrentTime", CurrTime.toString());
+        answer.put("RequestTime", CurrTime.toString());
         answer.put("Processes Number", processes.size());
         for (List<Object> nested : processes) {
           ObjectNode session = mapper.createObjectNode();
@@ -152,7 +152,7 @@ class ChargingProcessController {
       answer.put("StationId", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("CurrentTime", CurrTime.toString());
+      answer.put("RequestTime", CurrTime.toString());
       answer.put("Processes Number", processes.size());
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
@@ -216,7 +216,7 @@ class ChargingProcessController {
       answer.put("StationId", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("CurrentTime", CurrTime.toString());
+      answer.put("RequestTime", CurrTime.toString());
       answer.put("StartDate", date1.toString());
       answer.put("Processes Number", processes.size());
       for (List<Object> nested : processes) {
@@ -280,7 +280,7 @@ class ChargingProcessController {
       answer.put("StationId", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("CurrentTime", CurrTime.toString());
+      answer.put("RequestTime", CurrTime.toString());
       answer.put("StartDate", date1.toString());
       answer.put("EndDate", date2.toString());
       answer.put("Processes Number", processes.size());
@@ -368,12 +368,12 @@ class ChargingProcessController {
         if (flag==true) {
           answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
           answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-          answer.put("CurrentTime", temp.get(0).get(2).toString());  // current time
+          answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
         }
         else {
           answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
           answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-          answer.put("CurrentTime", temp.get(0).get(3).toString());  // current time
+          answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
         }
         answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
         answer.put("SessionsNumber", (Long) sessions);         // sessions counter
@@ -456,12 +456,12 @@ class ChargingProcessController {
       if (flag==true) {
         answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(2).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
       }
       else {
         answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(3).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
       }
       answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
       answer.put("SessionsNumber", (Long) sessions);         // sessions counter
@@ -549,12 +549,12 @@ class ChargingProcessController {
       if (flag==true) {
         answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(2).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
       }
       else {
         answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(3).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
       }
       answer.put("StartDate", date1.toString());            // total kWh
       answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
@@ -644,12 +644,12 @@ class ChargingProcessController {
       if (flag==true) {
         answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(2).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
       }
       else {
         answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("CurrentTime", temp.get(0).get(3).toString());  // current time
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
       }
       answer.put("StartDate", date1.toString());            // total kWh
       answer.put("EndDate", date2.toString());            // total kWh
