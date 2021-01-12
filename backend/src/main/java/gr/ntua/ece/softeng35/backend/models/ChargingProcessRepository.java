@@ -83,5 +83,23 @@ public interface ChargingProcessRepository extends JpaRepository<ChargingProcess
     @Query(value = "SELECT u.id, u.chargingStation.currentProvider.name, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.chargingStation.id, u.chargingSpot.id FROM ChargingProcess u WHERE u.user.id= ?1 AND u.vehicle.id= ?2 AND u.connectionTime>= ?3 AND u.disconnectTime<= ?4")
     List<List<Object>> findSessionsByUserAndVehicleAndBothDates(Integer userId, Integer vehicleId, Date startDate, Date endDate);
 
+//------------------------------------
+//------------------------------------
+
+    @Query( value = "SELECT u.chargingStation.id, u.id, u.vehicle.id, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.user.id FROM ChargingProcess u WHERE u.chargingStation.currentProvider.id= ?1")
+    List<List<Object>> findSessionsByProvider(Integer providerId);
+
+    @Query( value = "SELECT u.chargingStation.id, u.id, u.vehicle.id, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.user.id FROM ChargingProcess u WHERE u.chargingStation.currentProvider.id= ?1 AND connectionTime>= ?2")
+    List<List<Object>> findSessionsByProviderAndStartDate(Integer providerId, Date startDate);
+    
+    @Query( value = "SELECT u.chargingStation.id, u.id, u.vehicle.id, u.connectionTime, u.doneChargingTime, u.disconnectTime, u.kwhDelivered, u.chargingProgram, u.cost, u.user.id FROM ChargingProcess u WHERE u.chargingStation.currentProvider.id= ?1 AND connectionTime>= ?2 AND doneChargingTime<= ?3")
+    List<List<Object>> findSessionsByProviderAndBothDates(Integer providerId, Date startDate, Date endDate);
+    
+    
+    @Query( value = "SELECT u.name FROM CurrentProvider u WHERE u.id= ?1")
+    String findProviderNameById(Integer providerId);
+
+    @Query(value = "SELECT u.id FROM UserHasVehicle u WHERE u.vehicle.id= ?1 AND u.user.id= ?2")
+    List<Integer> findUserHasVehicleIdByVehicleAndUser(Integer vehicleId, Integer userId);
 
 }
