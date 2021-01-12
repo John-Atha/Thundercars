@@ -21,6 +21,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	/* added manually to import javax */
 	compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
 }
 
 test {
