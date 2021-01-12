@@ -4,6 +4,10 @@ import java.util.*;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.*;
 
 import gr.ntua.ece.softeng35.backend.models.ChargingProcess;
 import gr.ntua.ece.softeng35.backend.models.ChargingProcessRepository;
@@ -17,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.math.*;
 import java.lang.*;
+
 
 @RestController
 class ChargingProcessController {
@@ -51,23 +56,31 @@ class ChargingProcessController {
   @GetMapping(value = {"/evcharge/api/SessionsPerPoint", "/evcharge/api/SessionsPerPoint/{stationSpotId}",
                        "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}",
                        "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}/{endDate}"})
-  List<Object> spotProcess(@PathVariable Optional<Integer> stationSpotId,
+  JsonNode spotProcess(@PathVariable Optional<Integer> stationSpotId,
                            @PathVariable Optional<String> startDate,
                            @PathVariable Optional<String> endDate) {
 
+    
     if (!stationSpotId.isPresent()) {
-      List<Object> all = new ArrayList();
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode allStations = mapper.createObjectNode();
+      ArrayNode allData = mapper.createArrayNode();
 
-      for (Integer i=1; i<42979; i++) {
+      for (Integer i=1; i<7663; i++) {
+        ObjectNode answer = mapper.createObjectNode();
+        ObjectNode allSessions = mapper.createObjectNode();
+        ArrayNode ChargingSessionsList = mapper.createArrayNode();
+  
         Integer stationId =  (Integer) repository.findStationFromTogether(i);
         if (stationId==null) {
-          List<Object> res = new ArrayList();   
-          all.add(res);
-          continue;
+          continue; 
         }
         Integer spotIdReal =  (Integer) repository.findSpotFromTogether(i);
         Integer spotId =  i;
         List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
+        if (processes.size()==0) {
+          continue;
+        }
         String Operator = (String) repository.findOperator(stationId);
         Object CurrTime = repository.findTime(stationId);
         List<Object> res = new ArrayList();
@@ -76,31 +89,54 @@ class ChargingProcessController {
           nested.add(0, counter);
           counter++;
         }
-        res.add(stationId);               // station id
-        res.add(spotId);                  // spot id
-        res.add(Operator);                // operator id
-        res.add(CurrTime);                // current time
-        res.add(processes.size());        // number of processes
-        res.add(processes);               // processes list
-        all.add(res);
+        answer.put("StationId", stationId);
+        answer.put("SpotId", spotId);
+        answer.put("Operator", Operator);
+        answer.put("CurrTime", CurrTime.toString());
+        answer.put("Processes Number", processes.size());
+        for (List<Object> nested : processes) {
+          ObjectNode session = mapper.createObjectNode();
+          session.put("Index", (Integer) nested.get(0));
+          session.put("SessionId", (Integer) nested.get(1));
+          session.put("StartedOn", nested.get(2).toString());
+          session.put("ChargedOn", nested.get(3).toString());
+          session.put("FinishedOn", nested.get(4).toString());
+          session.put("Protocol", (String) nested.get(5));
+          session.put("kWhDelivered", (Double) nested.get(6));
+          session.put("PaymentWay", (String) nested.get(7));
+          session.put("VehicleType", (String) nested.get(8));
+          ChargingSessionsList.add(session);
+        }
+  
+        answer.put("ChargingSessionsList", ChargingSessionsList);
+        
+        allData.add(answer); 
       }
-      
-      if (all.size()==0) {
-        throw new NoDataFoundException();
+      allStations.put("ChargingStationsSessions", allData);
+      String ugly = allStations.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
       }
-      else {
-        return all;
-      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      }  
     }
 
     else if (stationSpotId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
       if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
         throw new BadRequestException();
       }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
-        List<Object> res = new ArrayList();   // BAD REQUEST
-        return res;
+        throw new NoDataFoundException(); 
       }
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
@@ -113,13 +149,36 @@ class ChargingProcessController {
         nested.add(0, counter);
         counter++;
       }
-      res.add(stationId);               // station id
-      res.add(spotId);                  // spot id
-      res.add(Operator);                // operator id
-      res.add(CurrTime);                // current time
-      res.add(processes.size());        // number of processes
-      res.add(processes);               // processes list
-      return res;
+      answer.put("StationId", stationId);
+      answer.put("SpotId", spotId);
+      answer.put("Operator", Operator);
+      answer.put("CurrTime", CurrTime.toString());
+      answer.put("Processes Number", processes.size());
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("Index", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("StartedOn", nested.get(2).toString());
+        session.put("ChargedOn", nested.get(3).toString());
+        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Protocol", (String) nested.get(5));
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PaymentWay", (String) nested.get(7));
+        session.put("VehicleType", (String) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+
+      answer.put("ChargingSessionsList", ChargingSessionsList);
+      
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      }  
     }
 
     else if (stationSpotId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
@@ -133,11 +192,15 @@ class ChargingProcessController {
       catch (Exception e) {
         throw new BadRequestException();
       }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
-        throw new BadRequestException();
-        //List<Object> res = new ArrayList(); 
-        //return res;
+        throw new NoDataFoundException();
       }
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
@@ -150,16 +213,37 @@ class ChargingProcessController {
         nested.add(0, counter);
         counter++;
       }
-      res.add(stationId);               // station id
-      res.add(spotId);                  // spot id
-      res.add(Operator);                // operator id
-      res.add(CurrTime);                // current time
-      res.add(date1.toString());        // start date
-      res.add(processes.size());        // number of processes
-      res.add(processes);               // processes list
-      return res;
+      answer.put("StationId", stationId);
+      answer.put("SpotId", spotId);
+      answer.put("Operator", Operator);
+      answer.put("CurrTime", CurrTime.toString());
+      answer.put("StartDate", date1.toString());
+      answer.put("Processes Number", processes.size());
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("Index", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("StartedOn", nested.get(2).toString());
+        session.put("ChargedOn", nested.get(3).toString());
+        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Protocol", (String) nested.get(5));
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PaymentWay", (String) nested.get(7));
+        session.put("VehicleType", (String) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+      answer.put("ChargingSessionsList", ChargingSessionsList);
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
     }
-
+    
     else {
       if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
         throw new BadRequestException();
@@ -172,11 +256,15 @@ class ChargingProcessController {
       catch (Exception e) {
         throw new BadRequestException();
       }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
       Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
       if (stationId==null) {
-        //List<Object> res = new ArrayList();
-        //return res;
-        throw new BadRequestException();
+        throw new NoDataFoundException();
       }
       Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
       Integer spotId =  stationSpotId.get();
@@ -189,15 +277,37 @@ class ChargingProcessController {
         nested.add(0, counter);
         counter++;
       }
-      res.add(stationId);               // station id
-      res.add(spotId);                  // spot id
-      res.add(Operator);                // operator id
-      res.add(CurrTime);                // current time
-      res.add(date1.toString());        // start date
-      res.add(date2.toString());        // end date
-      res.add(processes.size());        // number of processes
-      res.add(processes);               // processes list
-      return res;
+      answer.put("StationId", stationId);
+      answer.put("SpotId", spotId);
+      answer.put("Operator", Operator);
+      answer.put("CurrTime", CurrTime.toString());
+      answer.put("StartDate", date1.toString());
+      answer.put("EndDate", date2.toString());
+      answer.put("Processes Number", processes.size());
+      for (List<Object> nested : processes) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("Index", (Integer) nested.get(0));
+        session.put("SessionId", (Integer) nested.get(1));
+        session.put("StartedOn", nested.get(2).toString());
+        session.put("ChargedOn", nested.get(3).toString());
+        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Protocol", (String) nested.get(5));
+        session.put("kWhDelivered", (Double) nested.get(6));
+        session.put("PaymentWay", (String) nested.get(7));
+        session.put("VehicleType", (String) nested.get(8));
+        ChargingSessionsList.add(session);
+      }
+
+      answer.put("ChargingSessionsList", ChargingSessionsList);
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
     }  
   
   }
