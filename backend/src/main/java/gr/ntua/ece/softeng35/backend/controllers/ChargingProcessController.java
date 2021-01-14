@@ -198,13 +198,32 @@ class ChargingProcessController {
       answer.put("ChargingSessionsList", ChargingSessionsList);
       
       String ugly = answer.toString();
-      try{
-        JsonNode node = mapper.readTree(ugly);
-        return node;
+      if(format.isPresent()){
+        if(format.equals(Optional.of("json"))) {
+          try {
+            JsonNode node = mapper.readTree(ugly);
+            return node;
+          }
+          catch (Exception e) {
+            JsonNode node = null;
+            return node;
+          } 
+        }
+        else{
+          JsonNode node = null;
+          return null;
+        }
+        
       }
-      catch(Exception e){
-        JsonNode node = null;
-        return node;
+      else{
+        try {
+          JsonNode node = mapper.readTree(ugly);
+          return node;
+        }
+        catch (Exception e) {
+          JsonNode node = null;
+          return node;
+        } 
       }
     }
    
@@ -266,13 +285,32 @@ class ChargingProcessController {
       }
       answer.put("ChargingSessionsList", ChargingSessionsList);
       String ugly = answer.toString();
-      try {
-        JsonNode node = mapper.readTree(ugly);
-        return node;
+      if(format.isPresent()){
+        if(format.equals(Optional.of("json"))) {
+          try {
+            JsonNode node = mapper.readTree(ugly);
+            return node;
+          }
+          catch (Exception e) {
+            JsonNode node = null;
+            return node;
+          } 
+        }
+        else{
+          JsonNode node = null;
+          return null;
+        }
+        
       }
-      catch (Exception e) {
-        JsonNode node = null;
-        return node;
+      else{
+        try {
+          JsonNode node = mapper.readTree(ugly);
+          return node;
+        }
+        catch (Exception e) {
+          JsonNode node = null;
+          return node;
+        } 
       } 
     }
     
@@ -337,16 +375,39 @@ class ChargingProcessController {
 
       answer.put("ChargingSessionsList", ChargingSessionsList);
       String ugly = answer.toString();
-      try {
-        JsonNode node = mapper.readTree(ugly);
-        return node;
+      if(format.isPresent()){
+        if(format.equals(Optional.of("json"))) {
+          try {
+            JsonNode node = mapper.readTree(ugly);
+            return node;
+          }
+          catch (Exception e) {
+            JsonNode node = null;
+            return node;
+          } 
+        }
+        else{
+          JsonNode node = null;
+          return null;
+        }
+        
       }
-      catch (Exception e) {
-        JsonNode node = null;
-        return node;
+      else{
+        try {
+          JsonNode node = mapper.readTree(ugly);
+          return node;
+        }
+        catch (Exception e) {
+          JsonNode node = null;
+          return node;
+        } 
       } 
     }  
   }
+
+
+  //If format given is csv,this means "?format=csv",we define a new Mapping and handle this separately.
+  //csvspotProcess(...) returns a csv containing the same values as the JSONs returned above
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping(value = {"/evcharge/api/SessionsPerPoint",
                        "/evcharge/api/SessionsPerPoint/{stationSpotId}",
@@ -356,10 +417,6 @@ class ChargingProcessController {
   String csvspotProcess(@PathVariable Optional<Integer> stationSpotId,
                         @PathVariable Optional<String> startDate,
                         @PathVariable Optional<String> endDate) {
-                        //@RequestParam(defaultValue = "csv") Optional<String> format) {
-                        
-                      //if(format.isPresent()){
-                        //if(format.equals(Optional.of("csv"))) {
                           if (!stationSpotId.isPresent()) {
                             ObjectMapper mapper = new ObjectMapper();
                             ObjectNode CsvAll = mapper.createObjectNode();
