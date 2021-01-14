@@ -1062,6 +1062,366 @@ class ChargingProcessController {
       } 
     } 
   }
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping(value = {"/evcharge/api/SessionsPerStation",
+                       "/evcharge/api/SessionsPerStation/{stationId}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}/{endDate}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}"},
+                       params = "format=csv")
+  String csvspotProcess(@PathVariable Optional<Integer> stationSpotId,
+                        @PathVariable Optional<String> startDate,
+                        @PathVariable Optional<String> endDate) {
+    if (!stationId.isPresent()) {
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
+      for (Integer i=1; i<7663; i++) {
+              
+        List<List<Object>> temp = repository.findByStation(i);
+        Boolean flag = false;
+  
+        if (temp.get(0).get(0)==null) {
+          continue;
+        }
+        /* retrieve sessions groupped by station-spot */
+        List<List<Object>> PointsSessions = repository.findByStationGroupPoints(i);
+        
+        Double totalkWh = 0.0;
+        Long sessions = 0L;
+        
+        /* total Station kWh compute */
+        for (List<Object> nested : PointsSessions) {
+          totalkWh = totalkWh + (Double) nested.get(2);
+        }
+        /* total Station Sessions compute */
+        for (List<Object> nested : PointsSessions) {
+          sessions = sessions + (Long) nested.get(1);
+        }
+         
+        for (List<Object> nested : PointsSessions) {
+          Integer spotid = (Integer) nested.get(0);
+          Integer stationid = i;
+          nested.remove(0);
+          Integer stationspotid = repository.findStationSpotId(stationid, spotid);
+          nested.add(0, stationspotid);
+        }
+  
+        for (List<Object> nested : PointsSessions) {
+          ObjectNode csvsession = mapper.createObjectNode();
+          if (flag==true) {
+            csvsession.put("StationId", (Integer) temp.get(0).get(0));  // station id
+            csvsession.put("Operator", (String) temp.get(0).get(1));  // operator title
+            csvsession.put("RequestTime", temp.get(0).get(2).toString());  // current time
+          }
+          else {
+            csvsession.put("StationId", (Integer) temp.get(0).get(1));  // station id
+            csvsession.put("Operator", (String) temp.get(0).get(2));  // operator title
+            csvsession.put("RequestTime", temp.get(0).get(3).toString());  // current time
+          }
+          csvsession.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
+          csvsession.put("SessionsNumber", (Long) sessions);         // sessions counter
+          csvsession.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+          csvsession.put("PointId", (Integer) nested.get(0));
+          csvsession.put("PointSessions", (Long) nested.get(1));
+          csvsession.put("PointEnergyDelivered", (Double) nested.get(2));
+          CsvCharging.add(csvsession);
+        }
+      }  
+      CsvAll.put("ChargingStationsSessions", CsvCharging);
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("ChargingStationsSessions");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      }
+    }
+    else{
+      return"";
+    }
+  }     
+                                 
+    /*else if (stationId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
+      
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+            
+      List<List<Object>> temp = repository.findByStation(stationId.get());
+      List<Object> res = new ArrayList();
+      Boolean flag = false;
+
+      if (temp.get(0).get(0)==null) {
+        flag = true;
+        temp = repository.findByStation2(stationId.get());
+        //  different for many stations
+        
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        
+        throw new NoDataFoundException();
+      }
+      // retrieve sessions groupped by station-spot 
+      List<List<Object>> PointsSessions = repository.findByStationGroupPoints(stationId.get());
+      
+      Double totalkWh = 0.0;
+      Long sessions = 0L;
+      
+      // total Station kWh compute 
+      for (List<Object> nested : PointsSessions) {
+        totalkWh = totalkWh + (Double) nested.get(2);
+      }
+      // total Station Sessions compute 
+      for (List<Object> nested : PointsSessions) {
+        sessions = sessions + (Long) nested.get(1);
+      }
+
+      // res.add(temp);
+      if (flag==true) {
+        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+      }
+      else {
+        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+      }
+      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
+      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
+      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+      
+      
+      for (List<Object> nested : PointsSessions) {
+        Integer spotid = (Integer) nested.get(0);
+        Integer stationid = (Integer) stationId.get();
+        nested.remove(0);
+        Integer stationspotid = repository.findStationSpotId(stationid, spotid);
+        nested.add(0, stationspotid);
+      }
+
+      for (List<Object> nested : PointsSessions) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("PointId", (Integer) nested.get(0));
+        session.put("PointSessions", (Long) nested.get(1));
+        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        ChargingSessionsList.add(session);
+      }
+
+      answer.put("SessionsSummaryList", ChargingSessionsList);  
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      }  
+    }
+
+    else if (stationId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
+      List<List<Object>> temp = repository.findByStationAndStartDate(stationId.get(), date1);
+      List<Object> res = new ArrayList();
+      Boolean flag = false;
+
+      if (temp.get(0).get(0)==null) {
+        flag = true;
+        temp = repository.findByStation2(stationId.get());
+        //  different for many stations
+        
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        
+        throw new NoDataFoundException();
+      }
+      // retrieve sessions groupped by station-spot 
+      List<List<Object>> PointsSessions = repository.findByStationStartDateGroupPoints(stationId.get(), date1);
+
+      Double totalkWh = 0.0;
+      Long sessions = 0L;  
+      
+      // total Station kWh compute 
+      for (List<Object> nested : PointsSessions) {
+        totalkWh = totalkWh + (Double) nested.get(2);
+      }
+      // total Station Sessions compute 
+      for (List<Object> nested : PointsSessions) {
+        sessions = sessions + (Long) nested.get(1);
+      }
+
+              // res.add(temp);
+      if (flag==true) {
+        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+      }
+      else {
+        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+      }
+      answer.put("StartDate", date1.toString());            // total kWh
+      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
+      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
+      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+       
+        
+      for (List<Object> nested : PointsSessions) {
+        Integer spotid = (Integer) nested.get(0);
+        Integer stationid = (Integer) stationId.get();
+        nested.remove(0);
+        Integer stationspotid = repository.findStationSpotId(stationid, spotid);
+        nested.add(0, stationspotid);
+      }
+
+      for (List<Object> nested : PointsSessions) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("PointId", (Integer) nested.get(0));
+        session.put("PointSessions", (Long) nested.get(1));
+        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        ChargingSessionsList.add(session);
+      }
+
+      answer.put("SessionsSummaryList", ChargingSessionsList);  
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    }
+
+    else {
+      if (stationId.get()<1 || stationId.get()>7662) {
+        throw new BadRequestException();
+      }
+      Date date1, date2;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+        date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ObjectNode allSessions = mapper.createObjectNode();
+      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
+      List<List<Object>> temp = repository.findByStationAndTimestamp(stationId.get(), date1, date2);
+      List<Object> res = new ArrayList();
+      Boolean flag = false;
+      
+      if (temp.get(0).get(0)==null) {
+        flag = true;
+        temp = repository.findByStation2(stationId.get());
+        //  different for many stations
+        
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        //temp.get(0).add(3, 0);
+        
+        throw new NoDataFoundException();
+      }
+      
+      // retrieve sessions groupped by station-spot 
+      List<List<Object>> PointsSessions = repository.findByStationBothDatesGroupPoints(stationId.get(), date1, date2);
+
+      if (PointsSessions.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      Double totalkWh = 0.0;
+      Long sessions = 0L;
+      
+      // total Station kWh compute 
+      for (List<Object> nested : PointsSessions) {
+        totalkWh = totalkWh + (Double) nested.get(2);
+      }
+      // total Station Sessions compute 
+      for (List<Object> nested : PointsSessions) {
+        sessions = sessions + (Long) nested.get(1);
+      }
+
+      // res.add(temp);
+      if (flag==true) {
+        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+      }
+      else {
+        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+      }
+      answer.put("StartDate", date1.toString());            // total kWh
+      answer.put("EndDate", date2.toString());            // total kWh
+      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
+      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
+      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+      
+      for (List<Object> nested : PointsSessions) {
+        Integer spotid = (Integer) nested.get(0);
+        Integer stationid = (Integer) stationId.get();
+        nested.remove(0);
+        Integer stationspotid = repository.findStationSpotId(stationid, spotid);
+        nested.add(0, stationspotid);
+      }
+
+      for (List<Object> nested : PointsSessions) {
+        ObjectNode session = mapper.createObjectNode();
+        session.put("PointId", (Integer) nested.get(0));
+        session.put("PointSessions", (Long) nested.get(1));
+        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        ChargingSessionsList.add(session);
+      }
+
+      answer.put("SessionsSummaryList", ChargingSessionsList);  
+    
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch (Exception e) {
+        JsonNode node = null;
+        return node;
+      } 
+    } 
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping(value = { "evcharge/api/SessionsPerEV",
