@@ -35,7 +35,7 @@ public class Vehicle {
     private AcCharger acCharger;
 
     @ManyToOne
-    @JoinColumn(name= "dc_harger_id",nullable = true )
+    @JoinColumn(name= "dc_charger_id",nullable = true )
     private DcCharger dcCharger;
 
     @OneToMany(mappedBy = "vehicle")
