@@ -27,12 +27,12 @@ class AcChargerController {
     return repository.save(newAcCharger);
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  /*@CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/acchargers/{id}")
   AcCharger one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new AcChargerNotFoundException(id));
-  }
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/acchargers/{id}")
