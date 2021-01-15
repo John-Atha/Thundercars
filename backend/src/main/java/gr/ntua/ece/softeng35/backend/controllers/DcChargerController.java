@@ -27,12 +27,12 @@ class DcChargerController {
     return repository.save(newDcCharger);
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  /*@CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/dcchargers/{id}")
   DcCharger one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new DcChargerNotFoundException(id));
-  }
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/dcchargers/{id}")
