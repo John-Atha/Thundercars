@@ -16,6 +16,7 @@ import gr.ntua.ece.softeng35.backend.models.Operator;
 import gr.ntua.ece.softeng35.backend.models.ChargingStation;
 import gr.ntua.ece.softeng35.backend.models.ChargingStationRepository;
 
+import java.time.LocalDateTime;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -84,39 +85,47 @@ class ChargingProcessController {
           continue;
         }
         String Operator = (String) repository.findOperator(stationId);
-        Object CurrTime = repository.findTime(stationId);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        Object CurrTime = dtf.format(now);
         List<Object> res = new ArrayList();
         Integer counter = 1;
         for (List<Object> nested : processes) {
           nested.add(0, counter);
           counter++;
         }
-        answer.put("StationId", stationId);
+        answer.put("Station Id", stationId);
         answer.put("SpotId", spotId);
         answer.put("Operator", Operator);
-        answer.put("RequestTime", CurrTime.toString());
+        answer.put("Request Time", CurrTime.toString());
         answer.put("Processes Number", processes.size());
         for (List<Object> nested : processes) {
           ObjectNode session = mapper.createObjectNode();
           //JSON
           session.put("Index", (Integer) nested.get(0));
-          session.put("SessionId", (Integer) nested.get(1));
-          session.put("StartedOn", nested.get(2).toString());
-          session.put("ChargedOn", nested.get(3).toString());
-          session.put("FinishedOn", nested.get(4).toString());
+          session.put("Session Id", (Integer) nested.get(1));
+          String str2=nested.get(2).toString();
+          String str = str2.substring(0, str2.length() - 2);
+          session.put("Started On", str);
+           str2=nested.get(3).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(4).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
           session.put("Protocol", (String) nested.get(5));
-          session.put("kWhDelivered", (Double) nested.get(6));
-          session.put("PaymentWay", (String) nested.get(7));
-          session.put("VehicleType", (String) nested.get(8));
+          session.put("kWh Delivered", (Double) nested.get(6));
+          session.put("Payment Way", (String) nested.get(7));
+          session.put("Vehicle Type", (String) nested.get(8));
 
           ChargingSessionsList.add(session);
         }
   
-        answer.put("ChargingSessionsList", ChargingSessionsList);
+        answer.put("Charging Sessions List", ChargingSessionsList);
         
         allData.add(answer); 
       }
-      allStations.put("ChargingStationsSessions", allData);
+      allStations.put("Charging Stations Sessions", allData);
       String ugly = allStations.toString();
       if(format.isPresent()){
         if(format.equals(Optional.of("json"))) {
@@ -169,33 +178,41 @@ class ChargingProcessController {
       }
       
       String Operator = (String) repository.findOperator(stationId);
-      Object CurrTime = repository.findTime(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
       List<Object> res = new ArrayList();
       Integer counter = 1;
       for (List<Object> nested : processes) {
         nested.add(0, counter);
         counter++;
       }
-      answer.put("StationId", stationId);
+      answer.put("Station Id", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("RequestTime", CurrTime.toString());
+      answer.put("Request Time", CurrTime.toString());
       answer.put("Processes Number", processes.size());
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
         session.put("Index", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("StartedOn", nested.get(2).toString());
-        session.put("ChargedOn", nested.get(3).toString());
-        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Session Id", (Integer) nested.get(1));
+        String str2=nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(3).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
         session.put("Protocol", (String) nested.get(5));
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PaymentWay", (String) nested.get(7));
-        session.put("VehicleType", (String) nested.get(8));
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Payment Way", (String) nested.get(7));
+        session.put("Vehicle Type", (String) nested.get(8));
         ChargingSessionsList.add(session);
       }
 
-      answer.put("ChargingSessionsList", ChargingSessionsList);
+      answer.put("Charging Sessions List", ChargingSessionsList);
       
       String ugly = answer.toString();
       try{
@@ -238,33 +255,41 @@ class ChargingProcessController {
       }
 
       String Operator = (String) repository.findOperator(stationId);
-      Object CurrTime = repository.findTime(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
       List<Object> res = new ArrayList();
       Integer counter = 1;
       for (List<Object> nested : processes) {
         nested.add(0, counter);
         counter++;
       }
-      answer.put("StationId", stationId);
+      answer.put("Station Id", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("RequestTime", CurrTime.toString());
-      answer.put("StartDate", date1.toString());
+      answer.put("Request Time", CurrTime.toString());
+      answer.put("Start Date", date1.toString());
       answer.put("Processes Number", processes.size());
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
         session.put("Index", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("StartedOn", nested.get(2).toString());
-        session.put("ChargedOn", nested.get(3).toString());
-        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Session Id", (Integer) nested.get(1));
+        String str2=nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(3).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
         session.put("Protocol", (String) nested.get(5));
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PaymentWay", (String) nested.get(7));
-        session.put("VehicleType", (String) nested.get(8));
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Payment Way", (String) nested.get(7));
+        session.put("Vehicle Type", (String) nested.get(8));
         ChargingSessionsList.add(session);
       }
-      answer.put("ChargingSessionsList", ChargingSessionsList);
+      answer.put("Charging Sessions List", ChargingSessionsList);
       String ugly = answer.toString();
       try {
         JsonNode node = mapper.readTree(ugly);
@@ -307,35 +332,43 @@ class ChargingProcessController {
       }
 
       String Operator = (String) repository.findOperator(stationId);
-      Object CurrTime = repository.findTime(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
       List<Object> res = new ArrayList();
       Integer counter = 1;
       for (List<Object> nested : processes) {
         nested.add(0, counter);
         counter++;
       }
-      answer.put("StationId", stationId);
+      answer.put("Station Id", stationId);
       answer.put("SpotId", spotId);
       answer.put("Operator", Operator);
-      answer.put("RequestTime", CurrTime.toString());
-      answer.put("StartDate", date1.toString());
-      answer.put("EndDate", date2.toString());
+      answer.put("Request Time", CurrTime.toString());
+      answer.put("Start Date", date1.toString());
+      answer.put("End Date", date2.toString());
       answer.put("Processes Number", processes.size());
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
         session.put("Index", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("StartedOn", nested.get(2).toString());
-        session.put("ChargedOn", nested.get(3).toString());
-        session.put("FinishedOn", nested.get(4).toString());
+        session.put("Session Id", (Integer) nested.get(1));
+        String str2=nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(3).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
         session.put("Protocol", (String) nested.get(5));
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PaymentWay", (String) nested.get(7));
-        session.put("VehicleType", (String) nested.get(8));
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Payment Way", (String) nested.get(7));
+        session.put("Vehicle Type", (String) nested.get(8));
         ChargingSessionsList.add(session);
       }
 
-      answer.put("ChargingSessionsList", ChargingSessionsList);
+      answer.put("Charging Sessions List", ChargingSessionsList);
       String ugly = answer.toString();
       try {
         JsonNode node = mapper.readTree(ugly);
@@ -377,7 +410,9 @@ class ChargingProcessController {
                                 continue;
                               }
                               String Operator = (String) repository.findOperator(stationId);
-                              Object CurrTime = repository.findTime(stationId);
+                              DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+                              Object CurrTime = dtf.format(now);
                               List<Object> res = new ArrayList();
                               Integer counter = 1;
                               for (List<Object> nested : processes) {
@@ -386,30 +421,36 @@ class ChargingProcessController {
                               }
                               for (List<Object> nested : processes) {
                                 ObjectNode csvsession = mapper.createObjectNode();
-                                csvsession.put("StationId", stationId);
+                                csvsession.put("Station Id", stationId);
                                 csvsession.put("SpotId", spotId);
                                 csvsession.put("Operator", Operator);
-                                csvsession.put("RequestTime", CurrTime.toString());
+                                csvsession.put("Request Time", CurrTime.toString());
                                 csvsession.put("Processes Number", processes.size());
                                 csvsession.put("Index", (Integer) nested.get(0));
-                                csvsession.put("SessionId", (Integer) nested.get(1));
-                                csvsession.put("StartedOn", nested.get(2).toString());
-                                csvsession.put("ChargedOn", nested.get(3).toString());
-                                csvsession.put("FinishedOn", nested.get(4).toString());
+                                csvsession.put("Session Id", (Integer) nested.get(1));
+                                String str2=nested.get(2).toString();
+                                String str = str2.substring(0, str2.length() - 2);
+                                csvsession.put("Started On", str);
+                                 str2=nested.get(3).toString();
+                                 str = str2.substring(0, str2.length() - 2);
+                                csvsession.put("Charged On", str);
+                                 str2=nested.get(4).toString();
+                                 str = str2.substring(0, str2.length() - 2);
+                                csvsession.put("Finished On", str);
                                 csvsession.put("Protocol", (String) nested.get(5));
-                                csvsession.put("kWhDelivered", (Double) nested.get(6));
-                                csvsession.put("PaymentWay", (String) nested.get(7));
-                                csvsession.put("VehicleType", (String) nested.get(8));
+                                csvsession.put("kWh Delivered", (Double) nested.get(6));
+                                csvsession.put("Payment Way", (String) nested.get(7));
+                                csvsession.put("Vehicle Type", (String) nested.get(8));
 
                                 CsvCharging.add(csvsession);
                               }
                             }
-                            CsvAll.put("ChargingStationsSessions",CsvCharging);
+                            CsvAll.put("Charging Stations Sessions",CsvCharging);
                       
                             try {
                               String ugly_csv = CsvAll.toString();
                               JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("ChargingStationsSessions");
+                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
                               String csv = CDL.toString(docs);
                               return csv;
                             }
@@ -439,7 +480,9 @@ class ChargingProcessController {
                             }
                             
                             String Operator = (String) repository.findOperator(stationId);
-                            Object CurrTime = repository.findTime(stationId);
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+                            Object CurrTime = dtf.format(now);
                             List<Object> res = new ArrayList();
                             Integer counter = 1;
                             for (List<Object> nested : processes) {
@@ -450,30 +493,36 @@ class ChargingProcessController {
                             for (List<Object> nested : processes) {
                               ObjectNode csvsession = mapper.createObjectNode();
 
-                              csvsession.put("StationId", stationId);
+                              csvsession.put("Station Id", stationId);
                               csvsession.put("SpotId", spotId);
                               csvsession.put("Operator", Operator);
-                              csvsession.put("RequestTime", CurrTime.toString());
+                              csvsession.put("Request Time", CurrTime.toString());
                               csvsession.put("Processes Number", processes.size());
                               csvsession.put("Index", (Integer) nested.get(0));
-                              csvsession.put("SessionId", (Integer) nested.get(1));
-                              csvsession.put("StartedOn", nested.get(2).toString());
-                              csvsession.put("ChargedOn", nested.get(3).toString());
-                              csvsession.put("FinishedOn", nested.get(4).toString());
+                              csvsession.put("Session Id", (Integer) nested.get(1));
+                               String str2=nested.get(2).toString();
+                               String str = str2.substring(0, str2.length() - 2);
+                              csvsession.put("Started On", str);
+                               str2=nested.get(3).toString();
+                               str = str2.substring(0, str2.length() - 2);
+                              csvsession.put("Charged On", str);
+                               str2=nested.get(4).toString();
+                               str = str2.substring(0, str2.length() - 2);
+                              csvsession.put("Finished On", str);
                               csvsession.put("Protocol", (String) nested.get(5));
-                              csvsession.put("kWhDelivered", (Double) nested.get(6));
-                              csvsession.put("PaymentWay", (String) nested.get(7));
-                              csvsession.put("VehicleType", (String) nested.get(8));
+                              csvsession.put("kWh Delivered", (Double) nested.get(6));
+                              csvsession.put("Payment Way", (String) nested.get(7));
+                              csvsession.put("Vehicle Type", (String) nested.get(8));
 
                               CsvCharging.add(csvsession);
                             }
                       
-                            CsvAll.put("ChargingStationsSessions", CsvCharging);
+                            CsvAll.put("Charging Stations Sessions", CsvCharging);
                             
                             try{
                               String ugly_csv = CsvAll.toString();
                               JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("ChargingStationsSessions");
+                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
                               String csv = CDL.toString(docs);
                               return csv;
                             }
@@ -510,7 +559,9 @@ class ChargingProcessController {
                             }
                       
                             String Operator = (String) repository.findOperator(stationId);
-                            Object CurrTime = repository.findTime(stationId);
+                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+                            Object CurrTime = dtf.format(now);
                             List<Object> res = new ArrayList();
                             Integer counter = 1;
                             for (List<Object> nested : processes) {
@@ -520,30 +571,36 @@ class ChargingProcessController {
                             for (List<Object> nested : processes) {
                               ObjectNode csvsession = mapper.createObjectNode();
 
-                              csvsession.put("StationId", stationId);
+                              csvsession.put("Station Id", stationId);
                               csvsession.put("SpotId", spotId);
                               csvsession.put("Operator", Operator);
-                              csvsession.put("RequestTime", CurrTime.toString());
-                              csvsession.put("StartDate", date1.toString());
+                              csvsession.put("Request Time", CurrTime.toString());
+                              csvsession.put("Start Date", date1.toString());
                               csvsession.put("Processes Number", processes.size());
                               csvsession.put("Index", (Integer) nested.get(0));
-                              csvsession.put("SessionId", (Integer) nested.get(1));
-                              csvsession.put("StartedOn", nested.get(2).toString());
-                              csvsession.put("ChargedOn", nested.get(3).toString());
-                              csvsession.put("FinishedOn", nested.get(4).toString());
+                              csvsession.put("Session Id", (Integer) nested.get(1));
+                              String str2=nested.get(2).toString();
+                              String str = str2.substring(0, str2.length() - 2);
+                             csvsession.put("Started On", str);
+                              str2=nested.get(3).toString();
+                              str = str2.substring(0, str2.length() - 2);
+                             csvsession.put("Charged On", str);
+                              str2=nested.get(4).toString();
+                              str = str2.substring(0, str2.length() - 2);
+                              csvsession.put("Finished On", str);
                               csvsession.put("Protocol", (String) nested.get(5));
-                              csvsession.put("kWhDelivered", (Double) nested.get(6));
-                              csvsession.put("PaymentWay", (String) nested.get(7));
-                              csvsession.put("VehicleType", (String) nested.get(8));
+                              csvsession.put("kWh Delivered", (Double) nested.get(6));
+                              csvsession.put("Payment Way", (String) nested.get(7));
+                              csvsession.put("Vehicle Type", (String) nested.get(8));
 
                               CsvCharging.add(csvsession);
                             }
-                            CsvAll.put("ChargingStationsSessions", CsvCharging);
+                            CsvAll.put("Charging Stations Sessions", CsvCharging);
                             
                             try {
                               String ugly_csv = CsvAll.toString();
                               JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("ChargingStationsSessions");
+                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
                               String csv = CDL.toString(docs);
                               return csv;
                             }
@@ -581,7 +638,9 @@ class ChargingProcessController {
                           }
                     
                           String Operator = (String) repository.findOperator(stationId);
-                          Object CurrTime = repository.findTime(stationId);
+                          DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+   LocalDateTime now = LocalDateTime.now();  
+                          Object CurrTime = dtf.format(now);
                           List<Object> res = new ArrayList();
                           Integer counter = 1;
                           for (List<Object> nested : processes) {
@@ -591,32 +650,38 @@ class ChargingProcessController {
                           for (List<Object> nested : processes) {
                             ObjectNode csvsession = mapper.createObjectNode();
 
-                            csvsession.put("StationId", stationId);
+                            csvsession.put("Station Id", stationId);
                             csvsession.put("SpotId", spotId);
                             csvsession.put("Operator", Operator);
-                            csvsession.put("RequestTime", CurrTime.toString());
-                            csvsession.put("StartDate", date1.toString());
-                            csvsession.put("EndDate", date2.toString());
+                            csvsession.put("Request Time", CurrTime.toString());
+                            csvsession.put("Start Date", date1.toString());
+                            csvsession.put("End Date", date2.toString());
                             csvsession.put("Processes Number", processes.size());
                             csvsession.put("Index", (Integer) nested.get(0));
-                            csvsession.put("SessionId", (Integer) nested.get(1));
-                            csvsession.put("StartedOn", nested.get(2).toString());
-                            csvsession.put("ChargedOn", nested.get(3).toString());
-                            csvsession.put("FinishedOn", nested.get(4).toString());
+                            csvsession.put("Session Id", (Integer) nested.get(1));
+                            String str2=nested.get(2).toString();
+                              String str = str2.substring(0, str2.length() - 2);
+                             csvsession.put("Started On", str);
+                              str2=nested.get(3).toString();
+                              str = str2.substring(0, str2.length() - 2);
+                             csvsession.put("Charged On", str);
+                              str2=nested.get(4).toString();
+                              str = str2.substring(0, str2.length() - 2);
+                              csvsession.put("Finished On", str);
                             csvsession.put("Protocol", (String) nested.get(5));
-                            csvsession.put("kWhDelivered", (Double) nested.get(6));
-                            csvsession.put("PaymentWay", (String) nested.get(7));
-                            csvsession.put("VehicleType", (String) nested.get(8));
+                            csvsession.put("kWh Delivered", (Double) nested.get(6));
+                            csvsession.put("Payment Way", (String) nested.get(7));
+                            csvsession.put("Vehicle Type", (String) nested.get(8));
 
                             CsvCharging.add(csvsession);
                           }
                     
-                          CsvAll.put("ChargingStationsSessions", CsvCharging);
+                          CsvAll.put("Charging Stations Sessions", CsvCharging);
                           String ugly = CsvAll.toString();
                           try {
                             String ugly_csv = CsvAll.toString();
                             JSONObject output = new JSONObject(ugly_csv);
-                            JSONArray docs = output.getJSONArray("ChargingStationsSessions");
+                            JSONArray docs = output.getJSONArray("Charging Stations Sessions");
                             String csv = CDL.toString(docs);
                             return csv;
                           }
@@ -679,21 +744,22 @@ class ChargingProcessController {
         for (List<Object> nested : PointsSessions) {
           sessions = sessions + (Long) nested.get(1);
         }
-  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now(); 
         // res.add(temp);
         if (flag==true) {
-          answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+          answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
           answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-          answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+          answer.put("Request Time", dtf.format(now));  // current time
         }
         else {
-          answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+          answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
           answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-          answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+          answer.put("Request Time", dtf.format(now));  // current time
         }
-        answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
-        answer.put("SessionsNumber", (Long) sessions);         // sessions counter
-        answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+        answer.put("Total kWh Delivered",  Math.round(totalkWh*100d)/100d);            // total kWh
+        answer.put("Sessions Number", (Long) sessions);         // sessions counter
+        answer.put("Distinct Spots Used", (Long) temp.get(0).get(4));  // number of distinct spots used
         
         
         for (List<Object> nested : PointsSessions) {
@@ -706,17 +772,17 @@ class ChargingProcessController {
   
         for (List<Object> nested : PointsSessions) {
           ObjectNode session = mapper.createObjectNode();
-          session.put("PointId", (Integer) nested.get(0));
-          session.put("PointSessions", (Long) nested.get(1));
-          session.put("PointEnergyDelivered", (Double) nested.get(2));
+          session.put("Point Id", (Integer) nested.get(0));
+          session.put("Point Sessions", (Long) nested.get(1));
+          session.put("Point Energy Delivered",  Math.round(((Double) nested.get(2))*100d)/100d) ;
           ChargingSessionsList.add(session);
         }
   
-        answer.put("SessionsSummaryList", ChargingSessionsList);  
+        answer.put("Sessions Summary List", ChargingSessionsList);  
       
         allData.add(answer);
       }  
-      allStations.put("ChargingStationsSessions", allData);
+      allStations.put("Charging Stations Sessions", allData);
       String ugly = allStations.toString();
       try {
         JsonNode node = mapper.readTree(ugly);
@@ -767,21 +833,22 @@ class ChargingProcessController {
       for (List<Object> nested : PointsSessions) {
         sessions = sessions + (Long) nested.get(1);
       }
-
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now(); 
       // res.add(temp);
       if (flag==true) {
-        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
-        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
-      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
-      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
-      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+      answer.put("Total kWh Delivered",  Math.round(totalkWh*100d)/100d);            // total kWh
+      answer.put("Sessions Number", (Long) sessions);         // sessions counter
+      answer.put("Distinct Spots Used", (Long) temp.get(0).get(4));  // number of distinct spots used
       
       
       for (List<Object> nested : PointsSessions) {
@@ -794,13 +861,13 @@ class ChargingProcessController {
 
       for (List<Object> nested : PointsSessions) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("PointId", (Integer) nested.get(0));
-        session.put("PointSessions", (Long) nested.get(1));
-        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        session.put("Point Id", (Integer) nested.get(0));
+        session.put("Point Sessions", (Long) nested.get(1));
+        session.put("Point Energy Delivered",  Math.round(((Double) nested.get(2))*100d)/100d);
         ChargingSessionsList.add(session);
       }
 
-      answer.put("SessionsSummaryList", ChargingSessionsList);  
+      answer.put("Sessions Summary List", ChargingSessionsList);  
     
       String ugly = answer.toString();
       try {
@@ -859,22 +926,23 @@ class ChargingProcessController {
       for (List<Object> nested : PointsSessions) {
         sessions = sessions + (Long) nested.get(1);
       }
-
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now(); 
               // res.add(temp);
       if (flag==true) {
-        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
-        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
-      answer.put("StartDate", date1.toString());            // total kWh
-      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
-      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
-      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+      answer.put("Start Date", date1.toString());            // total kWh
+      answer.put("Total kWh Delivered",  Math.round(totalkWh*100d)/100d);            // total kWh
+      answer.put("Sessions Number", (Long) sessions);         // sessions counter
+      answer.put("Distinct Spots Used", (Long) temp.get(0).get(4));  // number of distinct spots used
        
         
       for (List<Object> nested : PointsSessions) {
@@ -887,13 +955,13 @@ class ChargingProcessController {
 
       for (List<Object> nested : PointsSessions) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("PointId", (Integer) nested.get(0));
-        session.put("PointSessions", (Long) nested.get(1));
-        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        session.put("Point Id", (Integer) nested.get(0));
+        session.put("Point Sessions", (Long) nested.get(1));
+        session.put("Point Energy Delivered",  Math.round(((Double) nested.get(2))*100d)/100d);
         ChargingSessionsList.add(session);
       }
 
-      answer.put("SessionsSummaryList", ChargingSessionsList);  
+      answer.put("Sessions Summary List", ChargingSessionsList);  
     
       String ugly = answer.toString();
       try {
@@ -958,23 +1026,24 @@ class ChargingProcessController {
       for (List<Object> nested : PointsSessions) {
         sessions = sessions + (Long) nested.get(1);
       }
-
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now(); 
       // res.add(temp);
       if (flag==true) {
-        answer.put("StationId", (Integer) temp.get(0).get(0));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
         answer.put("Operator", (String) temp.get(0).get(1));  // operator title
-        answer.put("RequestTime", temp.get(0).get(2).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
-        answer.put("StationId", (Integer) temp.get(0).get(1));  // station id
+        answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
         answer.put("Operator", (String) temp.get(0).get(2));  // operator title
-        answer.put("RequestTime", temp.get(0).get(3).toString());  // current time
+        answer.put("Request Time", dtf.format(now));  // current time
       }
-      answer.put("StartDate", date1.toString());            // total kWh
-      answer.put("EndDate", date2.toString());            // total kWh
-      answer.put("TotalkWhDelivered", (Double) totalkWh);            // total kWh
-      answer.put("SessionsNumber", (Long) sessions);         // sessions counter
-      answer.put("DistinctSpotsUsed", (Long) temp.get(0).get(4));  // number of distinct spots used
+      answer.put("Start Date", date1.toString());            // total kWh
+      answer.put("End Date", date2.toString());            // total kWh
+      answer.put("Total kWh Delivered",  Math.round(totalkWh*100d)/100d);            // total kWh
+      answer.put("Sessions Number", (Long) sessions);         // sessions counter
+      answer.put("Distinct Spots Used", (Long) temp.get(0).get(4));  // number of distinct spots used
       
       for (List<Object> nested : PointsSessions) {
         Integer spotid = (Integer) nested.get(0);
@@ -986,13 +1055,13 @@ class ChargingProcessController {
 
       for (List<Object> nested : PointsSessions) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("PointId", (Integer) nested.get(0));
-        session.put("PointSessions", (Long) nested.get(1));
-        session.put("PointEnergyDelivered", (Double) nested.get(2));
+        session.put("Point Id", (Integer) nested.get(0));
+        session.put("Point Sessions", (Long) nested.get(1));
+        session.put("Point Energy Delivered",  Math.round(((Double) nested.get(2))*100d)/100d);
         ChargingSessionsList.add(session);
       }
 
-      answer.put("SessionsSummaryList", ChargingSessionsList);  
+      answer.put("Sessions Summary List", ChargingSessionsList);  
     
       String ugly = answer.toString();
       try {
@@ -1058,22 +1127,28 @@ class ChargingProcessController {
         }
 
         counter--;
-        answer.put("VehicleId", i);
+        answer.put("Vehicle Id", i);
         //answer.put("UserId", (Integer) userId);
-        answer.put("RequestTime",  currTime.toString());
-        answer.put("TotalkWhConsumed", totalkWh);
-        answer.put("VisitedPoints", spotsUsed);
+        answer.put("Request Time",  currTime.toString());
+        answer.put("Total kWh Consumed",  Math.round(totalkWh*100d)/100d);
+        answer.put("Visited Points", spotsUsed);
         answer.put("Sessions", counter);
         for (List<Object> nested : processes) {
           ObjectNode session = mapper.createObjectNode();
-          session.put("SessionIndex", (Integer) nested.get(0));
-          session.put("SessionId", (Integer) nested.get(1));
-          session.put("EnergyProvider", (String) nested.get(2));
-          session.put("StartedOn", nested.get(3).toString());
-          session.put("ChargedOn", nested.get(4).toString());
-          session.put("FinishedOn", nested.get(5).toString());
-          session.put("kWhDelivered", (Double) nested.get(6));
-          session.put("PricePolicyRef", (String) nested.get(7));
+          session.put("Session Index", (Integer) nested.get(0));
+          session.put("Session Id", (Integer) nested.get(1));
+          session.put("Energy Provider", (String) nested.get(2));
+          String str2=nested.get(3).toString();
+          String str = str2.substring(0, str2.length() - 2);
+          session.put("Started On", str);
+           str2=nested.get(4).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(5).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
+          session.put("kWh Delivered", (Double) nested.get(6));
+          session.put("Price Policy Ref", (String) nested.get(7));
           Double costPerkWh = 0.0;
           if ( (String) nested.get(7)=="slow") {
             costPerkWh = 0.133;
@@ -1084,16 +1159,16 @@ class ChargingProcessController {
           else {
             costPerkWh = 0.158;
           }
-          session.put("CostPerkWh", costPerkWh);
-          session.put("SessionCost", (Double) nested.get(8));
+          session.put("Cost Per kWh", costPerkWh);
+          session.put("Session Cost", (Double) nested.get(8));
           ChargingSessionsList.add(session);
         }
         
-        answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+        answer.put("Vehicle Charging Sessions List", ChargingSessionsList);
 
         allData.add(answer);
       }
-      allVehicles.put("EVChargingSessions", allData);
+      allVehicles.put("EV Charging Sessions", allData);
       String ugly = allVehicles.toString();
       try {
         JsonNode node = mapper.readTree(ugly);
@@ -1150,23 +1225,29 @@ class ChargingProcessController {
 
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      answer.put("Vehicle Id", (Integer) userHasVehicleId.get());
       //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Request Time",  currTime.toString());
+      answer.put("Total kWh Consumed",  Math.round(totalkWh*100d)/100d);
+      answer.put("Visited Points", spotsUsed);
       answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        session.put("Session Index", (Integer) nested.get(0));
+        session.put("Session Id", (Integer) nested.get(1));
+        session.put("Energy Provider", (String) nested.get(2));
+        String str2=nested.get(3).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On",str);
+         str2=nested.get(5).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Price Policy Ref", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -1177,12 +1258,12 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
+        session.put("Cost Per kWh", costPerkWh);
+        session.put("Session Cost", (Double) nested.get(8));
         ChargingSessionsList.add(session);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("Vehicle Charging Sessions List", ChargingSessionsList);
       
     
       String ugly = answer.toString();
@@ -1248,24 +1329,30 @@ class ChargingProcessController {
       }
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      answer.put("Vehicle Id", (Integer) userHasVehicleId.get());
       //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("StartDate",  date1.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Request Time",  currTime.toString());
+      answer.put("Start Date",  date1.toString());
+      answer.put("Total kWh Consumed",  Math.round(totalkWh*100d)/100d);
+      answer.put("Visited Points", spotsUsed);
       answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        session.put("Session Index", (Integer) nested.get(0));
+        session.put("Session Id", (Integer) nested.get(1));
+        session.put("Energy Provider", (String) nested.get(2));
+        String str2=nested.get(3).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On", str);
+         str2=nested.get(5).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Price Policy Ref", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -1276,12 +1363,12 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
+        session.put("Cost Per kWh", costPerkWh);
+        session.put("Session Cost", (Double) nested.get(8));
         ChargingSessionsList.add(session);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("Vehicle Charging Sessions List", ChargingSessionsList);
       
     
       String ugly = answer.toString();
@@ -1349,25 +1436,31 @@ class ChargingProcessController {
       }
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
+      answer.put("Vehicle Id", (Integer) userHasVehicleId.get());
       //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("StartDate",  date1.toString());
-      answer.put("EndDate",  date2.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
+      answer.put("Request Time",  currTime.toString());
+      answer.put("Start Date",  date1.toString());
+      answer.put("End Date",  date2.toString());
+      answer.put("Total kWh Consumed", (double) Math.round(totalkWh*100d)/100d);
+      answer.put("Visited Points", spotsUsed);
       answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
         ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        session.put("Session Index", (Integer) nested.get(0));
+        session.put("Session Id", (Integer) nested.get(1));
+        session.put("Energy Provider", (String) nested.get(2));
+        String str2=nested.get(3).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        session.put("Started On", str);
+         str2=nested.get(4).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Charged On", str);
+         str2=nested.get(5).toString();
+         str = str2.substring(0, str2.length() - 2);
+        session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(6));
+        session.put("Price Policy Ref", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -1378,12 +1471,12 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
+        session.put("Cost Per kWh", costPerkWh);
+        session.put("Session Cost", (Double) nested.get(8));
         ChargingSessionsList.add(session);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      answer.put("Vehicle Charging Sessions List", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
@@ -1450,27 +1543,33 @@ class ChargingProcessController {
           }
           nested.add(10, costPerkWh);
           ObjectNode session = mapper.createObjectNode();
-          session.put("ProviderId", i);
-          session.put("ProviderName", providerName);
-          session.put("StationId", (Integer) nested.get(2));
-          session.put("SessionId", (Integer) nested.get(3));
-          session.put("VehicleId", userHasVehicleId);
-          session.put("StartedOn", nested.get(5).toString());
-          session.put("ChargedOn", nested.get(6).toString());
-          session.put("FinishedOn", nested.get(7).toString());
-          session.put("kWhDelivered", (Double) nested.get(8));
-          session.put("PricePolicyRef", (String) nested.get(9));
-          session.put("CostPerkWh", (Double) nested.get(10));
-          session.put("TotalCost", (Double) nested.get(11));
+          session.put("Provider Id", i);
+          session.put("Provider Name", providerName);
+          session.put("Station Id", (Integer) nested.get(2));
+          session.put("Session Id", (Integer) nested.get(3));
+          session.put("Vehicle Id", userHasVehicleId);
+          String str2=nested.get(5).toString();
+          String str = str2.substring(0, str2.length() - 2);  
+          session.put("Started On", str);
+           str2=nested.get(6).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(7).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
+          session.put("kWh Delivered", (Double) nested.get(8));
+          session.put("Price Policy Ref", (String) nested.get(9));
+          session.put("Cost Per kWh", (Double) nested.get(10));
+          session.put("Total Cost", (Double) nested.get(11));
           ChargingSessionsList.add(session);
         }
 
-        answer.put("ProviderChargingSessionsList", ChargingSessionsList);
+        answer.put("Provider Charging Sessions List", ChargingSessionsList);
         
         allData.add(answer);
       }
       
-      allProviders.put("ProvidersSessionsList", allData);
+      allProviders.put("Providers Sessions List", allData);
       String ugly = allProviders.toString();
         try {
           JsonNode node = mapper.readTree(ugly);
@@ -1523,22 +1622,28 @@ class ChargingProcessController {
         }
         nested.add(10, costPerkWh);
         ObjectNode session = mapper.createObjectNode();
-        session.put("ProviderId", (Integer) providerId.get());
-        session.put("ProviderName", providerName);
-        session.put("StationId", (Integer) nested.get(2));
-        session.put("SessionId", (Integer) nested.get(3));
-        session.put("VehicleId", userHasVehicleId);
-        session.put("StartedOn", nested.get(5).toString());
-        session.put("ChargedOn", nested.get(6).toString());
-        session.put("FinishedOn", nested.get(7).toString());
-        session.put("kWhDelivered", (Double) nested.get(8));
-        session.put("PricePolicyRef", (String) nested.get(9));
-        session.put("CostPerkWh", (Double) nested.get(10));
-        session.put("TotalCost", (Double) nested.get(11));
+        session.put("Provider Id", (Integer) providerId.get());
+        session.put("Provider Name", providerName);
+        session.put("Station Id", (Integer) nested.get(2));
+        session.put("Session Id", (Integer) nested.get(3));
+        session.put("Vehicle Id", userHasVehicleId);
+        String str2=nested.get(5).toString();
+          String str = str2.substring(0, str2.length() - 2);  
+          session.put("Started On", str);
+           str2=nested.get(6).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(7).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(8));
+        session.put("Price Policy Ref", (String) nested.get(9));
+        session.put("Cost Per kWh", (Double) nested.get(10));
+        session.put("Total Cost", (Double) nested.get(11));
         ChargingSessionsList.add(session);
       }
 
-      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
+      answer.put("Provider Charging Sessions List", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
@@ -1601,22 +1706,28 @@ class ChargingProcessController {
         }
         nested.add(10, costPerkWh);
         ObjectNode session = mapper.createObjectNode();
-        session.put("ProviderId", (Integer) providerId.get());
-        session.put("ProviderName", providerName);
-        session.put("StationId", (Integer) nested.get(2));
-        session.put("SessionId", (Integer) nested.get(3));
-        session.put("VehicleId", userHasVehicleId);
-        session.put("StartedOn", nested.get(5).toString());
-        session.put("ChargedOn", nested.get(6).toString());
-        session.put("FinishedOn", nested.get(7).toString());
-        session.put("kWhDelivered", (Double) nested.get(8));
-        session.put("PricePolicyRef", (String) nested.get(9));
-        session.put("CostPerkWh", (Double) nested.get(10));
-        session.put("TotalCost", (Double) nested.get(11));
+        session.put("Provider Id", (Integer) providerId.get());
+        session.put("Provider Name", providerName);
+        session.put("Station Id", (Integer) nested.get(2));
+        session.put("Session Id", (Integer) nested.get(3));
+        session.put("Vehicle Id", userHasVehicleId);
+        String str2=nested.get(5).toString();
+          String str = str2.substring(0, str2.length() - 2);  
+          session.put("Started On", str);
+           str2=nested.get(6).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(7).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(8));
+        session.put("Price Policy Ref", (String) nested.get(9));
+        session.put("Cost Per kWh", (Double) nested.get(10));
+        session.put("Total Cost", (Double) nested.get(11));
         ChargingSessionsList.add(session);
       }
 
-      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
+      answer.put("Provider Charging Sessions List", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
@@ -1678,22 +1789,28 @@ class ChargingProcessController {
         }
         nested.add(10, costPerkWh);
         ObjectNode session = mapper.createObjectNode();
-        session.put("ProviderId", (Integer) providerId.get());
-        session.put("ProviderName", providerName);
-        session.put("StationId", (Integer) nested.get(2));
-        session.put("SessionId", (Integer) nested.get(3));
-        session.put("VehicleId", userHasVehicleId);
-        session.put("StartedOn", nested.get(5).toString());
-        session.put("ChargedOn", nested.get(6).toString());
-        session.put("FinishedOn", nested.get(7).toString());
-        session.put("kWhDelivered", (Double) nested.get(8));
-        session.put("PricePolicyRef", (String) nested.get(9));
-        session.put("CostPerkWh", (Double) nested.get(10));
-        session.put("TotalCost", (Double) nested.get(11));
+        session.put("Provider Id", (Integer) providerId.get());
+        session.put("Provider Name", providerName);
+        session.put("Station Id", (Integer) nested.get(2));
+        session.put("Session Id", (Integer) nested.get(3));
+        session.put("Vehicle Id", userHasVehicleId);
+        String str2=nested.get(5).toString();
+          String str = str2.substring(0, str2.length() - 2);  
+          session.put("Started On", str);
+           str2=nested.get(6).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Charged On", str);
+           str2=nested.get(7).toString();
+           str = str2.substring(0, str2.length() - 2);
+          session.put("Finished On", str);
+        session.put("kWh Delivered", (Double) nested.get(8));
+        session.put("Price Policy Ref", (String) nested.get(9));
+        session.put("Cost Per kWh", (Double) nested.get(10));
+        session.put("Total Cost", (Double) nested.get(11));
         ChargingSessionsList.add(session);
       }
 
-      answer.put("ProviderChargingSessionsList", ChargingSessionsList);
+      answer.put("Provider Charging Sessions List", ChargingSessionsList);
       
       String ugly = answer.toString();
       try {
