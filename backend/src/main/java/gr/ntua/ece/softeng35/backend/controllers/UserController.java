@@ -335,6 +335,98 @@ class UserController {
   
 
   @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/perstation/{stationid}")
+  JsonNode mySessions(@PathVariable Optional<Integer> id,
+                      @PathVariable Optional<Integer> stationid) {
+
+    if(!id.isPresent()) {
+        throw new BadRequestException();
+    }
+    else {
+        if(stationid.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode allStations = mapper.createObjectNode();
+            ArrayNode allData = mapper.createArrayNode();
+
+
+            ObjectNode answer = mapper.createObjectNode();
+            ObjectNode allSessions = mapper.createObjectNode();
+            ArrayNode ChargingSessionsList = mapper.createArrayNode();
+                    
+            List<List<Object>> temp = repository.findByStationForUser(stationid.get(),id.get());
+            Boolean flag = false;
+
+            /* retrieve sums from sessions  */
+            List<List<Object>> PointsSessions = repository.findBySumsByStationForUser(stationid.get(),id.get());
+            
+            
+            Long sessions = (Long) PointsSessions.get(0).get(1) ;
+            Double totalCost = (Double) PointsSessions.get(0).get(2);
+            Double totalkWh = (Double) PointsSessions.get(0).get(3);
+
+            // res.add(temp);
+            if (flag==true) {
+                answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
+                answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+                answer.put("Request Time", temp.get(0).get(2).toString());  // current time
+            }
+            else {
+                answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
+                answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+                answer.put("Request Time", temp.get(0).get(3).toString());  // current time
+            }
+            answer.put("Total kWh Delivered", totalkWh);            // total kWh
+            answer.put("Sessions Number", sessions);         // sessions counter
+            answer.put("Total Cost", totalCost);           // total cost
+            answer.put("Distinct Spots Used", (Long) temp.get(0).get(4));  // number of distinct spots used
+            
+            
+            /*Integer spotid = (Integer) PointsSessions.get(0);
+            Integer stationId = stationid.get();
+            PointsSessions.remove(0);
+            Integer stationspotid = repository.findStationSpotId(stationId, spotid, id.get());
+            PointsSessions.add(0, stationspotid);*/
+
+            List<List<Object>> ChargingProcesses = repository.findByStationByUser(stationid.get(), id.get());
+            
+            answer.put("Vehicle Name",(String) temp.get(0).get(6));
+            for (List<Object> nested : ChargingProcesses){
+            ObjectNode session = mapper.createObjectNode();
+
+            session.put("PricePolicyRef", (String) nested.get(1));
+            session.put("Cost" ,(Double) nested.get(3));
+            session.put("Started On", nested.get(2).toString());
+            session.put("Charged On", nested.get(4).toString());
+            session.put("Finished On",nested.get(5).toString());
+            session.put("kWhDelivered", (Double) nested.get(6));
+            session.put("Payment Way", (String) nested.get(7));
+            session.put("Rating", (Double) nested.get(8));
+            
+            ChargingSessionsList.add(session);
+            }
+
+            answer.put("Station Charging Sessions", ChargingSessionsList); 
+            
+            //allData.add(answer);
+
+            //allStations.put("ChargingStationsSessions", allData);
+            String ugly = answer.toString();
+                try {
+                    JsonNode node = mapper.readTree(ugly);
+                    return node;
+                }
+                catch (Exception e) {
+                    JsonNode node = null;
+                    return node;
+                } 
+        }
+        else {
+            throw new BadRequestException();
+        }
+    }
+}
+
+  @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/users")
   List<User> all() {
     return repository.findAll();

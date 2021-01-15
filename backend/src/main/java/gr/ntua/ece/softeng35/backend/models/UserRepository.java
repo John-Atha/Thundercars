@@ -57,4 +57,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.point20, u.point23, u.point37, u.point74, u.point110, u.point160, u.point220, u.point430 FROM PowerPerChargingPoint u WHERE u.acCharger.id= ?1")
     List<List<Double>> findAcChargerPowerPerChargingPoint(Integer acChargerId);
 
+    @Query(value = "SELECT u.chargingSpot.id, COUNT(*), SUM(u.cost), SUM(u.kwhDelivered) FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id=?2")
+    List<List<Object>> findBySumsByStationForUser(Integer chargingStation , Integer userId);
+
+    @Query(value = "SELECT u.id, u.chargingStation.id, u.chargingStation.operator.title, CURRENT_TIME, COUNT( DISTINCT u.chargingSpot.id), u.chargingSpot.id, u.vehicle.model FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id = ?2")
+    List<List<Object>> findByStationForUser(Integer chargingStation , Integer userId);
+
+    @Query(value = "SELECT u.id,u.chargingProgram,u.connectionTime,u.cost,u.disconnectTime,u.doneChargingTime,u.kwhDelivered,u.paymentWay,u.rating FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id = ?2 ORDER BY u.connectionTime")
+    List<List<Object>> findByStationByUser(Integer chargingStation , Integer userId);
 }
