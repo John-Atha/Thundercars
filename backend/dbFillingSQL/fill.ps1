@@ -27,7 +27,7 @@ Get-Content connection_type.sql |mysql -u root db;
 Get-Content level.sql |mysql -u root db;
 Get-Content current_type.sql |mysql -u root db;
 Get-Content charging_spot.sql |mysql -u root db;
-Get-Content stations.sql |mysql -u root db;
+Get-Content charging_stations.sql |mysql -u root db;
 Get-Content charging_station_spots.sql | mysql -u root db;
 Get-Content connection_types2.sql | mysql -u root db;
 Get-Content charging_process1.sql | mysql -u root db;
