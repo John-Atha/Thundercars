@@ -82,20 +82,20 @@ class UserController {
 
         answer.put("Username", (String) userBasic.get(0));
         answer.put("Email", (String) userBasic.get(1));
-        answer.put("FirstName", (String) userBasic.get(2));
-        answer.put("LastName", (String) userBasic.get(3));
-        answer.put("DateOfBirth", userBasic.get(4).toString());
+        answer.put("First Name", (String) userBasic.get(2));
+        answer.put("Last Name", (String) userBasic.get(3));
+        answer.put("Date Of Birth", userBasic.get(4).toString());
   
         if (hasAddress==false) {
           answer.put("Address", "Unknown");
         }
         else {
-          answer.put("AddressLine1", (String) addressBasic.get(0));
+          answer.put("AddressLine 1", (String) addressBasic.get(0));
           answer.put("Town", (String) addressBasic.get(1));
-          answer.put("StateOrProvince", (String) addressBasic.get(2));
-          answer.put("PostCode", (String) addressBasic.get(3));
-          answer.put("ContactTelephone1", (String) addressBasic.get(4));
-          answer.put("ContactTelephone2", (String) addressBasic.get(5));
+          answer.put("State Or Province", (String) addressBasic.get(2));
+          answer.put("Postcode", (String) addressBasic.get(3));
+          answer.put("Contact Telephone 1", (String) addressBasic.get(4));
+          answer.put("Contact Telephone 2", (String) addressBasic.get(5));
         }
         if (hasCountry==false) {
           answer.put("Country", "Unknown");
@@ -151,18 +151,18 @@ class UserController {
             current.put("Type", (String) basicsList.get(1));
             current.put("Model", (String) basicsList.get(2));
             if (basicsList.get(3)!=null) {
-              current.put("ReleaseYear", basicsList.get(3).toString());
+              current.put("Release Year", basicsList.get(3).toString());
             }
             else {
-              current.put("ReleaseYear","Unknown");
+              current.put("Release Year","Unknown");
             }
-            current.put("UsableBatterySize", (Double) basicsList.get(4));
-            current.put("EnergyConsumption", (Double) basicsList.get(5));
+            current.put("Usable Battery Size", (Double) basicsList.get(4));
+            current.put("Energy Consumption", (Double) basicsList.get(5));
             if (acChargers.size()==0) {
-              current.put("AcCharging", "NO");
+              current.put("Ac Charging", "NO");
             }
             else {
-              current.put("AcCharging", "YES");
+              current.put("Ac Charging", "YES");
               List<String> allPortNames = new ArrayList();
               //ObjectNode allPorts = mapper.createObjectNode();
               ArrayNode PortNamesList = mapper.createArrayNode();
@@ -175,16 +175,16 @@ class UserController {
               }
               for (String name : allPortNames) {
                 ObjectNode currPort = mapper.createObjectNode();
-                currPort.put("PortName", name);
+                currPort.put("Port Name", name);
                 PortNamesList.add(currPort);
               }
-              current.put("AcChargerPorts", PortNamesList);
+              current.put("AcC harger Ports", PortNamesList);
             }
             if (dcChargers.size()==0) {
-              current.put("DcCharging", "NO");
+              current.put("Dc Charging", "NO");
             }
             else {
-              current.put("DcCharging", "YES");
+              current.put("Dc Charging", "YES");
               List<String> allPortNames = new ArrayList();
               //ObjectNode allPorts = mapper.createObjectNode();
               ArrayNode PortNamesList = mapper.createArrayNode();
@@ -197,15 +197,15 @@ class UserController {
               }
               for (String name : allPortNames) {
                 ObjectNode currPort = mapper.createObjectNode();
-                currPort.put("PortName", name);
+                currPort.put("Port Name", name);
                 PortNamesList.add(currPort);
               }
-              current.put("DcChargerPorts", PortNamesList);
+              current.put("Dc Charger Ports", PortNamesList);
             }
             vehiclesList.add(current);
           }
         }
-        allVehicles.put("VehiclesList", vehiclesList);
+        allVehicles.put("Vehicles List", vehiclesList);
         String ugly = allVehicles.toString();
         try {
           JsonNode node = mapper.readTree(ugly);
@@ -241,23 +241,23 @@ class UserController {
       }
       else {
         List<Object> basics2 = basics.get(0);
-        answer.put("AcChargerId", chargerid.get());
-        answer.put("UsablePhases", (Integer) basics2.get(0));
-        answer.put("MaxPower", (Double) basics2.get(1));
+        answer.put("Ac Charger Id", chargerid.get());
+        answer.put("Usable Phases", (Integer) basics2.get(0));
+        answer.put("Max Power", (Double) basics2.get(1));
 
         if (portnames.size()==0) {
-          answer.put("PortNames", "Unknown");
+          answer.put("Port Names", "Unknown");
         }
         else {
           for (String port : portnames) {
             ObjectNode curr = mapper.createObjectNode();
-            curr.put("PortName", port);
+            curr.put("Port Name", port);
             portnamesList.add(curr);
           }
           answer.put("Ports", portnamesList);
         }
         if (PowerPerCharging.size()==0) {
-          answer.put("PowerPerChargingPoint", "Unknown");
+          answer.put("Power Per Charging Point", "Unknown");
         }
         else {
           List<Double> PowerPerCharging2 = PowerPerCharging.get(0);
@@ -270,7 +270,7 @@ class UserController {
           curr.put("16.0", (Double) PowerPerCharging2.get(5));
           curr.put("22.0", (Double) PowerPerCharging2.get(6));
           curr.put("43.0", (Double) PowerPerCharging2.get(7));
-          answer.put("PowerPerChargingPoint", curr);       
+          answer.put("Power Per Charging Point", curr);       
         }
         String ugly = answer.toString();
         try {
@@ -305,16 +305,16 @@ class UserController {
       }
       else {
         //List<Object> basics2 = basics.get(0);
-        answer.put("DcChargerId", chargerid.get());
-        answer.put("MaxPower", (Double) basics.get(0));
+        answer.put("Dc Charger Id", chargerid.get());
+        answer.put("Max Power", (Double) basics.get(0));
 
         if (portnames.size()==0) {
-          answer.put("PortNames", "Unknown");
+          answer.put("Port Names", "Unknown");
         }
         else {
           for (String port : portnames) {
             ObjectNode curr = mapper.createObjectNode();
-            curr.put("PortName", port);
+            curr.put("Port Name", port);
             portnamesList.add(curr);
           }
           answer.put("Ports", portnamesList);
