@@ -1978,9 +1978,6 @@ class ChargingProcessController {
       ArrayNode CsvCharging = mapper.createArrayNode();
       
       for (Integer i=1; i<13201; i++) {
-        ObjectNode answer = mapper.createObjectNode();
-        ObjectNode allSessions = mapper.createObjectNode();
-        ArrayNode ChargingSessionsList = mapper.createArrayNode();
 
         Integer userId = repository.findUserByUserVehicle(i);
         Integer vehicleId = repository.findVehicleByUserVehicle(i);
@@ -2060,19 +2057,13 @@ class ChargingProcessController {
           return "";
         }   
     }
-    else {
-      return"";
-    }
-  }
-/*
     else if (userHasVehicleId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
       if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
         throw new BadRequestException();
       }
       ObjectMapper mapper = new ObjectMapper();
-      ObjectNode answer = mapper.createObjectNode();
-      //ObjectNode allSessions = mapper.createObjectNode();
-      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
       
       Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
       Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
@@ -2110,23 +2101,23 @@ class ChargingProcessController {
 
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
-      //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
-      answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
-        ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("VehicleId", (Integer) userHasVehicleId.get());//answer.put("UserId", (Integer) userId);
+        csvsession.put("RequestTime",  currTime.toString());
+        csvsession.put("TotalkWhConsumed", totalkWh);
+        csvsession.put("VisitedPoints", spotsUsed);
+        csvsession.put("Sessions", counter);
+        csvsession.put("SessionIndex", (Integer) nested.get(0));
+        csvsession.put("SessionId", (Integer) nested.get(1));
+        csvsession.put("EnergyProvider", (String) nested.get(2));
+        csvsession.put("StartedOn", nested.get(3).toString());
+        csvsession.put("ChargedOn", nested.get(4).toString());
+        csvsession.put("FinishedOn", nested.get(5).toString());
+        csvsession.put("kWhDelivered", (Double) nested.get(6));
+        csvsession.put("PricePolicyRef", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -2137,44 +2128,26 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
-        ChargingSessionsList.add(session);
+        csvsession.put("CostPerkWh", costPerkWh);
+        csvsession.put("SessionCost", (Double) nested.get(8));
+
+        CsvCharging.add(csvsession);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      CsvAll.put("VehicleChargingSessionsList", CsvCharging);
       
-    
-      String ugly = answer.toString();
-      if(format.isPresent()){
-        if(format.equals(Optional.of("json"))) {
-          try {
-            JsonNode node = mapper.readTree(ugly);
-            return node;
-          }
-          catch (Exception e) {
-            JsonNode node = null;
-            return node;
-          } 
-        }
-        else{
-          JsonNode node = null;
-          return null;
-        }
-        
-      }
-      else{
         try {
-          JsonNode node = mapper.readTree(ugly);
-          return node;
+          String ugly_csv = CsvAll.toString();
+          JSONObject output = new JSONObject(ugly_csv);
+          JSONArray docs = output.getJSONArray("VehicleChargingSessionsList");
+          String csv = CDL.toString(docs);
+          return csv;
         }
         catch (Exception e) {
-          JsonNode node = null;
-          return node;
-        } 
-      }  
+          return "";
+        }  
     }
-
+    
     else if (userHasVehicleId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
       if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
         throw new BadRequestException();
@@ -2188,9 +2161,8 @@ class ChargingProcessController {
       }
 
       ObjectMapper mapper = new ObjectMapper();
-      ObjectNode answer = mapper.createObjectNode();
-      ObjectNode allSessions = mapper.createObjectNode();
-      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
       
       Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
       Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
@@ -2227,24 +2199,24 @@ class ChargingProcessController {
       }
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
-      //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("StartDate",  date1.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
-      answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
-        ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("VehicleId", (Integer) userHasVehicleId.get());
+        csvsession.put("RequestTime",  currTime.toString());
+        csvsession.put("StartDate",  date1.toString());
+        csvsession.put("TotalkWhConsumed", totalkWh);
+        csvsession.put("VisitedPoints", spotsUsed);
+        csvsession.put("Sessions", counter);
+        csvsession.put("SessionIndex", (Integer) nested.get(0));
+        csvsession.put("SessionId", (Integer) nested.get(1));
+        csvsession.put("EnergyProvider", (String) nested.get(2));
+        csvsession.put("StartedOn", nested.get(3).toString());
+        csvsession.put("ChargedOn", nested.get(4).toString());
+        csvsession.put("FinishedOn", nested.get(5).toString());
+        csvsession.put("kWhDelivered", (Double) nested.get(6));
+        csvsession.put("PricePolicyRef", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -2255,44 +2227,25 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
-        ChargingSessionsList.add(session);
+        csvsession.put("CostPerkWh", costPerkWh);
+        csvsession.put("SessionCost", (Double) nested.get(8));
+        CsvCharging.add(csvsession);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      CsvAll.put("VehicleChargingSessionsList", CsvCharging);
       
-    
-      String ugly = answer.toString();
-      if(format.isPresent()){
-        if(format.equals(Optional.of("json"))) {
-          try {
-            JsonNode node = mapper.readTree(ugly);
-            return node;
-          }
-          catch (Exception e) {
-            JsonNode node = null;
-            return node;
-          } 
-        }
-        else{
-          JsonNode node = null;
-          return null;
-        }
-        
+      
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("VehicleChargingSessionsList");
+        String csv = CDL.toString(docs);
+        return csv;
       }
-      else{
-        try {
-          JsonNode node = mapper.readTree(ugly);
-          return node;
-        }
-        catch (Exception e) {
-          JsonNode node = null;
-          return node;
-        } 
-      }  
-    }
-
+      catch (Exception e) {
+        return "";
+      } 
+    }  
     else {
       if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
         throw new BadRequestException();
@@ -2308,9 +2261,8 @@ class ChargingProcessController {
       }
 
       ObjectMapper mapper = new ObjectMapper();
-      ObjectNode answer = mapper.createObjectNode();
-      ObjectNode allSessions = mapper.createObjectNode();
-      ArrayNode ChargingSessionsList = mapper.createArrayNode();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
       
       Integer userId = repository.findUserByUserVehicle(userHasVehicleId.get());
       Integer vehicleId = repository.findVehicleByUserVehicle(userHasVehicleId.get());
@@ -2347,25 +2299,25 @@ class ChargingProcessController {
       }
 
       counter--;
-      answer.put("VehicleId", (Integer) userHasVehicleId.get());
-      //answer.put("UserId", (Integer) userId);
-      answer.put("RequestTime",  currTime.toString());
-      answer.put("StartDate",  date1.toString());
-      answer.put("EndDate",  date2.toString());
-      answer.put("TotalkWhConsumed", totalkWh);
-      answer.put("VisitedPoints", spotsUsed);
-      answer.put("Sessions", counter);
       
       for (List<Object> nested : processes) {
-        ObjectNode session = mapper.createObjectNode();
-        session.put("SessionIndex", (Integer) nested.get(0));
-        session.put("SessionId", (Integer) nested.get(1));
-        session.put("EnergyProvider", (String) nested.get(2));
-        session.put("StartedOn", nested.get(3).toString());
-        session.put("ChargedOn", nested.get(4).toString());
-        session.put("FinishedOn", nested.get(5).toString());
-        session.put("kWhDelivered", (Double) nested.get(6));
-        session.put("PricePolicyRef", (String) nested.get(7));
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("VehicleId", (Integer) userHasVehicleId.get());
+        csvsession.put("RequestTime",  currTime.toString());
+        csvsession.put("StartDate",  date1.toString());
+        csvsession.put("EndDate",  date2.toString());
+        csvsession.put("TotalkWhConsumed", totalkWh);
+        csvsession.put("VisitedPoints", spotsUsed);
+        csvsession.put("Sessions", counter);
+        csvsession.put("SessionIndex", (Integer) nested.get(0));
+        csvsession.put("SessionId", (Integer) nested.get(1));
+        csvsession.put("EnergyProvider", (String) nested.get(2));
+        csvsession.put("StartedOn", nested.get(3).toString());
+        csvsession.put("ChargedOn", nested.get(4).toString());
+        csvsession.put("FinishedOn", nested.get(5).toString());
+        csvsession.put("kWhDelivered", (Double) nested.get(6));
+        csvsession.put("PricePolicyRef", (String) nested.get(7));
         Double costPerkWh = 0.0;
         if ( (String) nested.get(7)=="slow") {
           costPerkWh = 0.133;
@@ -2376,56 +2328,25 @@ class ChargingProcessController {
         else {
           costPerkWh = 0.158;
         }
-        session.put("CostPerkWh", costPerkWh);
-        session.put("SessionCost", (Double) nested.get(8));
-        ChargingSessionsList.add(session);
+        csvsession.put("CostPerkWh", costPerkWh);
+        csvsession.put("SessionCost", (Double) nested.get(8));
+        CsvCharging.add(csvsession);
       }
       
-      answer.put("VehicleChargingSessionsList", ChargingSessionsList);
+      CsvAll.put("VehicleChargingSessionsList", CsvCharging);
       
-      String ugly = answer.toString();
-      if(format.isPresent()){
-        if(format.equals(Optional.of("json"))) {
-          try {
-            JsonNode node = mapper.readTree(ugly);
-            return node;
-          }
-          catch (Exception e) {
-            JsonNode node = null;
-            return node;
-          } 
-        }
-        else{
-          JsonNode node = null;
-          return null;
-        }
-        
-      }
-      else{
         try {
-          JsonNode node = mapper.readTree(ugly);
-          return node;
+          String ugly_csv = CsvAll.toString();
+          JSONObject output = new JSONObject(ugly_csv);
+          JSONArray docs = output.getJSONArray("VehicleChargingSessionsList");
+          String csv = CDL.toString(docs);
+          return csv;
         }
         catch (Exception e) {
-          JsonNode node = null;
-          return node;
-        } 
-      }  
+          return "";
+        }   
     }
-  }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping(value = {"/evcharge/api/SessionsPerProvider",
@@ -2813,12 +2734,315 @@ class ChargingProcessController {
       } 
     }
   }
-  
 
+@CrossOrigin(origins = "http://localhost:3000")
+@GetMapping(value = {"/evcharge/api/SessionsPerProvider",
+                     "/evcharge/api/SessionsPerProvider/{providerId}",
+                     "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}",
+                     "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}/{endDate}"},
+                     params="format=csv")
+String csvproviderProcess(@PathVariable Optional<Integer> providerId,
+                         @PathVariable Optional<String> startDate,
+                         @PathVariable Optional<String> endDate) {
 
+  if (!providerId.isPresent()) {
 
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode CsvAll = mapper.createObjectNode();
+    ArrayNode CsvCharging = mapper.createArrayNode();
+    
+    for (Integer i=0; i<=155; i++) {
 
+      List<List<Object>> processes = repository.findSessionsByProvider(i);
+      
+      if (processes.size()==0) {
+        continue;
+      }
 
+      for (List<Object> nested : processes) {
+        nested.add(0, i);
+        String providerName = repository.findProviderNameById(i);
+        nested.add(1, providerName);
+        Integer userId = (Integer) nested.get(11);
+        Integer vehicleId = (Integer) nested.get(4);
+        List<Integer> Ids = repository.findUserHasVehicleIdByVehicleAndUser(vehicleId, userId);
+        if (Ids.size()==0) {
+          continue;
+        }
+        Integer userHasVehicleId = Ids.get(0);
+        nested.remove(4);
+        nested.add(4, userHasVehicleId);
+        Double costPerkWh = 0.0;
+        String program = (String) nested.get(9);
+        if (program=="slow") {
+          costPerkWh = 0.133;
+        }
+        else if (program=="medium") {
+          costPerkWh = 0.142;
+        }
+        else {
+          costPerkWh = 0.158;
+        }
+        nested.add(10, costPerkWh);
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("ProviderId", i);
+        csvsession.put("ProviderName", providerName);
+        csvsession.put("StationId", (Integer) nested.get(2));
+        csvsession.put("SessionId", (Integer) nested.get(3));
+        csvsession.put("VehicleId", userHasVehicleId);
+        csvsession.put("StartedOn", nested.get(5).toString());
+        csvsession.put("ChargedOn", nested.get(6).toString());
+        csvsession.put("FinishedOn", nested.get(7).toString());
+        csvsession.put("kWhDelivered", (Double) nested.get(8));
+        csvsession.put("PricePolicyRef", (String) nested.get(9));
+        csvsession.put("CostPerkWh", (Double) nested.get(10));
+        csvsession.put("TotalCost", (Double) nested.get(11));
+
+        CsvCharging.add(csvsession);
+      }
+    }
+    
+    CsvAll.put("ProvidersSessionsList", CsvCharging);
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("ProvidersSessionsList");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      }    
+  }  
+  else if (providerId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+    if (providerId.get()<1 || providerId.get()>156) {
+      throw new BadRequestException();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode CsvAll = mapper.createObjectNode();
+    //ObjectNode allSessions = mapper.createObjectNode();
+    ArrayNode CsvCharging = mapper.createArrayNode();
+
+    List<List<Object>> processes = repository.findSessionsByProvider(providerId.get());
+    
+    if (processes.size()==0) {
+      throw new NoDataFoundException();
+    }
+
+    for (List<Object> nested : processes) {
+      nested.add(0, providerId.get());
+      String providerName = repository.findProviderNameById(providerId.get());
+      nested.add(1, providerName);
+      Integer userId = (Integer) nested.get(11);
+      Integer vehicleId = (Integer) nested.get(4);
+      List<Integer> Ids = repository.findUserHasVehicleIdByVehicleAndUser(vehicleId, userId);
+      if (Ids.size()==0) {
+        continue;
+      }
+      Integer userHasVehicleId = Ids.get(0);
+      nested.remove(4);
+      nested.add(4, userHasVehicleId);
+      Double costPerkWh = 0.0;
+      String program = (String) nested.get(9);
+      if (program=="slow") {
+        costPerkWh = 0.133;
+      }
+      else if (program=="medium") {
+        costPerkWh = 0.142;
+      }
+      else {
+        costPerkWh = 0.158;
+      }
+      nested.add(10, costPerkWh);
+      ObjectNode csvsession = mapper.createObjectNode();
+      csvsession.put("ProviderId", (Integer) providerId.get());
+      csvsession.put("ProviderName", providerName);
+      csvsession.put("StationId", (Integer) nested.get(2));
+      csvsession.put("SessionId", (Integer) nested.get(3));
+      csvsession.put("VehicleId", userHasVehicleId);
+      csvsession.put("StartedOn", nested.get(5).toString());
+      csvsession.put("ChargedOn", nested.get(6).toString());
+      csvsession.put("FinishedOn", nested.get(7).toString());
+      csvsession.put("kWhDelivered", (Double) nested.get(8));
+      csvsession.put("PricePolicyRef", (String) nested.get(9));
+      csvsession.put("CostPerkWh", (Double) nested.get(10));
+      csvsession.put("TotalCost", (Double) nested.get(11));
+
+      CsvCharging.add(csvsession);
+    }
+
+    CsvAll.put("ProviderSessionsList", CsvCharging);
+    
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("ProviderSessionsList");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      } 
+  }
+  else if (providerId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
+    if (providerId.get()<1 || providerId.get()>156) {
+      throw new BadRequestException();
+    }
+    Date date1;
+    try {
+      date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+    }
+    catch (Exception e) {
+      throw new BadRequestException();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode CsvAll = mapper.createObjectNode();
+    ArrayNode CsvCharging = mapper.createArrayNode();
+
+    List<List<Object>> processes = repository.findSessionsByProviderAndStartDate(providerId.get(), date1);
+    
+    if (processes.size()==0) {
+      throw new NoDataFoundException();
+    }
+
+    for (List<Object> nested : processes) {
+      nested.add(0, providerId.get());
+      String providerName = repository.findProviderNameById(providerId.get());
+      nested.add(1, providerName);
+      Integer userId = (Integer) nested.get(11);
+      Integer vehicleId = (Integer) nested.get(4);
+      //Integer userHasVehicleId = repository.findUserHasVehicleIdByVehicleAndUser(vehicleId, userId).get(0);
+      List<Integer> Ids = repository.findUserHasVehicleIdByVehicleAndUser(vehicleId, userId);
+      if (Ids.size()==0) {
+        continue;
+      }
+      Integer userHasVehicleId = Ids.get(0);
+      nested.remove(4);
+      nested.add(4, userHasVehicleId);
+      Double costPerkWh = 0.0;
+      String program = (String) nested.get(9);
+      if (program=="slow") {
+        costPerkWh = 0.133;
+      }
+      else if (program=="medium") {
+        costPerkWh = 0.142;
+      }
+      else {
+        costPerkWh = 0.158;
+      }
+      nested.add(10, costPerkWh);
+      ObjectNode csvsession = mapper.createObjectNode();
+
+      csvsession.put("ProviderId", (Integer) providerId.get());
+      csvsession.put("ProviderName", providerName);
+      csvsession.put("StationId", (Integer) nested.get(2));
+      csvsession.put("SessionId", (Integer) nested.get(3));
+      csvsession.put("VehicleId", userHasVehicleId);
+      csvsession.put("StartedOn", nested.get(5).toString());
+      csvsession.put("ChargedOn", nested.get(6).toString());
+      csvsession.put("FinishedOn", nested.get(7).toString());
+      csvsession.put("kWhDelivered", (Double) nested.get(8));
+      csvsession.put("PricePolicyRef", (String) nested.get(9));
+      csvsession.put("CostPerkWh", (Double) nested.get(10));
+      csvsession.put("TotalCost", (Double) nested.get(11));
+
+      CsvCharging.add(csvsession);
+    }
+
+    CsvAll.put("ProviderSessionsList", CsvCharging);
+    
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("ProviderSessionsList");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      }  
+  }
+  else {
+    if (providerId.get()<1 || providerId.get()>156) {
+      throw new BadRequestException();
+    }
+    Date date1, date2;
+    try {
+      date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+    }
+    catch (Exception e) {
+      throw new BadRequestException();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode CsvAll = mapper.createObjectNode();
+    //ObjectNode allSessions = mapper.createObjectNode();
+    ArrayNode CsvCharging = mapper.createArrayNode();
+
+    List<List<Object>> processes = repository.findSessionsByProviderAndBothDates(providerId.get(), date1, date2);
+    
+    if (processes.size()==0) {
+      throw new NoDataFoundException();
+    }
+
+    for (List<Object> nested : processes) {
+      nested.add(0, providerId.get());
+      String providerName = repository.findProviderNameById(providerId.get());
+      nested.add(1, providerName);
+      Integer userId = (Integer) nested.get(11);
+      Integer vehicleId = (Integer) nested.get(4);
+      List<Integer> Ids = repository.findUserHasVehicleIdByVehicleAndUser(vehicleId, userId);
+      if (Ids.size()==0) {
+        continue;
+      }
+      Integer userHasVehicleId = Ids.get(0);
+      nested.remove(4);
+      nested.add(4, userHasVehicleId);
+      Double costPerkWh = 0.0;
+      String program = (String) nested.get(9);
+      if (program=="slow") {
+        costPerkWh = 0.133;
+      }
+      else if (program=="medium") {
+        costPerkWh = 0.142;
+      }
+      else {
+        costPerkWh = 0.158;
+      }
+      nested.add(10, costPerkWh);
+      ObjectNode csvsession = mapper.createObjectNode();
+      
+      csvsession.put("ProviderId", (Integer) providerId.get());
+      csvsession.put("ProviderName", providerName);
+      csvsession.put("StationId", (Integer) nested.get(2));
+      csvsession.put("SessionId", (Integer) nested.get(3));
+      csvsession.put("VehicleId", userHasVehicleId);
+      csvsession.put("StartedOn", nested.get(5).toString());
+      csvsession.put("ChargedOn", nested.get(6).toString());
+      csvsession.put("FinishedOn", nested.get(7).toString());
+      csvsession.put("kWhDelivered", (Double) nested.get(8));
+      csvsession.put("PricePolicyRef", (String) nested.get(9));
+      csvsession.put("CostPerkWh", (Double) nested.get(10));
+      csvsession.put("TotalCost", (Double) nested.get(11));
+     
+      CsvCharging.add(csvsession);
+    }
+
+    CsvAll.put("ProviderSessionsList", CsvCharging);
+    
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("ProviderSessionsList");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      } 
+  }
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/evcharge/api/chargingprocesses")
@@ -2861,4 +3085,5 @@ class ChargingProcessController {
   void deleteChargingProcess(@PathVariable Integer id) {
     repository.deleteById(id);
   }
+
 }
