@@ -63,9 +63,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.chargingSpot.id, COUNT(*), SUM(u.cost), SUM(u.kwhDelivered) FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id=?2")
     List<List<Object>> findBySumsByStationForUser(Integer chargingStation , Integer userId);
 
-    @Query(value = "SELECT u.id, u.chargingStation.id, u.chargingStation.operator.title, CURRENT_TIME, COUNT( DISTINCT u.chargingSpot.id), u.chargingSpot.id, u.vehicle.model FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id = ?2")
+    @Query(value = "SELECT u.id, u.chargingStation.id, u.chargingStation.operator.title, CURRENT_TIME, COUNT( DISTINCT u.chargingSpot.id), u.chargingSpot.id, u.vehicle.model , u.chargingStation.address.Title, u.chargingStation.address.AddressLine1, u.vehicle.id FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id = ?2")
     List<List<Object>> findByStationForUser(Integer chargingStation , Integer userId);
 
     @Query(value = "SELECT u.id,u.chargingProgram,u.connectionTime,u.cost,u.disconnectTime,u.doneChargingTime,u.kwhDelivered,u.paymentWay,u.rating FROM ChargingProcess u WHERE u.chargingStation.id = ?1 AND u.user.id = ?2 ORDER BY u.connectionTime")
     List<List<Object>> findByStationByUser(Integer chargingStation , Integer userId);
+
+    @Query(value = "SELECT u.id,u.chargingProgram,u.connectionTime,u.cost,u.disconnectTime,u.doneChargingTime,u.kwhDelivered,u.paymentWay,u.rating, u.chargingStation.id , u.chargingStation.operator.title, u.chargingStation.address.Title, u.chargingStation.address.AddressLine1,u.vehicle.model,u.vehicle.id FROM ChargingProcess u WHERE u.user.id = ?1 ORDER BY u.connectionTime DESC")
+    List<List<Object>> findByProcessesByUser(Integer userId);
+
+    @Query(value = "SELECT u.chargingStation.id, COUNT(u.chargingStation.id),u.chargingStation.operator.id, u.chargingStation.operator.title, u.chargingStation.address.Title, u.chargingStation.address.AddressLine1, u.chargingStation.address.ContactTelephone1 FROM ChargingProcess u WHERE u.user.id = ?1 GROUP BY u.chargingStation.id ")
+    List<List<Object>> findByStationsVisitedByUser(Integer userId) ;
+
 }
