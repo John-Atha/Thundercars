@@ -364,7 +364,11 @@ class UserController {
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
 
             List<List<Object>> ChargingProcesses = repository.findByProcessesByUser(id.get());
-            
+            if(ChargingProcesses.size() ==0) 
+            {
+              ;
+            }
+            else {
             for (List<Object> nested : ChargingProcesses){
             ObjectNode session = mapper.createObjectNode();
 
@@ -393,73 +397,109 @@ class UserController {
             }
 
             answer.put("Charging Sessions", ChargingSessionsList);
+            }
             
             //find all stations that user has visited
             ObjectNode answer2 = mapper.createObjectNode();
             ArrayNode AllStations2 = mapper.createArrayNode();
 
             List<List<Object>> allStations = repository.findByStationsVisitedByUser(id.get());
+            if (allStations.size()==0) {
+              ;
+            }
+            else{
 
             for (List<Object> nested : allStations ) {
               ObjectNode session = mapper.createObjectNode() ;
 
-              if(nested.get(0).toString()!="null"){
                 session.put("Station Id", (Integer) nested.get(0));
-              }
-              else{
-                session.put("Station Id", "Unknown");
-              }
-              if(nested.get(2).toString()!="null"){
+              
                 session.put("Operator Id", (Integer) nested.get(2));
-              }
-              else{
-                session.put("Operator Id", "Unknown");
-              }
-              if(nested.get(3).toString()!="null"){
+              
                 session.put("Operator", (String) nested.get(3));
-              }
-              else{
-                session.put("Operator", "Unknown");
-              }
-              if(nested.get(4).toString()!="null"){
+              
                 session.put("Station Title",(String) nested.get(4));
-              }
-              else{
-                session.put("Station Title","Unknown");
-              }
-              if(nested.get(5).toString()!="null"){
+              
                 session.put("Station Address",(String) nested.get(5));
-              }
-              else{
-                session.put("Station Address","Unknown");
-              }
-              if(nested.get(6).toString()!="null"){
+              
                 session.put("Contact Telephone", (String) nested.get(6));
-              }
-              else{
-                session.put("Contact Telephone", "Unknown");
-              }
-              if(nested.get(1).toString()!="null"){
+              
                 session.put("Times Visited", (Long) nested.get(1));
-              }
-              else{
-                session.put("Times Visited", "Unknown");
-              }
 
               AllStations2.add(session);
             }
 
             answer2.put("List of Stations Visited",AllStations2);
+            }
+            //find providers per user
+
+            ObjectNode answer3 = mapper.createObjectNode();
+            ArrayNode AllProviders = mapper.createArrayNode();
+
+            List<List<Object>> allProviders = repository.findByProviderVisitedByUser(id.get());
+            if (allProviders.size()==0) {
+              ;
+            }
+            else {
+            for (List<Object> nested : allProviders ) {
+              ObjectNode session = mapper.createObjectNode() ;
+
+                session.put("Current Provider Id", (Integer) nested.get(0));
+              
+                session.put("Current Provider Name", (String) nested.get(1));
+
+              AllProviders.add(session);
+            }
+
+            answer3.put("List of Current Providers", AllProviders);
+            }
+            //list of vehicles
+
+            ObjectNode answer4 = mapper.createObjectNode();
+            ArrayNode AllCars = mapper.createArrayNode();
+
+            List<List<Object>> allCars = repository.findByVehicleByUser(id.get());
+            if (allCars.size()==0) {
+              ;
+            }
+            else {
+            for (List<Object> nested : allCars ) {
+              ObjectNode session = mapper.createObjectNode() ;
+
+                session.put("Vehicle Id", (Integer) nested.get(0));
+              
+                session.put("Vehicle Brand", (String) nested.get(1));
+
+                session.put("Vehicle Model", (String) nested.get(2));
+
+                session.put("Vehicle Type", (String) nested.get(3));
+
+                session.put("Vehicle's sessions", (Long) nested.get(4));
+                Double totkwh = (Double) nested.get(5);
+                session.put("Total kWh Delivered for this Vehicle", Math.round(totkwh*100d)/100d);
+                Double totCost = (Double) nested.get(6) ;
+                session.put("Total Vehicle's Cost",Math.round(totCost*100d)/100d);
+
+              AllCars.add(session);
+            }
+
+            answer4.put("List of Vehicles", AllCars);
+            }
 
             String ugly1 = answer.toString();
             String ugly2 = answer2.toString();
+            String ugly3 = answer3.toString();
+            String ugly4 = answer4.toString();
                 try {
                     JsonNode allsessions = mapper.readTree(ugly1);
                     JsonNode allstations = mapper.readTree(ugly2);
-
+                    JsonNode allproviders = mapper.readTree(ugly3);
+                    JsonNode allcars = mapper.readTree(ugly4);
                     List<JsonNode> node = new ArrayList<>() ;
                     node.add(allsessions);
                     node.add(allstations);
+                    node.add(allproviders);
+                    node.add(allcars);
                     return node;
                 }
                 catch (Exception e) {
@@ -485,11 +525,16 @@ class UserController {
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
                     
             List<List<Object>> temp = repository.findByStationForUser(stationid.get(),id.get());
+            if (temp.size()==0) {
+              throw new NoDataFoundException();
+            }
             Boolean flag = false;
 
             /* retrieve sums from sessions  */
             List<List<Object>> PointsSessions = repository.findBySumsByStationForUser(stationid.get(),id.get());
-            
+            if (PointsSessions.size()==0) {
+              throw new NoDataFoundException();
+            }
             
             Long sessions = (Long) PointsSessions.get(0).get(1) ;
             Double totalCost = (Double) PointsSessions.get(0).get(2);
@@ -498,12 +543,14 @@ class UserController {
             // res.add(temp);
             if (flag==true) {
                 answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
+                answer.put("Operator Id", (Integer) temp.get(0).get(10)); //operator id
                 answer.put("Operator", (String) temp.get(0).get(1));  // operator title
                 answer.put("Station Title", (String) temp.get(0).get(7)); //station title
                 answer.put("Station Address", (String) temp.get(0).get(8)); //station address
               }
             else {
                 answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
+                answer.put("Operator Id", (Integer) temp.get(0).get(10)); //operator id 
                 answer.put("Operator", (String) temp.get(0).get(2));  // operator title
                 answer.put("Station Title", (String) temp.get(0).get(7)); //station title
                 answer.put("Station Address", (String) temp.get(0).get(8)); //station address
@@ -522,7 +569,9 @@ class UserController {
             PointsSessions.add(0, stationspotid);*/
 
             List<List<Object>> ChargingProcesses = repository.findByStationByUser(stationid.get(), id.get());
-            
+            if (ChargingProcesses.size()==0) {
+              throw new NoDataFoundException();
+            }
             answer.put("Vehicle Model",(String) temp.get(0).get(6));
             for (List<Object> nested : ChargingProcesses){
             ObjectNode session = mapper.createObjectNode();
@@ -565,6 +614,86 @@ class UserController {
         }
     }
 }
+
+@CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/perprovider/{providerid}")
+  JsonNode myProvSessions(@PathVariable Optional<Integer> id,
+                      @PathVariable Optional<Integer> providerid) {
+
+    if(!id.isPresent()) {
+        throw new BadRequestException();
+    }
+    else {
+        if(providerid.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode answer = mapper.createObjectNode();
+            ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
+            /* retrieve sums from sessions  */
+            List<List<Object>> PointsSessions = repository.findBySumsByProvider(id.get(),providerid.get());
+            if (PointsSessions.size()==0) {
+              throw new NoDataFoundException();
+            }
+            Double totalkWh = (Double) PointsSessions.get(0).get(3);
+            Double totalCost = (Double) PointsSessions.get(0).get(2);
+            Double avgCost = (Double) PointsSessions.get(0).get(4);
+            answer.put("Operator Id",(Integer) PointsSessions.get(0).get(0));
+            answer.put("Operator",(String) PointsSessions.get(0).get(1));
+            answer.put("Total kWh Delivered", Math.round(totalCost*100d)/100d);
+            answer.put("Total Cost",  Math.round(totalkWh*100d)/100d);
+            answer.put("Average Cost per kWh", Math.round(avgCost*100d)/100d);
+            answer.put("Request Time", PointsSessions.get(0).get(5).toString());  // current time
+            
+            List<List<Object>> ProvidersSess = repository.findByProcessesByProvider(id.get(),providerid.get());
+            
+            if (ProvidersSess.size()==0) {
+              throw new NoDataFoundException();
+            }
+            answer.put("Sessions Number",(Integer) ProvidersSess.size());
+            for (List<Object> nested : ProvidersSess){
+              ObjectNode session = mapper.createObjectNode();
+  
+              session.put("Station Id", (Integer) nested.get(9));  // station id
+              session.put("Station Title", (String) nested.get(11)); //station title
+              session.put("Station Address", (String) nested.get(12)); //station address
+              session.put("Vehicle Id",(Integer) nested.get(14)); // vehicle's id 
+              session.put("Vehicle Model",(String) nested.get(13));
+              session.put("Price Policy Ref.", (String) nested.get(1));
+              session.put("Cost" ,(Double) nested.get(3));
+              String str2 = nested.get(2).toString();
+              String str = str2.substring(0, str2.length() - 2);
+              session.put("Started On", str);
+              str2 = nested.get(4).toString();
+              str = str2.substring(0, str2.length() - 2);
+              session.put("Charged On", str);
+              str2 = nested.get(5).toString();
+              str = str2.substring(0, str2.length() - 2);
+              session.put("Finished On", str);
+              session.put("kWh Delivered", (Double) nested.get(6));
+              session.put("Payment Way", (String) nested.get(7));
+              session.put("Rating", (Double) nested.get(8));
+              
+              ChargingSessionsList.add(session);
+              }
+
+              answer.put("Provider's Charging Sessions", ChargingSessionsList);
+              String ugly = answer.toString();
+                try {
+                    JsonNode node = mapper.readTree(ugly);
+                    return node;
+                }
+                catch (Exception e) {
+                    JsonNode node = null;
+                    return node;
+                }
+        }
+        else {
+          throw new BadRequestException();
+        }
+    }
+  }
+
+
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/users")
