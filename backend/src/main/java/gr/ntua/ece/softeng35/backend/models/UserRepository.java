@@ -31,6 +31,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.Title, u.ISOCode, u.ContinentCode FROM Country u WHERE u.id= ?1")
     List<List<Object>> findCountryInfoForUser(Integer countryId);
 
+    @Query( value = "SELECT u.vehicle.id FROM UserHasVehicle u WHERE u.id= ?1")
+    Integer findVehicleByUserVehicle(Integer userVehicleId);
+    
     //---------------------------------------------------------
 
     @Query(value = "SELECT u.vehicle.id FROM UserHasVehicle u WHERE u.user.id= ?1")

@@ -133,6 +133,9 @@ class UserController {
       }
       else {
         List<Integer> vehicles = repository.findUserVehicles(id.get());
+        if (vehicles.size()==0) {
+          throw new NoDataFoundException();
+        }
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode allVehicles = mapper.createObjectNode();
         ArrayNode vehiclesList = mapper.createArrayNode();
@@ -147,6 +150,7 @@ class UserController {
               continue;  
             }
             List<Object> basicsList = basicsListList.get(0);
+            current.put("Vehicle", (Integer) vehicleId);
             current.put("Brand", (String) basicsList.get(0));
             current.put("Type", (String) basicsList.get(1));
             current.put("Model", (String) basicsList.get(2));
@@ -163,6 +167,13 @@ class UserController {
             }
             else {
               current.put("Ac Charging", "YES");
+              ArrayNode AcChargers = mapper.createArrayNode();
+              for (Integer charger : acChargers) {
+                ObjectNode thisCharger = mapper.createObjectNode();
+                thisCharger.put("AcCharger", charger);             
+                AcChargers.add(thisCharger);
+              }
+              current.put("AcChargers", AcChargers);
               List<String> allPortNames = new ArrayList();
               //ObjectNode allPorts = mapper.createObjectNode();
               ArrayNode PortNamesList = mapper.createArrayNode();
@@ -178,13 +189,20 @@ class UserController {
                 currPort.put("Port Name", name);
                 PortNamesList.add(currPort);
               }
-              current.put("AcC harger Ports", PortNamesList);
+              current.put("Ac Charger Ports", PortNamesList);
             }
             if (dcChargers.size()==0) {
               current.put("Dc Charging", "NO");
             }
             else {
               current.put("Dc Charging", "YES");
+              ArrayNode DcChargers = mapper.createArrayNode();
+              for (Integer charger : dcChargers) {
+                ObjectNode thisCharger = mapper.createObjectNode();
+                thisCharger.put("DcCharger", charger);
+                DcChargers.add(thisCharger);
+              }
+              current.put("DcChargers", DcChargers);
               List<String> allPortNames = new ArrayList();
               //ObjectNode allPorts = mapper.createObjectNode();
               ArrayNode PortNamesList = mapper.createArrayNode();
