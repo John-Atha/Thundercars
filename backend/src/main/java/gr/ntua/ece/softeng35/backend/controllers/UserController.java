@@ -637,8 +637,8 @@ class UserController {
             Double totalkWh = (Double) PointsSessions.get(0).get(3);
             Double totalCost = (Double) PointsSessions.get(0).get(2);
             Double avgCost = (Double) PointsSessions.get(0).get(4);
-            answer.put("Operator Id",(Integer) PointsSessions.get(0).get(0));
-            answer.put("Operator",(String) PointsSessions.get(0).get(1));
+            answer.put("Current Provider Id",(Integer) PointsSessions.get(0).get(0));
+            answer.put("Current Provider",(String) PointsSessions.get(0).get(1));
             answer.put("Total kWh Delivered", Math.round(totalCost*100d)/100d);
             answer.put("Total Cost",  Math.round(totalkWh*100d)/100d);
             answer.put("Average Cost per kWh", Math.round(avgCost*100d)/100d);
