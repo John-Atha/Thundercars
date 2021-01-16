@@ -8,8 +8,29 @@ import org.springframework.web.bind.annotation.*;
 
 public interface ChargingStationRepository extends JpaRepository<ChargingStation, Integer> {
 
-    /*
-    List<ChargingStationSome> findAllProjectedBy();
-    ChargingStationSome findProjectedByById(Integer id);
-    */
+   @Query(value= "SELECT u.id FROM ChargingStation u")
+   List<Integer> findAllStationsIDs();
+
+   @Query(value= "SELECT u.uuid, u.currentProvider.name, u.operator.id, u.address.id, u.usageType.title, u.comments, u.dateCreated, u.statusType.title, u.submissionStatus.title, u.rating, u.costPerKwh FROM ChargingStation u WHERE u.id= ?1")
+   List<List<Object>> findStationsBasicInfo(Integer stationId);
+
+   @Query(value= "SELECT u.id, u.title FROM Operator u WHERE u.id= ?1")
+   List<List<Object>> findStationsOperatorInfo(Integer operatorId);
+
+   
+   @Query(value= "SELECT u.AddressLine1, u.AddressLine2, u.Town, u.StateOrProvince, u.PostCode, u.Latitude, u.Longtitude, u.ContactTelephone1, u.ContactTelephone2, u.ContactEmail, u.AccessComments, u.RelatedURL, u.GeneralComments, u.country.id FROM Address u WHERE u.id= ?1")
+   List<List<Object>> findStationsAddressInfo(Integer addressId);
+
+   @Query(value= "SELECT u.Title, u.ISOCode, u.ContinentCode FROM Country u WHERE u.id= ?1")
+   List<List<Object>> findStationsCountryInfo(Integer countryId);
+
+
+
+
+
+
+
+
+
+
 }
