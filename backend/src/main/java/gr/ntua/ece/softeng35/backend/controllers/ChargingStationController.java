@@ -167,7 +167,45 @@ class ChargingStationController {
   }
 
 
+  @CrossOrigin(origins= "http://localhost:3000")
+  @GetMapping("evcharge/api/user/{userId}/Statistics")
+  JsonNode statistics(@PathVariable Integer userId) {
+    List<Integer> allUsers = repository.findAllUsers();
+    if (!allUsers.contains(userId)) {
+      throw new BadRequestException();
+    }
 
+    else {
+      List<List<Object>> sessions = repository.findSessionsByUserMonth(userId);
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ArrayNode all = mapper.createArrayNode();
+      if (sessions.size()==0) {
+        throw new NoDataFoundException();
+      }
+      for (List<Object> nested : sessions) {
+        ObjectNode curr = mapper.createObjectNode();
+        curr.put("Year", (Integer) nested.get(1));
+        curr.put("Month", (Integer) nested.get(0));
+        curr.put("Sessions", (Long) nested.get(2));
+        curr.put("Stations Visited", (Long) nested.get(3));
+        curr.put("Total kWh Delivered", (Double) nested.get(4));
+        curr.put("Total Cost", (Double) nested.get(5));
+        all.add(curr);
+      }
+      answer.put("Summary", all);
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch(Exception e) {
+        JsonNode node = null;
+        return null;
+      }
+      //return sessions;
+    }
+  }
 
 
 
