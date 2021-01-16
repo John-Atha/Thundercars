@@ -1,0 +1,1 @@
+UPDATE `db`.`charging_station` SET `charging_station`.`station_owner_id`=`charging_station`.`id`
