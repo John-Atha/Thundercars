@@ -4,9 +4,24 @@ package gr.ntua.ece.softeng35.backend.controllers;
 import java.util.*;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.*;
+import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.StationOwner;
 import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.sql.Date;
+import java.math.*;
+import java.lang.*;
+import org.json.*;
+
 
 @RestController
 class StationownerController {
@@ -14,6 +29,93 @@ class StationownerController {
 
   StationownerController(StationOwnerRepository repository) {      
     this.repository = repository;
+  }
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/stationowners{id}/profile")
+  JsonNode myProfile(@PathVariable Optional<Integer> id) {
+    if (!id.isPresent()) {
+      throw new BadRequestException();
+    }
+    else {
+      List<Integer> allStationOwners = repository.findAllStationOwnersIds();
+      if (!allStationOwners.contains(id.get())) {
+        throw new BadRequestException();
+      }
+      else {
+        List<List<Object>> info=repository.findInfoForStationOwner(id.get());
+        List<Object> userBasic = info.get(0);
+        
+        List<Integer> addresses=repository.findAddressForStationOwner(id.get());
+        Integer addressId = addresses.get(0);
+        Boolean hasAddress = true;
+        Boolean hasCountry = true;
+        List<List<Object>> addressInfo;
+        List<Object> addressBasic = new ArrayList();
+        List<Integer> countries=repository.findCountryForStationOwner(addressId);
+        Integer countryId = null;
+        if (countries.size()!=0) {
+          countryId= countries.get(0);
+        }
+        List<List<Object>> countryInfo;
+        List<Object> countryBasic = new ArrayList();
+        if (addressId==null) {
+          hasAddress=false;
+          hasCountry=false;
+        }
+        else {
+          addressInfo = repository.findAddressInfoForStationOwner(addressId);
+          addressBasic = addressInfo.get(0);
+        }
+
+        if (hasAddress==true) {
+          if (countryId==null) {
+            hasCountry=false;
+          }
+          else {
+            countryInfo = repository.findCountryInfoForStationOwner(countryId);
+            countryBasic = countryInfo.get(0);
+          }
+        } 
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode answer = mapper.createObjectNode();
+
+        answer.put("Station Owner name", (String) userBasic.get(0));
+        answer.put("Email", (String) userBasic.get(1));
+        answer.put("First Name", (String) userBasic.get(2));
+        answer.put("Last Name", (String) userBasic.get(3));
+        answer.put("Date Of Birth", userBasic.get(4).toString());
+  
+        if (hasAddress==false) {
+          answer.put("Address", "Unknown");
+        }
+        else {
+          answer.put("AddressLine 1", (String) addressBasic.get(0));
+          answer.put("Town", (String) addressBasic.get(1));
+          answer.put("State Or Province", (String) addressBasic.get(2));
+          answer.put("Postcode", (String) addressBasic.get(3));
+          answer.put("Contact Telephone 1", (String) addressBasic.get(4));
+          answer.put("Contact Telephone 2", (String) addressBasic.get(5));
+        }
+        if (hasCountry==false) {
+          answer.put("Country", "Unknown");
+        }
+        else {
+          String country = (String) countryBasic.get(0) + " (" + (String) countryBasic.get(1) + ")";
+          answer.put("Country", country);
+          answer.put("Continent", (String) countryBasic.get(2));
+        }
+        String ugly = answer.toString();
+        try {
+          JsonNode node = mapper.readTree(ugly);
+          return node;
+        }
+        catch (Exception e) {
+          JsonNode node = null;
+          return node;
+        } 
+      }
+    }
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
