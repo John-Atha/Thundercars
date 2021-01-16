@@ -14,13 +14,13 @@ public class ChargingStation {
     @Column(unique = true, length = 50, nullable = true)
     private String uuid;
 
-    /*
-    @Column(unique = false, nullable = false)
-    private Integer currentProvider_id;
-	*/
 	@ManyToOne
 	@JoinColumn(name = "current_provider_id", nullable = true)
 	private CurrentProvider currentProvider;
+
+	@ManyToOne
+	@JoinColumn(name = "station_owner_id", nullable = true)
+	private StationOwner stationOwner;
 
     @ManyToOne
     @JoinColumn(name = "operator_id" , nullable = true)
@@ -82,7 +82,7 @@ public class ChargingStation {
 
 	ChargingStation() {}
 
-    public ChargingStation(Integer id, String uuid, Operator operator, UsageType usageType, Address address, String comments, Date dateLastConfirmed, Date dateLastStatusUpdate, Date dateCreated, StatusType statusType, SubmissionStatus submissionStatus, /*Blob media_items, */Double rating, Double costPerKwh) {
+    public ChargingStation(Integer id, String uuid, Operator operator, UsageType usageType, Address address, String comments, Date dateLastConfirmed, Date dateLastStatusUpdate, Date dateCreated, StatusType statusType, SubmissionStatus submissionStatus, /*Blob media_items, */Double rating, Double costPerKwh, StationOwner stationOwner) {
 		this.id = id;
 		this.uuid = uuid;
 		this.operator = operator;
@@ -97,6 +97,7 @@ public class ChargingStation {
 	//	this.media_items = media_items;
 		this.rating = rating;
 		this.costPerKwh = costPerKwh;
+		this.stationOwner = stationOwner;
 	}
     
     
@@ -122,6 +123,14 @@ public class ChargingStation {
 
 	public void setOperator(Operator operator) {
 		this.operator=operator;
+	}
+
+	public StationOwner getStationOwner() {
+		return this.stationOwner;
+	}
+
+	public void setStationOwner(StationOwner stationOwner) {
+		this.stationOwner=stationOwner;
 	}
 
 	public CurrentProvider getCurrentProvider() {
@@ -241,7 +250,8 @@ public class ChargingStation {
 			Objects.equals(this.submissionStatus, u.submissionStatus) &&
 		//	Objects.equals(this.media_items, u.media_items) &&
 			Objects.equals(this.rating, u.rating) &&
-			Objects.equals(this.costPerKwh, u.costPerKwh);
+			Objects.equals(this.costPerKwh, u.costPerKwh) &&
+			Objects.equals(this.stationOwner, u.stationOwner);
 	}
 
 	@Override
@@ -261,7 +271,8 @@ public class ChargingStation {
 			this.submissionStatus,
 		//	this.media_items,
 			this.rating,
-			this.costPerKwh);
+			this.costPerKwh,
+			this.stationOwner);
 	}
 
 
@@ -273,6 +284,6 @@ public class ChargingStation {
         + this.comments + "', Last Date Confirmed='" + this.dateLastConfirmed +"', Last status Update Date='" 
         + this.dateLastStatusUpdate + "', Date Created='" + this.dateCreated + "', Status Type='" + this.statusType
         + "', Submission Status='" + this.submissionStatus + "', Rating='"+ this.rating + "', Cost per kWh='" 
-        + this.costPerKwh +"'}";
+        + this.costPerKwh +"', Station Owner='" + this.stationOwner + "''}";
     }                        
 }

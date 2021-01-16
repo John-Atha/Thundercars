@@ -24,12 +24,22 @@ public class StationOwner {
     @Column(unique = false, length = 30, nullable = false)
     private String lastName;
 
+	@OneToMany(mappedBy="stationOwner")
+	private Set<ChargingStation> chargingStations;
+
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = true)
     private UserAddress address;
 
     @Column(unique = false, nullable = true)
     private Date dateOfBirth;
+
+    @PreRemove
+    private void removeOwner(){
+        for (ChargingStation station : chargingStations) {
+            station.setStationOwner(null);
+        }
+    }
 
     StationOwner() {}
 
