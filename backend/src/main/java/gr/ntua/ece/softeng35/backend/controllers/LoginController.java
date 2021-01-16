@@ -68,10 +68,13 @@ public class LoginController{
     JsonNode userLogin(@RequestBody String encoded) {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
+      if (encoded.indexOf(":") == encoded.length()-1 || encoded.indexOf(":") == 0){
+        throw new BadRequestException();
+      }
       String[] parts = encoded.split(":");
       String username = parts[0];
       String password = parts[1];
-      if (password.length()==0 || username.contains("--")) {
+      if (username.contains("--")) {
         throw new BadRequestException();
       }
       else {
