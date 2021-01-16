@@ -68,25 +68,42 @@ public class LoginController{
     JsonNode userLogin(@RequestBody String encoded) {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
+      if (encoded.indexOf(":") == encoded.length()-1 || encoded.indexOf(":") == 0){
+        throw new BadRequestException();
+      }
       String[] parts = encoded.split(":");
       String username = parts[0];
       String password = parts[1];
-      if (password.length()==0 || username.contains("--")) {
+      if (username.contains("--")) {
         throw new BadRequestException();
       }
       else {
-          /* hash password */
-        String hashedPassword = "";
-        hashedPassword = getMd5(password);
-  
-        List<Object> user = repository.findIdByUsernameAndPassword(username, getMd5(password));
+        String HashedPassword;
+        HashedPassword = getMd5(password);
+        List<Object> user = repository.findStationOwnerIdByUsernameAndPassword(username, HashedPassword);
         if (user.size()==0) {
-          throw new BadRequestException();
+          user = repository.findIdByUsernameAndPassword(username,HashedPassword);
+          if (user.size() == 0){
+            throw new BadRequestException();
+          }
+          else {
+            Integer userId = (Integer) user.get(0);
+            answer.put("Id", userId);
+            answer.put("Token", "FOO");
+            String ugly = answer.toString();
+            try {
+              JsonNode node = mapper.readTree(ugly);
+              return node;
+            }
+            catch (Exception e){
+              return null;      
+            }
+          }
         }
         else {
           Integer userId = (Integer) user.get(0);
           answer.put("Id", userId);
-          answer.put("Token", "FOO");
+          answer.put("Token", "StationOwner");
           String ugly = answer.toString();
           try {
             JsonNode node = mapper.readTree(ugly);
