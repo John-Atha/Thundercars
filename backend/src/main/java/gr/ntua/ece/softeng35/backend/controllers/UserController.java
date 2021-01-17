@@ -694,6 +694,91 @@ class UserController {
   }
 
 
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/pervehicle/{vehicleid}")
+  JsonNode myEVSessions(@PathVariable Optional<Integer> id,
+                      @PathVariable Optional<Integer> vehicleid) {
+
+    if(!id.isPresent()) {
+        throw new BadRequestException();
+    }
+    else {
+        if(vehicleid.isPresent()) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode answer = mapper.createObjectNode();
+            ArrayNode ChargingSessionsList = mapper.createArrayNode();
+
+            List<List<Object>> allCars = repository.findBySpecificVehicleByUser(id.get(),vehicleid.get());
+            if (allCars.size()==0) {
+              throw new NoDataFoundException();
+            }
+            else {
+            for (List<Object> nested : allCars ) {
+              ObjectNode session = mapper.createObjectNode() ;
+
+                answer.put("Vehicle Id", (Integer) nested.get(0));
+              
+                answer.put("Vehicle Brand", (String) nested.get(1));
+
+                answer.put("Vehicle Model", (String) nested.get(2));
+
+                answer.put("Vehicle Type", (String) nested.get(3));
+
+                answer.put("Vehicle's sessions", (Long) nested.get(4));
+                Double totkwh = (Double) nested.get(5);
+                answer.put("Total kWh Delivered for this Vehicle", Math.round(totkwh*100d)/100d);
+                Double totCost = (Double) nested.get(6) ;
+                answer.put("Total Vehicle's Cost",Math.round(totCost*100d)/100d);
+            }
+            
+            List<List<Object>> VehiclesSess = repository.findByProcessesByVehicle(id.get(),vehicleid.get());
+            
+            if (VehiclesSess.size()==0) {
+              throw new NoDataFoundException();
+            }
+            answer.put("Sessions Number",(Integer) VehiclesSess.size());
+            for (List<Object> nested : VehiclesSess){
+              ObjectNode session = mapper.createObjectNode();
+  
+              session.put("Station Id", (Integer) nested.get(9));  // station id
+              session.put("Station Title", (String) nested.get(11)); //station title
+              session.put("Station Address", (String) nested.get(12)); //station address
+              session.put("Price Policy Ref.", (String) nested.get(1));
+              session.put("Cost" ,(Double) nested.get(3));
+              String str2 = nested.get(2).toString();
+              String str = str2.substring(0, str2.length() - 2);
+              session.put("Started On", str);
+              str2 = nested.get(4).toString();
+              str = str2.substring(0, str2.length() - 2);
+              session.put("Charged On", str);
+              str2 = nested.get(5).toString();
+              str = str2.substring(0, str2.length() - 2);
+              session.put("Finished On", str);
+              session.put("kWh Delivered", (Double) nested.get(6));
+              session.put("Payment Way", (String) nested.get(7));
+              session.put("Rating", (Double) nested.get(8));
+              
+              ChargingSessionsList.add(session);
+              }
+
+              answer.put("Vehicle's Charging Sessions", ChargingSessionsList);
+              String ugly = answer.toString();
+                try {
+                    JsonNode node = mapper.readTree(ugly);
+                    return node;
+                }
+                catch (Exception e) {
+                    JsonNode node = null;
+                    return node;
+                }
+          }
+        }
+        else {
+          throw new BadRequestException();
+        }
+    }
+  }
+
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/users")
