@@ -89,4 +89,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "SELECT u.vehicle.id,u.vehicle.brand,u.vehicle.model,u.vehicle.type,count(u.vehicle.id),sum(u.kwhDelivered),sum(u.cost) FROM ChargingProcess u WHERE u.user.id =?1 GROUP BY u.vehicle.id")
     List<List<Object>> findByVehicleByUser(Integer userId);
+
+
+//---------------------
+
+    @Query(value = "SELECT u.id FROM AcCharger u ORDER BY u.id")
+    List<Integer> findAllAcChargersIds();
+
+    @Query(value = "SELECT u.id FROM DcCharger u ORDER BY u.id")
+    List<Integer> findAllDcChargersIds();
+
+
+
 }
