@@ -807,12 +807,24 @@ class ChargingProcessController {
         // res.add(temp);
         if (flag==true) {
           answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-          answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+          if (temp.get(0).get(1)!=null) {
+            answer.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+            answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+          }
+          else {
+            answer.put("Operator", "Unknown");
+          }          
           answer.put("Request Time", dtf.format(now));  // current time
         }
         else {
           answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-          answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+          if (temp.get(0).get(2)!=null) {
+            answer.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+            answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+          }
+          else {
+            answer.put("Operator", "Unknown");
+          }          
           answer.put("Request Time", dtf.format(now));  // current time
         }
         answer.put("Total kWh Delivered", Math.round(totalkWh*100d)/100d);            // total kWh
@@ -888,12 +900,6 @@ class ChargingProcessController {
       if (temp.get(0).get(0)==null) {
         flag = true;
         temp = repository.findByStation2(stationId.get());
-        /*  different for many stations
-        
-        temp.get(0).add(3, 0);
-        temp.get(0).add(3, 0);
-        temp.get(0).add(3, 0);
-        */
         throw new NoDataFoundException();
       }
       /* retrieve sessions groupped by station-spot */
@@ -915,12 +921,24 @@ class ChargingProcessController {
       // res.add(temp);
       if (flag==true) {
         answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        if (temp.get(0).get(1)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }
         answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
         answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        if (temp.get(0).get(2)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }        
         answer.put("Request Time", dtf.format(now));  // current time
       }
       answer.put("Total kWh Delivered", Math.round(totalkWh*100d)/100d);            // total kWh
@@ -1027,12 +1045,24 @@ class ChargingProcessController {
               // res.add(temp);
       if (flag==true) {
         answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        if (temp.get(0).get(1)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }        
         answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
         answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        if (temp.get(0).get(2)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }        
         answer.put("Request Time", dtf.format(now));  // current time
       }
       answer.put("Start Date", date1.toString());            // total kWh
@@ -1146,12 +1176,24 @@ class ChargingProcessController {
       // res.add(temp);
       if (flag==true) {
         answer.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-        answer.put("Operator", (String) temp.get(0).get(1));  // operator title
+        if (temp.get(0).get(1)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }
         answer.put("Request Time", dtf.format(now));  // current time
       }
       else {
         answer.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-        answer.put("Operator", (String) temp.get(0).get(2));  // operator title
+        if (temp.get(0).get(2)!=null) {
+          answer.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+          answer.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+        }
+        else {
+          answer.put("Operator", "Unknown");
+        }        
         answer.put("Request Time", dtf.format(now));  // current time
       }
       answer.put("Start Date", date1.toString());            // total kWh
@@ -1208,6 +1250,13 @@ class ChargingProcessController {
       }  
     } 
   }
+  
+  
+  
+  
+  
+  
+  
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping(value = {"/evcharge/api/SessionsPerStation",
                        "/evcharge/api/SessionsPerStation/{stationId}",
@@ -1258,12 +1307,24 @@ class ChargingProcessController {
           ObjectNode csvsession = mapper.createObjectNode();
           if (flag==true) {
             csvsession.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-            csvsession.put("Operator", (String) temp.get(0).get(1));  // operator title
+            if (temp.get(0).get(1)!=null) {
+              csvsession.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+              csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+            }
+            else {
+              csvsession.put("Operator", "Unknown");
+            }            
             csvsession.put("Request Time", dtf.format(now));  // current time
           }
           else {
             csvsession.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-            csvsession.put("Operator", (String) temp.get(0).get(2));  // operator title
+            if (temp.get(0).get(2)!=null) {
+              csvsession.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+              csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+            }
+            else {
+              csvsession.put("Operator", "Unknown");
+            }            
             csvsession.put("Request Time", dtf.format(now));  // current time
           }
           csvsession.put("Total kWh Delivered", Math.round(totalkWh*100d)/100d);            // total kWh
@@ -1340,12 +1401,24 @@ class ChargingProcessController {
         ObjectNode csvsession = mapper.createObjectNode(); 
         if (flag==true) {
           csvsession.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(1));  // operator title
+          if (temp.get(0).get(1)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         else {
           csvsession.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(2));  // operator title
+          if (temp.get(0).get(2)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         csvsession.put("Total kWh Delivered", Math.round(totalkWh*100d)/100d);            // total kWh
@@ -1434,12 +1507,24 @@ class ChargingProcessController {
         LocalDateTime now = LocalDateTime.now();
         if (flag==true) {
           csvsession.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(1));  // operator title
+          if (temp.get(0).get(1)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         else {
           csvsession.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(2));  // operator title
+          if (temp.get(0).get(2)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         csvsession.put("Start Date", date1.toString());            // total kWh
@@ -1533,12 +1618,24 @@ class ChargingProcessController {
         
         if (flag==true) {
           csvsession.put("Station Id", (Integer) temp.get(0).get(0));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(1));  // operator title
+          if (temp.get(0).get(1)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(1));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(1)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         else {
           csvsession.put("Station Id", (Integer) temp.get(0).get(1));  // station id
-          csvsession.put("Operator", (String) temp.get(0).get(2));  // operator title
+          if (temp.get(0).get(2)!=null) {
+            csvsession.put("Operator Id", (Integer) temp.get(0).get(2));  // operator title
+            csvsession.put("Operator Name", (String) repository.findOperatorTitle((Integer) temp.get(0).get(2)));  // operator title
+          }
+          else {
+            csvsession.put("Operator", "Unknown");
+          }          
           csvsession.put("Request Time", dtf.format(now));  // current time
         }
         csvsession.put("Start Date", date1.toString());            // total kWh

@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 public interface ChargingProcessRepository extends JpaRepository<ChargingProcess, Integer> {
   
-    @Query(value = "SELECT u.id, u.chargingStation.id, u.chargingStation.operator.title, CURRENT_TIME, COUNT( DISTINCT u.chargingSpot.id), u.chargingSpot.id FROM ChargingProcess u WHERE u.chargingStation.id = ?1")
+    @Query(value = "SELECT u.id, u.chargingStation.id, u.chargingStation.operator.id, CURRENT_TIME, COUNT( DISTINCT u.chargingSpot.id), u.chargingSpot.id FROM ChargingProcess u WHERE u.chargingStation.id = ?1")
     List<List<Object>> findByStation(Integer chargingStation);
 
-    @Query(value = "SELECT u.id, u.operator.title, CURRENT_TIME FROM ChargingStation u WHERE u.id = ?1")
+    @Query(value= "SELECT u.title FROM Operator u WHERE u.id= ?1")
+    String findOperatorTitle(Integer operatorId); 
+
+
+    @Query(value = "SELECT u.id, u.operator.id, CURRENT_TIME FROM ChargingStation u WHERE u.id = ?1")
     List<List<Object>> findByStation2(Integer chargingStation);
 
     @Query(value = "SELECT u.chargingSpot.id, COUNT(*), SUM(u.kwhDelivered) FROM ChargingProcess u WHERE u.chargingStation.id = ?1 GROUP BY u.chargingSpot.id")
