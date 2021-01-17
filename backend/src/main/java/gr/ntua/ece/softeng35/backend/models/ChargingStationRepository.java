@@ -11,8 +11,20 @@ public interface ChargingStationRepository extends JpaRepository<ChargingStation
    @Query(value= "SELECT u.id FROM ChargingStation u ORDER BY u.id")
    List<Integer> findAllStationsIDs();
 
-   @Query(value= "SELECT u.uuid, u.currentProvider.name, u.operator.id, u.address.id, u.usageType.title, u.comments, u.dateCreated, u.statusType.title, u.submissionStatus.title, u.rating, u.costPerKwh FROM ChargingStation u WHERE u.id= ?1")
+   @Query(value= "SELECT u.uuid, u.currentProvider.id, u.operator.id, u.address.id, u.usageType.id, u.comments, u.dateCreated, u.statusType.id, u.submissionStatus.id, u.rating, u.costPerKwh FROM ChargingStation u WHERE u.id= ?1")
    List<List<Object>> findStationsBasicInfo(Integer stationId);
+
+    @Query(value= "SELECT u.name FROM CurrentProvider u WHERE u.id= ?1")
+    String findCurrentProviderName(Integer currentProviderId);
+
+    @Query(value= "SELECT u.title FROM StatusType u WHERE u.id= ?1")
+    String findStatusTypeTitle(Integer statusTypeId);
+
+    @Query(value= "SELECT u.title FROM SubmissionStatus u WHERE u.id= ?1")
+    String findSubmissionStatusTitle(Integer submissionStatusId);
+
+    @Query(value= "SELECT u.title FROM UsageType u WHERE u.id= ?1")
+    String findUsageTypeTitle(Integer usageTypeId);
 
    @Query(value= "SELECT u.id, u.title FROM Operator u WHERE u.id= ?1")
    List<List<Object>> findStationsOperatorInfo(Integer operatorId);

@@ -79,36 +79,41 @@ class ChargingStationController {
         List<Integer> spots = repository.findStationSpotsFromStation(i);
         
         ObjectNode answer = mapper.createObjectNode();
-
         answer.put("Id", i);
         if (basicInfo.get(3)!=null && addressInfos.size()!=0) {
           answer.put("Title", (String) addressInfo.get(14));
         }
         answer.put("UUID", (String) basicInfo.get(0));
-       // if (basicInfo.get(1)!=null) {
-          answer.put("Current Provider's Name", (String) basicInfo.get(1));
-       // }
-        //else {
-        //  answer.put("Current Provider", "Unknown");
-        //}
+        if (basicInfo.get(1)!=null) {
+          answer.put("Current Provider's Name", (String) repository.findCurrentProviderName((Integer) basicInfo.get(1)));
+        }
+        else {
+          answer.put("Current Provider", "Unknown");
+        }
 
         answer.put("Rating", (Double) basicInfo.get(9));
         answer.put("Cost Per kWh", (Double) basicInfo.get(10));
-        answer.put("Usage Type", (String) basicInfo.get(4));
         answer.put("Comments", (String) basicInfo.get(5));
         answer.put("Date Created", basicInfo.get(6).toString());
-      //  if (basicInfo.get(7)!=null) {
-          answer.put("Status Type", (String) basicInfo.get(7));
-      //  }
-      //  else {
-      //    answer.put("Status Type", "Unknown");
-      //  }
-       // if (basicInfo.get(8)!=null) {
-          answer.put("Submission Status", (String) basicInfo.get(8));
-       // }
-       // else {
-       //   answer.put("Submission Status", "Unknown");
-       // }
+        if (basicInfo.get(7)!=null) {
+          answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
+        }
+        else {
+          answer.put("Status Type", "Unknown");
+        }
+        if (basicInfo.get(8)!=null) {
+          answer.put("Submission Status", (String) repository.findSubmissionStatusTitle((Integer) basicInfo.get(8)));
+        }
+        else {
+          answer.put("Submission Status", "Unknown");
+        }
+
+        if (basicInfo.get(4)!=null) {
+          answer.put("Usage Type", (String) repository.findUsageTypeTitle((Integer) basicInfo.get(4))); 
+        }
+        else {
+          answer.put("Usage Type", "Unknown");
+        }
 
         if (basicInfo.get(2)!=null && operatorInfos.size()!=0) {
           answer.put("Operator", (Integer) operatorInfo.get(0));
@@ -161,6 +166,7 @@ class ChargingStationController {
           }
         }
         answer.put("Spots", SpotsList);
+
         all.add(answer);
       }
       
@@ -175,6 +181,7 @@ class ChargingStationController {
         return null;
       }
     }
+    
     else {
       List<Integer> allStationIDs = repository.findAllStationsIDs();
       if (!allStationIDs.contains(id.get())) {
@@ -208,30 +215,36 @@ class ChargingStationController {
           answer.put("Title", (String) addressInfo.get(14));
         }
         answer.put("UUID", (String) basicInfo.get(0));
-       // if (basicInfo.get(1)!=null) {
-          answer.put("Current Provider's Name", (String) basicInfo.get(1));
-       // }
-        //else {
-        //  answer.put("Current Provider", "Unknown");
-        //}
+        if (basicInfo.get(1)!=null) {
+          answer.put("Current Provider's Name", (String) repository.findCurrentProviderName((Integer) basicInfo.get(1)));
+        }
+        else {
+          answer.put("Current Provider", "Unknown");
+        }
 
         answer.put("Rating", (Double) basicInfo.get(9));
         answer.put("Cost Per kWh", (Double) basicInfo.get(10));
-        answer.put("Usage Type", (String) basicInfo.get(4));
         answer.put("Comments", (String) basicInfo.get(5));
         answer.put("Date Created", basicInfo.get(6).toString());
-      //  if (basicInfo.get(7)!=null) {
-          answer.put("Status Type", (String) basicInfo.get(7));
-      //  }
-      //  else {
-      //    answer.put("Status Type", "Unknown");
-      //  }
-       // if (basicInfo.get(8)!=null) {
-          answer.put("Submission Status", (String) basicInfo.get(8));
-       // }
-       // else {
-       //   answer.put("Submission Status", "Unknown");
-       // }
+        if (basicInfo.get(7)!=null) {
+          answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
+        }
+        else {
+          answer.put("Status Type", "Unknown");
+        }
+        if (basicInfo.get(8)!=null) {
+          answer.put("Submission Status", (String) repository.findSubmissionStatusTitle((Integer) basicInfo.get(8)));
+        }
+        else {
+          answer.put("Submission Status", "Unknown");
+        }
+
+        if (basicInfo.get(4)!=null) {
+          answer.put("Usage Type", (String) repository.findUsageTypeTitle((Integer) basicInfo.get(4))); 
+        }
+        else {
+          answer.put("Usage Type", "Unknown");
+        }
 
         if (basicInfo.get(2)!=null && operatorInfos.size()!=0) {
           answer.put("Operator", (Integer) operatorInfo.get(0));
