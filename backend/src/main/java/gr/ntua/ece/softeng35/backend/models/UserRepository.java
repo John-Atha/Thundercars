@@ -90,9 +90,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.vehicle.id,u.vehicle.brand,u.vehicle.model,u.vehicle.type,count(u.vehicle.id),sum(u.kwhDelivered),sum(u.cost) FROM ChargingProcess u WHERE u.user.id =?1 GROUP BY u.vehicle.id")
     List<List<Object>> findByVehicleByUser(Integer userId);
     
-    @Query(value = "SELECT u.id,u.chargingProgram,u.connectionTime,u.cost,u.disconnectTime,u.doneChargingTime,u.kwhDelivered,u.paymentWay,u.rating, u.chargingStation.id , u.chargingStation.operator.title, u.chargingStation.address.Title, u.chargingStation.address.AddressLine1, u.vehicle.model, u.vehicle.id FROM ChargingProcess u WHERE u.user.id = ?1 AND u.vehicle.id = ?2 ORDER BY u.connectionTime DESC")
-    List<List<Object>> findByProcessesByVehicle (Integer userId,Integer vehicleId);
-
-    @Query(value = "SELECT u.vehicle.id,u.vehicle.brand,u.vehicle.model,u.vehicle.type,count(u.vehicle.id),sum(u.kwhDelivered),sum(u.cost) FROM ChargingProcess u WHERE u.user.id =?1 AND u.vehicle.id = ?2")
-    List<List<Object>> findBySpecificVehicleByUser(Integer userId,Integer vehicleId);
 }
