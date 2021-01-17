@@ -29,24 +29,24 @@ class ChargingStationController {
     this.repository = repository;
   }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/chargingstations")
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/admin/chargingstations")
   List<ChargingStation> all() {
     return repository.findAll();
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/chargingstations")
+  @PostMapping("/evcharge/api/admin/chargingstationsmod")
   ChargingStation newChargingStation(@RequestBody ChargingStation newChargingStation) {
     return repository.save(newChargingStation);
   }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/chargingstations/{id}")
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/admin/chargingstations/{id}")
   ChargingStation one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ChargingStationNotFoundException(id));
-  }*/
+  }
 
   @CrossOrigin(origins= "http://localhost:3000")
   @GetMapping(value = {"/evcharge/api/chargingstations",
@@ -358,7 +358,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/chargingstations/{id}")
+  @PutMapping("/evcharge/api/admin/chargingstationsmod/{id}")
   ChargingStation replaceChargingStation(@RequestBody ChargingStation newChargingStation, @PathVariable Integer id) {
     return repository.findById(id)
       .map(chargingStation -> {
@@ -380,7 +380,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/chargingstations/{id}")
+  @DeleteMapping("/evcharge/api/admin/chargingstationsmod/{id}")
   void deleteChargingStation(@PathVariable Integer id) {
     repository.deleteById(id);
   }

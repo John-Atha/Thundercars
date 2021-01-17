@@ -16,26 +16,26 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/usagetypes")
+  @GetMapping("/evcharge/api/admin/usagetypes")
   List<UsageType> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/usagetypes")
+  @PostMapping("/evcharge/api/admin/usagetypesmod")
   UsageType newUsageType(@RequestBody UsageType newUsageType) {
     return repository.save(newUsageType);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/usagetypes/{id}")
+  @GetMapping("/evcharge/api/admin/usagetypes/{id}")
   UsageType one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UsageTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/usagetypes/{id}")
+  @PutMapping("/evcharge/api/admin/usagetypesmod/{id}")
   UsageType replaceUsageType(@RequestBody UsageType newUsageType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(usageType -> {
@@ -47,7 +47,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/usagetypes/{id}")
+  @DeleteMapping("/evcharge/api/admin/usagetypesmod/{id}")
   void deleteUsageType(@PathVariable Integer id) {
     repository.deleteById(id);
   }

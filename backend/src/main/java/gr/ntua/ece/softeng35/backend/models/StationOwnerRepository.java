@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 
 public interface StationOwnerRepository extends JpaRepository<StationOwner, Integer> {
+
+StationOwner findByUsername(String username);
+    
+@Query(value = "SELECT u.username FROM StationOwner u ORDER BY u.id")
+List<String> findAllUsernames();
+
 @Query(value = "SELECT u.id FROM StationOwner u WHERE u.username= ?1 AND u.password= ?2")
 List<Object> findIdByStationOwnernameAndPassword(String username, String password);
     

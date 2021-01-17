@@ -16,26 +16,26 @@ class DcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/dcchargerports")
+  @GetMapping("/evcharge/api/admin/dcchargerports")
   List<DcChargerPort> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/dcchargerports")
+  @PostMapping("/evcharge/api/admin/dcchargerportsmod")
   DcChargerPort newDcChargerPort(@RequestBody DcChargerPort newDcChargerPort) {
     return repository.save(newDcChargerPort);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/dcchargerports/{id}")
+  @GetMapping("/evcharge/api/admin/dcchargerports/{id}")
   DcChargerPort one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new DcChargerPortNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/dcchargerports/{id}")
+  @PutMapping("/evcharge/api/admin/dcchargerportsmod/{id}")
   DcChargerPort replaceDcChargerPort(@RequestBody DcChargerPort newDcChargerPort, @PathVariable Integer id) {
     return repository.findById(id)
       .map(dcChargerPort -> {
@@ -48,7 +48,7 @@ dcChargerPort.setDcCharger(newDcChargerPort.getDcCharger());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/dcchargerports/{id}")
+  @DeleteMapping("/evcharge/api/admin/dcchargerportsmod/{id}")
   void deleteDcChargerPort(@PathVariable Integer id) {
     repository.deleteById(id);
   }

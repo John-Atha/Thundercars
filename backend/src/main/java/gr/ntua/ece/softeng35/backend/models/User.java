@@ -15,13 +15,13 @@ public class User {
   @Column(unique = false, length = 100, nullable = false)
   private String password;
   
-  @Column(unique = true, length = 50, nullable = false)
+  @Column(unique = true, length = 50, nullable = true)
   private String emailAddr;
 
-  @Column(unique = false, length = 30, nullable = false)
+  @Column(unique = false, length = 30, nullable = true)
   private String firstName;
 
-  @Column(unique = false, length = 30, nullable = false)
+  @Column(unique = false, length = 30, nullable = true)
   private String lastName;
 
   @Column(unique = false, length = 60, nullable = true)
@@ -46,7 +46,7 @@ public class User {
       }
   }
 
-  User() {}
+  public User() {}
 
   public User(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address) {
     this.username = username;

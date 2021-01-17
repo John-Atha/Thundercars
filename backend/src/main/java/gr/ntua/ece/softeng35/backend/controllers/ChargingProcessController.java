@@ -34,7 +34,7 @@ class ChargingProcessController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/chargingprocesses")
+  @GetMapping("/evcharge/api/admin/chargingprocesses")
   List<ChargingProcess> all() {
     return repository.findAll();
   }
@@ -3396,21 +3396,21 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 }
 
-  @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/chargingprocesses")
+  /*@CrossOrigin(origins = "http://localhost:3000")
+  @PostMapping("/evcharge/api/admin/chargingprocessesmod")
   ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess) {
     return repository.save(newChargingProcess);
-  }
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/chargingprocesses/{id}")
+  @GetMapping("/evcharge/api/admin/chargingprocesses/{id}")
   ChargingProcess one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ChargingProcessNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/chargingprocesses/{id}")
+  @PutMapping("/evcharge/api/admin/chargingprocessesmod/{id}")
   ChargingProcess replaceChargingProcess(@RequestBody ChargingProcess newChargingProcess, @PathVariable Integer id) {
     return repository.findById(id)
       .map(chargingProcess -> {
@@ -3433,7 +3433,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/chargingprocesses/{id}")
+  @DeleteMapping("/evcharge/api/admin/chargingprocessesmod/{id}")
   void deleteChargingProcess(@PathVariable Integer id) {
     repository.deleteById(id);
   }

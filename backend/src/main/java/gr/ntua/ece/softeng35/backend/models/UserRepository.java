@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    User findByUsername(String username);
+    
+    @Query(value = "SELECT u.username FROM User u ORDER BY u.id")
+    List<String> findAllUsernames();
+
     @Query(value = "SELECT u.id FROM User u WHERE u.username= ?1 AND u.password= ?2")
     List<Object> findIdByUsernameAndPassword(String username, String password);
  

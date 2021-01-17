@@ -16,26 +16,26 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/userhasvehicles")
+  @GetMapping("/evcharge/api/admin/userhasvehicles")
   List<UserHasVehicle> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/userhasvehicles")
+  @PostMapping("/evcharge/api/admin/userhasvehiclesmod")
   UserHasVehicle newUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle) {
     return repository.save(newUserHasVehicle);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/userhasvehicles/{id}")
+  @GetMapping("/evcharge/api/admin/userhasvehicles/{id}")
   UserHasVehicle one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UserHasVehicleNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/userhasvehicles/{id}")
+  @PutMapping("/evcharge/api/admin/userhasvehiclesmod/{id}")
   UserHasVehicle replaceUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle, @PathVariable Integer id) {
     return repository.findById(id)
       .map(userHasVehicle -> {
@@ -47,7 +47,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/userhasvehicles/{id}")
+  @DeleteMapping("/evcharge/api/admin/userhasvehiclesmod/{id}")
   void deleteUserHasVehicle(@PathVariable Integer id) {
     repository.deleteById(id);
   }

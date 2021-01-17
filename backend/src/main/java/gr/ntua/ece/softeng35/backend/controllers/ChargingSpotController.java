@@ -200,20 +200,20 @@ class ChargingSpotController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/chargingspots")
+  @PostMapping("/evcharge/api/admin/chargingspotsmod")
   ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot) {
     return repository.save(newChargingSpot);
   }
-/*
+
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/chargingspots/{id}")
+  @GetMapping("/evcharge/api/admin/chargingspots/{id}")
   ChargingSpot one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new ChargingSpotNotFoundException(id));
   }
-*/
+
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/chargingspots/{id}")
+  @PutMapping("/evcharge/api/admin/chargingspotsmod/{id}")
   ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id) {
     return repository.findById(id)
       .map(chargingSpot -> {
@@ -230,7 +230,7 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/chargingspots/{id}")
+  @DeleteMapping("/evcharge/api/admin/chargingspotsmod/{id}")
   void deleteChargingSpot(@PathVariable Integer id) {
     repository.deleteById(id);
   }

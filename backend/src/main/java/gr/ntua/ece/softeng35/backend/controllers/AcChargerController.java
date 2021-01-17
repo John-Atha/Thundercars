@@ -15,14 +15,14 @@ class AcChargerController {
     this.repository = repository;
   }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/acchargers")
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/admin/acchargers")
   List<AcCharger> all() {
     return repository.findAll();
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/acchargers")
+  @PostMapping("/evcharge/api/admin/acchargersmod")
   AcCharger newAcCharger(@RequestBody AcCharger newAcCharger) {
     return repository.save(newAcCharger);
   }
@@ -35,7 +35,7 @@ class AcChargerController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/acchargers/{id}")
+  @PutMapping("/evcharge/api/admin/acchargersmod/{id}")
   AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id) {
     return repository.findById(id)
       .map(acCharger -> {
@@ -48,7 +48,7 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/acchargers/{id}")
+  @DeleteMapping("/evcharge/api/admin/acchargersmod/{id}")
   void deleteAcCharger(@PathVariable Integer id) {
     repository.deleteById(id);
   }

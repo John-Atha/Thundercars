@@ -889,22 +889,22 @@ class UserController {
   List<User> all() {
     return repository.findAll();
   }
-
+  
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/users")
+  @PostMapping("/evcharge/api/admin/usersmod")
   User newUser(@RequestBody User newUser) {
     return repository.save(newUser);
   }
-
+  
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/users/{id}")
+  @GetMapping("/evcharge/api/admin/users/{id}")
   User one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UserNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/users/{id}")
+  @PutMapping("/evcharge/api/admin/usersmod/{id}")
   User replaceUser(@RequestBody User newUser, @PathVariable Integer id) {
     return repository.findById(id)
       .map(user -> {
@@ -915,7 +915,7 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/users/{id}")
+  @DeleteMapping("/evcharge/api/admin/usersmod/{id}")
   void deleteUser(@PathVariable Integer id) {
     repository.deleteById(id);
   }

@@ -16,26 +16,26 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/operators")
+  @GetMapping("/evcharge/api/admin/operators")
   List<Operator> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/operators")
+  @PostMapping("/evcharge/api/admin/operatorsmod")
   Operator newOperator(@RequestBody Operator newOperator) {
     return repository.save(newOperator);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/operators/{id}")
+  @GetMapping("/evcharge/api/admin/operators/{id}")
   Operator one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new OperatorNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/operators/{id}")
+  @PutMapping("/evcharge/api/admin/operatorsmod/{id}")
   Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id) {
     return repository.findById(id)
       .map(operator -> {
@@ -55,7 +55,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/operators/{id}")
+  @DeleteMapping("/evcharge/api/admin/operatorsmod/{id}")
   void deleteOperator(@PathVariable Integer id) {
     repository.deleteById(id);
   }

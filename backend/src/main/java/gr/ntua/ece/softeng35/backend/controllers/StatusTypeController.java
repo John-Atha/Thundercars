@@ -16,26 +16,26 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/statustypes")
+  @GetMapping("/evcharge/api/admin/statustypes")
   List<StatusType> all() {
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/statustypes")
+  @PostMapping("/evcharge/api/admin/statustypesmod")
   StatusType newStatusType(@RequestBody StatusType newStatusType) {
     return repository.save(newStatusType);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/statustypes/{id}")
+  @GetMapping("/evcharge/api/admin/statustypes/{id}")
   StatusType one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new StatusTypeNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/statustypes/{id}")
+  @PutMapping("/evcharge/api/admin/statustypesmod/{id}")
   StatusType replaceStatusType(@RequestBody StatusType newStatusType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(statusType -> {
@@ -48,7 +48,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/statustypes/{id}")
+  @DeleteMapping("/evcharge/api/admin/statustypesmod/{id}")
   void deleteStatusType(@PathVariable Integer id) {
     repository.deleteById(id);
   }

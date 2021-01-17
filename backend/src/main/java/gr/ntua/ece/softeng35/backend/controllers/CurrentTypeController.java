@@ -22,7 +22,7 @@ class CurrentTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/currenttypes")
+  @PostMapping("/evcharge/api/currenttypesmod")
   CurrentType newCurrentType(@RequestBody CurrentType newCurrentType) {
     return repository.save(newCurrentType);
   }
@@ -35,7 +35,7 @@ class CurrentTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/currenttypes/{id}")
+  @PutMapping("/evcharge/api/currenttypesmod/{id}")
   CurrentType replaceCurrentType(@RequestBody CurrentType newCurrentType, @PathVariable Integer id) {
     return repository.findById(id)
       .map(currentType -> {
@@ -48,7 +48,7 @@ currentType.setDescription(newCurrentType.getDescription());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/currenttypes/{id}")
+  @DeleteMapping("/evcharge/api/admin/currenttypesmod/{id}")
   void deleteCurrentType(@PathVariable Integer id) {
     repository.deleteById(id);
   }

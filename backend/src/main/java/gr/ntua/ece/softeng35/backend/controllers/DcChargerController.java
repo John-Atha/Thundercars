@@ -15,27 +15,27 @@ class DcChargerController {
     this.repository = repository;
   }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/dcchargers")
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/admin/dcchargers")
   List<DcCharger> all() {
     return repository.findAll();
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/dcchargers")
+  @PostMapping("/evcharge/api/admin/dcchargersmod")
   DcCharger newDcCharger(@RequestBody DcCharger newDcCharger) {
     return repository.save(newDcCharger);
   }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/dcchargers/{id}")
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/admin/dcchargers/{id}")
   DcCharger one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new DcChargerNotFoundException(id));
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/dcchargers/{id}")
+  @PutMapping("/evcharge/api/admin/dcchargersmod/{id}")
   DcCharger replaceDcCharger(@RequestBody DcCharger newDccharger, @PathVariable Integer id) {
     return repository.findById(id)
       .map(dcCharger -> {
@@ -47,7 +47,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/dcchargers/{id}")
+  @DeleteMapping("/evcharge/api/admin/dcchargersmod/{id}")
   void deleteDcCharger(@PathVariable Integer id) {
     repository.deleteById(id);
   }

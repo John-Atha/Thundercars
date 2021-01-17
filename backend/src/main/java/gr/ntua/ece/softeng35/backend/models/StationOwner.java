@@ -15,13 +15,13 @@ public class StationOwner {
     @Column(unique = false, length = 100, nullable = false)
     private String password;
 
-    @Column(unique = true, length = 50, nullable = false)
+    @Column(unique = true, length = 50, nullable = true)
     private String emailAddr;
 
-    @Column(unique = false, length = 30, nullable = false)
+    @Column(unique = false, length = 30, nullable = true)
     private String firstName;
 
-    @Column(unique = false, length = 30, nullable = false)
+    @Column(unique = false, length = 30, nullable = true)
     private String lastName;
 
 	@OneToMany(mappedBy="stationOwner")
@@ -41,7 +41,7 @@ public class StationOwner {
         }
     }
 
-    StationOwner() {}
+    public StationOwner() {}
 
 	public StationOwner(Integer id, String username, String password, String emailAddr, String firstName, String lastName, UserAddress address, Date dateOfBirth) {
 		this.id = id;
