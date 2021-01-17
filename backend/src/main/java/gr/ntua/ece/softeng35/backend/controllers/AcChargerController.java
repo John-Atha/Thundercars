@@ -15,11 +15,11 @@ class AcChargerController {
     this.repository = repository;
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  /*@CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/acchargers")
   List<AcCharger> all() {
     return repository.findAll();
-  }
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/evcharge/api/acchargers")
