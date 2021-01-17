@@ -28,6 +28,9 @@ List<Integer> findCountryForStationOwner(Integer userAddressId);
     
 @Query(value = "SELECT u.Title, u.ISOCode, u.ContinentCode FROM Country u WHERE u.id= ?1")
 List<List<Object>> findCountryInfoForStationOwner(Integer countryId);
+
+@Query(value = "SELECT u.id, u.address.Title FROM ChargingStation u WHERE u.stationOwner.id= ?1")
+List<List<Object>> findOwnersStations(Integer stationOwnerId);
 }
 
 

@@ -31,7 +31,7 @@ class StationownerController {
     this.repository = repository;
   }
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners{id}/profile")
+  @GetMapping("/evcharge/api/stationowners/{id}/profile")
   JsonNode myProfile(@PathVariable Optional<Integer> id) {
     if (!id.isPresent()) {
       throw new BadRequestException();
@@ -44,7 +44,9 @@ class StationownerController {
       else {
         List<List<Object>> info=repository.findInfoForStationOwner(id.get());
         List<Object> userBasic = info.get(0);
-        
+        if (userBasic.size()==0) {
+          throw new NoDataFoundException();
+        }
         List<Integer> addresses=repository.findAddressForStationOwner(id.get());
         Integer addressId = addresses.get(0);
         Boolean hasAddress = true;
@@ -66,7 +68,6 @@ class StationownerController {
           addressInfo = repository.findAddressInfoForStationOwner(addressId);
           addressBasic = addressInfo.get(0);
         }
-
         if (hasAddress==true) {
           if (countryId==null) {
             hasCountry=false;
@@ -75,10 +76,13 @@ class StationownerController {
             countryInfo = repository.findCountryInfoForStationOwner(countryId);
             countryBasic = countryInfo.get(0);
           }
-        } 
+        }
+        
+        List<List<Object>> stationIDsAndTitles = repository.findOwnersStations(id.get());
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode answer = mapper.createObjectNode();
+        ArrayNode stationsList = mapper.createArrayNode();
 
         answer.put("Station Owner name", (String) userBasic.get(0));
         answer.put("Email", (String) userBasic.get(1));
@@ -105,6 +109,15 @@ class StationownerController {
           answer.put("Country", country);
           answer.put("Continent", (String) countryBasic.get(2));
         }
+
+        for (List<Object> station : stationIDsAndTitles) {
+          ObjectNode curr = mapper.createObjectNode();
+          curr.put("Station Id", (Integer) station.get(0));
+          curr.put("Station Title", (String) station.get(1));
+          stationsList.add(curr);
+        }
+        answer.put("Stations", stationsList);
+
         String ugly = answer.toString();
         try {
           JsonNode node = mapper.readTree(ugly);
