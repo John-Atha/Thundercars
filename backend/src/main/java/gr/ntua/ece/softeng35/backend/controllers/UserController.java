@@ -694,6 +694,7 @@ class UserController {
   }
 
 
+  
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/users")
   List<User> all() {
