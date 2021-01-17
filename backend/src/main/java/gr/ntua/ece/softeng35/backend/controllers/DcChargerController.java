@@ -15,11 +15,11 @@ class DcChargerController {
     this.repository = repository;
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
+  /*@CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/dcchargers")
   List<DcCharger> all() {
     return repository.findAll();
-  }
+  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/evcharge/api/dcchargers")
@@ -40,8 +40,7 @@ class DcChargerController {
     return repository.findById(id)
       .map(dcCharger -> {
         dcCharger.setMaxPower(newDccharger.getMaxPower());
-dcCharger.setIsDefaultChargingCurve(newDccharger.getIsDefaultChargingCurve());
-
+        dcCharger.setIsDefaultChargingCurve(newDccharger.getIsDefaultChargingCurve());
         return repository.save(dcCharger);
       })
       .orElseThrow(() -> new DcChargerNotFoundException(id));

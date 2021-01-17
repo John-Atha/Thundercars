@@ -54,118 +54,110 @@ class VehicleController {
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/user/{id}/myvehicles/{vehicleId}")
-  JsonNode myVehicle(@PathVariable Optional<Integer> id,
+  JsonNode myVehicle(@PathVariable Integer id,
                      @PathVariable Integer vehicleId) {
-    
-    if (!id.isPresent()) {
+    List<Integer> allUsers = repository.findAllUsersIds();
+    if (!allUsers.contains(id)) {
       throw new BadRequestException();
     }
     else {
-      List<Integer> allUsers = repository.findAllUsersIds();
-      if (!allUsers.contains(id.get())) {
+      List<Integer> vehicles = repository.findUserVehicles(id);
+      ObjectMapper mapper = new ObjectMapper();
+      
+      if (!vehicles.contains(vehicleId)) {
         throw new BadRequestException();
       }
       else {
-        List<Integer> vehicles = repository.findUserVehicles(id.get());
-        ObjectMapper mapper = new ObjectMapper();
-        
-        if (!vehicles.contains(vehicleId)) {
-          throw new BadRequestException();
+        ObjectNode current = mapper.createObjectNode();
+        List<List<Object>> basicsListList = repository.findVehicleBasics(vehicleId);
+        List<Integer> acChargers = repository.findVehicleAcCharger(vehicleId);
+        List<Integer> dcChargers = repository.findVehicleDcCharger(vehicleId);
+        if (basicsListList.size()==0) {
+          throw new NoDataFoundException();  
+        }
+        List<Object> basicsList = basicsListList.get(0);
+        current.put("Brand", (String) basicsList.get(0));
+        current.put("Type", (String) basicsList.get(1));
+        current.put("Model", (String) basicsList.get(2));
+        if (basicsList.get(3)!=null) {
+          current.put("Release Year", basicsList.get(3).toString());
         }
         else {
-          ObjectNode current = mapper.createObjectNode();
-          List<List<Object>> basicsListList = repository.findVehicleBasics(vehicleId);
-          List<Integer> acChargers = repository.findVehicleAcCharger(vehicleId);
-          List<Integer> dcChargers = repository.findVehicleDcCharger(vehicleId);
-          if (basicsListList.size()==0) {
-            throw new NoDataFoundException();  
+          current.put("Release Year","Unknown");
+        }
+        current.put("Usable Battery Size", (Double) basicsList.get(4));
+        current.put("Energy Consumption", (Double) basicsList.get(5));
+        if (acChargers.size()==0) {
+          current.put("Ac Charging", "NO");
+        }
+        else {
+          current.put("Ac Charging", "YES");
+          ArrayNode AcChargers = mapper.createArrayNode();
+          for (Integer charger : acChargers) {
+            ObjectNode thisCharger = mapper.createObjectNode();
+            thisCharger.put("AcCharger", charger);             
+            AcChargers.add(thisCharger);
           }
-          List<Object> basicsList = basicsListList.get(0);
-          current.put("Brand", (String) basicsList.get(0));
-          current.put("Type", (String) basicsList.get(1));
-          current.put("Model", (String) basicsList.get(2));
-          if (basicsList.get(3)!=null) {
-            current.put("Release Year", basicsList.get(3).toString());
+          current.put("AcChargers", AcChargers);
+          List<String> allPortNames = new ArrayList();
+          //ObjectNode allPorts = mapper.createObjectNode();
+          ArrayNode PortNamesList = mapper.createArrayNode();
+          
+          for (Integer charger : acChargers) {
+            List<String> ports = repository.findAcChargerPortNames(charger);
+            for (String name : ports) {
+              allPortNames.add(name);
+            }            
           }
-          else {
-            current.put("Release Year","Unknown");
+          for (String name : allPortNames) {
+            ObjectNode currPort = mapper.createObjectNode();
+            currPort.put("Port Name", name);
+            PortNamesList.add(currPort);
           }
-          current.put("Usable Battery Size", (Double) basicsList.get(4));
-          current.put("Energy Consumption", (Double) basicsList.get(5));
-          if (acChargers.size()==0) {
-            current.put("Ac Charging", "NO");
+          current.put("Ac Charger Ports", PortNamesList);
+        }
+        if (dcChargers.size()==0) {
+          current.put("Dc Charging", "NO");
+        }
+        else {
+          current.put("Dc Charging", "YES");
+          ArrayNode DcChargers = mapper.createArrayNode();
+          for (Integer charger : dcChargers) {
+            ObjectNode thisCharger = mapper.createObjectNode();
+            thisCharger.put("DcCharger", charger);
+            DcChargers.add(thisCharger);
           }
-          else {
-            current.put("Ac Charging", "YES");
-            ArrayNode AcChargers = mapper.createArrayNode();
-            for (Integer charger : acChargers) {
-              ObjectNode thisCharger = mapper.createObjectNode();
-              thisCharger.put("AcCharger", charger);             
-              AcChargers.add(thisCharger);
-            }
-            current.put("AcChargers", AcChargers);
-            List<String> allPortNames = new ArrayList();
-            //ObjectNode allPorts = mapper.createObjectNode();
-            ArrayNode PortNamesList = mapper.createArrayNode();
-            
-            for (Integer charger : acChargers) {
-              List<String> ports = repository.findAcChargerPortNames(charger);
-              for (String name : ports) {
-                allPortNames.add(name);
-              }            
-            }
-            for (String name : allPortNames) {
-              ObjectNode currPort = mapper.createObjectNode();
-              currPort.put("Port Name", name);
-              PortNamesList.add(currPort);
-            }
-            current.put("Ac Charger Ports", PortNamesList);
+          current.put("DcChargers", DcChargers);
+          List<String> allPortNames = new ArrayList();
+          //ObjectNode allPorts = mapper.createObjectNode();
+          ArrayNode PortNamesList = mapper.createArrayNode();
+          
+          for (Integer charger : dcChargers) {
+            List<String> ports = repository.findDcChargerPortNames(charger);
+            for (String name : ports) {
+              allPortNames.add(name);
+            }            
           }
-          if (dcChargers.size()==0) {
-            current.put("Dc Charging", "NO");
+          for (String name : allPortNames) {
+            ObjectNode currPort = mapper.createObjectNode();
+            currPort.put("Port Name", name);
+            PortNamesList.add(currPort);
           }
-          else {
-            current.put("Dc Charging", "YES");
-            ArrayNode DcChargers = mapper.createArrayNode();
-            for (Integer charger : dcChargers) {
-              ObjectNode thisCharger = mapper.createObjectNode();
-              thisCharger.put("DcCharger", charger);
-              DcChargers.add(thisCharger);
-            }
-            current.put("DcChargers", DcChargers);
-            List<String> allPortNames = new ArrayList();
-            //ObjectNode allPorts = mapper.createObjectNode();
-            ArrayNode PortNamesList = mapper.createArrayNode();
-            
-            for (Integer charger : dcChargers) {
-              List<String> ports = repository.findDcChargerPortNames(charger);
-              for (String name : ports) {
-                allPortNames.add(name);
-              }            
-            }
-            for (String name : allPortNames) {
-              ObjectNode currPort = mapper.createObjectNode();
-              currPort.put("Port Name", name);
-              PortNamesList.add(currPort);
-            }
-            current.put("Dc Charger Ports", PortNamesList);
-          }
-          String ugly = current.toString();
-          try {
-            JsonNode node = mapper.readTree(ugly);
-            return node;
-          }
-          catch(Exception e) {
-            JsonNode node = null;
-            return null;
-          }
+          current.put("Dc Charger Ports", PortNamesList);
+        }
+        String ugly = current.toString();
+        try {
+          JsonNode node = mapper.readTree(ugly);
+          return node;
+        }
+        catch(Exception e) {
+          JsonNode node = null;
+          return null;
         }
       }
     }
+    
   }
-
-
-
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/vehicles/{id}")
