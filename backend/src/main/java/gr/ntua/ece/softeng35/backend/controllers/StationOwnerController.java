@@ -127,7 +127,7 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners/{id}/myStations")
+  @GetMapping("/evcharge/api/stationowners/{id}/mystations")
   JsonNode myStations(@PathVariable Integer id) {
     List<Integer> allStationOwners = repository.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
@@ -265,7 +265,43 @@ class StationownerController {
   }
 
 
-
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/evcharge/api/stationowners/{id}/mystatistics")
+  JsonNode myStatistics(@PathVariable Integer id) {
+    List<Integer> allStationOwners = repository.findAllStationOwnersIds();
+    if (!allStationOwners.contains(id)) {
+      throw new BadRequestException();
+    }
+    else {
+      List<List<Object>> statistics = repository.findSessionsByStationMonth(id);
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode answer = mapper.createObjectNode();
+      ArrayNode statList = mapper.createArrayNode();      
+      if (statistics.size()==0) {
+        throw new NoDataFoundException();
+      }
+      for (List<Object> stat : statistics) {
+        ObjectNode curr = mapper.createObjectNode();
+        curr.put("Year", stat.get(1).toString());
+        curr.put("Month", stat.get(0).toString());
+        curr.put("Sessions", (Long) stat.get(2));
+        curr.put("Users", (Long) stat.get(3));
+        curr.put("Earnings", Math.round(((Double)stat.get(4))*100d)/100d);
+        curr.put("kWh Delivered", Math.round(((Double)stat.get(5))*100d)/100d);
+        statList.add(curr);
+      }
+      answer.put("Summary", statList);
+      String ugly = answer.toString();
+      try {
+        JsonNode node = mapper.readTree(ugly);
+        return node;
+      }
+      catch(Exception e) {
+        JsonNode node = null;
+        return null;
+      }
+    }
+  }
 
 
 

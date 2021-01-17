@@ -62,6 +62,11 @@ List<Integer> findOwnersStationsIds(Integer stationOwnerId);
    @Query(value= "SELECT u.id FROM ChargingStationSpots u WHERE u.chargingStation.id= ?1")
    List<Integer> findStationSpotsFromStation(Integer stationId);
 
+//----------------------------------------------
+
+    @Query(value= "SELECT MONTH(u.connectionTime), YEAR(u.connectionTime), COUNT(u.id), COUNT(DISTINCT u.user.id), SUM(u.cost), SUM(u.kwhDelivered) FROM ChargingProcess u WHERE u.chargingStation.stationOwner.id= ?1 GROUP BY MONTH(u.connectionTime), YEAR(u.connectionTime) ORDER BY u.connectionTime")
+    List<List<Object>> findSessionsByStationMonth(Integer stationOwnerId);
+
 
 }
 
