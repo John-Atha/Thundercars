@@ -70,7 +70,7 @@ public class AdminController{
     
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/usermod/{username}")
+    @GetMapping("/evcharge/api/admin/users/{username}")
     User oneUser(@PathVariable String username) {
         if (repository.findByUsername(username)!=null) {
             return repository.findByUsername(username);
@@ -81,7 +81,7 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/stationownersmod/{username}")
+    @GetMapping("/evcharge/api/admin/stationowners/{username}")
     StationOwner oneOwner(@PathVariable String username) {
         if (repository2.findByUsername(username)!=null) {
             return repository2.findByUsername(username);
@@ -132,7 +132,6 @@ public class AdminController{
             return repository2.save(newUser);
         }
     }
-
 
 
 }
