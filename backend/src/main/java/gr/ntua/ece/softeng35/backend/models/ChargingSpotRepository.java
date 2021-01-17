@@ -16,8 +16,12 @@ public interface ChargingSpotRepository extends JpaRepository<ChargingSpot, Inte
     @Query(value = "SELECT u.chargingSpot.id FROM ChargingStationSpots u WHERE u.id = ?1")
     Integer findSpotFromTogether(Integer chargingStationSpots);
 
-    @Query(value = "SELECT u.address.Title FROM ChargingStation u WHERE u.id= ?1")
-    String findStationTitle(Integer stationId);
+    @Query(value = "SELECT u.address.id FROM ChargingStation u WHERE u.id= ?1")
+    Integer findStationAddress(Integer stationId);
+
+    @Query(value = "SELECT u.Title FROM Address u WHERE u.id= ?1")
+    String findStationAddressTitle(Integer addressId);
+
 
     @Query(value = "SELECT u.connectionType.id, u.level.id, u.currentType.id, u.amps, u.voltage, u.powerkw, u.comments FROM ChargingSpot u WHERE u.id= ?1")
     List<List<Object>> findSpotInfo(Integer spotId);

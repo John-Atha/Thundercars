@@ -720,7 +720,7 @@ class UserController {
     }
 }
 
-@CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/user/{id}/mysessions/perprovider/{providerid}")
   JsonNode myProvSessions(@PathVariable Optional<Integer> id,
                       @PathVariable Optional<Integer> providerid) {

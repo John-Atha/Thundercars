@@ -40,11 +40,6 @@ class ChargingProcessController {
   }
 
 
-  //public ResponseEntity noData() {
-  //  return new ResponseEntity("No data", HttpStatus.PAYMENT_REQUIRED);
-  //}
-
-
   /* Returns a list like : [ Station Id, Spot Id, Operator Title, (Browser) Request Time, 
                              Start Date (given from user), End Date (also from user),
                              Number of Processes of spot, 
@@ -69,7 +64,9 @@ class ChargingProcessController {
       ObjectNode allStations = mapper.createObjectNode();
       ArrayNode allData = mapper.createArrayNode();
 
-      for (Integer i=1; i<7663; i++) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      for (Integer i : chargingSpots) {
         ObjectNode answer = mapper.createObjectNode();
         ObjectNode allSessions = mapper.createObjectNode();
         ArrayNode ChargingSessionsList = mapper.createArrayNode();
@@ -156,7 +153,9 @@ class ChargingProcessController {
       }
     }
     else if (stationSpotId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      if (!chargingSpots.contains(stationSpotId.get())) {
         throw new BadRequestException();
       }
 
@@ -243,9 +242,10 @@ class ChargingProcessController {
         } 
       }
     }
-   
     else if (stationSpotId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      if (!chargingSpots.contains(stationSpotId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -337,10 +337,11 @@ class ChargingProcessController {
           return node;
         } 
       } 
-    }
-    
+    }   
     else {
-      if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      if (!chargingSpots.contains(stationSpotId.get())) {
         throw new BadRequestException();
       }
       Date date1, date2;
@@ -450,303 +451,310 @@ class ChargingProcessController {
   String csvspotProcess(@PathVariable Optional<Integer> stationSpotId,
                         @PathVariable Optional<String> startDate,
                         @PathVariable Optional<String> endDate) {
-                          if (!stationSpotId.isPresent()) {
-                            ObjectMapper mapper = new ObjectMapper();
-                            ObjectNode CsvAll = mapper.createObjectNode();
-                            ArrayNode CsvCharging = mapper.createArrayNode();
-                      
-                            for (Integer i=1; i<7663; i++) {
-                              Integer stationId =  (Integer) repository.findStationFromTogether(i);
-                              if (stationId==null) {
-                                continue; 
-                              }
-                              Integer spotIdReal =  (Integer) repository.findSpotFromTogether(i);
-                              Integer spotId =  i;
-                              List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
-                              if (processes.size()==0) {
-                                continue;
-                              }
-                              String Operator = (String) repository.findOperator(stationId);
-                              DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+    if (!stationSpotId.isPresent()) {
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      for (Integer i : chargingSpots) {
+        Integer stationId =  (Integer) repository.findStationFromTogether(i);
+        if (stationId==null) {
+          continue; 
+        }
+        Integer spotIdReal =  (Integer) repository.findSpotFromTogether(i);
+        Integer spotId =  i;
+        List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
+        if (processes.size()==0) {
+          continue;
+        }
+        String Operator = (String) repository.findOperator(stationId);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
-                              Object CurrTime = dtf.format(now);
-                              List<Object> res = new ArrayList();
-                              Integer counter = 1;
-                              for (List<Object> nested : processes) {
-                                nested.add(0, counter);
-                                counter++;
-                              }
-                              for (List<Object> nested : processes) {
-                                ObjectNode csvsession = mapper.createObjectNode();
-                                csvsession.put("Station Id", stationId);
-                                csvsession.put("Spot Id", spotId);
-                                csvsession.put("Operator", Operator);
-                                csvsession.put("Request Time", dtf.format(now));
-                                csvsession.put("Processes Number", processes.size());
-                                csvsession.put("Index", (Integer) nested.get(0));
-                                csvsession.put("Session Id", (Integer) nested.get(1));
-                                String str2 = nested.get(2).toString();
-                                String str = str2.substring(0, str2.length() - 2);
-                                csvsession.put("Started On", str);
-                                str2 = nested.get(3).toString();
-                                str = str2.substring(0, str2.length() - 2);
-                                csvsession.put("Charged On", str);
-                                str2 = nested.get(4).toString();
-                                str = str2.substring(0, str2.length() - 2);
-                                csvsession.put("Finished On", str);
-                                csvsession.put("Protocol", (String) nested.get(5));
-                                csvsession.put("kWh Delivered", (Double) nested.get(6));
-                                csvsession.put("Payment Way", (String) nested.get(7));
-                                csvsession.put("Vehicle Type", (String) nested.get(8));
+        Object CurrTime = dtf.format(now);
+        List<Object> res = new ArrayList();
+        Integer counter = 1;
+        for (List<Object> nested : processes) {
+          nested.add(0, counter);
+          counter++;
+        }
+        for (List<Object> nested : processes) {
+          ObjectNode csvsession = mapper.createObjectNode();
+          csvsession.put("Station Id", stationId);
+          csvsession.put("Spot Id", spotId);
+          csvsession.put("Operator", Operator);
+          csvsession.put("Request Time", dtf.format(now));
+          csvsession.put("Processes Number", processes.size());
+          csvsession.put("Index", (Integer) nested.get(0));
+          csvsession.put("Session Id", (Integer) nested.get(1));
+          String str2 = nested.get(2).toString();
+          String str = str2.substring(0, str2.length() - 2);
+          csvsession.put("Started On", str);
+          str2 = nested.get(3).toString();
+          str = str2.substring(0, str2.length() - 2);
+          csvsession.put("Charged On", str);
+          str2 = nested.get(4).toString();
+          str = str2.substring(0, str2.length() - 2);
+          csvsession.put("Finished On", str);
+          csvsession.put("Protocol", (String) nested.get(5));
+          csvsession.put("kWh Delivered", (Double) nested.get(6));
+          csvsession.put("Payment Way", (String) nested.get(7));
+          csvsession.put("Vehicle Type", (String) nested.get(8));
 
-                                CsvCharging.add(csvsession);
-                              }
-                            }
-                            CsvAll.put("Charging Stations Sessions",CsvCharging);
-                      
-                            try {
-                              String ugly_csv = CsvAll.toString();
-                              JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
-                              String csv = CDL.toString(docs);
-                              return csv;
-                            }
-                            catch (Exception e) {
-                              return "";
-                            } 
-                          }
-                          else if (stationSpotId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-                            if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
-                              throw new BadRequestException();
-                            }
+          CsvCharging.add(csvsession);
+        }
+      }
+      CsvAll.put("Charging Stations Sessions",CsvCharging);
 
-                            ObjectMapper mapper = new ObjectMapper();
-                            ObjectNode CsvAll = mapper.createObjectNode();
-                            ArrayNode CsvCharging = mapper.createArrayNode();
-                      
-                            Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
-                            if (stationId==null) {
-                              throw new BadRequestException(); 
-                            }
-                            Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
-                            Integer spotId =  stationSpotId.get();
-                            List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
-                            
-                            if (processes.size()==0) {
-                              throw new NoDataFoundException();
-                            }
-                            
-                            String Operator = (String) repository.findOperator(stationId);
-                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-        LocalDateTime now = LocalDateTime.now();  
-                            Object CurrTime = dtf.format(now);
-                            List<Object> res = new ArrayList();
-                            Integer counter = 1;
-                            for (List<Object> nested : processes) {
-                              nested.add(0, counter);
-                              counter++;
-                            }
-                            
-                            for (List<Object> nested : processes) {
-                              ObjectNode csvsession = mapper.createObjectNode();
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("Charging Stations Sessions");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      } 
+    }
+    else if (stationSpotId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
 
-                              csvsession.put("Station Id", stationId);
-                              csvsession.put("Spot Id", spotId);
-                              csvsession.put("Operator", Operator);
-                              csvsession.put("Request Time", dtf.format(now));
-                              csvsession.put("Processes Number", processes.size());
-                              csvsession.put("Index", (Integer) nested.get(0));
-                              csvsession.put("Session Id", (Integer) nested.get(1));
-                              String str2 = nested.get(2).toString();
-                              String str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Started On", str);
-                              str2 = nested.get(3).toString();
-                              str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Charged On", str);
-                              str2 = nested.get(4).toString();
-                              str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Finished On", str);
-                              csvsession.put("Protocol", (String) nested.get(5));
-                              csvsession.put("kWh Delivered", (Double) nested.get(6));
-                              csvsession.put("Payment Way", (String) nested.get(7));
-                              csvsession.put("Vehicle Type", (String) nested.get(8));
+      if (!chargingSpots.contains(stationSpotId.get())) {
+        throw new BadRequestException();
+      }
 
-                              CsvCharging.add(csvsession);
-                            }
-                      
-                            CsvAll.put("Charging Stations Sessions", CsvCharging);
-                            
-                            try{
-                              String ugly_csv = CsvAll.toString();
-                              JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
-                              String csv = CDL.toString(docs);
-                              return csv;
-                            }
-                            catch(Exception e){
-                              return "";
-                            }
-                          }
-                          else if (stationSpotId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-                            if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
-                              throw new BadRequestException();
-                            }
-                            Date date1;
-                            try {  
-                              date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
-                            }
-                            catch (Exception e) {
-                              throw new BadRequestException();
-                            }
-                      
-                            ObjectMapper mapper = new ObjectMapper();
-                            ObjectNode CsvAll = mapper.createObjectNode();
-                            ArrayNode CsvCharging = mapper.createArrayNode();
-                            
-                            Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
-                            if (stationId==null) {
-                              throw new BadRequestException();
-                            }
-                            Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
-                            Integer spotId =  stationSpotId.get();
-                            List<List<Object>> processes = repository.findBySpotAndStartDate(stationId, spotIdReal, date1);
-                            
-                            if (processes.size()==0) {
-                              throw new NoDataFoundException();
-                            }
-                      
-                            String Operator = (String) repository.findOperator(stationId);
-                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-        LocalDateTime now = LocalDateTime.now();  
-                            Object CurrTime = dtf.format(now);
-                            List<Object> res = new ArrayList();
-                            Integer counter = 1;
-                            for (List<Object> nested : processes) {
-                              nested.add(0, counter);
-                              counter++;
-                            }
-                            for (List<Object> nested : processes) {
-                              ObjectNode csvsession = mapper.createObjectNode();
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
 
-                              csvsession.put("Station Id", stationId);
-                              csvsession.put("Spot Id", spotId);
-                              csvsession.put("Operator", Operator); 
-                              csvsession.put("Request Time", dtf.format(now));
-                              csvsession.put("Start Date", date1.toString());
-                              csvsession.put("Processes Number", processes.size());
-                              csvsession.put("Index", (Integer) nested.get(0));
-                              csvsession.put("Session Id", (Integer) nested.get(1));
-                              String str2 = nested.get(2).toString();
-                              String str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Started On", str);
-                              str2 = nested.get(3).toString();
-                              str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Charged On", str);
-                              str2 = nested.get(4).toString();
-                              str = str2.substring(0, str2.length() - 2);
-                              csvsession.put("Finished On", str);
-                              csvsession.put("Protocol", (String) nested.get(5));
-                              csvsession.put("kWh Delivered", (Double) nested.get(6));
-                              csvsession.put("Payment Way", (String) nested.get(7));
-                              csvsession.put("Vehicle Type", (String) nested.get(8));
+      Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
+      if (stationId==null) {
+        throw new BadRequestException(); 
+      }
+      Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
+      Integer spotId =  stationSpotId.get();
+      List<List<Object>> processes = repository.findBySpotOnly(stationId, spotIdReal);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+      
+      String Operator = (String) repository.findOperator(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
+      List<Object> res = new ArrayList();
+      Integer counter = 1;
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        counter++;
+      }
+      
+      for (List<Object> nested : processes) {
+        ObjectNode csvsession = mapper.createObjectNode();
 
-                              CsvCharging.add(csvsession);
-                            }
-                            CsvAll.put("Charging Stations Sessions", CsvCharging);
-                            
-                            try {
-                              String ugly_csv = CsvAll.toString();
-                              JSONObject output = new JSONObject(ugly_csv);
-                              JSONArray docs = output.getJSONArray("Charging Stations Sessions");
-                              String csv = CDL.toString(docs);
-                              return csv;
-                            }
-                            catch (Exception e) {
-                              return "";
-                            } 
-                          }
-                        else {
-                          if (stationSpotId.get()<1 || stationSpotId.get()>42979) {
-                            throw new BadRequestException();
-                          }
-                          Date date1, date2;
-                          try {
-                            date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
-                            date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
-                          }
-                          catch (Exception e) {
-                            throw new BadRequestException();
-                          }
-                    
-                          ObjectMapper mapper = new ObjectMapper();
-                          ObjectNode CsvAll = mapper.createObjectNode();
-                          ArrayNode CsvCharging = mapper.createArrayNode();
-                    
-                          Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
-                          if (stationId==null) {
-                            throw new BadRequestException();
-                          }
-                          Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
-                          Integer spotId =  stationSpotId.get();
-                          List<List<Object>> processes = repository.findBySpotAndBothDates(stationId, spotIdReal, date1, date2);
-                          
-                          if (processes.size()==0) {
-                            throw new NoDataFoundException();
-                          }
-                    
-                          String Operator = (String) repository.findOperator(stationId);
-                          DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
-        LocalDateTime now = LocalDateTime.now();  
-                          Object CurrTime = dtf.format(now);
-                          List<Object> res = new ArrayList();
-                          Integer counter = 1;
-                          for (List<Object> nested : processes) {
-                            nested.add(0, counter);
-                            counter++;
-                          }
-                          for (List<Object> nested : processes) {
-                            ObjectNode csvsession = mapper.createObjectNode();
+        csvsession.put("Station Id", stationId);
+        csvsession.put("Spot Id", spotId);
+        csvsession.put("Operator", Operator);
+        csvsession.put("Request Time", dtf.format(now));
+        csvsession.put("Processes Number", processes.size());
+        csvsession.put("Index", (Integer) nested.get(0));
+        csvsession.put("Session Id", (Integer) nested.get(1));
+        String str2 = nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Started On", str);
+        str2 = nested.get(3).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Charged On", str);
+        str2 = nested.get(4).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Finished On", str);
+        csvsession.put("Protocol", (String) nested.get(5));
+        csvsession.put("kWh Delivered", (Double) nested.get(6));
+        csvsession.put("Payment Way", (String) nested.get(7));
+        csvsession.put("Vehicle Type", (String) nested.get(8));
 
-                            csvsession.put("Station Id", stationId);
-                            csvsession.put("Spot Id", spotId);
-                            csvsession.put("Operator", Operator); 
-                            csvsession.put("Request Time", dtf.format(now));
-                            csvsession.put("Start Date", date1.toString());
-                            csvsession.put("End Date", date2.toString());
-                            csvsession.put("Processes Number", processes.size());
-                            csvsession.put("Index", (Integer) nested.get(0));
-                            csvsession.put("Session Id", (Integer) nested.get(1));
-                            String str2 = nested.get(2).toString();
-                            String str = str2.substring(0, str2.length() - 2);
-                            csvsession.put("Started On", str);
-                            str2 = nested.get(3).toString();
-                            str = str2.substring(0, str2.length() - 2);
-                            csvsession.put("Charged On", str);
-                            str2 = nested.get(4).toString();
-                            str = str2.substring(0, str2.length() - 2);
-                            csvsession.put("Finished On", str);
-                            csvsession.put("Protocol", (String) nested.get(5));
-                            csvsession.put("kWh Delivered", (Double) nested.get(6));
-                            csvsession.put("Payment Way", (String) nested.get(7));
-                            csvsession.put("Vehicle Type", (String) nested.get(8));
+        CsvCharging.add(csvsession);
+      }
 
-                            CsvCharging.add(csvsession);
-                          }
-                    
-                          CsvAll.put("Charging Stations Sessions", CsvCharging);
-                          String ugly = CsvAll.toString();
-                          try {
-                            String ugly_csv = CsvAll.toString();
-                            JSONObject output = new JSONObject(ugly_csv);
-                            JSONArray docs = output.getJSONArray("Charging Stations Sessions");
-                            String csv = CDL.toString(docs);
-                            return csv;
-                          }
-                          catch (Exception e) {
-                            return "";
-                          }
-                        }
-                      }
+      CsvAll.put("Charging Stations Sessions", CsvCharging);
+      
+      try{
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("Charging Stations Sessions");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch(Exception e){
+        return "";
+      }
+    }
+    else if (stationSpotId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      if (!chargingSpots.contains(stationSpotId.get())) {
+        throw new BadRequestException();
+      }
+      Date date1;
+      try {  
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
+      
+      Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
+      if (stationId==null) {
+        throw new BadRequestException();
+      }
+      Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
+      Integer spotId =  stationSpotId.get();
+      List<List<Object>> processes = repository.findBySpotAndStartDate(stationId, spotIdReal, date1);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      String Operator = (String) repository.findOperator(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
+      List<Object> res = new ArrayList();
+      Integer counter = 1;
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        counter++;
+      }
+      for (List<Object> nested : processes) {
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("Station Id", stationId);
+        csvsession.put("Spot Id", spotId);
+        csvsession.put("Operator", Operator); 
+        csvsession.put("Request Time", dtf.format(now));
+        csvsession.put("Start Date", date1.toString());
+        csvsession.put("Processes Number", processes.size());
+        csvsession.put("Index", (Integer) nested.get(0));
+        csvsession.put("Session Id", (Integer) nested.get(1));
+        String str2 = nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Started On", str);
+        str2 = nested.get(3).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Charged On", str);
+        str2 = nested.get(4).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Finished On", str);
+        csvsession.put("Protocol", (String) nested.get(5));
+        csvsession.put("kWh Delivered", (Double) nested.get(6));
+        csvsession.put("Payment Way", (String) nested.get(7));
+        csvsession.put("Vehicle Type", (String) nested.get(8));
+
+        CsvCharging.add(csvsession);
+      }
+      CsvAll.put("Charging Stations Sessions", CsvCharging);
+      
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("Charging Stations Sessions");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      } 
+    }
+    else {
+      List<Integer> chargingSpots = repository.findAllStationSpotsIDs();
+
+      if (!chargingSpots.contains(stationSpotId.get())) {
+        throw new BadRequestException();
+      }
+      Date date1, date2;
+      try {
+        date1 = java.sql.Date.valueOf(LocalDate.parse(startDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+        date2 = java.sql.Date.valueOf(LocalDate.parse(endDate.get(), DateTimeFormatter.BASIC_ISO_DATE));
+      }
+      catch (Exception e) {
+        throw new BadRequestException();
+      }
+
+      ObjectMapper mapper = new ObjectMapper();
+      ObjectNode CsvAll = mapper.createObjectNode();
+      ArrayNode CsvCharging = mapper.createArrayNode();
+
+      Integer stationId =  (Integer) repository.findStationFromTogether(stationSpotId.get());
+      if (stationId==null) {
+        throw new BadRequestException();
+      }
+      Integer spotIdReal =  (Integer) repository.findSpotFromTogether(stationSpotId.get());
+      Integer spotId =  stationSpotId.get();
+      List<List<Object>> processes = repository.findBySpotAndBothDates(stationId, spotIdReal, date1, date2);
+      
+      if (processes.size()==0) {
+        throw new NoDataFoundException();
+      }
+
+      String Operator = (String) repository.findOperator(stationId);
+      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+      LocalDateTime now = LocalDateTime.now();  
+      Object CurrTime = dtf.format(now);
+      List<Object> res = new ArrayList();
+      Integer counter = 1;
+      for (List<Object> nested : processes) {
+        nested.add(0, counter);
+        counter++;
+      }
+      for (List<Object> nested : processes) {
+        ObjectNode csvsession = mapper.createObjectNode();
+
+        csvsession.put("Station Id", stationId);
+        csvsession.put("Spot Id", spotId);
+        csvsession.put("Operator", Operator); 
+        csvsession.put("Request Time", dtf.format(now));
+        csvsession.put("Start Date", date1.toString());
+        csvsession.put("End Date", date2.toString());
+        csvsession.put("Processes Number", processes.size());
+        csvsession.put("Index", (Integer) nested.get(0));
+        csvsession.put("Session Id", (Integer) nested.get(1));
+        String str2 = nested.get(2).toString();
+        String str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Started On", str);
+        str2 = nested.get(3).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Charged On", str);
+        str2 = nested.get(4).toString();
+        str = str2.substring(0, str2.length() - 2);
+        csvsession.put("Finished On", str);
+        csvsession.put("Protocol", (String) nested.get(5));
+        csvsession.put("kWh Delivered", (Double) nested.get(6));
+        csvsession.put("Payment Way", (String) nested.get(7));
+        csvsession.put("Vehicle Type", (String) nested.get(8));
+
+        CsvCharging.add(csvsession);
+      }
+
+      CsvAll.put("Charging Stations Sessions", CsvCharging);
+      String ugly = CsvAll.toString();
+      try {
+        String ugly_csv = CsvAll.toString();
+        JSONObject output = new JSONObject(ugly_csv);
+        JSONArray docs = output.getJSONArray("Charging Stations Sessions");
+        String csv = CDL.toString(docs);
+        return csv;
+      }
+      catch (Exception e) {
+        return "";
+      }
+    }
+  }
 
 
   /* Returns a list like : [ Station Id, Operator Title, (Browser) Request Time, 
@@ -775,9 +783,9 @@ class ChargingProcessController {
       ObjectNode allStations = mapper.createObjectNode();
       ArrayNode allData = mapper.createArrayNode();
       
-      
+      List<Integer> chargingStations = repository.findAllStationsIDs();
 
-      for (Integer i=1; i<7663; i++) {
+      for (Integer i : chargingStations) {
         ObjectNode answer = mapper.createObjectNode();
         ObjectNode allSessions = mapper.createObjectNode();
         ArrayNode ChargingSessionsList = mapper.createArrayNode();
@@ -881,10 +889,11 @@ class ChargingProcessController {
           return node;
         } 
       } 
-    }     
-                                 
+    }                                     
     else if (stationId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       
@@ -993,9 +1002,10 @@ class ChargingProcessController {
         } 
       }  
     }
-
     else if (stationId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -1118,9 +1128,10 @@ class ChargingProcessController {
         } 
       }  
     }
-
     else {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       Date date1, date2;
@@ -1252,11 +1263,6 @@ class ChargingProcessController {
   }
   
   
-  
-  
-  
-  
-  
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping(value = {"/evcharge/api/SessionsPerStation",
                        "/evcharge/api/SessionsPerStation/{stationId}",
@@ -1271,7 +1277,10 @@ class ChargingProcessController {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode CsvAll = mapper.createObjectNode();
       ArrayNode CsvCharging = mapper.createArrayNode();
-      for (Integer i=1; i<7663; i++) {
+
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      for (Integer i : chargingStations) {
               
         List<List<Object>> temp = repository.findByStation(i);
         Boolean flag = false;
@@ -1349,7 +1358,9 @@ class ChargingProcessController {
       }
     }                            
     else if (stationId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       
@@ -1445,7 +1456,9 @@ class ChargingProcessController {
       }  
     }
     else if (stationId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -1551,7 +1564,9 @@ class ChargingProcessController {
       } 
     }
     else {
-      if (stationId.get()<1 || stationId.get()>7662) {
+      List<Integer> chargingStations = repository.findAllStationsIDs();
+
+      if (!chargingStations.contains(stationId.get())) {
         throw new BadRequestException();
       }
       Date date1, date2;
@@ -1680,7 +1695,9 @@ class ChargingProcessController {
       ObjectNode allVehicles = mapper.createObjectNode();
       ArrayNode allData = mapper.createArrayNode();
       
-      for (Integer i=1; i<13201; i++) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      for (Integer i : userHasVehicles) {
         ObjectNode answer = mapper.createObjectNode();
         ObjectNode allSessions = mapper.createObjectNode();
         ArrayNode ChargingSessionsList = mapper.createArrayNode();
@@ -1728,7 +1745,12 @@ class ChargingProcessController {
           ObjectNode session = mapper.createObjectNode();
           session.put("Session Index", (Integer) nested.get(0));
           session.put("Session Id", (Integer) nested.get(1));
-          session.put("Energy Provider", (String) nested.get(2));
+          if (nested.get(2)!=null) {
+            session.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+          }
+          else {
+            session.put("Energy Provider", "Unknown");
+          }
           String str2 = nested.get(3).toString();
           String str = str2.substring(0, str2.length() - 2);
           session.put("Started On", str);
@@ -1790,9 +1812,10 @@ class ChargingProcessController {
         } 
       }  
     }
-
     else if (userHasVehicleId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       ObjectMapper mapper = new ObjectMapper();
@@ -1848,7 +1871,12 @@ class ChargingProcessController {
         ObjectNode session = mapper.createObjectNode();
         session.put("Session Index", (Integer) nested.get(0));
         session.put("Session Id", (Integer) nested.get(1));
-        session.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          session.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          session.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         session.put("Started On", str);
@@ -1907,9 +1935,10 @@ class ChargingProcessController {
         } 
       }  
     }
-
     else if (userHasVehicleId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -1973,7 +2002,12 @@ class ChargingProcessController {
         ObjectNode session = mapper.createObjectNode();
         session.put("Session Index", (Integer) nested.get(0));
         session.put("Session Id", (Integer) nested.get(1));
-        session.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          session.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          session.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         session.put("Started On", str);
@@ -2032,9 +2066,10 @@ class ChargingProcessController {
         } 
       }  
     }
-
     else {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -2101,7 +2136,12 @@ class ChargingProcessController {
         ObjectNode session = mapper.createObjectNode();
         session.put("Session Index", (Integer) nested.get(0));
         session.put("Session Id", (Integer) nested.get(1));
-        session.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          session.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          session.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         session.put("Started On", str);
@@ -2175,8 +2215,9 @@ class ChargingProcessController {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode CsvAll = mapper.createObjectNode();
       ArrayNode CsvCharging = mapper.createArrayNode();
-      
-      for (Integer i=1; i<13201; i++) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      for (Integer i : userHasVehicles) {
 
         Integer userId = repository.findUserByUserVehicle(i);
         Integer vehicleId = repository.findVehicleByUserVehicle(i);
@@ -2222,7 +2263,12 @@ class ChargingProcessController {
           csvsession.put("Sessions", counter);
           csvsession.put("Session Index", (Integer) nested.get(0));
           csvsession.put("Session Id", (Integer) nested.get(1));
-          csvsession.put("Energy Provider", (String) nested.get(2));
+          if (nested.get(2)!=null) {
+            csvsession.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+          }
+          else {
+            csvsession.put("Energy Provider", "Unknown");
+          }          
           String str2 = nested.get(3).toString();
           String str = str2.substring(0, str2.length() - 2);
           csvsession.put("Started On", str);
@@ -2263,7 +2309,9 @@ class ChargingProcessController {
         }   
     }
     else if (userHasVehicleId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       ObjectMapper mapper = new ObjectMapper();
@@ -2317,7 +2365,12 @@ class ChargingProcessController {
         csvsession.put("Sessions", counter);
         csvsession.put("Session Index", (Integer) nested.get(0));
         csvsession.put("Session Id", (Integer) nested.get(1));
-        csvsession.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          csvsession.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          csvsession.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         csvsession.put("Started On", str);
@@ -2360,7 +2413,9 @@ class ChargingProcessController {
     }
     
     else if (userHasVehicleId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -2422,7 +2477,12 @@ class ChargingProcessController {
         csvsession.put("Sessions", counter);
         csvsession.put("Session Index", (Integer) nested.get(0));
         csvsession.put("Session Id", (Integer) nested.get(1));
-        csvsession.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          csvsession.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          csvsession.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         csvsession.put("Started On", str);
@@ -2464,7 +2524,9 @@ class ChargingProcessController {
       } 
     }  
     else {
-      if (userHasVehicleId.get()<1 || userHasVehicleId.get()>13200) {
+      List<Integer> userHasVehicles = repository.findAllUserHasVehicleIDs();
+
+      if (!userHasVehicles.contains(userHasVehicleId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -2529,7 +2591,12 @@ class ChargingProcessController {
         csvsession.put("Sessions", counter);
         csvsession.put("Session Index", (Integer) nested.get(0));
         csvsession.put("Session Id", (Integer) nested.get(1));
-        csvsession.put("Energy Provider", (String) nested.get(2));
+        if (nested.get(2)!=null) {
+          csvsession.put("Energy Provider", repository.findProvidersName((Integer) nested.get(2)));
+        }
+        else {
+          csvsession.put("Energy Provider", "Unknown");
+        }        
         String str2 = nested.get(3).toString();
         String str = str2.substring(0, str2.length() - 2);
         csvsession.put("Started On", str);
@@ -2587,7 +2654,9 @@ class ChargingProcessController {
       ObjectNode allProviders = mapper.createObjectNode();
       ArrayNode allData = mapper.createArrayNode();
       
-      for (Integer i=0; i<=155; i++) {
+      List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+      for (Integer i : allProvidersIDs) {
      
         ObjectNode answer = mapper.createObjectNode();
         ObjectNode allSessions = mapper.createObjectNode();
@@ -2680,10 +2749,11 @@ class ChargingProcessController {
           return node;
         } 
       }   
-    } 
-    
+    }  
     else if (providerId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-      if (providerId.get()<1 || providerId.get()>156) {
+      List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+      if (!allProvidersIDs.contains(providerId.get())) {
         throw new BadRequestException();
       }
       ObjectMapper mapper = new ObjectMapper();
@@ -2776,9 +2846,10 @@ class ChargingProcessController {
       }  
 
     }
-
     else if (providerId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-      if (providerId.get()<1 || providerId.get()>156) {
+      List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+      if (!allProvidersIDs.contains(providerId.get())) {
         throw new BadRequestException();
       }
       Date date1;
@@ -2878,9 +2949,10 @@ class ChargingProcessController {
         } 
       } 
     }
-
     else {
-      if (providerId.get()<1 || providerId.get()>156) {
+      List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+      if (!allProvidersIDs.contains(providerId.get())) {
         throw new BadRequestException();
       }
       Date date1, date2;
@@ -2998,7 +3070,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
     ObjectNode CsvAll = mapper.createObjectNode();
     ArrayNode CsvCharging = mapper.createArrayNode();
     
-    for (Integer i=0; i<=155; i++) {
+    List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+    for (Integer i : allProvidersIDs) {
 
       List<List<Object>> processes = repository.findSessionsByProvider(i);
       
@@ -3069,9 +3143,12 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
       }    
   }  
   else if (providerId.isPresent() && !startDate.isPresent() && !endDate.isPresent()) {
-    if (providerId.get()<1 || providerId.get()>156) {
+    List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+    if (!allProvidersIDs.contains(providerId.get())) {
       throw new BadRequestException();
     }
+
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode CsvAll = mapper.createObjectNode();
     //ObjectNode allSessions = mapper.createObjectNode();
@@ -3145,7 +3222,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
       } 
   }
   else if (providerId.isPresent() && startDate.isPresent() && !endDate.isPresent()) {
-    if (providerId.get()<1 || providerId.get()>156) {
+    List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+    if (!allProvidersIDs.contains(providerId.get())) {
       throw new BadRequestException();
     }
     Date date1;
@@ -3229,7 +3308,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
       }  
   }
   else {
-    if (providerId.get()<1 || providerId.get()>156) {
+    List<Integer> allProvidersIDs = repository.findAllProvidersIDs();
+
+    if (!allProvidersIDs.contains(providerId.get())) {
       throw new BadRequestException();
     }
     Date date1, date2;

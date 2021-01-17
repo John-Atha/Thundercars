@@ -74,7 +74,7 @@ class StationownerController {
         }
       }
       
-      List<List<Object>> stationIDsAndTitles = repository.findOwnersStations(id);
+      List<List<Object>> stationIDsAndTitles = repository.findOwnersStationsIdAndAddress(id);
 
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
@@ -109,7 +109,12 @@ class StationownerController {
       for (List<Object> station : stationIDsAndTitles) {
         ObjectNode curr = mapper.createObjectNode();
         curr.put("Station Id", (Integer) station.get(0));
-        curr.put("Station Title", (String) station.get(1));
+        if (station.get(1)!=null) {
+          curr.put("Station Title", repository.findStationsTitle((Integer) station.get(1)));
+        }
+        else {
+          curr.put("Station Title", "Unknown");
+        }
         stationsList.add(curr);
       }
       answer.put("Stations", stationsList);

@@ -43,7 +43,13 @@ class ChargingSpotController {
         Integer spotId = repository.findSpotFromTogether(i);
         String stationTitle="";
         if (stationId!=null) {
-          stationTitle = repository.findStationTitle(stationId);
+          Integer stationAddress = repository.findStationAddress(stationId);
+          if (stationAddress!=null) {
+            stationTitle = repository.findStationAddressTitle(stationAddress);
+          }
+          else {
+            stationTitle = "Unknown";
+          }
         }
         if (spotId==null) {
           continue;
@@ -116,7 +122,13 @@ class ChargingSpotController {
       Integer spotId = repository.findSpotFromTogether(id.get());
       String stationTitle="";
       if (stationId!=null) {
-        stationTitle = repository.findStationTitle(stationId);
+        Integer stationAddress = repository.findStationAddress(stationId);
+        if (stationAddress!=null) {
+          stationTitle = repository.findStationAddressTitle(stationAddress);
+        }
+        else {
+          stationTitle = "Unknown";
+        }
       }
       if (spotId==null) {
         throw new BadRequestException();
