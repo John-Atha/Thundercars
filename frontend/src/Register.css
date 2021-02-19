@@ -1,0 +1,183 @@
+@keyframes appearing{
+    0% {
+      opacity: 0%;
+    }
+    
+    100% {
+      opacity: 100%;
+    }
+}
+
+body {
+    --red: rgb(233, 21, 21);
+}
+
+.register-page-container {
+    display: grid;
+    grid-template-rows: 08% 08% auto 15%;
+    height: 90vh;
+    width: 600px;
+    margin-left: 10vw;
+    margin-top: 5vh;
+    grid-template-columns: 100%;
+    border-radius: 4px;
+    animation:
+        appearing 2s;
+}
+
+.center-content {
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title-container {
+    grid-row: 2;
+    color: white;
+    font-size: 40px;
+}
+
+.blur {
+    background: inherit;
+    box-shadow: 0 8px 32px 0 rgba(163, 13, 13, 0.37);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+.image-container {
+    height: 100%;
+    width: 100%;
+
+}
+
+.logo {
+    height: 90%;
+    padding-top: 1%;
+}
+
+#register-title {   /* different name same attr*/
+    color: white;
+    font-size: larger;
+}
+
+
+/*till here the same with Login.css */
+
+#register-form {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: 8% 76% 08% 08%;
+    grid-template-columns: 100%;
+    row-gap: 2%;
+    column-gap: 2%;
+    height: 100%;
+    margin-top: 2%;
+}
+
+#register-rest-inputs-container {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: 14% 14% 14% 14% 14% 14% 14%;
+    grid-template-columns: 49% 49%;
+    row-gap: 2%;
+    column-gap: 2%;
+    height: 100%;
+}
+
+
+.register-input {
+    height: 80%;
+    width: 80%;
+    margin-left: 10%;
+    border-radius: 3px;
+    border: none;
+}
+
+#reg-username-input {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+#reg-email-input {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+#reg-password-input {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+#reg-confirm-password-input {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+#reg-first-name-input {
+    grid-row: 3;
+    grid-column: 1;
+}
+
+#reg-last-name-input {
+    grid-row: 3;
+    grid-column: 2;
+}
+
+#reg-tel1-input {
+    grid-row: 4;
+    grid-column: 1;
+}
+
+#reg-tel2-input {
+    grid-row: 4;
+    grid-column: 2;
+}
+
+#reg-town-input {
+    grid-row: 5;
+    grid-column: 1;
+}
+
+#reg-state-input {
+    grid-row: 5;
+    grid-column: 2;
+}
+
+#reg-country-input {
+    grid-row: 6;
+    grid-column: 1;
+}
+
+#reg-post-code-input {
+    grid-row: 6;
+    grid-column: 2;
+}
+
+#reg-date-of-birth-input {
+    grid-row: 7;
+    grid-column: 1;
+}
+
+#reg-submit-input {
+    grid-row: 7;
+    grid-column: 2;
+    color: white;
+}
+
+#reg-submit-input:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
+
+.reg-login-container {
+    margin-top: 2%;
+    color: white;
+    font-size: large;
+    grid-row: 4;
+}
+
+.reg-login-link {
+    color: var(--red);
+    text-decoration: none;
+}

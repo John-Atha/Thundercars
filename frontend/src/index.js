@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, useParams } from "react-router-dom";
 import './index.css';
 import App from './App';
 import Login from './Login';
+import Register from './Register';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -11,11 +12,14 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact>
+        <Route path="/home" exact>
           <App />
         </Route>
-        <Route path="/login" exact>
+        <Route path="/" exact>
           <Login />
+        </Route>
+        <Route path="/register" exact>
+          <Register />
         </Route>
       </Switch>
     </BrowserRouter>
