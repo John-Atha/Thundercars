@@ -6,7 +6,7 @@
     100% {
       opacity: 100%;
     }
-  }
+}
 
 body {
     --red: rgb(233, 21, 21);
@@ -80,7 +80,6 @@ body {
     font-size: larger;
 }
 
-
 #username-input {
     grid-row: 1;
 }
@@ -98,12 +97,12 @@ body {
     color: white; 
 }
 
+
 #submit-input:hover {
-    /*transform: scale(1.1);
-    -webkit-transform: scale(1.1);*/
-    background-color: var(--red);
-    color:white;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
 }
+
 
 
 .image-container {
