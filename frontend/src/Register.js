@@ -78,7 +78,7 @@ class Register extends React.Component {
 
     render() {
         return(
-            <div className="register-page-container blur center content">
+            <div className="register-page-container blur">
                 <div className="image-container center-content">
                     <img className="logo" src={logo} />
                 </div>
