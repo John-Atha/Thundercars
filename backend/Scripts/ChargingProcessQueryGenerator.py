@@ -50,7 +50,7 @@ while first_user<=11501 and last_user<=12000 :
         WHERE `a`.`user` = `b`.`user`
           AND (`a`.`ac_charger_port` = `b`.`connection_category`
           OR `a`.`dc_charger_port` = `b`.`connection_category`)    
-        ORDER BY `a`.`user` ASC, `b`.`station` ASC
+        ORDER BY `a`.`user` ASC, rand()
         LIMIT 5)
         ''' %user
       if user<limit-1:
