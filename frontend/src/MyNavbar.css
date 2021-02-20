@@ -1,4 +1,20 @@
-.navbar {
+NavBar, .color-nav, .mr-auto {
+  background-color: rgb(250, 92, 92);
+  color: white;
+}
+
+#nav-link {
+  color: white;
+  font-weight: 500;
+  font-size: large;
+}
+
+#nav-link:hover {
+  background-color: rgb(126, 68, 68);
+  border-radius: 4px;
+}
+
+/*.navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,4 +57,4 @@
     100% {
       transform: rotateY(0rem);
     }
-  }
+  }*/
