@@ -1,6 +1,6 @@
 import React from 'react';
 import './Login.css';
-import logo from './images/thundera.png'
+import logo from './images/thundera.png';
 import {loginPost} from './api';
 
 
@@ -38,15 +38,15 @@ class Login extends React.Component {
         let reqObj = this.state.username+":"+this.state.password;
         loginPost(reqObj)
         .then(response => {
-            this.setState({
-                userId: response.data.Id
-            });
             console.log("response => userId: " + response.data.Id);
-            localStorage.setItem('userId', this.state.userId);
+            localStorage.setItem('userId', response.data.Id);
             window.location.href = "/home";
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                error: "Wrong username/password"
+            })
         })
         // to be continued...
         e.preventDefault();
@@ -66,14 +66,14 @@ class Login extends React.Component {
 
     submitActivate = () => {
         if (this.state.username===null || this.state.password===null) {
-            console.log("submit deactivated1");
+            console.log("submit deactivated");
             this.state.sumbitDisabled=true;
         }
         else {
-            console.log(this.state.username.length);
-            console.log(this.state.password.length);
+            //console.log(this.state.username.length);
+            //console.log(this.state.password.length);
             if (this.state.username.length===0 || this.state.password.length===0) {
-                console.log("submit deactivated1");
+                console.log("submit deactivated");
                 this.state.sumbitDisabled=true;
             }
             else {
@@ -103,6 +103,11 @@ class Login extends React.Component {
                     <div className="login-form-container center-content">
                         <div id="login-title">
                             Login
+                            {this.state.error!==null && (
+                                <div className="error-message">
+                                {this.state.error}
+                                </div>
+                            )}
                         </div>
                         <form id="login-form">
                             <input id="username-input" className="login-input" name="username" value={this.state.username} type="text" placeholder="Username..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />

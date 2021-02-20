@@ -14,7 +14,7 @@ body {
 
 .register-page-container {
     display: grid;
-    grid-template-rows: 08% 08% auto 15%;
+    grid-template-rows: 08% 08% 73% 10%;
     height: 90vh;
     width: 600px;
     margin-left: 10vw;
@@ -67,18 +67,27 @@ body {
 #register-form {
     grid-row: 2;
     display: grid;
-    grid-template-rows: 8% 76% 08% 08%;
+    grid-template-rows: 8% 76% 14% ;
     grid-template-columns: 100%;
-    row-gap: 2%;
+    row-gap: 1%;
     column-gap: 2%;
     height: 100%;
     margin-top: 2%;
+    width: 100%;
+}
+.register-form-container {
+    height:100%;
+    grid-row: 3;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 90%;
 }
 
 #register-rest-inputs-container {
     grid-row: 2;
     display: grid;
-    grid-template-rows: 14% 14% 14% 14% 14% 14% 14%;
+    grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
     grid-template-columns: 49% 49%;
     row-gap: 2%;
     column-gap: 2%;
@@ -159,9 +168,13 @@ body {
     grid-column: 1;
 }
 
-#reg-submit-input {
+#reg-addr-line-input {
     grid-row: 7;
     grid-column: 2;
+}
+
+#reg-submit-input {
+
     color: white;
 }
 
@@ -180,4 +193,9 @@ body {
 .reg-login-link {
     color: var(--red);
     text-decoration: none;
+}
+
+.error-message {
+    font-size: medium;
+    color: var(--red);
 }

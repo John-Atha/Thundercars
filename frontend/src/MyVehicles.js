@@ -1,7 +1,7 @@
 import React, { useDebugValue } from 'react';
 import './MyVehicles.css';
 import {getVehicles} from './api'
-//import MyNavBar from './MyNavbar'; 
+import MyNavBar from './MyNavbar'; 
 import logo from './images/thundera.png';
 
 class Vehicle extends React.Component {
@@ -82,6 +82,8 @@ class MyVehicles extends React.Component {
         }
         else{
             return (
+                <div className="allPage">
+                    <MyNavBar />
                 <div className="vehicle-page-container more-blur center-content">
                     <div className="vehicle-title-container" id="vehicle-list-title">
                         My Vehicles
@@ -132,6 +134,7 @@ class MyVehicles extends React.Component {
                             })
                         }                    
                     </div>
+                </div>
                 </div>
             );
         }

@@ -8,6 +8,14 @@
     }
 }
 
+.allPage {
+    position: top;
+}
+
+.color-nav, .mr-auto {
+    background-color: red;
+}
+
 body {
     justify-content: center;
     align-items: center;

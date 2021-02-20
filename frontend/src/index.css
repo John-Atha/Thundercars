@@ -1,3 +1,14 @@
+@keyframes appearing{
+  0% {
+    opacity: 0%;
+  }
+  
+  100% {
+    opacity: 100%;
+  }
+}
+
+
 html {
   height: 100vh;
 }
@@ -11,12 +22,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
   width: 100%;
-  background: url('images/background1.jpg') no-repeat;
+  background: url('images/background1.jpg');
   background-color: black;
   background-size:cover;
   position: absolute;
   display: grid;
   grid-template-rows: 100%;
+  animation: 
+    appearing 2s;
 }
 
 code {
