@@ -39,11 +39,8 @@ class Login extends React.Component {
         let reqObj = this.state.username+":"+this.state.password;
         loginPost(reqObj)
         .then(response => {
-            this.setState({
-                userId: response.data.Id
-            });
             console.log("response => userId: " + response.data.Id);
-            localStorage.setItem('userId', this.state.userId);
+            localStorage.setItem('userId', response.data.Id);
             window.location.href = "/home";
         })
         .catch(err => {
