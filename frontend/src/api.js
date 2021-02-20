@@ -28,3 +28,8 @@ export const userPost = (obj) => {
     const requestUrl = "/admin/usersmod";
     return axios.post(requestUrl, obj);
 };
+
+export const getStats = (id) => {
+    const requestUrl = `/user/${id}/statistics`;
+    return axios.get(requestUrl);
+}

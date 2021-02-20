@@ -1,13 +1,3 @@
-@keyframes appearing{
-    0% {
-      opacity: 0%;
-    }
-    
-    100% {
-      opacity: 100%;
-    }
-}
-
 body {
     --red: rgb(233, 21, 21);
 }
@@ -23,8 +13,6 @@ body {
     margin-top: 05%;
     grid-template-columns: 100%;
     border-radius: 4px;
-    animation:
-        appearing 2s;
 }
 
 .center-content {
@@ -72,7 +60,7 @@ body {
     border: none;
 }
 
-.login-input:focus {
+*:focus {
     outline: none;
 }
 

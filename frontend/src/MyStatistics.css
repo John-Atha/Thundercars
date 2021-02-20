@@ -1,0 +1,58 @@
+.specific-title {
+    color: black;
+    font-size: xx-large;
+}
+
+.general-page-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    height: max(700px, min-content);
+    width: 90%;
+    margin-left: calc(100vw-900px);
+}
+
+.more-blur {
+    background: rgba(253, 255, 254, 0.857);
+    box-shadow: 0 8px 32px 0 rgba(163, 13, 13, 0.37);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+.sub-list-container {
+    color: black;
+    border-bottom: 2px solid grey;
+    display: grid;
+    grid-template-rows: 30% 30% 30%;
+    grid-template-columns: 50% 50%;
+    row-gap: 8%;
+    height: 20%;
+    padding-bottom: 4%;
+    padding-top: 4%;
+    width: 70%;
+    margin-left: 15%;
+}
+
+#stats-session-year{
+    grid-row: 1;
+    grid-column: 1;
+}
+#stats-session-month{
+    grid-row: 1;
+    grid-column: 2;
+}
+#stats-session-sessions{
+    grid-row: 2;
+    grid-column: 1;
+}
+#stats-session-stations-visited{
+    grid-row: 2;
+    grid-column: 2;
+}
+#stats-session-total-cost{
+    grid-row: 3;
+    grid-column: 1;
+}
+#stats-session-total-kWh-del{
+    grid-row: 3;
+    grid-column: 2;
+}
