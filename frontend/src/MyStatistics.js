@@ -1,6 +1,7 @@
 import React from 'react';
 import './MyStatistics.css';
 import {getStats} from './api'
+import MyNavBar from './MyNavbar'; 
 
 class StatisticsDiv extends React.Component {
     constructor(props) {
@@ -68,33 +69,33 @@ class MyStatistics extends React.Component {
         }
         else {     
             return (
-                <div className="general-page-container more-blur center-content">
-                    <div className="specific-title">
-                        Statistics
-                    </div>
-                    <div id="stats-info-container">
-                        {
-                            this.state.statsList.map((value, key)=> {
-                                console.log(value+": "+key);
-                                return (<StatisticsDiv
-                                        key={key} 
-                                        month={value.Month}
-                                        sessions={value.Sessions}
-                                        stationsVisited={value[this.attr1Name]}
-                                        totalCost={value[this.attr2Name]}
-                                        totalKWhDelivered={value[this.attr3Name]}
-                                        year={value.Year}
-                                        /> )
-                            })
-                        }
+                <div className="allPage">
+                    <MyNavBar />
+                    <div className="general-page-container more-blur center-content">
+                        <div className="specific-title">
+                            Statistics
+                        </div>
+                        <div id="stats-info-container">
+                            {
+                                this.state.statsList.map((value, key)=> {
+                                    console.log(value+": "+key);
+                                    return (<StatisticsDiv
+                                            key={key} 
+                                            month={value.Month}
+                                            sessions={value.Sessions}
+                                            stationsVisited={value[this.attr1Name]}
+                                            totalCost={value[this.attr2Name]}
+                                            totalKWhDelivered={value[this.attr3Name]}
+                                            year={value.Year}
+                                            /> )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             )
         }
     }
-
-
-
 }
 
 export default MyStatistics;

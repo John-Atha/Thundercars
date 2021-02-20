@@ -1,3 +1,11 @@
+.allPage {
+    position: top;
+}
+
+.color-nav, .mr-auto {
+    background-color: red;
+}
+
 .specific-title {
     color: black;
     font-size: xx-large;
