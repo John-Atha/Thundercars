@@ -19,7 +19,6 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);    
         this.submitActivate = this.submitActivate.bind(this);    
         this.submitChangeColor = this.submitChangeColor.bind(this);    
-  
     }
 
     handleInput = (e) => {

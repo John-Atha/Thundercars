@@ -13,3 +13,8 @@ export const loginPost = (obj) => {
                           }
                       });
 };
+
+export const getVehicles = (id) => {
+    const requestUrl = `/evcharge/api/user/${id}/myvehicles` ;
+    return axios.get(requestUrl);
+}
