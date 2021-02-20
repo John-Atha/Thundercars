@@ -195,7 +195,7 @@ body {
     text-decoration: none;
 }
 
-#reg-error-message {
+.error-message {
     font-size: medium;
     color: var(--red);
 }

@@ -37,7 +37,7 @@ class Register extends React.Component {
             tel2: "",
             //----
             sumbitDisabled: true,
-            error: ""//"Insert compulsory info"
+            error: null//"Insert compulsory info"
         }
         this.countries = [];
         this.handleSubmit = this.handleSubmit.bind(this);    
@@ -51,7 +51,7 @@ class Register extends React.Component {
     componentDidMount() {
         countriesGet()
         .then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             this.countries = response.data;
             this.updateCountriesSelect();
         })
@@ -102,7 +102,7 @@ class Register extends React.Component {
         else {
             CountryObj=this.state.country;
         }
-        console.log(CountryObj);
+        //console.log(CountryObj);
         // post new user address on api
         let UserAddressObj = {
             country: CountryObj,
@@ -115,7 +115,7 @@ class Register extends React.Component {
         }
         userAddressPost(UserAddressObj)
         .then(response => {
-            console.log(response);
+            //console.log(response);
             let reqObj = {
                 username: this.state.username,
                 password: this.state.password,
@@ -134,11 +134,14 @@ class Register extends React.Component {
             .catch(err => {
                 console.log(err);
                 console.log("Error creating new user");
+                this.setState({
+                    error: "Username/email already exists"
+                })
             })
         })
         .catch(err => {
             console.log(err);
-            console.log("Error creating new user");
+            console.log("Error creating new address");
         })
         // to be continued...
         e.preventDefault();
@@ -157,8 +160,8 @@ class Register extends React.Component {
     }
 
     allowed = () => {
-        console.log(this.state.password);
-        console.log(this.state.confirmPassword);
+        //console.log(this.state.password);
+        //console.log(this.state.confirmPassword);
         let reason1 = (this.state.role.length!==0 &&
             this.state.username.length!==0 &&
             this.state.password.length!==0 &&
@@ -170,17 +173,22 @@ class Register extends React.Component {
             this.state.error="Insert compulsory info";
         }
         else {
-               this.state.error="";
+            if (!reason2) {
+                this.state.error="Different passwords";
+            }
+            else {
+               this.state.error=null;
+            }
         }
         return (reason1 && reason2); 
     }
 
     submitActivate = () => {
-        console.log("title: " + this.state.country.title);
-        console.log("error:" + this.state.error);
+        //console.log("title: " + this.state.country.title);
+        //console.log("error:" + this.state.error);
         this.state.sumbitDisabled=!this.allowed();
         console.log("submit disabled: " + this.state.sumbitDisabled);
-        console.log("role: --"+this.state.role);
+        //console.log("role: --"+this.state.role);
         this.submitChangeColor();
     }
 
@@ -201,7 +209,11 @@ class Register extends React.Component {
                     <div className="register-form-container center-content">
                         <div id="register-title">
                             Register
-                            {this.state.sumbitDisabled && ( <div id="reg-error-message">{this.state.error}</div>   ) }
+                            {this.state.error!==null && ( 
+                                <div className="error-message">
+                                    {this.state.error}
+                                </div>
+                            )}
                         </div>
                         <form id="register-form">
                             <select name="role" id="role" className="register-input" value={this.state.role} onChange={this.handleInput} >

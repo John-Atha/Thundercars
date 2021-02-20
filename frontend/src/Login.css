@@ -52,7 +52,7 @@ body {
     width: 60%;
     margin-top: 0%;
     display: grid;
-    grid-template-rows: 20% 80%;
+    grid-template-rows: 30% 70%;
     height: 100%;
 }
 
@@ -60,9 +60,10 @@ body {
 #login-form {
     grid-row: 2;
     display: grid;
-    grid-template-rows: 20% 20% 20%;
+    grid-template-rows: 25% 25% 25%;
     row-gap: 6%;
     height: 100%;
+    margin-top: 2%;
 }
 
 .login-input {
