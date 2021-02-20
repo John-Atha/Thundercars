@@ -1,14 +1,14 @@
 import os
 
 # --- adjust the path ---
-path = "C:/Users/atha/Desktop/softeng/projectCode/backend/dbFillingSQL/ChargingProcessQueries/"
+path = 'C:/Users/anton/OneDrive/Desktop/Askhshtl1/softeng-ntua/backend/dbFillingSQL/ChargingProcessQuerries2'
 # -----------------------
 import os
 
 
 
-first_user=3501
-last_user=4000
+first_user=1
+last_user=500 #change
 
 filenames = []
 fs = []
