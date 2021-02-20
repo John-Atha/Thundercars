@@ -1,14 +1,14 @@
 import os
 
 # --- adjust the path ---
-path = "C:/Users/atha/Desktop/softeng/projectCode/backend/dbFillingSQL/ChargingProcessQueries/"
+path = 'C:/Users/anton/OneDrive/Desktop/Askhshtl1/softeng-ntua/backend/dbFillingSQL/ChargingProcessQuerries2'
 # -----------------------
 import os
 
 
 
-first_user=3501
-last_user=4000
+first_user=1
+last_user=500 #change
 
 filenames = []
 fs = []
@@ -50,7 +50,7 @@ while first_user<=11501 and last_user<=12000 :
         WHERE `a`.`user` = `b`.`user`
           AND (`a`.`ac_charger_port` = `b`.`connection_category`
           OR `a`.`dc_charger_port` = `b`.`connection_category`)    
-        ORDER BY `a`.`user` ASC, `b`.`station` ASC
+        ORDER BY `a`.`user` ASC, rand()
         LIMIT 5)
         ''' %user
       if user<limit-1:
