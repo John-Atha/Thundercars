@@ -1,6 +1,8 @@
 import React from 'react';
 import './Login.css';
 import logo from './images/thundera.png'
+import {loginPost} from './api';
+
 
 class Login extends React.Component {
 
@@ -10,7 +12,8 @@ class Login extends React.Component {
             username: "",
             password: "",
             sumbitDisabled: true,
-            error: null
+            error: null,
+            userId: null
         }
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);    
@@ -28,9 +31,24 @@ class Login extends React.Component {
     }
 
     handleSubmit = (e) => {
+        console.log(this.state.sumbitDisabled);
+        console.log("submitted");
         this.setState( {
             error: null
         });
+        let reqObj = this.state.username+":"+this.state.password;
+        loginPost(reqObj)
+        .then(response => {
+            this.setState({
+                userId: response.data.Id
+            });
+            console.log("response => userId: " + response.data.Id);
+            localStorage.setItem('userId', this.state.userId);
+            window.location.href = "/home";
+        })
+        .catch(err => {
+            console.log(err);
+        })
         // to be continued...
         e.preventDefault();
     }
@@ -68,30 +86,38 @@ class Login extends React.Component {
     }
  
     render() {
-        return (
-            <div className="login-page-container blur center-content">
-                <div className="image-container">
-                    <img className="logo" src={logo}/>
-                </div>
-                <div className="title-container">
-                    Thundercars
-                </div>
-                <div className="login-form-container center-content">
-                    <div id="login-title">
-                        Login
+        if (localStorage.getItem('userId')) {
+            this.setState({
+               userId:  localStorage.getItem('userId')
+            })
+            window.location.href="/home";
+        }
+        else {
+            return (
+                <div className="login-page-container blur center-content">
+                    <div className="image-container">
+                        <img className="logo" src={logo}/>
                     </div>
-                    <form id="login-form">
-                        <input id="username-input" className="login-input" name="username" value={this.state.username} type="text" placeholder="Username..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                        <input id="password-input" className="login-input" name="password" value={this.state.password} type="password" placeholder="Password..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                        <input id="submit-input" className="login-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
-                    </form>
+                    <div className="title-container">
+                        Thundercars
+                    </div>
+                    <div className="login-form-container center-content">
+                        <div id="login-title">
+                            Login
+                        </div>
+                        <form id="login-form">
+                            <input id="username-input" className="login-input" name="username" value={this.state.username} type="text" placeholder="Username..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input id="password-input" className="login-input" name="password" value={this.state.password} type="password" placeholder="Password..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input id="submit-input" className="login-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
+                        </form>
+                    </div>
+                    <div className="register-container">
+                        First time here?<br></br>
+                        <a className="register-link" href="/register">Create an account.</a>            
+                    </div>  
                 </div>
-                <div className="register-container">
-                    First time here?<br></br>
-                    <a className="register-link" href="/register">Create an account.</a>            
-                </div>  
-            </div>
-        )
+            )
+        }
     }
 
 }
