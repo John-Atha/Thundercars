@@ -10,7 +10,7 @@ import MyVehicles from './MyVehicles';
 import NotFound from './NotFound';
 import MyStatistics from './MyStatistics';
 import reportWebVitals from './reportWebVitals';
-
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 ReactDOM.render(
