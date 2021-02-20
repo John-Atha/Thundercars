@@ -22,7 +22,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
   width: 100%;
-  background: url('images/background1.jpg') no-repeat;
+  background: url('images/background1.jpg');
   background-color: black;
   background-size:cover;
   position: absolute;
