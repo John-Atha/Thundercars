@@ -29,8 +29,8 @@ export const userAddressPost = (obj) => {
     return axios.post(requestUrl, obj);
 };
 
-export const userPost = (obj) => {
-    const requestUrl = "/admin/usersmod";
+export const userPost = (obj, postAddr) => {
+    const requestUrl = `/admin/${postAddr}`;
     return axios.post(requestUrl, obj);
 };
 

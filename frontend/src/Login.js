@@ -40,6 +40,7 @@ class Login extends React.Component {
         .then(response => {
             console.log("response => userId: " + response.data.Id);
             localStorage.setItem('userId', response.data.Id);
+            localStorage.setItem('role', response.data.Token);
             window.location.href = "/home";
         })
         .catch(err => {

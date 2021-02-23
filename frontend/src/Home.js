@@ -7,15 +7,8 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: null
-        }
-    }
-
-    componentDidMount() {
-        if (localStorage.getItem('userId')) {
-            this.setState({
-                userId: localStorage.getItem('userId') 
-            })
+            userId: localStorage.getItem('userId'),
+            role: localStorage.getItem('role')
         }
     }
 
@@ -27,6 +20,12 @@ class Home extends React.Component {
                 )}
                 { this.state.userId===null && (
                     <p className="test">User not logged in</p>
+                )}
+                { this.state.role!==null && (
+                    <p className="test">Role: {this.state.role}</p>
+                )}
+                { this.state.role===null && (
+                    <p className="test">User's role not specified</p>
                 )}
             </div>
         )

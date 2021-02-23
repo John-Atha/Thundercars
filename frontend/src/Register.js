@@ -125,10 +125,18 @@ class Register extends React.Component {
                 dateOfBirth: this.state.dateOfBirth, // !!! standard structure
                 userAddress: response.data
             }
-            userPost(reqObj)
+            let postAddr="";
+            if (this.state.role==="StationOwner") {
+                postAddr="stationownersmod";
+            }
+            else {
+                postAddr="usersmod";
+            }
+            userPost(reqObj, postAddr)
             .then(response => {
                 console.log(response);
                 localStorage.setItem('userId', response.data.id);
+                localStorage.setItem('role', this.state.role);
                 window.location.href="/home";
             })
             .catch(err => {
