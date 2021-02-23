@@ -1,7 +1,7 @@
 import React from 'react';
 import './MyStatistics.css';
 import {getStats} from './api'
-import MyNavBar from './MyNavbar'; 
+import MyNavbar from './MyNavbar'; 
 
 class StatisticsDiv extends React.Component {
     constructor(props) {
@@ -70,7 +70,7 @@ class MyStatistics extends React.Component {
         else {     
             return (
                 <div className="allPage">
-                    <MyNavBar />
+                    <MyNavbar />
                     <div className="general-page-container more-blur center-content">
                         <div className="specific-title">
                             Statistics
