@@ -10,6 +10,7 @@ class StationsDiv extends React.Component {
         super(props);
         this.state = {
             key: this.props.key,
+            index: this.props.index,
             id: this.props.id,
             title: this.props.title,
             currentProvName: this.props.currentProvName,
@@ -20,10 +21,16 @@ class StationsDiv extends React.Component {
         }
     }
 
+    stationPageRedirect = () => {
+        let id=this.state.id;
+        window.location.href=`/stations/${id}`;
+        localStorage.removeItem('stationId');
+    }
+
     render() {
         return (
             <div className="one-station-container center-content">
-                <h5 className="one-station-subtitle">Basic info</h5>
+                <h5 className="one-station-subtitle">Station {this.state.index}</h5>
                 <div className="station-info-container">
                     <div className="station-info-title">Title: </div>
                     <div className="station-info">{this.state.title}</div>
@@ -36,13 +43,10 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title">First Address: </div>
                     <div className="station-info">{this.state.firstAddress}</div>
                 </div>
-                <a className="station-details-link" href="#">For details click here</a>
+                <a className="station-details-link" onClick={this.stationPageRedirect}>For details click here</a>
             </div>
         )
     }
-
-
-
 
 }
 
@@ -91,10 +95,11 @@ class MyStations extends React.Component {
                         </div>
                         <div id="stations-container">
                             {   
-                                this.state.stationsList.map((value, key) => {
-                                    console.log(value+": "+key);
+                                this.state.stationsList.map((value, index) => {
+                                    console.log(index);
                                     return (<StationsDiv
-                                        key={key}
+                                        key={index}
+                                        index={index+1}
                                         id={value.Id}
                                         title={value.Title}
                                         currentProvName={value[this.attr1Name]}
