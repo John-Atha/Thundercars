@@ -1,6 +1,6 @@
 import React from 'react';
 import './MyStatistics.css';
-import {getStats} from './api'
+import {getUserStats} from './api'
 import MyNavbar from './MyNavbar'; 
 
 class StatisticsDiv extends React.Component {
@@ -37,26 +37,27 @@ class MyStatistics extends React.Component {
         super(props);
         this.state={
             userId: localStorage.getItem('userId'),
+            role: localStorage.getItem('role'),
             error: null,
-            statsList: []
+            userStatsList: []
         }
 
         // because names contain space char and values cannot be retrieved
         // as value.Stations Visited
         // so I take it as value[this.attr1Name]
-        this.attr1Name = "Stations Visited"
-        this.attr2Name = "Total Cost"
-        this.attr3Name = "Total KWh Delivered"
+        this.attr1Name = "Stations Visited";
+        this.attr2Name = "Total Cost";
+        this.attr3Name = "Total KWh Delivered";
     }
 
     componentDidMount () {
-        getStats(this.state.userId)
+        getUserStats(this.state.userId)
         .then(response => {
             console.log(response);
             this.setState({
-                statsList: response.data.Summary
+                userStatsList: response.data.Summary
             })
-            console.log(this.state.statsList);
+            console.log(this.state.userStatsList);
         })
         .catch(err => {
             console.log(err);
@@ -64,7 +65,7 @@ class MyStatistics extends React.Component {
     }
 
     render() {
-        if (!localStorage.getItem('userId')) {
+        if (!localStorage.getItem('userId') || localStorage.getItem('role')!=="VehicleOwner") {
             window.location.href = "/"; 
         }
         else {     
@@ -77,7 +78,7 @@ class MyStatistics extends React.Component {
                         </div>
                         <div id="stats-info-container">
                             {
-                                this.state.statsList.map((value, key)=> {
+                                this.state.userStatsList.map((value, key)=> {
                                     console.log(value+": "+key);
                                     return (<StatisticsDiv
                                             key={key} 

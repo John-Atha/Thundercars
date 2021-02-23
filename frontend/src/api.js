@@ -34,7 +34,18 @@ export const userPost = (obj, postAddr) => {
     return axios.post(requestUrl, obj);
 };
 
-export const getStats = (id) => {
+export const getUserStats = (id) => {
     const requestUrl = `/user/${id}/statistics`;
     return axios.get(requestUrl);
 }
+
+export const getStations = (id) => {
+    const requestUrl = `stationowners/${id}/mystations`;
+    return axios.get(requestUrl);
+}
+
+
+/*
+export const getStationOwnerStats = (id) => {
+    const request
+}*/

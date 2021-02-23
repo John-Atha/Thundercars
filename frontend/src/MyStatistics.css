@@ -5,6 +5,7 @@
 .specific-title {
     color: black;
     font-size: xx-large;
+    border-bottom: 2px solid grey;
 }
 
 .general-page-container {

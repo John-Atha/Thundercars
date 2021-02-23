@@ -29,7 +29,7 @@ class MyNavbar extends React.Component {
           )}
           <Nav.Link id="nav-link" href="/myStatistics">My statistics</Nav.Link>
           {this.state.role=="StationOwner" && (
-            <Nav.Link id="nav-link" href="#">My stations</Nav.Link>
+            <Nav.Link id="nav-link" href="/myStations">My stations</Nav.Link>
           )}
           <Nav.Link id="nav-link" href="#">Detailed Sessions</Nav.Link>
           {!this.state.userId && (

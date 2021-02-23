@@ -1,0 +1,32 @@
+.one-station-container {
+    padding-left: 2%;
+    text-align: left;
+    padding-bottom: 4%;
+    padding-top: 4%;
+    border-bottom: 2px solid grey;
+}
+
+.station-info-line {
+    text-align: left;
+}
+
+.station-info-container {
+    display: grid;
+    grid-template-rows: min-content min-content min-content min-content
+     min-content;
+    grid-template-columns: 140px auto;
+}
+
+.one-station-subtitle, .station-details-link {
+    text-decoration: underline;
+    color: rgb(73, 47, 32);
+}
+
+.station-details-link {
+    font-size: large;
+}
+
+.station-info-title {
+    color: rgb(170, 116, 84);
+    grid-column: 1;
+}
