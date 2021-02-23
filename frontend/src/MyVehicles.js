@@ -48,7 +48,7 @@ class MyVehicles extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            userId: 102,
+            userId: localStorage.getItem('userId'),
             error: null,
             vehicles: []
         }
@@ -77,10 +77,38 @@ class MyVehicles extends React.Component {
     }
 
     render() {
-        if(10!==10) {
-            window.location.href ="/";
+        if((!localStorage.getItem('userId'))) {
+            console.log("User not logged in error");
+            setTimeout(() =>{window.location.href = "/"},10000);
+            return (
+                <div className="allPage">
+                    <MyNavBar />
+                    <div className="vehicle-page-container more-blur center-content">
+                        <div className= "center-content" id="error-message">
+                        It seems that you are not logged in...
+                        You will be redirected to the login page in 10 seconds.
+                        </div>
+                    </div>
+                </div>
+            )
         }
-        else{
+        else if(localStorage.getItem('role')=="StationOwner") {
+            console.log("Station Owner Error");
+            setTimeout(() =>{window.location.href = "/home"},10000);
+            return(
+                <div className="allPage">
+                    <MyNavBar />
+                    <div className="vehicle-page-container more-blur center-content">
+                        <div className= "center-content" id="error-message">
+                        It seems that you are not logged in as a Station Owner...
+                        Log in to your Vehicle Owner account to view this page.
+                        You will be redirected to the home page in 10 seconds.
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        else {
             return (
                 <div className="allPage">
                     <MyNavBar />
@@ -137,7 +165,7 @@ class MyVehicles extends React.Component {
                 </div>
                 </div>
             );
-        }
+                }
     }
 }
 
