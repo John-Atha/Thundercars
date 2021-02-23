@@ -50,6 +50,7 @@ class MyVehicles extends React.Component {
         this.state={
             userId: localStorage.getItem('userId'),
             error: null,
+            counter: null,
             vehicles: []
         }
 
@@ -100,9 +101,9 @@ class MyVehicles extends React.Component {
                     <MyNavBar />
                     <div className="vehicle-page-container more-blur center-content">
                         <div className= "center-content" id="error-message">
-                        It seems that you are not logged in as a Station Owner...
-                        Log in to your Vehicle Owner account to view this page.
-                        You will be redirected to the home page in 10 seconds.
+                        It seems that you are logged in as a Station Owner...<br></br>
+                        Log in to your Vehicle Owner account to view your vehicles.<br></br>
+                        You will be redirected to the Home page in 10 seconds.
                         </div>
                     </div>
                 </div>

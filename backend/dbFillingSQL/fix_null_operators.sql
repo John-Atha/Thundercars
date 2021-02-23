@@ -1,0 +1,1 @@
+UPDATE charging_station SET operator_id = 1 where operator_id IS NULL;
