@@ -12,6 +12,12 @@ class MyNavbar extends React.Component {
       role: localStorage.getItem('role')
     }
   }
+
+  logout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+    window.location.href="/";
+  }
   
   render() {
     return (
@@ -33,7 +39,7 @@ class MyNavbar extends React.Component {
             <Nav.Link id="nav-link" href="/register">Register</Nav.Link>
           )}
           {this.state.userId && (
-            <Nav.Link id="nav-link" href="#">Logout</Nav.Link>
+            <Nav.Link id="nav-link" onClick={this.logout}>Logout</Nav.Link>
           )}
         </Nav>
       </Navbar>
