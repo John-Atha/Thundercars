@@ -1,5 +1,6 @@
 import React from 'react';
 import './Register.css';
+import md5 from 'crypto-js/md5'
 import logo from './images/thundera.png';
 import {countriesGet, userAddressPost, userPost} from './api';
 
@@ -116,9 +117,11 @@ class Register extends React.Component {
         userAddressPost(UserAddressObj)
         .then(response => {
             //console.log(response);
+            let hashDigest = md5(this.state.password).toString();
+            console.log(hashDigest);
             let reqObj = {
                 username: this.state.username,
-                password: this.state.password,
+                password: hashDigest,
                 emailAddr: this.state.email,
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
