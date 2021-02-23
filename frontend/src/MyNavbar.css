@@ -11,7 +11,7 @@ NavBar, .color-nav, .mr-auto {
 }
 
 #nav-link:hover {
-  background-color: rgb(126, 68, 68);
+  color: rgb(163, 63, 5);
   border-radius: 4px;
 }
 

@@ -5,14 +5,15 @@
 .specific-title {
     color: black;
     font-size: xx-large;
+    border-bottom: 2px solid grey;
 }
 
 .general-page-container {
     margin-top: 5%;
     margin-bottom: 5%;
     height: max(700px, min-content);
-    width: 90%;
-    margin-left: calc(100vw-900px);
+    width: max(inherit, min-content);
+    margin-left: 0%;
 }
 
 .more-blur {
