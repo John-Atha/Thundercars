@@ -1,6 +1,6 @@
 .one-station-container {
     padding-left: 2%;
-    text-align: left;
+    text-align: center;
     padding-bottom: 4%;
     padding-top: 4%;
     border-bottom: 2px solid grey;
@@ -15,11 +15,7 @@
     grid-template-rows: min-content min-content min-content min-content
      min-content;
     grid-template-columns: 140px auto;
-}
-
-.one-station-subtitle, .station-details-link {
-    text-decoration: underline;
-    color: rgb(73, 47, 32);
+    column-gap: 2px;
 }
 
 .station-details-link {
@@ -29,4 +25,8 @@
 .station-info-title {
     color: rgb(163, 63, 5);
     grid-column: 1;
+}
+
+.orangeColor {
+    color: rgb(163, 63, 5);
 }

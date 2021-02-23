@@ -47,7 +47,7 @@ class MyStatistics extends React.Component {
         // so I take it as value[this.attr1Name]
         this.attr1Name = "Stations Visited";
         this.attr2Name = "Total Cost";
-        this.attr3Name = "Total KWh Delivered";
+        this.attr3Name = "Total kWh Delivered";
     }
 
     componentDidMount () {

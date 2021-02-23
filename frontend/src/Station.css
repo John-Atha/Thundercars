@@ -1,11 +1,12 @@
 .station-page-info-container {
     text-align: left;
-    padding: 5% 0%;
+    padding: 2% 0%;
     width: 70%;
     margin-left: 15%;
     display: grid;
     grid-template-columns: 40% 60%;
-    grid-template-rows: min-height;
+    grid-template-rows: min-content;
+    column-gap: 2px;
 }
 
 .station-info-title {
