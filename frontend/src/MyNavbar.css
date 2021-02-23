@@ -1,5 +1,6 @@
 NavBar, .color-nav, .mr-auto {
-  background-color: rgb(250, 92, 92);
+  /*background-color: rgb(250, 92, 92);*/
+  background-color: #010101;
   color: white;
 }
 
