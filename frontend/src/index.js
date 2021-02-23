@@ -9,6 +9,7 @@ import Home from './Home';
 import MyVehicles from './MyVehicles';
 import NotFound from './NotFound';
 import MyStatistics from './MyStatistics';
+import MyStations from './MyStations';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -31,6 +32,9 @@ ReactDOM.render(
         </Route>
         <Route path="/myStatistics" exact>
           <MyStatistics />
+        </Route>
+        <Route path="/myStations" exact>
+          <MyStations />
         </Route>
         <Route path="*">
           <NotFound />
