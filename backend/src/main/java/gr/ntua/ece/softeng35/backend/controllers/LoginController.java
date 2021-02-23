@@ -89,7 +89,7 @@ public class LoginController{
           else {
             Integer userId = (Integer) user.get(0);
             answer.put("Id", userId);
-            answer.put("Token", "FOO");
+            answer.put("Token", "VehicleOwner");
             String ugly = answer.toString();
             try {
               JsonNode node = mapper.readTree(ugly);

@@ -336,14 +336,14 @@ class StationownerController {
     return repository.save(newStationOwner);
   }
 
-  /*
+ /* 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/admin/stationowners/{id}")
   StationOwner one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
-  }*/
-  
+  }
+  */
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/admin/stationownersmod/{id}")
