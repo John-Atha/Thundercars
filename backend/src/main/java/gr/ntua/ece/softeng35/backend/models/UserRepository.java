@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.id FROM StationOwner u WHERE u.username= ?1 AND u.password= ?2")
     List<Object> findStationOwnerIdByUsernameAndPassword(String username, String password);
 
+    @Query(value = "SELECT u.id FROM Admin u WHERE u.username= ?1 AND u.password= ?2")
+    List<Object> findIdByAdminnameAndPassword(String username, String password);
+
     @Query(value = "SELECT u.id FROM User u")
     List<Integer> findAllUsersIds();
 
