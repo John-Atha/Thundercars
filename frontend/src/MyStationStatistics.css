@@ -1,0 +1,13 @@
+.station-stats-info-container {
+    width: 70%;
+    margin-left: 15%;
+    display: grid;
+}
+
+.spots-pie-diagrams {
+    margin-top: 4%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 5% 35% 35%;
+    row-gap: 0%;
+}
