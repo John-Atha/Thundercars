@@ -15,7 +15,7 @@ class Station extends React.Component {
             // else
             // page is visited via the hyperlink at myStationsPage
             // and then we have saved the stationId in localStorage  
-            stationsId: this.props.id ? this.props.id : localStorage.getItem('stationId'),
+            stationsId: this.props.id,
             title: null,
             uuid: null,
             currentProvName: null,
@@ -114,7 +114,7 @@ class Station extends React.Component {
 
     render() {
 
-        if (!this.state.userId || !this.state.role || this.state.role==='VehicleOwner') {
+        if (!this.state.userId) {
             window.location.href="/";
         }
         else {

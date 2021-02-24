@@ -18,11 +18,11 @@ class StationsDiv extends React.Component {
             town:                this.props.town            ? (this.props.town.length===0            ? "-" : this.props.town           ) : "-",
             firstAddress:        this.props.firstAddress    ? (this.props.firstAddress.length===0    ? "-" : this.props.firstAddress   ) : "-"             
         }
+        this.stationPageRedirect = this.stationPageRedirect.bind(this);    
     }
 
     stationPageRedirect = () => {
         let id=this.state.id;
-        localStorage.removeItem('stationId');
         window.location.href=`/stations/${id}`;
     }
 

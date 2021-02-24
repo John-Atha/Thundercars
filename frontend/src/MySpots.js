@@ -10,14 +10,53 @@ class SpotsDiv extends React.Component {
             key: this.props.key,
             index: this.props.index,
             spotId: this.props.id,
-            stationTitle: null,   
+            stationTitle: null,
+            connType: null,
+            level: null,
+            currentType: null,   
         }
+        this.attr1="Connection Type";
+        this.attr2="Station Title"
+        this.attr3="Current Type"
+        this.spotPageRedirect = this.spotPageRedirect.bind(this);    
+    }
+
+    componentDidMount() {
+        getOneSpot(this.props.id)
+        .then(response => {
+            console.log(response);
+            this.setState({
+                stationTitle: response.data[this.attr2],
+                connType: response.data[this.attr1],
+                level: response.data.Level,
+                currentType: response.data[this.attr3]
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    spotPageRedirect = () => {
+        let id=this.state.spotId;
+        window.location.href=`/spots/${id}`;
     }
 
     render() {
         return(
-            <div>
-                lalalal
+            <div className="one-station-container center-content">
+                <h5 className="orangeColor center-content">Spot {this.state.index}: General Info</h5>
+                <div className="station-page-info-container">
+                    <div className="station-info-title darker">Station's title: </div>
+                    <div className="station-info darker">{this.state.stationTitle}</div>
+                    <div className="station-info-title">Connection Type: </div>
+                    <div className="station-info">{this.state.connType}</div>
+                    <div className="station-info-title darker">Level: </div>
+                    <div className="station-info darker">{this.state.level}</div>
+                    <div className="station-info-title">Current Type: </div>
+                    <div className="station-info">{this.state.currentType}</div>
+                </div>
+                <a className="station-link orangeColor center-content" onClick={this.spotPageRedirect}>For details click here</a>
             </div>
 
         )
@@ -66,7 +105,7 @@ class MySpots extends React.Component {
                     <MyNavbar />
                     <div className="general-page-container more-blur center-content">
                         <div className="specific-title orangeColor">
-                            My Stations
+                            My Spots
                         </div>
                         <div id="spots-container">
                             {   
