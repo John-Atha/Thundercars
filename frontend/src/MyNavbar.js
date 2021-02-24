@@ -3,6 +3,7 @@ import "./MyNavbar.css";
 import logo from './images/thundera.png';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown'
 
 class MyNavbar extends React.Component {
   constructor(props) {
@@ -18,20 +19,40 @@ class MyNavbar extends React.Component {
     localStorage.removeItem('role');
     window.location.href="/";
   }
-  
+
+
+
+  //      <Nav.Link id="nav-link" href="/myStatistics">My statisdgsstics</Nav.Link>
+
   render() {
     return (
       <Navbar className="color-nav">
         <Nav className="mr-auto">
           <Nav.Link id="nav-link" href="/home">Home</Nav.Link>
-          {this.state.role==="VehicleOwner" && (
-            <Nav.Link id="nav-link" href="/myVehicles">My vehicles</Nav.Link>
+
+          {this.state.role=="StationOwner" && (
+          <NavDropdown title="My statistics" id="nav-link">
+            <NavDropdown.Item href="/myStationStatistics">Per Station</NavDropdown.Item>
+            <NavDropdown.Item href="/mySpotStatistics">Per point</NavDropdown.Item>
+          </NavDropdown>
           )}
-          <Nav.Link id="nav-link" href="/myStatistics">My statistics</Nav.Link>
+          {this.state.role=="VehicleOwner" && (
+          <NavDropdown title="My statistics" id="nav-link">
+            <NavDropdown.Item href="/UserMyStatistics">General</NavDropdown.Item>
+            <NavDropdown.Item href="/UserVehicleStatistics">Per vehicle</NavDropdown.Item>
+          </NavDropdown>
+          )}
+
           {this.state.role=="StationOwner" && (
             <Nav.Link id="nav-link" href="/myStations">My stations</Nav.Link>
           )}
+          {this.state.role==="VehicleOwner" && (
+            <Nav.Link id="nav-link" href="/myVehicles">My vehicles</Nav.Link>
+          )}
+
+
           <Nav.Link id="nav-link" href="#">Detailed Sessions</Nav.Link>
+          
           {!this.state.userId && (
             <Nav.Link id="nav-link" href="/">Login</Nav.Link>
           )}
