@@ -2,10 +2,10 @@ import React from 'react';
 import './UserMyStatistics.css';
 import {getUserStats} from './api'
 import MyNavbar from './MyNavbar'; 
-import CanvasJSReact from './canvasjs.react';
+//import CanvasJSReact from './canvasjs.react';
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class UserStatisticsDiv extends React.Component {
     constructor(props) {
@@ -56,7 +56,7 @@ class UserMyStatistics extends React.Component {
 
     componentDidMount () {
         
-        if (this.state.role=="VehicleOwner") {
+        if (this.state.role==="VehicleOwner") {
             getUserStats(this.state.userId)
             .then(response => {
                 console.log(response);

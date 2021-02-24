@@ -1,6 +1,5 @@
 import React from 'react';
 import './Station.css';
-import logo from './images/thundera.png';
 import MyNavbar from './MyNavbar';
 import {getOneStation} from './api'; 
 

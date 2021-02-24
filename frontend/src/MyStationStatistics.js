@@ -52,7 +52,7 @@ class StationStatisticsDiv extends React.Component {
             console.log(pieData1);
             let pieData2 = [];
             console.log(l);
-            for( var i=0; i<l.length; i++) {
+            for( i=0; i<l.length; i++) {
                 console.log(100*l[i][this.attr8]/response.data[this.attr2]);
                 console.log("Point "+l[i][this.attr7]);
                 pieData2.push({
@@ -164,7 +164,7 @@ class MyStationStatistics extends React.Component {
 
     componentDidMount () {
         
-        if (this.state.role=="StationOwner") {
+        if (this.state.role==="StationOwner") {
             getStations(this.state.userId)
             .then( response => {
                 console.log(response);
@@ -177,7 +177,7 @@ class MyStationStatistics extends React.Component {
     }
 
     render() {
-        if (!localStorage.getItem('userId') || this.state.role=="VehicleOwner") {
+        if (!localStorage.getItem('userId') || this.state.role==="VehicleOwner") {
             window.location.href = "/";
         }
         else {
