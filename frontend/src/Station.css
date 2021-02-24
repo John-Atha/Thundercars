@@ -17,7 +17,11 @@
     grid-column: 2;
 }
 
-
 .darker {
     background-color: rgb(153, 145, 145);
+}
+
+.spot-link:hover {
+    cursor:pointer;
+    text-decoration: none;
 }

@@ -93,17 +93,23 @@ class Station extends React.Component {
                 country:             response.data.Country      ? (response.data.Country.length===0      ? "-" :response.data.Country      ) : "-",
                 continent:           response.data.Continent    ? (response.data.Continent.length===0    ? "-" :response.data.Continent    ) : "-",   
                 spotsList:           response.data.Spots        ? (response.data.Spots.length===0        ? "-" :response.data.Spots        ) : "-" 
-            })
-
-
-
-
-
-
+            });
+            console.log(this.state.spotsList);
         })
         .catch(err => {
             console.log(err);
         })
+    }
+
+    spotPageRedirect = (event) => {
+        let id = event.target.innerText;
+        localStorage.removeItem('spotId');
+        if (id.includes(", ")) {
+            window.location.href=`/spots/${id.replace(", ", "")}`;
+        }
+        else {
+            window.location.href=`/spots/${id.replace(",", "")}`;
+        }
     }
 
     render() {
@@ -200,10 +206,12 @@ class Station extends React.Component {
                             <div className="station-info-title darker">Continent:</div>
                             <div className="station-info darker">{this.state.continent}</div>
                             
+                            <div className="station-info-title">Spots:</div>
+
                             <div className="spots-ids-container">
                                 {
                                     this.state.spotsList.map((value, key, index) => {
-                                        return(<a href="#"> Spot {index + 1} </a>)
+                                        return(<a className="spot-link" onClick={this.spotPageRedirect} key={key}>{value.Spot}, </a>)
                                     })
                                 }
                             </div>
