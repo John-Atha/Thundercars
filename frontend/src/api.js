@@ -49,6 +49,11 @@ export const getOneStation = (id) => {
     return axios.get(requestUrl);
 }
 
+export const getStationStats = (id) => {
+    const requestUrl = `SessionsPerStation/${id}`;
+    return axios.get(requestUrl);
+}
+
 /*
 export const getStationOwnerStats = (id) => {
     const request
