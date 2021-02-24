@@ -210,7 +210,7 @@ class Station extends React.Component {
 
                             <div className="spots-ids-container">
                                 {
-                                    this.state.spotsList.map((value, key, index) => {
+                                    this.state.spotsList.map((value, key) => {
                                         return(<a className="spot-link" onClick={this.spotPageRedirect} key={key}>{value.Spot}, </a>)
                                     })
                                 }
