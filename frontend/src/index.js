@@ -10,8 +10,11 @@ import MyVehicles from './MyVehicles';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
 import MyStations from './MyStations';
+import MySpots from './MySpots';
 import Station from './Station';
+import Spot from './Spot';
 import MyStationStatistics from'./MyStationStatistics';
+import MySpotStatistics from'./MySpotStatistics';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -19,6 +22,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 function FindStation() {
   let {id} = useParams();
   return <Station id={id} />;
+}
+
+function FindSpot() {
+  let {id} = useParams();
+  return <Spot id={id} />;
 }
 
 
@@ -48,13 +56,19 @@ ReactDOM.render(
           <MyStationStatistics />
         </Route>
         <Route path="/mySpotStatistics" exact>
-          <MyStationStatistics />
+          <MySpotStatistics />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />
         </Route>
         <Route path="/stations/:id" exact>
           <FindStation />
+        </Route>
+        <Route path="/mySpots" exact>
+          <MySpots />
+        </Route>
+        <Route path="/spots/:id" exact>
+          <FindSpot />
         </Route>
         <Route path="*">
           <NotFound />

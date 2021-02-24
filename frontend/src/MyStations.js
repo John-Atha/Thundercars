@@ -22,8 +22,8 @@ class StationsDiv extends React.Component {
 
     stationPageRedirect = () => {
         let id=this.state.id;
-        window.location.href=`/stations/${id}`;
         localStorage.removeItem('stationId');
+        window.location.href=`/stations/${id}`;
     }
 
     render() {
@@ -42,7 +42,7 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title darker">First Address: </div>
                     <div className="station-info darker">{this.state.firstAddress}</div>
                 </div>
-                <a className="orangeColor center-content" onClick={this.stationPageRedirect}>For details click here</a>
+                <a className="station-link orangeColor center-content" onClick={this.stationPageRedirect}>For details click here</a>
             </div>
         )
     }

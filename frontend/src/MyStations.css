@@ -30,3 +30,7 @@
 .orangeColor {
     color: rgb(163, 63, 5);
 }
+
+.station-link:hover {
+    cursor: pointer;
+}
