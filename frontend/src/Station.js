@@ -204,7 +204,7 @@ class Station extends React.Component {
                             <div className="spots-ids-container">
                                 {
                                     this.state.spotsList.map((value, key, index) => {
-                                        <a href="#"> Spot {value.index+1} </a>
+                                        return(<a href="#"> Spot {index + 1} </a>)
                                     })
                                 }
                             </div>
