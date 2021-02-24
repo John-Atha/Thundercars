@@ -8,9 +8,10 @@ import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
 import NotFound from './NotFound';
-import MyStatistics from './MyStatistics';
+import UserMyStatistics from './UserMyStatistics';
 import MyStations from './MyStations';
 import Station from './Station';
+import MyStationStatistics from'./MyStationStatistics';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -37,8 +38,17 @@ ReactDOM.render(
         <Route path="/myVehicles" exact>
           <MyVehicles />
         </Route>
-        <Route path="/myStatistics" exact>
-          <MyStatistics />
+        <Route path="/UserMyStatistics" exact>
+          <UserMyStatistics />
+        </Route>
+        <Route path="/UserVehicleStatistics" exact>
+          <UserMyStatistics />
+        </Route>
+        <Route path="/myStationStatistics" exact>
+          <MyStationStatistics />
+        </Route>
+        <Route path="/mySpotStatistics" exact>
+          <MyStationStatistics />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />
