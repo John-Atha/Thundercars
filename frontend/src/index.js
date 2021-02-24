@@ -13,9 +13,10 @@ import MyStations from './MyStations';
 import MySpots from './MySpots';
 import Station from './Station';
 import Spot from './Spot';
-import MyStationStatistics from'./MyStationStatistics';
-import MySpotStatistics from'./MySpotStatistics';
-import reportWebVitals from './reportWebVitals';
+import MyStationStatistics from './MyStationStatistics';
+import MySpotStatistics from './MySpotStatistics';
+import StationOwnerStatistics from './StationOwnerStatistics'; 
+//import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -28,7 +29,6 @@ function FindSpot() {
   let {id} = useParams();
   return <Spot id={id} />;
 }
-
 
 ReactDOM.render(
   <React.StrictMode>
@@ -55,19 +55,22 @@ ReactDOM.render(
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
         </Route>
+        <Route path="/StationOwnerStatistics">
+          <StationOwnerStatistics />
+        </Route>
         <Route path="/mySpotStatistics" exact>
           <MySpotStatistics />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />
         </Route>
-        <Route path="/stations/:id" exact>
+        <Route path="/stations/:id">
           <FindStation />
         </Route>
         <Route path="/mySpots" exact>
           <MySpots />
         </Route>
-        <Route path="/spots/:id" exact>
+        <Route path="/spots/:id">
           <FindSpot />
         </Route>
         <Route path="*">

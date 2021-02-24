@@ -31,8 +31,8 @@ class MyNavbar extends React.Component {
 
           {this.state.role==="StationOwner" && (
           <NavDropdown title="My statistics" id="nav-link">
-            <NavDropdown.Item href="/myStationStatistics">Per Station</NavDropdown.Item>
-            <NavDropdown.Item href="/mySpotStatistics">Per point</NavDropdown.Item>
+            <NavDropdown.Item href="/myStationStatistics">Sessions per Station</NavDropdown.Item>
+            <NavDropdown.Item href="/StationOwnerStatistics">Monthly</NavDropdown.Item>
           </NavDropdown>
           )}
           {this.state.role==="VehicleOwner" && (
