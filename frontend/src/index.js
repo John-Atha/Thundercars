@@ -8,10 +8,15 @@ import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
 import NotFound from './NotFound';
-import MyStatistics from './MyStatistics';
+import UserMyStatistics from './UserMyStatistics';
 import MyStations from './MyStations';
+import MySpots from './MySpots';
 import Station from './Station';
-import reportWebVitals from './reportWebVitals';
+import Spot from './Spot';
+import MyStationStatistics from './MyStationStatistics';
+import MySpotStatistics from './MySpotStatistics';
+import StationOwnerStatistics from './StationOwnerStatistics'; 
+//import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -20,6 +25,10 @@ function FindStation() {
   return <Station id={id} />;
 }
 
+function FindSpot() {
+  let {id} = useParams();
+  return <Spot id={id} />;
+}
 
 ReactDOM.render(
   <React.StrictMode>
@@ -37,14 +46,32 @@ ReactDOM.render(
         <Route path="/myVehicles" exact>
           <MyVehicles />
         </Route>
-        <Route path="/myStatistics" exact>
-          <MyStatistics />
+        <Route path="/UserMyStatistics" exact>
+          <UserMyStatistics />
+        </Route>
+        <Route path="/UserVehicleStatistics" exact>
+          <UserMyStatistics />
+        </Route>
+        <Route path="/myStationStatistics" exact>
+          <MyStationStatistics />
+        </Route>
+        <Route path="/StationOwnerStatistics">
+          <StationOwnerStatistics />
+        </Route>
+        <Route path="/mySpotStatistics" exact>
+          <MySpotStatistics />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />
         </Route>
-        <Route path="/stations/:id" exact>
+        <Route path="/stations/:id">
           <FindStation />
+        </Route>
+        <Route path="/mySpots" exact>
+          <MySpots />
+        </Route>
+        <Route path="/spots/:id">
+          <FindSpot />
         </Route>
         <Route path="*">
           <NotFound />

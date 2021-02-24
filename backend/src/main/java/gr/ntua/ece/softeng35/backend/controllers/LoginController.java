@@ -80,7 +80,24 @@ public class LoginController{
       else {
         String HashedPassword;
         HashedPassword = getMd5(password);
-        List<Object> user = repository.findStationOwnerIdByUsernameAndPassword(username, HashedPassword);
+        
+        
+        List<Object> user = repository.findIdByAdminnameAndPassword(username, HashedPassword);
+        if (user.size() != 0){
+          Integer userId = (Integer) user.get(0);
+          answer.put("Id", userId);
+          answer.put("Token", "Admin");
+          String ugly = answer.toString();
+          try {
+            JsonNode node = mapper.readTree(ugly);
+            return node;
+          }
+          catch (Exception e){
+            return null;      
+          }
+        }
+
+        user = repository.findStationOwnerIdByUsernameAndPassword(username, HashedPassword);
         if (user.size()==0) {
           user = repository.findIdByUsernameAndPassword(username,HashedPassword);
           if (user.size() == 0){

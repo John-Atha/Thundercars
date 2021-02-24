@@ -1,9 +1,13 @@
 import React from 'react';
-import './MyStatistics.css';
+import './UserMyStatistics.css';
 import {getUserStats} from './api'
 import MyNavbar from './MyNavbar'; 
+//import CanvasJSReact from './canvasjs.react';
+//var CanvasJSReact = require('./canvasjs.react');
+//var CanvasJS = CanvasJSReact.CanvasJS;
+//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-class StatisticsDiv extends React.Component {
+class UserStatisticsDiv extends React.Component {
     constructor(props) {
         super(props);
         this.state={
@@ -31,7 +35,7 @@ class StatisticsDiv extends React.Component {
     }
 }
 
-class MyStatistics extends React.Component {
+class UserMyStatistics extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,7 +43,7 @@ class MyStatistics extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             error: null,
-            userStatsList: []
+            userStatsList: [],
         }
 
         // because names contain space char and values cannot be retrieved
@@ -51,22 +55,28 @@ class MyStatistics extends React.Component {
     }
 
     componentDidMount () {
-        getUserStats(this.state.userId)
-        .then(response => {
-            console.log(response);
-            this.setState({
-                userStatsList: response.data.Summary
+        
+        if (this.state.role==="VehicleOwner") {
+            getUserStats(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    userStatsList: response.data.Summary
+                })
+                console.log(this.state.userStatsList);
             })
-            console.log(this.state.userStatsList);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+            .catch(err => {
+                console.log(err);
+            })
+        }
     }
 
     render() {
-        if (!localStorage.getItem('userId') || localStorage.getItem('role')!=="VehicleOwner") {
-            window.location.href = "/"; 
+        if (!localStorage.getItem('userId')) {
+            window.location.href = "/";
+        }
+        else if (this.state.role==="StationOwner") {
+            window.location.href ="/myStationStatistics"
         }
         else {     
             return (
@@ -80,7 +90,7 @@ class MyStatistics extends React.Component {
                             {
                                 this.state.userStatsList.map((value, key)=> {
                                     console.log(value+": "+key);
-                                    return (<StatisticsDiv
+                                    return (<UserStatisticsDiv
                                             key={key} 
                                             month={value.Month}
                                             sessions={value.Sessions}
@@ -99,4 +109,4 @@ class MyStatistics extends React.Component {
     }
 }
 
-export default MyStatistics;
+export default UserMyStatistics;

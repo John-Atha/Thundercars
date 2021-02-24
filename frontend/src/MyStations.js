@@ -1,6 +1,5 @@
 import React from "react"
 import "./MyStations.css";
-import logo from './images/thundera.png';
 import MyNavbar from './MyNavbar'; 
 import {getStations} from './api';
 
@@ -19,12 +18,12 @@ class StationsDiv extends React.Component {
             town:                this.props.town            ? (this.props.town.length===0            ? "-" : this.props.town           ) : "-",
             firstAddress:        this.props.firstAddress    ? (this.props.firstAddress.length===0    ? "-" : this.props.firstAddress   ) : "-"             
         }
+        this.stationPageRedirect = this.stationPageRedirect.bind(this);    
     }
 
     stationPageRedirect = () => {
         let id=this.state.id;
         window.location.href=`/stations/${id}`;
-        localStorage.removeItem('stationId');
     }
 
     render() {
@@ -43,7 +42,7 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title darker">First Address: </div>
                     <div className="station-info darker">{this.state.firstAddress}</div>
                 </div>
-                <a className="orangeColor center-content" onClick={this.stationPageRedirect}>For details click here</a>
+                <a className="station-link orangeColor center-content" onClick={this.stationPageRedirect}>For details click here</a>
             </div>
         )
     }

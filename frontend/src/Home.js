@@ -1,6 +1,5 @@
 import React from 'react';
 import './Home.css';
-import logo from './images/thundera.png';
 import MyNavbar from './MyNavbar'; 
 
 class Home extends React.Component {

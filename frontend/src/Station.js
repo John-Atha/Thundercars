@@ -1,6 +1,5 @@
 import React from 'react';
 import './Station.css';
-import logo from './images/thundera.png';
 import MyNavbar from './MyNavbar';
 import {getOneStation} from './api'; 
 
@@ -16,7 +15,7 @@ class Station extends React.Component {
             // else
             // page is visited via the hyperlink at myStationsPage
             // and then we have saved the stationId in localStorage  
-            stationsId: this.props.id ? this.props.id : localStorage.getItem('stationId'),
+            stationsId: this.props.id,
             title: null,
             uuid: null,
             currentProvName: null,
@@ -94,22 +93,28 @@ class Station extends React.Component {
                 country:             response.data.Country      ? (response.data.Country.length===0      ? "-" :response.data.Country      ) : "-",
                 continent:           response.data.Continent    ? (response.data.Continent.length===0    ? "-" :response.data.Continent    ) : "-",   
                 spotsList:           response.data.Spots        ? (response.data.Spots.length===0        ? "-" :response.data.Spots        ) : "-" 
-            })
-
-
-
-
-
-
+            });
+            console.log(this.state.spotsList);
         })
         .catch(err => {
             console.log(err);
         })
     }
 
+    spotPageRedirect = (event) => {
+        let id = event.target.innerText;
+        localStorage.removeItem('spotId');
+        if (id.includes(", ")) {
+            window.location.href=`/spots/${id.replace(", ", "")}`;
+        }
+        else {
+            window.location.href=`/spots/${id.replace(",", "")}`;
+        }
+    }
+
     render() {
 
-        if (!this.state.userId || !this.state.role || this.state.role==='VehicleOwner') {
+        if (!this.state.userId) {
             window.location.href="/";
         }
         else {
@@ -201,10 +206,12 @@ class Station extends React.Component {
                             <div className="station-info-title darker">Continent:</div>
                             <div className="station-info darker">{this.state.continent}</div>
                             
+                            <div className="station-info-title">Spots:</div>
+
                             <div className="spots-ids-container">
                                 {
-                                    this.state.spotsList.map((value, key, index) => {
-                                        <a href="#"> Spot {value.index+1} </a>
+                                    this.state.spotsList.map((value, key) => {
+                                        return(<a className="spot-link" onClick={this.spotPageRedirect} key={key}>{value.Spot}, </a>)
                                     })
                                 }
                             </div>
