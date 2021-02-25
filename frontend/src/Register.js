@@ -181,14 +181,20 @@ class Register extends React.Component {
         let reason2 = this.state.password===this.state.confirmPassword;
         if (!reason1) {
            // console.log("case 1");
-            this.state.error="Insert compulsory info";
+            this.setState({
+                error: "Insert compulsory info"
+            });
         }
         else {
             if (!reason2) {
-                this.state.error="Different passwords";
+                this.setState({
+                    error: "Different passwords"
+                });
             }
             else {
-               this.state.error=null;
+               this.setState({
+                error: null
+               });
             }
         }
         return (reason1 && reason2); 
@@ -197,7 +203,9 @@ class Register extends React.Component {
     submitActivate = () => {
         //console.log("title: " + this.state.country.title);
         //console.log("error:" + this.state.error);
-        this.state.sumbitDisabled=!this.allowed();
+        this.setState ({
+            sumbitDisabled: !this.allowed()
+        });
         console.log("submit disabled: " + this.state.sumbitDisabled);
         //console.log("role: --"+this.state.role);
         this.submitChangeColor();
@@ -211,7 +219,7 @@ class Register extends React.Component {
             return(
                 <div className="register-page-container blur">
                     <div className="image-container center-content">
-                        <img className="logo" src={logo} />
+                        <img className="logo" src={logo} alt="Thundercars-logo"/>
                     </div>
                     <div className="title-container center-content">
                         Thundercars

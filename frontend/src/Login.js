@@ -68,18 +68,25 @@ class Login extends React.Component {
     submitActivate = () => {
         if (this.state.username===null || this.state.password===null) {
             console.log("submit deactivated");
-            this.state.sumbitDisabled=true;
+            this.setState ({
+                sumbitDisabled: true
+            });
         }
         else {
             //console.log(this.state.username.length);
             //console.log(this.state.password.length);
             if (this.state.username.length===0 || this.state.password.length===0) {
                 console.log("submit deactivated");
-                this.state.sumbitDisabled=true;
+                this.setState ({
+                    sumbitDisabled: true
+                });
             }
+            
             else {
                 console.log("submit activated1");
-                this.state.sumbitDisabled=false;
+                this.setState ({
+                    sumbitDisabled: false
+                });   
             }
         }
         this.submitChangeColor();
@@ -96,7 +103,7 @@ class Login extends React.Component {
             return (
                 <div className="login-page-container blur center-content">
                     <div className="image-container">
-                        <img className="logo" src={logo}/>
+                        <img className="logo" src={logo} alt="Thundercars-logo"/>
                     </div>
                     <div className="title-container">
                         Thundercars

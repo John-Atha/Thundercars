@@ -19,7 +19,7 @@ class NotFound extends React.Component {
             <div className="blur" id="not-found-page-container">
                 <div id="not-found-logo-title-container" className="center-content">
                     <div id="not-found-image-container">
-                        <img id="not-found-logo" src={logo}/>
+                        <img id="not-found-logo" src={logo} alt="Thundercars-logo"/>
                     </div>
                     <div className="not-found-title-container">
                         Thundercars
