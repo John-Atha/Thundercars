@@ -19,8 +19,10 @@ class Vehicle extends React.Component {
             usableBatterySize: null,
             energyConsumption: null,
             acCharging: null,
+            acChargerId: null,
             acChargers: null,
             acChargerTypes: null,
+            dcChargerId: null,
             dcCharging: null,
             dcChargers: null,
             dcChargerTypes: null
@@ -33,6 +35,7 @@ class Vehicle extends React.Component {
         this.attr5Name = "Ac Charger Ports"
         this.attr6Name = "Dc Charging"
         this.attr7Name = "Dc Charger Ports"
+        this.acChargerPageRedirect = this.acChargerPageRedirect.bind(this);
     }    
 
     componentDidMount () {
@@ -50,6 +53,8 @@ class Vehicle extends React.Component {
                 acChargers : response.data[this.attr5Name] ? (response.data[this.attr5Name].length !==0 ? response.data[this.attr5Name] : "-"):"-",
                 dcCharging : response.data[this.attr6Name] ? (response.data[this.attr6Name].length !==0 ? response.data[this.attr6Name] : "-"):"-",
                 dcChargers : response.data[this.attr7Name] ? (response.data[this.attr7Name].length !==0 ? response.data[this.attr7Name] : "-"):"-",
+                acChargerId : response.data.AcChargers[0].AcCharger ? (response.data.AcChargers[0].AcCharger.length !== 0 ? response.data.AcChargers[0].AcCharger : "-"):"-",
+                dcChargerId : response.data.DcChargers[0].DcCharger ? (response.data.DcChargers[0].DcCharger.length !== 0 ? response.data.DcChargers[0].DcCharger : "-"):"-"
             })
 
             let sizeofac = this.state.acChargers.length;
@@ -65,7 +70,7 @@ class Vehicle extends React.Component {
                 }
             }
             for(let i = sizeofdc; i > 0; i--) {
-                if(sizeofdc == 1) {
+                if(i == 1) {
                     dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"];
                 }
                 else {
@@ -88,6 +93,12 @@ class Vehicle extends React.Component {
             console.log(err);
         })
     }
+
+    acChargerPageRedirect = () => {
+        let id = this.state.acChargerId;
+        window.location.href=`/acchargers/${id}`;
+    }
+
 
     render() {
         if((!localStorage.getItem('userId'))) {
@@ -140,7 +151,7 @@ class Vehicle extends React.Component {
                             <div className="station-info-title darker">Usable Battery Size: </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
                             <div className="station-info-title">Energy Consumption: </div><div className="station-info">{this.state.energyConsumption} Wh/km</div>
                             <div className="station-info-title darker">AC Charging: </div><div className="station-info darker">{this.state.acCharging}</div>
-                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link blackColor station-info">{this.state.acChargerTypes}</a>
+                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link blackColor station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
                             <div className="station-info-title darker">DC Charging: </div><div className="station-info darker">{this.state.dcCharging}</div>
                             <div className="station-info-title">DC Charger Type(s): </div><a className="station-link blackColor station-info">{this.state.dcChargerTypes}</a>
                         </div>            

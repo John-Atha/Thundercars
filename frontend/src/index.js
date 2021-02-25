@@ -8,6 +8,7 @@ import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
+import AcCharger from './AcCharger';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
 import MyStations from './MyStations';
@@ -34,6 +35,11 @@ function FindSpot() {
 function FindVehicle() {
   let {id} = useParams();
   return <Vehicle id={id}/>;
+}
+
+function FindAcCharger() {
+  let {id} = useParams();
+  return <AcCharger id={id}/>;
 }
 
 ReactDOM.render(

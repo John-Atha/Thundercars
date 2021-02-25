@@ -24,6 +24,7 @@ export const getOneVehicle = (userId,vehId) => {
     return axios.get(requestUrl);
 }
 
+
 export const countriesGet = () => {
     const requestUrl = "/admin/countries";
     return axios.get(requestUrl);
