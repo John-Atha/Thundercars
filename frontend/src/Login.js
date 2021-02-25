@@ -18,7 +18,6 @@ class Login extends React.Component {
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);    
         this.submitActivate = this.submitActivate.bind(this);    
-        this.submitChangeColor = this.submitChangeColor.bind(this);    
     }
 
     handleInput = (e) => {
@@ -53,21 +52,12 @@ class Login extends React.Component {
         e.preventDefault();
     }
 
-    submitChangeColor = () => {
-        const submitButton = document.getElementById('submit-input');
-        if (this.state.sumbitDisabled) {
-            submitButton.style.backgroundColor="#9999";
-            submitButton.style.color="white";
-        }
-        else {
-            submitButton.style.backgroundColor="rgb(233, 21, 21)";
-            submitButton.style.color="white";
-        }
-    }
-
     submitActivate = () => {
+        const submitButton = document.getElementById('submit-input');
         if (this.state.username===null || this.state.password===null) {
             console.log("submit deactivated");
+            submitButton.style.backgroundColor="#9999";
+            submitButton.style.color="white";
             this.setState ({
                 sumbitDisabled: true
             });
@@ -77,19 +67,22 @@ class Login extends React.Component {
             //console.log(this.state.password.length);
             if (this.state.username.length===0 || this.state.password.length===0) {
                 console.log("submit deactivated");
+                submitButton.style.backgroundColor="#9999";
+                submitButton.style.color="white";    
                 this.setState ({
                     sumbitDisabled: true
                 });
             }
             
             else {
-                console.log("submit activated1");
+                console.log("submit activated");
+                submitButton.style.backgroundColor="rgb(233, 21, 21)";
+                submitButton.style.color="white";    
                 this.setState ({
                     sumbitDisabled: false
                 });   
             }
         }
-        this.submitChangeColor();
     }
  
     render() {

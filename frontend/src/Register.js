@@ -44,7 +44,6 @@ class Register extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);    
         this.handleInput = this.handleInput.bind(this);    
         this.submitActivate = this.submitActivate.bind(this);    
-        this.submitChangeColor = this.submitChangeColor.bind(this);    
         this.allowed = this.allowed.bind(this);    
     }
 
@@ -158,18 +157,6 @@ class Register extends React.Component {
         e.preventDefault();
     }
 
-    submitChangeColor = () => {
-        const submitButton = document.getElementById('reg-submit-input');
-        if (this.state.sumbitDisabled) {
-            submitButton.style.backgroundColor="#9999";
-            submitButton.style.color="white";
-        }
-        else {
-            submitButton.style.backgroundColor="rgb(233, 21, 21)";
-            submitButton.style.color="white";
-        }
-    }
-
     allowed = () => {
         //console.log(this.state.password);
         //console.log(this.state.confirmPassword);
@@ -201,14 +188,24 @@ class Register extends React.Component {
     }
 
     submitActivate = () => {
-        //console.log("title: " + this.state.country.title);
-        //console.log("error:" + this.state.error);
-        this.setState ({
-            sumbitDisabled: !this.allowed()
-        });
+        let disabled = !this.allowed();
+        const submitButton = document.getElementById('reg-submit-input');
+        if (disabled) {
+            submitButton.style.backgroundColor="#9999";
+            submitButton.style.color="white";
+            this.setState ({
+                sumbitDisabled: true
+            });
+        }
+        else {
+            submitButton.style.backgroundColor="rgb(233, 21, 21)";
+            submitButton.style.color="white";
+            this.setState ({
+                sumbitDisabled: false
+            });
+        }
         console.log("submit disabled: " + this.state.sumbitDisabled);
         //console.log("role: --"+this.state.role);
-        this.submitChangeColor();
     }
 
     render() {
