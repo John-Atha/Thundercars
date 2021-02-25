@@ -19,6 +19,11 @@ export const getVehicles = (id) => {
     return axios.get(requestUrl);
 };
 
+export const getOneVehicle = (userId,vehId) => {
+    const requestUrl = `user/${userId}/myvehicles/${vehId}`;
+    return axios.get(requestUrl);
+}
+
 export const countriesGet = () => {
     const requestUrl = "/admin/countries";
     return axios.get(requestUrl);

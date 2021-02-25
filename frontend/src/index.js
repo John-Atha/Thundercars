@@ -7,6 +7,7 @@ import Login from './Login';
 import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
+import Vehicle from './Vehicle';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
 import MyStations from './MyStations';
@@ -30,6 +31,11 @@ function FindSpot() {
   return <Spot id={id} />;
 }
 
+function FindVehicle() {
+  let {id} = useParams();
+  return <Vehicle id={id}/>;
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -45,6 +51,9 @@ ReactDOM.render(
         </Route>
         <Route path="/myVehicles" exact>
           <MyVehicles />
+        </Route>
+        <Route path="/vehicles/:id">
+          <FindVehicle />  
         </Route>
         <Route path="/UserMyStatistics" exact>
           <UserMyStatistics />

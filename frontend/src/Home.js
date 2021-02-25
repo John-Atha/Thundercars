@@ -18,16 +18,16 @@ class Home extends React.Component {
                 <MyNavbar />
                 <div className="general-page-container more-blur center-content">    
                     { this.state.userId!==null && (
-                        <p className="test">User id: {this.state.userId}</p>
+                        <p className="test blackColor">User id: {this.state.userId}</p>
                     )}
                     { this.state.userId===null && (
-                        <p className="test">User not logged in</p>
+                        <p className="test blackColor">User not logged in</p>
                     )}
                     { this.state.role!==null && (
-                        <p className="test">Role: {this.state.role}</p>
+                        <p className="test blackColor">Role: {this.state.role}</p>
                     )}
                     { this.state.role===null && (
-                        <p className="test">User's role not specified</p>
+                        <p className="test blackColor">User's role not specified</p>
                     )}
                 </div>
             </div>

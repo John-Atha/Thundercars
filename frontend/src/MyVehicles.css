@@ -22,20 +22,7 @@
     animation: appearing 1s;
 }
 
-#vehicle-titles{
-    grid-column:1;
-    align-items: left;
-    justify-items: left;
-    text-align: left;
-}
 
-#vehicle-content{
-    grid-column:2;
-    align-items: left;
-    justify-items: left;
-    text-align: left;
-    font-weight: bold;
-}
 
 #error-message{
     color:black;

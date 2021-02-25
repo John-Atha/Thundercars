@@ -55,6 +55,9 @@ class Spot extends React.Component {
                 comments:          response.data.Comments     ? (response.data.Comments.length!==0    ? response.data.Comments    : "-") : "-",  
             })
         })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
