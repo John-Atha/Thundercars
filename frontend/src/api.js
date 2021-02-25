@@ -34,6 +34,41 @@ export const countriesGet = () => {
     return axios.get(requestUrl);
 }
 
+export const currentProvidersGet = () => {
+    const requestUrl = "/admin/currentproviders";
+    return axios.get(requestUrl);
+}
+
+export const operatorsGet = () => {
+    const requestUrl = "/admin/operators";
+    return axios.get(requestUrl);
+}
+
+export const statusTypesGet = () => {
+    const requestUrl = "/admin/statustypes";
+    return axios.get(requestUrl);
+}
+
+export const usageTypesGet = () => {
+    const requestUrl = "/admin/usagetypes";
+    return axios.get(requestUrl);
+}
+
+export const stationOwnerOBJECTGet = (id) => {
+    const requestUrl = `/stationowners/${id}`;
+    return axios.get(requestUrl);
+}
+
+export const stationAddressPost = (obj) => {
+    const requestUrl = "/admin/addressesmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const stationPost = (obj) => {
+    const requestUrl = "admin/chargingstationsmod";
+    return axios.post(requestUrl, obj);
+}
+
 export const userAddressPost = (obj) => {
     const requestUrl = "/admin/useraddressesmod";
     return axios.post(requestUrl, obj);
