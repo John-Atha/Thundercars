@@ -1,7 +1,6 @@
-NavBar, .color-nav, .mr-auto {
-  /*background-color: rgb(250, 92, 92);*/
-  background-color: #010101;
-  color: white;
+NavBar, .color-nav, .mr-auto, .dropdown-menu, a.dropdown-item {
+  background-color: #010101 !important;
+  color: white !important;
 }
 
 #nav-link {
@@ -10,8 +9,8 @@ NavBar, .color-nav, .mr-auto {
   font-size: large;
 }
 
-#nav-link:hover {
-  color: rgb(163, 63, 5);
+#nav-link:hover, .dropdown-item:hover {
+  color: rgb(163, 63, 5) !important;
   border-radius: 4px;
 }
 
