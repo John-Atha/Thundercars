@@ -61,6 +61,9 @@ ReactDOM.render(
         <Route path="/vehicles/:id">
           <FindVehicle />  
         </Route>
+        <Route path="/acchargers/:id">
+          <FindAcCharger />
+        </Route>
         <Route path="/UserMyStatistics" exact>
           <UserMyStatistics />
         </Route>

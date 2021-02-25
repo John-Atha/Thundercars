@@ -24,6 +24,10 @@ export const getOneVehicle = (userId,vehId) => {
     return axios.get(requestUrl);
 }
 
+export const getOneAcCharger = (acId) => {
+    const requestUrl = `acchargers/${acId}`;
+    return axios.get(requestUrl);
+}
 
 export const countriesGet = () => {
     const requestUrl = "/admin/countries";
