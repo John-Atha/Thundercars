@@ -45,7 +45,7 @@ class StationStatisticsDiv extends React.Component {
                 console.log(100*l[i][this.attr6]/response.data[this.attr3]);
                 console.log("Point "+l[i][this.attr7]);
                 pieData1.push({
-                    y: 100*l[i][this.attr6]/response.data[this.attr3],
+                    y: Math.round(100*l[i][this.attr6]/response.data[this.attr3]),
                     label: "Point "+l[i][this.attr7]
                 })
             }

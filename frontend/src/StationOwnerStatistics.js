@@ -12,11 +12,11 @@ class StatOwnerPiesContainer extends React.Component {
         super(props);
         this.state = {
             userId: localStorage.getItem('userId'),
-            data: null,
-            diagramOptions1: null,
-            diagramOptions2: null,
-            diagramOptions3: null,
-            diagramOptions4: null,
+            data: [],
+            diagramOptions1: {},
+            diagramOptions2: {},
+            diagramOptions3: {},
+            diagramOptions4: {},
         }
     }
 

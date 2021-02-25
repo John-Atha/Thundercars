@@ -42,7 +42,7 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title darker">First Address: </div>
                     <div className="station-info darker">{this.state.firstAddress}</div>
                 </div>
-                <a className="station-link orangeColor center-content" onClick={this.stationPageRedirect}>For details click here</a>
+                <a className="station-link center-content" onClick={this.stationPageRedirect}>For details click here</a>
             </div>
         )
     }

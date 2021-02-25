@@ -56,7 +56,7 @@ class SpotsDiv extends React.Component {
                     <div className="station-info-title">Current Type: </div>
                     <div className="station-info">{this.state.currentType}</div>
                 </div>
-                <a className="station-link orangeColor center-content" onClick={this.spotPageRedirect}>For details click here</a>
+                <a className="station-link center-content" onClick={this.spotPageRedirect}>For details click here</a>
             </div>
 
         )
