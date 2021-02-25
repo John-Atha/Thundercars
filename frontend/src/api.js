@@ -70,6 +70,11 @@ export const getStationOwnerStatistics = (id) => {
     return axios.get(requestUrl);
 }
 
+export const getSpotSessions = (id) => {
+    const requestUrl = `SessionsPerPoint/${id}`;
+    return axios.get(requestUrl);
+}
+
 /*
 export const getStationOwnerStats = (id) => {
     const request

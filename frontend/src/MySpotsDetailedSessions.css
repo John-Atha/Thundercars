@@ -1,0 +1,84 @@
+.one-spot-sessions-container {
+    text-align: center;
+    padding: 1%;
+    border: 2px solid grey;
+    display: grid;
+    width: 350px;
+    border-radius: 5px;
+    margin: 3% 0%;
+}
+
+.spot-sessions-block {
+    display: grid;
+    grid-template-rows: min-content min-content auto;
+    grid-template-columns: 100%;
+    row-gap: 0%;
+    width: 100%;
+    min-height:min-content;
+}
+
+.spot-info-container {
+    grid-row: 2;
+    padding: 1% 1%;
+    width: 350px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: min-content;
+    column-gap: 2px;
+    border-radius: 5px;
+}
+
+.all-spots-sessions-container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: min-content;
+    grid-template-columns: min-content min-content;
+    grid-row: 3;
+    row-gap: 0%;
+    column-gap: 5%;
+    padding-bottom: 2%;
+}
+
+.spots-container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: min-content;
+    grid-template-columns: 100%;
+    min-height: min-content;
+}
+
+.spot-sessions-all-page {
+    position: top;
+    height: 100%;
+}
+
+.spots-sessions-page-container {
+    min-height: min-content;
+    margin-top: 5%;
+    margin-bottom: 0%;
+    width: max(100%,800px);
+    margin-left: 0%;
+}
+
+.spots-buttons-container {
+    margin: 2% 0%;
+    display: grid;
+    height: min-content;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+    column-gap: 5%;
+}
+
+.spot-choose-button {
+    color: rgb(163, 63, 5);
+    padding: 1%;
+    margin-bottom: 1%;
+    height: min-content;
+    width: 80px;
+    border-radius: 5px;
+}
+
+.spot-choose-button:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
