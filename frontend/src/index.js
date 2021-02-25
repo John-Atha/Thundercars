@@ -15,7 +15,7 @@ import MySpots from './MySpots';
 import Station from './Station';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
-import MySpotStatistics from './MySpotStatistics';
+import MySpotsDetailedSessions from './MySpotsDetailedSessions';
 import StationOwnerStatistics from './StationOwnerStatistics'; 
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -67,8 +67,8 @@ ReactDOM.render(
         <Route path="/StationOwnerStatistics">
           <StationOwnerStatistics />
         </Route>
-        <Route path="/mySpotStatistics" exact>
-          <MySpotStatistics />
+        <Route path="/mySpotsDetailedSessions" exact>
+          <MySpotsDetailedSessions />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />

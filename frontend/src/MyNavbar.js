@@ -54,9 +54,14 @@ class MyNavbar extends React.Component {
             <Nav.Link id="nav-link" href="/myVehicles">My vehicles</Nav.Link>
           )}
 
+          {this.state.role==="StationOwner" && (
+            <Nav.Link id="nav-link" href="/MySpotStatistics">Detailed Sessions</Nav.Link>
+          )}
 
-          <Nav.Link id="nav-link" href="#">Detailed Sessions</Nav.Link>
-          
+          {this.state.role==="VehicleOwner" && (
+            <Nav.Link id="nav-link" href="#">Detailed Sessions</Nav.Link>
+          )}
+
           {!this.state.userId && (
             <Nav.Link id="nav-link" href="/">Login</Nav.Link>
           )}
