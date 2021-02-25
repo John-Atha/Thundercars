@@ -162,7 +162,7 @@ class StatOwnerPiesContainer extends React.Component {
     render() {
         return (
         <div className="stat-owners-stats-pie-diagrams">
-            <h5 className="orangeColor center-content">Station's General Info</h5>
+            <h5 className="orangeColor center-content">Monthly data</h5>
             <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
             <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
             <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
