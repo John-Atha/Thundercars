@@ -93,6 +93,9 @@ class MySpots extends React.Component {
             console.log("Spots: ");
             console.log(this.state.spotsList);
         })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     render() {
