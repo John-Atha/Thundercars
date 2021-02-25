@@ -129,8 +129,10 @@ class Vehicle extends React.Component {
                     <div className="specific-title orangeColor">
                         My Vehicle
                     </div>
+                    <div className="vehicle-desc-text">Your vehicle's details! To view more details about the vehicle's charger types ,click on either charger type.</div>
+                        
                     <div className="one-station-container center-content">
-                        <div className="station-page-info-container">
+                    <div className="station-page-info-container">
                             <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                             <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                             <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>

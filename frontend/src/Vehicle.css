@@ -1,3 +1,11 @@
 .blackColor{
     color:black;
 }
+
+.vehicle-desc-text{
+    margin-left:3%;
+    margin-top: 1%;
+    font-size: medium;
+    animation: appearing 1s;
+    color: grey;
+}
