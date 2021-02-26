@@ -138,7 +138,7 @@ class AddStation extends React.Component {
             console.log(response);
             this.setState({
                 currentProviders: response.data,
-                currentProvider:response.data[0].id+",,"+response.data[0].name+",,"+( response.data[0].country ? (response.data[0].country.id+",,"+response.data[0].country.title+",,"+response.data[0].country.continentCode+",,"+response.data[0].country.isocode) : "null,null,null,null")
+                currentProvider:response.data[0].id+",,"+response.data[0].name+",,"+( response.data[0].country ? (response.data[0].country.id+",,"+response.data[0].country.title+",,"+response.data[0].country.continentCode+",,"+response.data[0].country.isocode) : "null,,null,,null,,null")
             })
             //console.log(this.state.currentProviders);
         })
@@ -433,176 +433,181 @@ class AddStation extends React.Component {
     }
 
     render() {
+        if (!this.state.userId || this.state.role==="VehicleOwner") {
+            window.location.href="/";
+        }
+        else {
         return (
-            <div className="allpage">
-                <MyNavbar />
-                <div className="general-page-container more-blur center-content">
-                    <div className="add-station-specific-title">
-                        <div className="station-info-title">
-                            Add station
-                            {this.state.error!==null && ( 
-                                <div className="error-message">
-                                    {this.state.error}
-                                </div>
-                            )}    
-                        </div> 
+                <div className="allpage">
+                    <MyNavbar />
+                    <div className="general-page-container more-blur center-content">
+                        <div className="add-station-specific-title">
+                            <div className="station-info-title">
+                                Add station
+                                {this.state.error!==null && ( 
+                                    <div className="error-message">
+                                        {this.state.error}
+                                    </div>
+                                )}    
+                            </div> 
+                        </div>
+
+                        <form id="add-station-info-container">
+
+                            <div className="add-station-first-container">                        
+                                <input className="add-station-input" id="add-station-uuid" placeholder="UUID*" type="text" name="uuid" value={this.state.uuid} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-date-created" placeholder="Date created" name="dateCreated" type="date" value={this.state.dateCreated} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-cost-per" placeholder="Cost per kWh*" name="costPerkWh" type="number" step=".01" value={this.state.costPerkWh} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input" id="add-station-title" placeholder="Title*" name="title" type="text" value={this.state.title} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            </div>
+                            <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            
+                            <div className="add-station-selects-container">
+                                <select className="add-station-input" id="add-station-current" name="currentProvider" value={this.state.currentProvider} onChange={this.handleInput} >
+                                {
+                                    this.state.currentProviders.map((key, value) =>{
+                                        //console.log(value);
+                                        if(key.country) {
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.name+",,"+key.country.id+",,"+key.country.title+",,"+key.country.continentCode+",,"+key.country.isocode}>{key.name}</option>
+                                            )
+                                        }
+                                    })
+                                }
+                                </select>
+                                <select className="add-station-input" id="add-station-operator" name="operator" value={this.state.operator} onChange={this.handleInput} >
+                                {
+                                    this.state.operators.map((key, value) =>{
+                                        //console.log(value);
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.websiteUrl+",,"+key.comments+",,"+key.primaryPhone+",,"+key.secondaryPhone+","
+                                                +key.isPrivateIndividual+",,"+key.bookingUrl+",,"+key.contactEmail+",,"+key.isRestrictedEdit+",,"+key.faultReportEmail}>{key.title}</option>
+                                            )
+                                    })
+                                }
+                                </select>
+                                <select className="add-station-input" id="add-station-status-type" name="statusType" value={this.state.statusType} onChange={this.handleInput} >
+                                {
+                                    this.state.statusTypes.map((key, value) =>{
+                                        //console.log(value);
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.isOperational+",,"+key.isUserSelectable}>{key.title}</option>
+                                            )
+                                    })
+                                }
+                                </select>
+                                <select className="add-station-input" id="add-station-usage-type" name="usageType" value={this.state.usageType} onChange={this.handleInput} >
+                                {
+                                    this.state.usageTypes.map((key, value) =>{
+                                        //console.log(value);
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.isMembershipRequired}>{key.title}</option>
+                                            )
+                                    })
+                                }
+                                </select>
+                            </div>
+                            
+                            <div className="add-station-address-container">
+
+                                <input className="add-station-input" id="add-station-first-addr" placeholder="First address*" type="text" name="addressLine1" value={this.state.addressLine1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-second-addr" placeholder="Secondary address" type="text" name="addressLine2" value={this.state.addressLine2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <input className="add-station-input" id="add-station-town" placeholder="Town" type="text" name="town" value={this.state.town} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-state" placeholder="State/Province" type="text" name="stateOrProvince" value={this.state.stateOrProvince} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <input className="add-station-input" id="add-station-latitude" placeholder="Latitude*" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-longtitude" placeholder="Longtitude*" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <input className="add-station-input" id="add-station-postcode" placeholder="Postcode" type="text" name="postCode" value={this.state.postCode} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-email" placeholder="Contact email*" type="email" name="contactEmail" value={this.state.contactEmail} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <input className="add-station-input" id="add-station-tel1" placeholder="Contact telephone1*" type="tel" name="contactTelephone1" value={this.state.contactTelephone1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-station-tel2" placeholder="Contact telephone2" type="tel" name="contactTelephone2" value={this.state.contactTelephone2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <textarea className="add-station-input" id="add-station-addr-gen-comments" placeholder="Address general comments" type="text" name="addressGenComments" value={this.state.addressGenComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <textarea className="add-station-input" id="add-station-access-comments" placeholder="Access comments" type="text" name="accessComments" value={this.state.accessComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <input className="add-station-input" id="add-station-addr-rel-url" placeholder="Address relative url" type="text" name="relatedUrl" value={this.state.relatedUrl} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+
+                                <select className="add-station-input" id="add-station-country-input" type="text"  name="country" value={this.state.country} onChange={this.handleInput} >
+                                {
+                                    this.state.countries.map((key, value) =>{
+                                        //console.log(this.state.countries);
+                                        //console.log("value:");
+                                        //console.log(key);
+                                        return(
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.continentCode+",,"+key.isocode}>{key.title}</option>
+                                        )
+                                    })
+                                }
+                                </select>                  
+
+                            </div>
+                                                                            
+                        </form>
+
+                        <div className="add-station-spot-specific-title">
+                                Add a charging spot to this station!
+                        </div>
+                        
+                        <form id="add-spot-info-container">
+
+                            <div className="add-spot-first-container">                        
+                                <input className="add-station-input" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                                <input className="add-station-input" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                                <input className="add-station-input" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                            </div>
+                            
+                            <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="spotComments" value={this.state.spotComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+
+                            <div className="add-station-selects-container">
+                                <select className="add-station-input" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
+                                {
+                                    this.state.connTypes.map((key, value) =>{
+                                        //console.log(value);
+                                        return(
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.formalName+",,"+key.category}>{key.title}</option>
+                                        )
+                                    })
+                                }
+                                </select>
+                                <select className="add-station-input" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
+                                {
+                                    this.state.levels.map((key, value) =>{
+                                        //console.log(value);
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.comments+",,"+key.isFastChargeCapable}>{key.title}</option>
+                                            )
+                                    })
+                                }
+                                </select>
+                                <select className="add-station-input" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
+                                {
+                                    this.state.currTypes.map((key, value) =>{
+                                        //console.log(value);
+                                            return(
+                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.description}>{key.title}</option>
+                                            )
+                                    })
+                                }
+                                </select>
+
+                            </div>
+                            
+
+                            <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
+                                                                            
+                        </form>
+
                     </div>
-
-                    <form id="add-station-info-container">
-
-                        <div className="add-station-first-container">                        
-                            <input className="add-station-input" id="add-station-uuid" placeholder="UUID*" type="text" name="uuid" value={this.state.uuid} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-date-created" placeholder="Date created" name="dateCreated" type="date" value={this.state.dateCreated} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-cost-per" placeholder="Cost per kWh*" name="costPerkWh" type="number" step=".01" value={this.state.costPerkWh} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                            <input className="add-station-input" id="add-station-title" placeholder="Title*" name="title" type="text" value={this.state.title} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                        </div>
-                        <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                        
-                        <div className="add-station-selects-container">
-                            <select className="add-station-input" id="add-station-current" name="currentProvider" value={this.state.currentProvider} onChange={this.handleInput} >
-                            {
-                                this.state.currentProviders.map((key, value) =>{
-                                    //console.log(value);
-                                    if(key.country) {
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.name+",,"+key.country.id+",,"+key.country.title+",,"+key.country.continentCode+",,"+key.country.isocode}>{key.name}</option>
-                                        )
-                                    }
-                                })
-                            }
-                            </select>
-                            <select className="add-station-input" id="add-station-operator" name="operator" value={this.state.operator} onChange={this.handleInput} >
-                            {
-                                this.state.operators.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.websiteUrl+",,"+key.comments+",,"+key.primaryPhone+",,"+key.secondaryPhone+","
-                                            +key.isPrivateIndividual+",,"+key.bookingUrl+",,"+key.contactEmail+",,"+key.isRestrictedEdit+",,"+key.faultReportEmail}>{key.title}</option>
-                                        )
-                                })
-                            }
-                            </select>
-                            <select className="add-station-input" id="add-station-status-type" name="statusType" value={this.state.statusType} onChange={this.handleInput} >
-                            {
-                                this.state.statusTypes.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.isOperational+",,"+key.isUserSelectable}>{key.title}</option>
-                                        )
-                                })
-                            }
-                            </select>
-                            <select className="add-station-input" id="add-station-usage-type" name="usageType" value={this.state.usageType} onChange={this.handleInput} >
-                            {
-                                this.state.usageTypes.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.isMembershipRequired}>{key.title}</option>
-                                        )
-                                })
-                            }
-                            </select>
-                        </div>
-                        
-                        <div className="add-station-address-container">
-
-                            <input className="add-station-input" id="add-station-first-addr" placeholder="First address*" type="text" name="addressLine1" value={this.state.addressLine1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-second-addr" placeholder="Secondary address" type="text" name="addressLine2" value={this.state.addressLine2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <input className="add-station-input" id="add-station-town" placeholder="Town" type="text" name="town" value={this.state.town} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-state" placeholder="State/Province" type="text" name="stateOrProvince" value={this.state.stateOrProvince} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <input className="add-station-input" id="add-station-latitude" placeholder="Latitude*" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-longtitude" placeholder="Longtitude*" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <input className="add-station-input" id="add-station-postcode" placeholder="Postcode" type="text" name="postCode" value={this.state.postCode} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-email" placeholder="Contact email*" type="email" name="contactEmail" value={this.state.contactEmail} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <input className="add-station-input" id="add-station-tel1" placeholder="Contact telephone1*" type="tel" name="contactTelephone1" value={this.state.contactTelephone1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-tel2" placeholder="Contact telephone2" type="tel" name="contactTelephone2" value={this.state.contactTelephone2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <textarea className="add-station-input" id="add-station-addr-gen-comments" placeholder="Address general comments" type="text" name="addressGenComments" value={this.state.addressGenComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <textarea className="add-station-input" id="add-station-access-comments" placeholder="Access comments" type="text" name="accessComments" value={this.state.accessComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <input className="add-station-input" id="add-station-addr-rel-url" placeholder="Address relative url" type="text" name="relatedUrl" value={this.state.relatedUrl} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-
-                            <select className="add-station-input" id="add-station-country-input" type="text"  name="country" value={this.state.country} onChange={this.handleInput} >
-                            {
-                                this.state.countries.map((key, value) =>{
-                                    //console.log(this.state.countries);
-                                    //console.log("value:");
-                                    //console.log(key);
-                                    return(
-                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.continentCode+",,"+key.isocode}>{key.title}</option>
-                                    )
-                                })
-                            }
-                            </select>                  
-
-                        </div>
-                                                                        
-                    </form>
-
-                    <div className="add-station-spot-specific-title">
-                            Add a charging spot to this station!
-                    </div>
-                    
-                    <form id="add-spot-info-container">
-
-                        <div className="add-spot-first-container">                        
-                            <input className="add-station-input" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                            <input className="add-station-input" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
-                            <input className="add-station-input" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
-                            <input className="add-station-input" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
-                        </div>
-                        
-                        <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="spotComments" value={this.state.spotComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-
-                        <div className="add-station-selects-container">
-                            <select className="add-station-input" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
-                            {
-                                this.state.connTypes.map((key, value) =>{
-                                    //console.log(value);
-                                    return(
-                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.formalName+",,"+key.category}>{key.title}</option>
-                                    )
-                                })
-                            }
-                            </select>
-                            <select className="add-station-input" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
-                            {
-                                this.state.levels.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.comments+",,"+key.isFastChargeCapable}>{key.title}</option>
-                                        )
-                                })
-                            }
-                            </select>
-                            <select className="add-station-input" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
-                            {
-                                this.state.currTypes.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.description}>{key.title}</option>
-                                        )
-                                })
-                            }
-                            </select>
-
-                        </div>
-                        
-
-                        <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
-                                                                        
-                    </form>
-
                 </div>
-            </div>
-
-        )
+            )
+        }
+        
     }
 
 

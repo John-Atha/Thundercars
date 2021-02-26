@@ -142,6 +142,7 @@ class MySpotsDetailedSessions extends React.Component {
             stationsList: [],
             spotsList: [],
             showingSpotId: null,
+            error: "Choose a spot to see its sessions"
         }
         this.selectSpot = this.selectSpot.bind(this);    
     }
@@ -167,7 +168,8 @@ class MySpotsDetailedSessions extends React.Component {
 
     selectSpot = (event) => {
         this.setState({
-            showingSpotId: event.target.innerText.replace("Spot ", "")
+            showingSpotId: event.target.innerText.replace("Spot ", ""),
+            error: null,
         })
         console.log("pressed" + this.state.showingSpotId)
     }
@@ -183,6 +185,11 @@ class MySpotsDetailedSessions extends React.Component {
                         <div className="spots-sessions-page-container more-blur center-content">
                             <div className="specific-title orangeColor">
                                 Detailed Sesions Per Charging Point
+                                {this.state.error!==null && ( 
+                                    <div className="error-message">
+                                        {this.state.error}
+                                    </div>
+                                )}  
                             </div>
                             <div className="spots-buttons-container center-content">
                                 {   
