@@ -1,7 +1,7 @@
 import React from 'react';
 import './Spot.css';
 import MyNavbar from './MyNavbar';
-import {getOneSpot} from './api'; 
+import {getOneSpot, getOneSpotOBJECT} from './api'; 
 
 class Spot extends React.Component {
     constructor(props) {
@@ -30,6 +30,7 @@ class Spot extends React.Component {
         this.attr5="Fast Charge";
         this.attr5="Power (kW)";
         this.stationPageRedirect = this.stationPageRedirect.bind(this);    
+        this.updateSpot = this.updateSpot.bind(this);    
     }
 
     stationPageRedirect = () => {
@@ -44,15 +45,23 @@ class Spot extends React.Component {
             this.setState({
                 stationId: response.data[this.attr6],
                 stationTitle: response.data[this.attr2],
-                connType:          response.data[this.attr1]  ? (response.data[this.attr1].length!==0 ? response.data[this.attr1] : "-") : "-",   
-                level:             response.data.Level        ? (response.data.Level.length!==0       ? response.data.Level       : "-") : "-", 
-                levelComments:     response.data[this.attr4]  ? (response.data[this.attr4].length!==0 ? response.data[this.attr4] : "-") : "-",
-                fastCharge:        response.data[this.attr5]  ? (response.data[this.attr5].length!==0 ? response.data[this.attr5] : "-") : "-",   
-                currentType:       response.data[this.attr3]  ? (response.data[this.attr3].length!==0 ? response.data[this.attr3] : "-") : "-",   
-                amps:              response.data.Amps         ? (response.data.Amps.length!==0        ? response.data.Amps        : "-") : "-",  
-                voltage:           response.data.Voltage      ? (response.data.Voltage.length!==0     ? response.data.Voltage     : "-") : "-",  
-                power:             response.data[this.attr5]  ? (response.data[this.attr5].length!==0 ? response.data[this.attr5] : "-") : "-",    
-                comments:          response.data.Comments     ? (response.data.Comments.length!==0    ? response.data.Comments    : "-") : "-",  
+            });
+            getOneSpotOBJECT(this.state.spotId)
+            .then(response => {
+                this.setState({
+                    connType:          response.data[this.attr1]  ? response.data[this.attr1].title : "-",   
+                    level:             response.data.level        ? response.data.level.title       : "-", 
+                    levelComments:     response.data.level        ? response.data.level.comments    : "-",
+                    fastCharge:        response.data.level        ? response.data.level.isFastChargeCapable : "-",   
+                    currentType:       response.data.currentType  ? response.data.currentType.title : "-",   
+                    amps:              response.data.amps         ? response.data.amps : "-",  
+                    voltage:           response.data.voltage      ? response.data.voltage : "-",  
+                    power:             response.data.powerkw      ? response.data.powerkw : "-",    
+                    comments:          response.data.comments     ? (response.data.Comments.length!==0    ? response.data.Comments    : "-") : "-",     
+                })
+            })
+            .catch(err=> {
+                console.log(err);
             })
         })
         .catch(err => {
@@ -61,14 +70,21 @@ class Spot extends React.Component {
         })
     }
 
+    updateSpot = () => {
+        window.location.href=`/spots/${this.state.spotId}/update`;
+    }
+
+
     render() {
         return(
             <div className="allpage">
                 <MyNavbar />
                 <div className="general-page-container more-blur center-content">
+                    
                     <div className="specific-title">
                         <div onClick={this.stationPageRedirect} className="station-info-title">Spot {this.state.spotId}</div> 
                     </div>
+                    
                     <div className="station-page-info-container">
                         
                         <div className="station-info-title darker">Station:</div> 
@@ -87,7 +103,7 @@ class Spot extends React.Component {
                         <div className="station-info darker">{this.state.currentType}</div>
 
                         <div className="station-info-title">Fast charge: </div>
-                        <div className="station-info">{this.state.fastCharge}</div>
+                        <div className="station-info">{this.state.fastCharge===true ? "Yes" : "No"}</div>
                     
                         <div className="station-info-title darker">Amps: </div>
                         <div className="station-info darker">{this.state.amps} </div>
@@ -100,6 +116,12 @@ class Spot extends React.Component {
                         
                         <div className="station-info-title">Comments:</div>
                         <div className="station-info">{this.state.comments}</div>                    
+                    </div>
+                
+                    <div className="station-update-button-container center-content">
+                            <button className="station-update-button" className="spot-choose-button" onClick={this.updateSpot}>
+                                Update spot
+                            </button>
                     </div>
                 </div>
             </div>
