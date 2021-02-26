@@ -1,0 +1,10 @@
+#add-spot-submit {
+    grid-row: 5;
+    width: max(100px, 20%);
+    margin-left: 40%;
+    padding:0% 0%;
+    background-color: rgb(233, 21, 21);
+    border: 1px solid rgb(233, 21, 21);
+    color: white;
+    border-radius: 5px;
+}
