@@ -1,6 +1,16 @@
 .add-station-input {
     border: 1px solid rgb(163, 63, 5);
 }
+.add-station-specific-title {
+    color: black;
+    font-size: x-large;
+    border-bottom: 2px solid grey;
+}
+.add-station-spot-specific-title {
+    font-size: large;
+    border-bottom: 2px solid grey;
+    color: red !important;
+}
 
 #add-station-submit {
     grid-row: 5;
@@ -19,15 +29,39 @@
 
 #add-station-info-container {
     text-align: left;
-    padding: 2% 0%;
-    height: 100%;
+    padding-top: 2%;
+    height: 110%;
     width: 70%;
     margin-left: 15%;
     display: grid;
-    grid-template-rows: 09% 09% 14% 59% 07%;
+    grid-template-rows: 12% 09% 14% 59%;
     grid-template-columns: 100%;
     row-gap: 1%;
     column-gap: 2px;
+}
+
+#add-spot-info-container {
+    text-align: left;
+    padding-top: 2%;
+    padding-bottom: 35px;
+    row-gap: 1%;
+    height: 110%;
+    width: 70%;
+    margin-left: 15%;
+    display: grid;
+    grid-template-rows: 39% 28% 25% 05%;
+    grid-template-columns: 100%;
+    column-gap: 2px;
+}
+
+.add-spot-first-container {
+    grid-row: 1;
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+    grid-template-columns: 50% 50%;
+    row-gap: 3%;
+    column-gap: 2px;
+    margin-bottom: 1%;
 }
 
 .add-station-first-container {
@@ -37,8 +71,8 @@
     grid-template-columns: 50% 50%;
     row-gap: 3%;
     column-gap: 2px;
-
 }
+
 
 #add-station-uuid {
     grid-row: 1;
@@ -92,7 +126,7 @@
     grid-row: 4;
     grid-column: 1;
     display: grid;
-    grid-template-rows: auto;
+    grid-template-rows: 12% 12% 12% 12% 12% 20% 12%;
     grid-template-columns: 50% 50%;
     row-gap: 2%;
     column-gap: 2px;

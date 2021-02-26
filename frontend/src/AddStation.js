@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
-import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost} from './api';
+import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, spotPost} from './api';
 
 class AddStation extends React.Component {
     
@@ -43,7 +43,20 @@ class AddStation extends React.Component {
             statusTypes: [{}],
             usageTypes: [{}],
             error: "Insert compulsory info",
-            submitDisabled: true
+            submitDisabled: true,
+            connType: "",
+            currType: "",
+            level: "",
+            connTypes: [{}],
+            currTypes: [{}],
+            levels: [{}],
+            amps: "",
+            voltage: "",
+            power: "",
+            spotComments: "",
+            quantity: "",
+            quantityAvailable: "",
+            quantityOperational: "",
         }
         
         this.handleInput = this.handleInput.bind(this);    
@@ -64,6 +77,9 @@ class AddStation extends React.Component {
 
     allowed = () => {
         if (this.state.uuid.length!==0 &&
+            this.state.latitude.length!==0 &&
+            this.state.longtitude.length!==0 &&
+            this.state.title.length!==0 &&
             this.state.costPerkWh.length!==0 &&
             this.state.addressLine1.length!==0 &&
             this.state.currentProvider.length!==0 &&
@@ -108,8 +124,10 @@ class AddStation extends React.Component {
         .then(response => {
             console.log(response);
             this.setState({
-                countries: response.data
+                countries: response.data,
+                country: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].continentCode+",,"+response.data[0].isocode
             })
+
             //console.log(this.state.countries);
         })
         .catch(err => {
@@ -119,7 +137,8 @@ class AddStation extends React.Component {
         .then(response => {
             console.log(response);
             this.setState({
-                currentProviders: response.data
+                currentProviders: response.data,
+                currentProvider:response.data[0].id+",,"+response.data[0].name+",,"+( response.data[0].country ? (response.data[0].country.id+",,"+response.data[0].country.title+",,"+response.data[0].country.continentCode+",,"+response.data[0].country.isocode) : "null,null,null,null")
             })
             //console.log(this.state.currentProviders);
         })
@@ -130,7 +149,9 @@ class AddStation extends React.Component {
         .then(response => {
             console.log(response);
             this.setState({
-                operators: response.data
+                operators: response.data,
+                operator: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].websiteUrl+",,"+response.data[0].comments+",,"+response.data[0].primaryPhone+",,"+response.data[0].secondaryPhone+","
+                +response.data[0].isPrivateIndividual+",,"+response.data[0].bookingUrl+",,"+response.data[0].contactEmail+",,"+response.data[0].isRestrictedEdit+",,"+response.data[0].faultReportEmail
             })
         })
         .catch(err => {
@@ -139,7 +160,8 @@ class AddStation extends React.Component {
         statusTypesGet()
         .then(response=>{
             this.setState({
-                statusTypes: response.data
+                statusTypes: response.data,
+                statusType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isOperational+",,"+response.data[0].isUserSelectable,
             })
         })
         .catch(err => {
@@ -149,7 +171,8 @@ class AddStation extends React.Component {
         .then(response => {
             console.log(response);
             this.setState({
-                usageTypes: response.data
+                usageTypes: response.data,
+                usageType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isMembershipRequired
             })
         })
         .catch(err => {
@@ -166,9 +189,43 @@ class AddStation extends React.Component {
         .catch(err=> {
             console.log(err);
         })
+        connTypesGet()
+        .then(response =>{
+            console.log(response);
+            this.setState({
+                connTypes: response.data,
+                connType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].formalName+",,"+response.data[0].category
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        currTypesGet()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                currTypes: response.data,
+                currType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].description
+            })
+        })
+        .catch(err=> {
+            console.log(err);
+        })
+        levelsGet()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                levels: response.data,
+                level: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].comments+",,"+response.data[0].isFastChargeCapable
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
     }
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
         console.log("SUBMITTED");
         let objectFinal = null;
         let currentProv = null;
@@ -179,12 +236,16 @@ class AddStation extends React.Component {
         let getAddress = null;
         let statusType = null;
         let submissionStatus = null;
+        let connType = null;
+        let level = null;
+        let currType = null;
+
 
         // build operator nested object
-        // value={key.id+","+key.title+","+key.websiteUrl+","+key.comments+","+key.primaryPhone+","+key.secondaryPhone+","
-        //     +key.isPrivateIndividual+","+key.bookingUrl+","+key.contactEmail+","+key.isRestrictedEdit+","+key.faultReportEmail}
+        // value={key.id+",,"+key.title+",,"+key.websiteUrl+",,"+key.comments+",,"+key.primaryPhone+",,"+key.secondaryPhone+","
+        //     +key.isPrivateIndividual+",,"+key.bookingUrl+",,"+key.contactEmail+",,"+key.isRestrictedEdit+",,"+key.faultReportEmail}
         let operatorStr = this.state.operator;
-        let operParts = operatorStr.split(",");
+        let operParts = operatorStr.split(",,");
         operator = {
             title:               operParts[1] ==="null" ? null : operParts[1] , 
             id:                  operParts[0] ==="null" ? null : operParts[0] , 
@@ -200,7 +261,7 @@ class AddStation extends React.Component {
         };
         // build usageType nested object
         let usageTypeStr = this.state.usageType;
-        let usageTypeParts = usageTypeStr.split(",");
+        let usageTypeParts = usageTypeStr.split(",,");
         usageType = {
             id:                    usageTypeParts[0] ==="null" ? null : usageTypeParts[0] ,
             title:                 usageTypeParts[1] ==="null" ? null : usageTypeParts[1] ,
@@ -208,7 +269,7 @@ class AddStation extends React.Component {
         };
         // build currentProvider nested object
         let currentProvStr = this.state.currentProvider;
-        let currentProvParts = currentProvStr.split(",");
+        let currentProvParts = currentProvStr.split(",,");
         currentProv = {
             id:             currentProvParts[0] ,
             name:           currentProvParts[1] ==="null" ? null : currentProvParts[1] ,
@@ -227,7 +288,7 @@ class AddStation extends React.Component {
         }
         // build statusType nested object
         let statusTypeStr = this.state.statusType;
-        let statusTypeParts = statusTypeStr.split(",");
+        let statusTypeParts = statusTypeStr.split(",,");
         statusType = {
             id:               statusTypeParts[0]==="null" ? null : statusTypeParts[0],
             title:            statusTypeParts[1]==="null" ? null : statusTypeParts[1],
@@ -236,7 +297,7 @@ class AddStation extends React.Component {
         }
         // build address nested object
         let countryStr = this.state.country;
-        let countryParts =countryStr.split(",");
+        let countryParts =countryStr.split(",,");
         postAddress = {
             country: {
                 id:              countryParts[0]==="null" ? null : countryParts[0] ,
@@ -246,18 +307,51 @@ class AddStation extends React.Component {
             },
             contactTelephone1: this.state.contactTelephone1 ? (this.state.contactTelephone1.length===0 ? null : this.state.contactTelephone1) : null,
             contactTelephone2: this.state.contactTelephone2 ? (this.state.contactTelephone2.length===0 ? null : this.state.contactTelephone2) : null,
-            title:             this.state.title             ? (this.state.title.length===0             ? this.state.addressLine1 : this.state.title            ) : this.state.addressLine1,
+            title:             this.state.title             ? (this.state.title.length===0             ? null : this.state.title            ) : null,
             addressLine1:      this.state.addressLine1      ? (this.state.addressLine1.length===0      ? null : this.state.addressLine1     ) : null,
             addressLine2:      this.state.addressLine2      ? (this.state.addressLine2.length===0      ? null : this.state.addressLine2     ) : null,
             stateOrProvince:   this.state.stateOrProvince   ? (this.state.stateOrProvince.length===0   ? null : this.state.stateOrProvince  ) : null,
             town:              this.state.town              ? (this.state.town.length===0              ? null : this.state.town             ) : null,
             postcode:          this.state.postCode          ? (this.state.postCode.length===0          ? null : this.state.postCode         ) : null,
-            latitude:          this.state.latitude          ? (this.state.latitude.length===0          ? null : parseFloat(this.state.latitude)         ) : null,
-            longtitude:        this.state.longtitude        ? (this.state.longtitude.length===0        ? null : parseFloat(this.state.longtitude)       ) : null,
+            latitude:          this.state.latitude          ? (this.state.latitude.length===0          ? null : parseFloat(this.state.latitude) ) : null,
+            longtitude:        this.state.longtitude        ? (this.state.longtitude.length===0        ? null : parseFloat(this.state.longtitude) ) : null,
             relatedUrl:        this.state.relatedUrl        ? (this.state.relatedUrl.length===0        ? null : this.state.relatedUrl       ) : null,
             generalComments:   this.state.generalComments   ? (this.state.generalComments.length===0   ? null : this.state.generalComments  ) : null,
             contactEmail:      this.state.contactEmail      ? (this.state.contactEmail.length===0      ? null : this.state.contactEmail     ) : null,
             accessComments:    this.state.accessComments    ? (this.state.accessComments.length===0    ? null : this.state.accessComments   ) : null
+        }
+        // buils conn type nested object
+        let connTypeStr = this.state.connType;
+        let connTypeParts = connTypeStr.split(",,");
+        connType = {
+            id:          connTypeParts[0]==="null" ? null : connTypeParts[0],
+            title:       connTypeParts[1]==="null" ? null : connTypeParts[1],
+            comments:    connTypeParts[2]==="null" ? null : connTypeParts[2],
+            isFastChargeCapable: connTypeParts[3]==="true" ? true : false
+        }
+        let currTypeStr = this.state.currType;
+        let currTypeParts = currTypeStr.split(",,");
+        currType = {
+            id:          currTypeParts[0]==="null" ? null : currTypeParts[0] ,
+            title:       currTypeParts[1]==="null" ? null : currTypeParts[1] ,
+            description: currTypeParts[2]==="null" ? null : currTypeParts[2] ,
+        }
+        let levelStr = this.state.level;
+        let levelParts = levelStr.split(",,");
+        level = {
+            id:          levelParts[0]==="null" ? null : levelParts[0] ,
+            title:       levelParts[1]==="null" ? null : levelParts[1] ,
+            comments:    levelParts[2]==="null" ? null : levelParts[2] ,
+            category:    levelParts[3]==="null" ? null : levelParts[3] ,
+        }
+        let spotObjPost = {
+            connectionType: connType,
+            level: level,
+            currentType: currType,
+            amps: this.state.amps,
+            voltage: this.state.voltage,
+            powerkw: this.state.power,
+            comments: this.state.spotComments
         }
         console.log(postAddress);
         stationAddressPost(postAddress)
@@ -272,10 +366,10 @@ class AddStation extends React.Component {
                 operator: operator,
                 usageType: usageType,
                 address: getAddress,
-                comments: this.state.comments,
+                comments: this.state.comments ? (this.state.comments.length===0 ? null : this.state.comments) : null,
                 dateLastConfirmed: null,
                 dateLastStatusUpdate: null,
-                dateCreated: this.state.dateCreated,
+                dateCreated: this.state.dateCreated ? this.state.dateCreated : "2020-01-01",
                 statusType: statusType,
                 submissionStatus: submissionStatus,
                 rating: 3.0,
@@ -285,17 +379,57 @@ class AddStation extends React.Component {
             stationPost(objectFinal)
             .then(response => {
                 console.log(response);
-                this.setState({
-                    error: "Submitted succesfully"
+                let stationObjGet = response.data;
+                let stationID = response.data.id;
+                console.log(spotObjPost);
+                spotPost(spotObjPost)
+                .then(response => {
+                    console.log(response);
+                    let spotObjGet = response.data;
+                    let stationSpotObject = {
+                        chargingStation: stationObjGet,
+                        chargingSpot: spotObjGet,
+                        quantity:            this.state.quantity.length===0            ? null : this.state.quantity           ,
+                        quantityAvailable:   this.state.quantityAvailable.length===0   ? null : this.state.quantityAvailable  ,
+                        quantityOperational: this.state.quantityOperational.length===0 ? null : this.state.quantityOperational,
+                    }
+                    stationSpotPost(stationSpotObject)
+                    .then(response => {
+                        console.log(response);
+                        this.setState({
+                            error: "Submitted succesfully"
+                        })
+                        window.location.href=`stations/${stationID}`;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.setState({
+                            error: "Could not create, probably invalid UUID"
+                        })
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        error: "Could not create, probably invalid UUID"
+                    })
                 })
             })
             .catch(err => {
                 console.log(err);
+                this.setState({
+                    error: "Could not create, probably invalid UUID"
+                })
             })
+
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                error: "Could not create, probably invalid UUID"
+            })
         })
+        e.preventDefault()
     }
 
     render() {
@@ -303,7 +437,7 @@ class AddStation extends React.Component {
             <div className="allpage">
                 <MyNavbar />
                 <div className="general-page-container more-blur center-content">
-                    <div className="specific-title">
+                    <div className="add-station-specific-title">
                         <div className="station-info-title">
                             Add station
                             {this.state.error!==null && ( 
@@ -313,11 +447,14 @@ class AddStation extends React.Component {
                             )}    
                         </div> 
                     </div>
+
                     <form id="add-station-info-container">
+
                         <div className="add-station-first-container">                        
                             <input className="add-station-input" id="add-station-uuid" placeholder="UUID*" type="text" name="uuid" value={this.state.uuid} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
                             <input className="add-station-input" id="add-station-date-created" placeholder="Date created" name="dateCreated" type="date" value={this.state.dateCreated} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
                             <input className="add-station-input" id="add-station-cost-per" placeholder="Cost per kWh*" name="costPerkWh" type="number" step=".01" value={this.state.costPerkWh} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            <input className="add-station-input" id="add-station-title" placeholder="Title*" name="title" type="text" value={this.state.title} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                         </div>
                         <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                         
@@ -328,7 +465,7 @@ class AddStation extends React.Component {
                                     //console.log(value);
                                     if(key.country) {
                                         return(
-                                            <option key={value.id} value={key.id+","+key.name+","+key.country.id+","+key.country.title+","+key.country.continentCode+","+key.country.isocode}>{key.name}</option>
+                                            <option key={key.id} value={key.id+",,"+key.name+",,"+key.country.id+",,"+key.country.title+",,"+key.country.continentCode+",,"+key.country.isocode}>{key.name}</option>
                                         )
                                     }
                                 })
@@ -339,8 +476,8 @@ class AddStation extends React.Component {
                                 this.state.operators.map((key, value) =>{
                                     //console.log(value);
                                         return(
-                                            <option key={value.id} value={key.id+","+key.title+","+key.websiteUrl+","+key.comments+","+key.primaryPhone+","+key.secondaryPhone+","
-                                            +key.isPrivateIndividual+","+key.bookingUrl+","+key.contactEmail+","+key.isRestrictedEdit+","+key.faultReportEmail}>{key.title}</option>
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.websiteUrl+",,"+key.comments+",,"+key.primaryPhone+",,"+key.secondaryPhone+","
+                                            +key.isPrivateIndividual+",,"+key.bookingUrl+",,"+key.contactEmail+",,"+key.isRestrictedEdit+",,"+key.faultReportEmail}>{key.title}</option>
                                         )
                                 })
                             }
@@ -350,7 +487,7 @@ class AddStation extends React.Component {
                                 this.state.statusTypes.map((key, value) =>{
                                     //console.log(value);
                                         return(
-                                            <option key={value.id} value={key.id+","+key.title+","+key.isOperational+","+key.isUserSelectable}>{key.title}</option>
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.isOperational+",,"+key.isUserSelectable}>{key.title}</option>
                                         )
                                 })
                             }
@@ -360,7 +497,7 @@ class AddStation extends React.Component {
                                 this.state.usageTypes.map((key, value) =>{
                                     //console.log(value);
                                         return(
-                                            <option key={value.id} value={key.id+","+key.title+","+key.isMembershipRequired}>{key.title}</option>
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.isMembershipRequired}>{key.title}</option>
                                         )
                                 })
                             }
@@ -375,8 +512,8 @@ class AddStation extends React.Component {
                             <input className="add-station-input" id="add-station-town" placeholder="Town" type="text" name="town" value={this.state.town} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
                             <input className="add-station-input" id="add-station-state" placeholder="State/Province" type="text" name="stateOrProvince" value={this.state.stateOrProvince} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                            <input className="add-station-input" id="add-station-latitude" placeholder="Latitude" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input className="add-station-input" id="add-station-longtitude" placeholder="Longtitude" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input className="add-station-input" id="add-station-latitude" placeholder="Latitude*" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input className="add-station-input" id="add-station-longtitude" placeholder="Longtitude*" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
                             <input className="add-station-input" id="add-station-postcode" placeholder="Postcode" type="text" name="postCode" value={this.state.postCode} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
                             <input className="add-station-input" id="add-station-email" placeholder="Contact email*" type="email" name="contactEmail" value={this.state.contactEmail} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
@@ -396,17 +533,72 @@ class AddStation extends React.Component {
                                     //console.log("value:");
                                     //console.log(key);
                                     return(
-                                        <option key={value.id} value={key.id+","+key.title+","+key.continentCode+","+key.isocode}>{key.title}</option>
+                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.continentCode+",,"+key.isocode}>{key.title}</option>
                                     )
                                 })
                             }
                             </select>                  
 
                         </div>
+                                                                        
+                    </form>
+
+                    <div className="add-station-spot-specific-title">
+                            Add a charging spot to this station!
+                    </div>
+                    
+                    <form id="add-spot-info-container">
+
+                        <div className="add-spot-first-container">                        
+                            <input className="add-station-input" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input className="add-station-input" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input className="add-station-input" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            <input className="add-station-input" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                            <input className="add-station-input" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                            <input className="add-station-input" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                        </div>
+                        
+                        <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="spotComments" value={this.state.spotComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+
+                        <div className="add-station-selects-container">
+                            <select className="add-station-input" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
+                            {
+                                this.state.connTypes.map((key, value) =>{
+                                    //console.log(value);
+                                    return(
+                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.formalName+",,"+key.category}>{key.title}</option>
+                                    )
+                                })
+                            }
+                            </select>
+                            <select className="add-station-input" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
+                            {
+                                this.state.levels.map((key, value) =>{
+                                    //console.log(value);
+                                        return(
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.comments+",,"+key.isFastChargeCapable}>{key.title}</option>
+                                        )
+                                })
+                            }
+                            </select>
+                            <select className="add-station-input" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
+                            {
+                                this.state.currTypes.map((key, value) =>{
+                                    //console.log(value);
+                                        return(
+                                            <option key={key.id} value={key.id+",,"+key.title+",,"+key.description}>{key.title}</option>
+                                        )
+                                })
+                            }
+                            </select>
+
+                        </div>
+                        
 
                         <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
                                                                         
                     </form>
+
                 </div>
             </div>
 
