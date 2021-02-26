@@ -3,7 +3,7 @@ import './AddStation.css';
 import MyNavbar from './MyNavbar';
 import {getStations, getOneStationOBJECT, spotPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet} from './api';
 
-class AddStation extends React.Component {
+class AddSpot extends React.Component {
     
     constructor(props) {
         super(props);
@@ -164,7 +164,7 @@ class AddStation extends React.Component {
                 .catch(err => {
                     console.log(err);
                     this.setState({
-                        error: "Could not create, try again"
+                        error: "Could not create, please try again"
                     })
                 })
 
@@ -172,14 +172,14 @@ class AddStation extends React.Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    error: "Could not create, try again"
+                    error: "Could not create, please try again"
                 })
             })
         })
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not create, try again"
+                error: "Could not create, please try again"
             })
         })
         e.preventDefault()
@@ -274,4 +274,4 @@ class AddStation extends React.Component {
 
 }
 
-export default AddStation;
+export default AddSpot;
