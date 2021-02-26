@@ -54,6 +54,21 @@ export const usageTypesGet = () => {
     return axios.get(requestUrl);
 }
 
+export const connTypesGet = () => {
+    const requestUrl = '/admin/connectiontypes';
+    return axios.get(requestUrl);
+}
+
+export const currTypesGet = () => {
+    const requestUrl = '/currenttypes';
+    return axios.get(requestUrl);
+}
+
+export const levelsGet = () => {
+    const requestUrl = '/admin/levels';
+    return axios.get(requestUrl);
+}
+
 export const stationOwnerOBJECTGet = (id) => {
     const requestUrl = `/stationowners/${id}`;
     return axios.get(requestUrl);
@@ -65,7 +80,12 @@ export const stationAddressPost = (obj) => {
 }
 
 export const stationPost = (obj) => {
-    const requestUrl = "admin/chargingstationsmod";
+    const requestUrl = "/admin/chargingstationsmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const spotPost = (obj) => {
+    const requestUrl = "admin/chargingspotsmod";
     return axios.post(requestUrl, obj);
 }
 
@@ -73,6 +93,12 @@ export const userAddressPost = (obj) => {
     const requestUrl = "/admin/useraddressesmod";
     return axios.post(requestUrl, obj);
 };
+
+export const stationSpotPost = (obj) => {
+    const requestUrl = "/admin/chargingstationspotsmod";
+    return axios.post(requestUrl, obj);
+}
+
 
 export const userPost = (obj, postAddr) => {
     const requestUrl = `/admin/${postAddr}`;
@@ -91,6 +117,11 @@ export const getStations = (id) => {
 
 export const getOneStation = (id) => {
     const requestUrl = `chargingstations/${id}`;
+    return axios.get(requestUrl);
+}
+
+export const getOneStationOBJECT = (id) => {
+    const requestUrl = `admin/chargingstations/${id}`;
     return axios.get(requestUrl);
 }
 

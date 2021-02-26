@@ -15,6 +15,7 @@ import MyStations from './MyStations';
 import MySpots from './MySpots';
 import Station from './Station';
 import AddStation from './AddStation';
+import AddSpot from './AddSpot';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
@@ -88,6 +89,9 @@ ReactDOM.render(
         </Route>
         <Route path="/addStation" exact>
           <AddStation />
+        </Route>
+        <Route path="/addSpot" exact>
+          <AddSpot />
         </Route>
         <Route path="/mySpots" exact>
           <MySpots />
