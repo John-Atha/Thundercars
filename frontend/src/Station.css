@@ -25,3 +25,23 @@
     cursor:pointer;
     text-decoration: none;
 }
+
+.station-update-button-container {
+    padding-top: 1%;
+    padding-bottom: 2%;
+}
+
+.station-update-button {
+    width: 150px;
+    font-size: medium;
+    color: rgb(163, 63, 5);
+    padding: 1%;
+    margin-bottom: 1%;
+    height: min-content;
+    border-radius: 5px;
+}
+
+.station-update-button:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}

@@ -60,6 +60,11 @@ class Station extends React.Component {
         this.attr13 = "Access Comments";
         this.attr14 = "Address' Related URL";
         this.attr15 = "Adderss' General Comments";
+        this.updateStation = this.updateStation.bind(this);
+    }
+
+    updateStation = () => {
+        window.location.href=`/stations/${this.state.stationsId}/update`
     }
 
     componentDidMount() {
@@ -218,6 +223,11 @@ class Station extends React.Component {
                                 }
                             </div>
     
+                        </div>
+                        <div className="station-update-button-container center-content">
+                            <button className="station-update-button" onClick={this.updateStation}>
+                                Update station
+                            </button>
                         </div>
                     </div>
                 </div>
