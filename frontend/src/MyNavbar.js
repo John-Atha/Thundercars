@@ -46,7 +46,6 @@ class MyNavbar extends React.Component {
             <NavDropdown title="Stations" id="nav-link">
               <NavDropdown.Item href="/myStations">My stations</NavDropdown.Item>
               <NavDropdown.Item href="/addStation">Add new station</NavDropdown.Item>
-              <NavDropdown.Item href="#">Update station</NavDropdown.Item>
             </NavDropdown>
           )}
 
@@ -54,7 +53,6 @@ class MyNavbar extends React.Component {
             <NavDropdown title="Spots" id="nav-link">
               <NavDropdown.Item href="/mySpots">My spots</NavDropdown.Item>
               <NavDropdown.Item href="/addSpot">Add new spot</NavDropdown.Item>
-              <NavDropdown.Item href="#">Update spot</NavDropdown.Item>
             </NavDropdown>
           )}
 

@@ -16,6 +16,8 @@ import MySpots from './MySpots';
 import Station from './Station';
 import AddStation from './AddStation';
 import AddSpot from './AddSpot';
+import UpdateStation from './UpdateStation';
+import UpdateSpot from './UpdateSpot';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
@@ -32,6 +34,16 @@ function FindStation() {
 function FindSpot() {
   let {id} = useParams();
   return <Spot id={id} />;
+}
+
+function FindUpdateStation() {
+  let{id} = useParams();
+  return <UpdateStation id={id} />;
+}
+
+function FindUpdateSpot() {
+  let{id} = useParams();
+  return <UpdateSpot id={id} />;
 }
 
 function FindVehicle() {
@@ -84,11 +96,14 @@ ReactDOM.render(
         <Route path="/myStations" exact>
           <MyStations />
         </Route>
-        <Route path="/stations/:id">
+        <Route path="/stations/:id" exact>
           <FindStation />
         </Route>
         <Route path="/addStation" exact>
           <AddStation />
+        </Route>
+        <Route path="/stations/:id/update" exact>
+          <FindUpdateStation />
         </Route>
         <Route path="/addSpot" exact>
           <AddSpot />
@@ -96,8 +111,11 @@ ReactDOM.render(
         <Route path="/mySpots" exact>
           <MySpots />
         </Route>
-        <Route path="/spots/:id">
+        <Route path="/spots/:id" exact>
           <FindSpot />
+        </Route>
+        <Route path="/spots/:id/update" exact>
+          <FindUpdateSpot />
         </Route>
         <Route path="*">
           <NotFound />

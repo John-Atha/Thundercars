@@ -84,9 +84,19 @@ export const stationPost = (obj) => {
     return axios.post(requestUrl, obj);
 }
 
+export const stationPut = (obj, id) => {
+    const requestUrl = `/admin/chargingstationsmod/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
 export const spotPost = (obj) => {
     const requestUrl = "admin/chargingspotsmod";
     return axios.post(requestUrl, obj);
+}
+
+export const spotPut = (obj, id) => {
+    const requestUrl = `admin/chargingspotsmod/${id}`;
+    return axios.put(requestUrl, obj);
 }
 
 export const userAddressPost = (obj) => {
@@ -122,6 +132,11 @@ export const getOneStation = (id) => {
 
 export const getOneStationOBJECT = (id) => {
     const requestUrl = `admin/chargingstations/${id}`;
+    return axios.get(requestUrl);
+}
+
+export const getOneSpotOBJECT = (id) => {
+    const requestUrl = `admin/chargingspots/${id}`;
     return axios.get(requestUrl);
 }
 
