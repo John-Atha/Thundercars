@@ -42,7 +42,8 @@ class Station extends React.Component {
             addressGenComments: null,
             country: null,
             continent: null,
-            spotsList: []
+            spotsList: [],
+            error: null
         }
         this.attr1 = "Current Provider's Name";
         this.attr2 = "Cost Per kWh";
@@ -98,6 +99,7 @@ class Station extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            window.location.href="/error";
         })
     }
 

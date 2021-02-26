@@ -57,6 +57,7 @@ class Spot extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            window.location.href="/error";
         })
     }
 
