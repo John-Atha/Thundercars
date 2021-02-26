@@ -53,7 +53,7 @@ class MyNavbar extends React.Component {
           {this.state.role==="StationOwner" && (
             <NavDropdown title="Spots" id="nav-link">
               <NavDropdown.Item href="/mySpots">My spots</NavDropdown.Item>
-              <NavDropdown.Item href="#">Add new spot</NavDropdown.Item>
+              <NavDropdown.Item href="/addSpot">Add new spot</NavDropdown.Item>
               <NavDropdown.Item href="#">Update spot</NavDropdown.Item>
             </NavDropdown>
           )}
