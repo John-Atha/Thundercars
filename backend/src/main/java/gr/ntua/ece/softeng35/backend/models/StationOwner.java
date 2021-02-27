@@ -24,6 +24,9 @@ public class StationOwner {
     @Column(unique = false, length = 30, nullable = true)
     private String lastName;
 
+	@Column(unique=true, length=16, nullable = true)
+    private String apiKey;
+
 	@OneToMany(mappedBy="stationOwner")
 	private Set<ChargingStation> chargingStations;
 
@@ -43,7 +46,7 @@ public class StationOwner {
 
     public StationOwner() {}
 
-	public StationOwner(Integer id, String username, String password, String emailAddr, String firstName, String lastName, UserAddress address, Date dateOfBirth) {
+	public StationOwner(Integer id, String username, String password, String emailAddr, String firstName, String lastName, UserAddress address, Date dateOfBirth, String apiKey) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -52,6 +55,7 @@ public class StationOwner {
 		this.lastName = lastName;
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
+		this.apiKey = apiKey;
 	}
 	public Integer getId() {
 		return this.id;
@@ -117,6 +121,13 @@ public class StationOwner {
 		this.dateOfBirth=dateOfBirth;
 	}
 
+	public String getApiKey() {
+		return this.apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey=apiKey;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -131,7 +142,8 @@ public class StationOwner {
 			Objects.equals(this.firstName, u.firstName) &&
 			Objects.equals(this.lastName, u.lastName) &&
 			Objects.equals(this.address, u.address) &&
-			Objects.equals(this.dateOfBirth, u.dateOfBirth);
+			Objects.equals(this.dateOfBirth, u.dateOfBirth)&&
+			Objects.equals(this.apiKey, u.apiKey);
 	}
 
 	@Override
@@ -144,7 +156,8 @@ public class StationOwner {
 			this.firstName,
 			this.lastName,
 			this.address,
-			this.dateOfBirth);
+			this.dateOfBirth,
+			this.apiKey);
     }
     
     @Override

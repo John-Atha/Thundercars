@@ -27,6 +27,9 @@ public class User {
   @Column(unique = false, length = 60, nullable = true)
   private Date dateOfBirth;
 
+  @Column(unique=true, length=16, nullable = true)
+  private String apiKey;
+
   @ManyToOne
   @JoinColumn(name = "user_address_id", nullable = true)
   private UserAddress address;
@@ -48,7 +51,7 @@ public class User {
 
   public User() {}
 
-  public User(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address) {
+  public User(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address,String apiKey ) {
     this.username = username;
     this.password = password;
     this.emailAddr = emailAddr;
@@ -56,6 +59,7 @@ public class User {
     this.lastName = lastName;
     this.dateOfBirth = dateOfBirth;
     this.address = address;
+    this.apiKey = apiKey;
 }
 
   public Integer getId() {
@@ -122,6 +126,14 @@ public void setUserAddress(UserAddress address) {
     this.address=address;
 }
 
+public String getapiKey() {
+  return this.apiKey;
+}
+
+public void setApiKey(String apiKey) {
+  this.apiKey=apiKey;
+}
+
   @Override
   public boolean equals(Object o) {
           if (this == o) return true;
@@ -134,7 +146,8 @@ public void setUserAddress(UserAddress address) {
                   Objects.equals(this.firstName, u.firstName) &&
                   Objects.equals(this.lastName, u.lastName) &&
                   Objects.equals(this.dateOfBirth, u.dateOfBirth) &&
-                  Objects.equals(this.address, u.address);
+                  Objects.equals(this.address, u.address)&&
+                  Objects.equals(this.apiKey, u.apiKey);
   }
 
   @Override
@@ -146,7 +159,8 @@ public void setUserAddress(UserAddress address) {
                   this.firstName,
                   this.lastName,
                   this.dateOfBirth,
-                  this.address);
+                  this.address,
+                  this.apiKey);
   }
 
   @Override
