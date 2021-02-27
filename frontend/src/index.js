@@ -21,6 +21,7 @@ import UpdateStation from './UpdateStation';
 import UpdateSpot from './UpdateSpot';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
+import VehiclesDetailedSessions from './VehiclesDetailedSessions';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
 import StationOwnerStatistics from './StationOwnerStatistics'; 
 //import reportWebVitals from './reportWebVitals';
@@ -93,6 +94,9 @@ ReactDOM.render(
         </Route>
         <Route path="/mySpotsDetailedSessions" exact>
           <MySpotsDetailedSessions />
+        </Route>
+        <Route path="/VehiclesDetailedSessions" exact>
+          <VehiclesDetailedSessions />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />

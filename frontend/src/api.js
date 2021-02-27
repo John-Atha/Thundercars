@@ -131,6 +131,11 @@ export const getVehicleSessions = (id, startDate, endDate) => {
     return axios.get(requestUrl);
 }
 
+export const getAllUserVehicle = () => {
+    const requestUrl = 'admin/userhasvehicles';
+    return axios.get(requestUrl);
+}
+
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
     return axios.get(requestUrl);
