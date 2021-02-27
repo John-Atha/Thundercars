@@ -3511,7 +3511,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    repository.deleteById(id);
+      repository.deleteById(id);
   }
 
 }
