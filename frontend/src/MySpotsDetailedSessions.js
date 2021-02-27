@@ -175,7 +175,7 @@ class MySpotsDetailedSessions extends React.Component {
             spotsList: [],
             showingSpotId: null,
             error: "Choose a spot to see its sessions",
-            startDate: "",
+            startDate: "2021-01-27",
             endDate: "",
         }
         this.selectSpot = this.selectSpot.bind(this);  
@@ -260,7 +260,7 @@ class MySpotsDetailedSessions extends React.Component {
 
                             
                             {   this.state.showingSpotId && 
-                                    <div className="spots-container">
+                                    <div className="spots-container margin-top">
                                         <OneSpotSessionsDiv
                                             id={this.state.showingSpotId}
                                             key={this.state.showingSpotId}

@@ -256,7 +256,7 @@ class MyStationStatistics extends React.Component {
             role: localStorage.getItem('role'),
             error: null,
             stationsList: [],
-            startDate: "",
+            startDate: "2021-01-27",
             endDate: "",
         }
 
