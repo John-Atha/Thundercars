@@ -1,13 +1,13 @@
 import React from 'react';
 import './UserMyStatistics.css';
-import {getUserStats} from './api'
+import {getUserStats, getUserProfile} from './api'
 import MyNavbar from './MyNavbar'; 
-//import CanvasJSReact from './canvasjs.react';
+import CanvasJSReact from './canvasjs.react';
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
-//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-class UserStatisticsDiv extends React.Component {
+/*class UserStatisticsDiv extends React.Component {
     constructor(props) {
         super(props);
         this.state={
@@ -34,6 +34,179 @@ class UserStatisticsDiv extends React.Component {
         )
     }
 }
+*/
+
+class UserPiesContainer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state= {
+            userId: localStorage.getItem('userId'),
+            data: [],
+            diagramOptions1: {},
+            diagramOptions2: {},
+            diagramOptions3: {},
+            diagramOptions4: {},
+            diagram: true,
+        }
+    }
+
+    componentDidMount() {
+        getUserStats(this.state.userId)
+        .then(response => {
+            console.log(response);
+            let sessionsList = [];
+            let stationsList = [];
+            let kwhList = [];
+            let costList = [];
+
+            let totalSessions = 0;
+            let totalStations = 0;
+            let totalKWh = 0;
+            let totalCost = 0;
+
+            let str2="Stations Visited";
+            let str3="Total kWh Delivered";
+            let str4="Total Cost";
+
+            for (var i=0; i<response.data.Summary.length; i++) {
+                totalSessions = totalSessions + response.data.Summary[i].Sessions;
+                totalStations = totalStations + response.data.Summary[i][str2];
+                totalKWh = totalKWh + response.data.Summary[i][str3];
+                totalCost = totalCost + response.data.Summary[i][str4];
+            }
+
+            for (i=0; i<response.data.Summary.length; i++) {
+                let lab = response.data.Summary[i].Month+"/"+response.data.Summary[i].Year;
+                sessionsList.push({
+                    label: lab,
+                    y: Math.round(100* response.data.Summary[i].Sessions / totalSessions)
+                })
+                stationsList.push({
+                    label: lab,
+                    y: Math.round( 100* response.data.Summary[i][str2]/ totalStations)
+                })
+                kwhList.push({
+                    label: lab,
+                    y: Math.round(100* response.data.Summary[i][str3] / totalKWh)
+                })
+                costList.push({
+                    label: lab,
+                    y: Math.round(100* response.data.Summary[i][str4] / totalCost)
+                })
+            }
+            console.log(totalSessions);
+            console.log(sessionsList);
+            console.log(costList);
+            console.log(kwhList);
+            console.log(stationsList);
+
+            this.setState({
+                data: response.data.Summary,
+                diagramOptions1: {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    backgroundColor: "#DADCDB",
+                    height: 250,
+                    title: {
+                        text: "Number of sessions per month",
+                        fontSize: 20
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 75,
+                        toolTipContent: "<b>{label}</b>: {y}%",
+                        showInLegend: "true",
+                        legendText: "{label}",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {y}%",
+                        dataPoints: sessionsList
+                    }]
+                },
+                diagramOptions2: {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    backgroundColor: "#DADCDB",
+                    height: 250,
+                    title: {
+                        text: "Number of stations visited per month",
+                        fontSize: 20
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 75,
+                        toolTipContent: "<b>{label}</b>: {y}%",
+                        showInLegend: "true",
+                        legendText: "{label}",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {y}%",
+                        dataPoints: stationsList
+                    }]
+                },
+                diagramOptions3: {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    backgroundColor: "#DADCDB",
+                    height: 250,
+                    title: {
+                        text: "kWh provided per month",
+                        fontSize: 20
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 75,
+                        toolTipContent: "<b>{label}</b>: {y}%",
+                        showInLegend: "true",
+                        legendText: "{label}",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {y}%",
+                        dataPoints: kwhList
+                    }]
+                },
+                diagramOptions4: {
+                    exportEnabled: true,
+                    animationEnabled: true,
+                    backgroundColor: "#DADCDB",
+                    height: 250,
+                    title: {
+                        text: "Money spent per month",
+                        fontSize: 20
+                    },
+                    data: [{
+                        type: "pie",
+                        startAngle: 75,
+                        toolTipContent: "<b>{label}</b>: {y}%",
+                        showInLegend: "true",
+                        legendText: "{label}",
+                        indexLabelFontSize: 16,
+                        indexLabel: "{label} - {y}%",
+                        dataPoints: costList
+                    }]
+                } 
+            })
+        })
+        .catch(err=>{
+            console.log(err);
+            this.setState({
+                diagram: false,
+            })
+        })
+    }
+
+    render() {
+        if (this.state.diagram) {
+            return (
+                <div className="vehicle-owners-stats-pie-diagrams">
+                    <h5 className="orangeColor center-content">Monthly data</h5>
+                    <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
+                    <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
+                    <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
+                    <CanvasJSChart id="pie-diagram4" options = {this.state.diagramOptions4} />
+                </div>
+            )
+        }
+    }
+}
+
 
 class UserMyStatistics extends React.Component {
 
@@ -43,7 +216,9 @@ class UserMyStatistics extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             error: null,
-            userStatsList: [],
+            firstname: null,
+
+            //userStatsList: [],
         }
 
         // because names contain space char and values cannot be retrieved
@@ -52,9 +227,10 @@ class UserMyStatistics extends React.Component {
         this.attr1Name = "Stations Visited";
         this.attr2Name = "Total Cost";
         this.attr3Name = "Total kWh Delivered";
+        this.attr4 = "First Name";
     }
 
-    componentDidMount () {
+    /*componentDidMount () {
         
         if (this.state.role==="VehicleOwner") {
             getUserStats(this.state.userId)
@@ -69,14 +245,21 @@ class UserMyStatistics extends React.Component {
                 console.log(err);
             })
         }
+    }*/
+
+    componentDidMount() {
+        getUserProfile(this.state.userId)
+        .then(response =>{
+            console.log(response);
+            this.setState({
+                firstname: response.data[this.attr4]
+            });
+        })
     }
 
     render() {
-        if (!localStorage.getItem('userId')) {
+        if (!localStorage.getItem('userId') || this.state.role==="StationOwner") {
             window.location.href = "/";
-        }
-        else if (this.state.role==="StationOwner") {
-            window.location.href ="/myStationStatistics"
         }
         else {     
             return (
@@ -84,24 +267,9 @@ class UserMyStatistics extends React.Component {
                     <MyNavbar />
                     <div className="general-page-container more-blur center-content">
                         <div className="specific-title">
-                            Statistics
+                            {this.state.firstname}: Statistics
                         </div>
-                        <div id="stats-info-container">
-                            {
-                                this.state.userStatsList.map((value, key)=> {
-                                    console.log(value+": "+key);
-                                    return (<UserStatisticsDiv
-                                            key={key} 
-                                            month={value.Month}
-                                            sessions={value.Sessions}
-                                            stationsVisited={value[this.attr1Name]}
-                                            totalCost={value[this.attr2Name]}
-                                            totalKWhDelivered={value[this.attr3Name]}
-                                            year={value.Year}
-                                            /> )
-                                })
-                            }
-                        </div>
+                        <UserPiesContainer />
                     </div>
                 </div>
             )
