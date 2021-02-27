@@ -24,7 +24,9 @@ class StationStatisticsDiv extends React.Component {
             diagramOptions1: null,
             diagramOptions2: null,
             diagram1: 0,
-            diagram2: 0
+            diagram2: 0,
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
         }
         this.attr1="Operator Name";
         this.attr2="Total kWh Delivered";
@@ -37,7 +39,7 @@ class StationStatisticsDiv extends React.Component {
     }
 
     componentDidMount() {
-        getStationStats(this.state.stationId)
+        getStationStats(this.state.stationId, this.state.startDate, this.state.endDate)
         .then(response => {
             console.log(response);
             let l = response.data[this.attr5];
@@ -121,6 +123,98 @@ class StationStatisticsDiv extends React.Component {
             })
         })
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
+            console.log(`from ${prevProps.startDate} to ${this.props.startDate}`);
+            console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
+            getStationStats(this.state.stationId, this.props.startDate, this.props.endDate)
+            .then(response => {
+                //console.log(response);
+                let l = response.data[this.attr5];
+                let pieData1 = [];
+                //console.log(l);
+                for( var i=0; i<l.length; i++) {
+                    //console.log(100*l[i][this.attr6]/response.data[this.attr3]);
+                    //console.log("Point "+l[i][this.attr7]);
+                    pieData1.push({
+                        y: Math.round(100*l[i][this.attr6]/response.data[this.attr3]),
+                        label: "Point "+l[i][this.attr7]
+                    })
+                }
+                //console.log(pieData1);
+                let pieData2 = [];
+                //console.log(l);
+                for( i=0; i<l.length; i++) {
+                    //console.log(100*l[i][this.attr8]/response.data[this.attr2]);
+                    //console.log("Point "+l[i][this.attr7]);
+                    pieData2.push({
+                        y: Math.round(100*l[i][this.attr8]/response.data[this.attr2]),
+                        label: "Point "+l[i][this.attr7]
+                    })
+                }
+                //console.log(pieData2);
+                this.setState({
+                    operatorName: response.data[this.attr1],
+                    totalKWhDelivered: response.data[this.attr2],
+                    sessionsNumber: response.data[this.attr3],
+                    spotsUsedNumber: response.data[this.attr4],
+                    pointsSummary: response.data[this.attr5],
+                    diagram1: pieData1.length,
+                    diagramOptions1 : {
+                        exportEnabled: true,
+                        animationEnabled: true,
+                        backgroundColor: "#DADCDB",
+                        height: 250,
+                        title: {
+                            text: "Number of sessions per charging spot",
+                            fontSize: 20
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 75,
+                            toolTipContent: "<b>{label}</b>: {y}%",
+                            showInLegend: "true",
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabel: "{label} - {y}%",
+                            dataPoints: pieData1
+                        }]
+                    },
+                    diagram2: pieData2.length,
+                    diagramOptions2 : {
+                        exportEnabled: true,
+                        animationEnabled: true,
+                        backgroundColor: "#DADCDB",
+                        height: 250,
+                        title: {
+                            text: "kWh delivered per charging spot",
+                            fontSize: 20
+                        },
+                        data: [{
+                            type: "pie",
+                            startAngle: 75,
+                            toolTipContent: "<b>{label}</b>: {y}%",
+                            showInLegend: "true",
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabel: "{label} - {y}%",
+                            dataPoints: pieData2
+                        }]
+                    }
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    diagram1: 0,
+                    diagram2: 0,
+                })
+            })
+        }
+    }
+
+
 
     render() {
         return (
@@ -213,8 +307,8 @@ class MyStationStatistics extends React.Component {
                         </div>
 
                         <div className="time-filters-container center-content">
-                                <label className="start-date-label" for="startDate">From</label>
-                                <label className="end-date-label"   for="endDate">To</label>
+                                <label className="start-date-label" htmlFor="startDate">From</label>
+                                <label className="end-date-label"   htmlFor="endDate">To</label>
                                 <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
                                 <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
                         </div>
@@ -228,6 +322,8 @@ class MyStationStatistics extends React.Component {
                                             stationId={value.Id}
                                             stationTitle={value.Title}
                                             index={index+1}
+                                            startDate={this.state.startDate}
+                                            endDate={this.state.endDate}
                                             /> )
                                 })
                             }

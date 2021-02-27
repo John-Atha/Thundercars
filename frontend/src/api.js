@@ -140,8 +140,14 @@ export const getOneSpotOBJECT = (id) => {
     return axios.get(requestUrl);
 }
 
-export const getStationStats = (id) => {
-    const requestUrl = `SessionsPerStation/${id}`;
+export const getStationStats = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerStation/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
     return axios.get(requestUrl);
 }
 
@@ -155,8 +161,14 @@ export const getStationOwnerStatistics = (id) => {
     return axios.get(requestUrl);
 }
 
-export const getSpotSessions = (id) => {
-    const requestUrl = `SessionsPerPoint/${id}`;
+export const getSpotSessions = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerPoint/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
     return axios.get(requestUrl);
 }
 

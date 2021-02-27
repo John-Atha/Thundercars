@@ -24,8 +24,9 @@ class OneSession extends React.Component {
     }
 
     render() {
+        console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container">
+            <div className="one-spot-sessions-container to-be-deleted">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -57,6 +58,8 @@ class OneSpotSessionsDiv extends React.Component {
             procNumber: null,
             procList: [],
             error: null,
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
         }
         this.attr1 = "Started On";
         this.attr2 = "Charged On";
@@ -70,7 +73,7 @@ class OneSpotSessionsDiv extends React.Component {
     }
 
     componentDidMount() {
-        getSpotSessions(this.state.spotId)
+        getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
         .then(response => {
             console.log(response);
             this.setState({
@@ -88,6 +91,35 @@ class OneSpotSessionsDiv extends React.Component {
                 error: "Could not find sessions for this spot"
             })
         })
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
+            console.log(`from ${prevProps.startDate} to ${this.props.startDate}`);
+            console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
+            // remove previous objects from dom
+            this.setState({
+                procList: []
+            });
+            getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    stationId: response.data[this.attr8],
+                    operator: response.data.Operator,
+                    procNumber: response.data[this.attr9],
+                    procList: response.data[this.attr7]
+                });
+                console.log("ProcList:")
+                console.log(this.state.procList);
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Could not find sessions for this spot"
+                })
+            })
+        }
     }
 
     render() {
@@ -217,8 +249,8 @@ class MySpotsDetailedSessions extends React.Component {
                             </div>
 
                             <div className="time-filters-container center-content">
-                                <label className="start-date-label" for="startDate">From</label>
-                                <label className="end-date-label"   for="endDate">To</label>
+                                <label className="start-date-label" htmlFor="startDate">From</label>
+                                <label className="end-date-label"   htmlFor="endDate">To</label>
                                 <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
                                 <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
                             </div>
@@ -232,6 +264,8 @@ class MySpotsDetailedSessions extends React.Component {
                                         <OneSpotSessionsDiv
                                             id={this.state.showingSpotId}
                                             key={this.state.showingSpotId}
+                                            startDate={this.state.startDate}
+                                            endDate={this.state.endDate}
                                         /> 
                                     </div>
                                 
