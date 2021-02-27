@@ -137,9 +137,8 @@ class Vehicle extends React.Component {
                     <MyNavBar />
                 <div className="general-page-container more-blur center-content">
                     <div className="specific-title orangeColor">
-                        My Vehicle
+                        Vehicle {this.state.userId}
                     </div>
-                    <div className="vehicle-desc-text">Your vehicle's details! To view more details about the vehicle's charger types ,click on either charger type.</div>
                         
                     <div className="one-station-container center-content">
                     <div className="station-page-info-container">
@@ -150,9 +149,9 @@ class Vehicle extends React.Component {
                             <div className="station-info-title darker">Usable Battery Size: </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
                             <div className="station-info-title">Energy Consumption: </div><div className="station-info">{this.state.energyConsumption} Wh/km</div>
                             <div className="station-info-title darker">AC Charging: </div><div className="station-info darker">{this.state.acCharging}</div>
-                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link blackColor station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
+                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
                             <div className="station-info-title darker">DC Charging: </div><div className="station-info darker">{this.state.dcCharging}</div>
-                            <div className="station-info-title">DC Charger Type(s): </div><a className="station-link blackColor station-info">{this.state.dcChargerTypes}</a>
+                            <div className="station-info-title">DC Charger Type(s): </div><a className="station-link station-info">{this.state.dcChargerTypes}</a>
                         </div>            
                     </div>
                 </div>

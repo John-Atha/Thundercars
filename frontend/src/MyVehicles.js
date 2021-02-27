@@ -30,7 +30,7 @@ class SpecVehicle extends React.Component {
                     <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                     <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
                 </div>
-                <a className="station-link orangeColor center-content" onClick={this.vehiclePageRedirect}>For details click here</a>
+                <a className="station-link center-content" onClick={this.vehiclePageRedirect}>More details / update</a>
             </div>
         );
     }
