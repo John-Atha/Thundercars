@@ -22,7 +22,9 @@ class StationStatisticsDiv extends React.Component {
             spotsUsedNumber: null,
             pointsSummary: [],
             diagramOptions1: null,
-            diagramOptions2: null
+            diagramOptions2: null,
+            diagram1: 0,
+            diagram2: 0
         }
         this.attr1="Operator Name";
         this.attr2="Total kWh Delivered";
@@ -67,6 +69,7 @@ class StationStatisticsDiv extends React.Component {
                 sessionsNumber: response.data[this.attr3],
                 spotsUsedNumber: response.data[this.attr4],
                 pointsSummary: response.data[this.attr5],
+                diagram1: pieData1.length,
                 diagramOptions1 : {
                     exportEnabled: true,
                     animationEnabled: true,
@@ -87,6 +90,7 @@ class StationStatisticsDiv extends React.Component {
                         dataPoints: pieData1
                     }]
                 },
+                diagram2: pieData2.length,
                 diagramOptions2 : {
                     exportEnabled: true,
                     animationEnabled: true,
@@ -111,13 +115,17 @@ class StationStatisticsDiv extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                diagram1: 0,
+                diagram2: 0,
+            })
         })
     }
 
     render() {
         return (
             <div className="one-station-stats-container center-content">
-                <h5 className="orangeColor center-content">Station's General Info</h5>
+                <h5 className="orangeColor center-content margins-top-bottom">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -130,11 +138,13 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info-title darker">Spots used: </div>
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
-                <div className="spots-pie-diagrams">
-                    <h5 className="orangeColor center-content">Station's General Info</h5>
-                    <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                    <CanvasJSChart id="pie-diagram2"options = {this.state.diagramOptions2} />
-                </div>
+                { this.state.diagram1!==0 && this.state.diagram2!==0 &&
+                    <div className="spots-pie-diagrams">
+                        <h5 className="orangeColor center-content">Station's statistics</h5>
+                        <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
+                        <CanvasJSChart id="pie-diagram2"options = {this.state.diagramOptions2} />
+                    </div>
+                }
             </div>
 
         )

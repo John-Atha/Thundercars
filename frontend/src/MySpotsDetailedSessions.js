@@ -55,7 +55,8 @@ class OneSpotSessionsDiv extends React.Component {
             spotId: this.props.id,
             operator: null,
             procNumber: null,
-            procList: []
+            procList: [],
+            error: null,
         }
         this.attr1 = "Started On";
         this.attr2 = "Charged On";
@@ -83,6 +84,9 @@ class OneSpotSessionsDiv extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                error: "Could not find sessions for this spot"
+            })
         })
     }
 
@@ -91,31 +95,39 @@ class OneSpotSessionsDiv extends React.Component {
         return (
             <div className="spot-sessions-block center-content">
                 <h5 className="orangeColor center-content">Spot {this.state.spotId} Sessions</h5>
-                <div className="spot-info-container center-content">
-                    <div className="station-info-title">Spot's operator: </div>
-                    <div className="station-info">{this.state.operator}</div>
-                    <div className="station-info-title">Processes: </div>
-                    <div className="station-info">{this.state.procNumber}</div>
-                </div>
-                <div className="all-spots-sessions-container center-content">
-                    {
-                        this.state.procList.map((value, index) => {
-                            return(
-                                <OneSession 
-                                    key={index}
-                                    index={index+1}
-                                    start={value[this.attr1]}
-                                    charged={value[this.attr2]}
-                                    end={value[this.attr3]}
-                                    protocol={value.Protocol}
-                                    kWhDel={value[this.attr4]}
-                                    payment={value[this.attr5]}
-                                    vehType={value[this.attr6]}
-                                />
-                            )
-                        })
-                    }
-                </div>
+                { this.state.error===null &&
+                    <div className="spot-info-container center-content">
+                        <div className="station-info-title">Spot's operator: </div>
+                        <div className="station-info">{this.state.operator}</div>
+                        <div className="station-info-title">Processes: </div>
+                        <div className="station-info">{this.state.procNumber}</div>
+                    </div>
+                }
+                { this.state.error===null &&
+                    <div className="all-spots-sessions-container center-content">
+                        {
+                            this.state.procList.map((value, index) => {
+                                return(
+                                    <OneSession 
+                                        key={index}
+                                        index={index+1}
+                                        start={value[this.attr1]}
+                                        charged={value[this.attr2]}
+                                        end={value[this.attr3]}
+                                        protocol={value.Protocol}
+                                        kWhDel={value[this.attr4]}
+                                        payment={value[this.attr5]}
+                                        vehType={value[this.attr6]}
+                                    />
+                                )
+                            })
+                        }
+                    </div>
+                }
+                {
+                    this.state.error!==null &&
+                    <p className="red-color">{this.state.error}</p>
+                }
             </div>
         )
     }
@@ -130,6 +142,7 @@ class MySpotsDetailedSessions extends React.Component {
             stationsList: [],
             spotsList: [],
             showingSpotId: null,
+            error: "Choose a spot to see its sessions"
         }
         this.selectSpot = this.selectSpot.bind(this);    
     }
@@ -155,7 +168,8 @@ class MySpotsDetailedSessions extends React.Component {
 
     selectSpot = (event) => {
         this.setState({
-            showingSpotId: event.target.innerText.replace("Spot ", "")
+            showingSpotId: event.target.innerText.replace("Spot ", ""),
+            error: null,
         })
         console.log("pressed" + this.state.showingSpotId)
     }
@@ -171,6 +185,11 @@ class MySpotsDetailedSessions extends React.Component {
                         <div className="spots-sessions-page-container more-blur center-content">
                             <div className="specific-title orangeColor">
                                 Detailed Sesions Per Charging Point
+                                {this.state.error!==null && ( 
+                                    <div className="error-message">
+                                        {this.state.error}
+                                    </div>
+                                )}  
                             </div>
                             <div className="spots-buttons-container center-content">
                                 {   

@@ -43,12 +43,19 @@ class MyNavbar extends React.Component {
           )}
 
           {this.state.role==="StationOwner" && (
-            <Nav.Link id="nav-link" href="/myStations">My stations</Nav.Link>
+            <NavDropdown title="Stations" id="nav-link">
+              <NavDropdown.Item href="/myStations">My stations</NavDropdown.Item>
+              <NavDropdown.Item href="/addStation">Add new station</NavDropdown.Item>
+            </NavDropdown>
           )}
 
           {this.state.role==="StationOwner" && (
-            <Nav.Link id="nav-link" href="/mySpots">My spots</Nav.Link>
+            <NavDropdown title="Spots" id="nav-link">
+              <NavDropdown.Item href="/mySpots">My spots</NavDropdown.Item>
+              <NavDropdown.Item href="/addSpot">Add new spot</NavDropdown.Item>
+            </NavDropdown>
           )}
+
 
           {this.state.role==="VehicleOwner" && (
             <Nav.Link id="nav-link" href="/myVehicles">My vehicles</Nav.Link>

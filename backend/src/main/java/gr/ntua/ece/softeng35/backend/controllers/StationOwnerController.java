@@ -98,7 +98,7 @@ class StationownerController {
       answer.put("Email", (String) userBasic.get(1));
       answer.put("First Name", (String) userBasic.get(2));
       answer.put("Last Name", (String) userBasic.get(3));
-      answer.put("Date Of Birth", userBasic.get(4).toString());
+      answer.put("Date Of Birth", userBasic.get(4)!=null ? userBasic.get(4).toString() : null);
 
       if (hasAddress==false) {
         answer.put("Address", "Unknown");
@@ -194,7 +194,7 @@ class StationownerController {
         answer.put("Rating", (Double) basicInfo.get(9));
         answer.put("Cost Per kWh", (Double) basicInfo.get(10));
         answer.put("Comments", (String) basicInfo.get(5));
-        answer.put("Date Created", basicInfo.get(6).toString());
+        answer.put("Date Created", basicInfo.get(6)!=null ? basicInfo.get(6).toString() : null);
         if (basicInfo.get(7)!=null) {
           answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
         }
@@ -336,14 +336,14 @@ class StationownerController {
     return repository.save(newStationOwner);
   }
 
- /* 
+  
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/stationowners/{id}")
+  @GetMapping("/evcharge/api/stationowners/{id}")
   StationOwner one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
   }
-  */
+  
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/admin/stationownersmod/{id}")

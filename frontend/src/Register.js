@@ -37,7 +37,7 @@ class Register extends React.Component {
             tel1: "",
             tel2: "",
             //----
-            sumbitDisabled: true,
+            submitDisabled: true,
             error: null//"Insert compulsory info"
         }
         this.countries = [];
@@ -194,17 +194,17 @@ class Register extends React.Component {
             submitButton.style.backgroundColor="#9999";
             submitButton.style.color="white";
             this.setState ({
-                sumbitDisabled: true
+                submitDisabled: true
             });
         }
         else {
             submitButton.style.backgroundColor="rgb(233, 21, 21)";
             submitButton.style.color="white";
             this.setState ({
-                sumbitDisabled: false
+                submitDisabled: false
             });
         }
-        console.log("submit disabled: " + this.state.sumbitDisabled);
+        console.log("submit disabled: " + this.state.submitDisabled);
         //console.log("role: --"+this.state.role);
     }
 
@@ -253,7 +253,7 @@ class Register extends React.Component {
                                 <input id="reg-tel2-input" className="register-input" name="tel2" value={this.state.tel2} type="tel" placeholder="Telephone number 2..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
                                 <input id="reg-addr-line-input" className="register-input" name="addrLine" value={this.state.addrLine} type="text" placeholder="Address line..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
                             </div>
-                            <input id="reg-submit-input" className="register-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
+                            <input id="reg-submit-input" className="register-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
                         </form>
                     </div>
                     

@@ -17,6 +17,11 @@
     min-height:min-content;
 }
 
+
+.red-color {
+    color: red;
+}
+
 .spot-info-container {
     grid-row: 2;
     padding: 1% 1%;

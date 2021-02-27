@@ -94,7 +94,7 @@ class ChargingStationController {
         answer.put("Rating", (Double) basicInfo.get(9));
         answer.put("Cost Per kWh", (Double) basicInfo.get(10));
         answer.put("Comments", (String) basicInfo.get(5));
-        answer.put("Date Created", basicInfo.get(6).toString());
+        answer.put("Date Created", basicInfo.get(6)!=null ? basicInfo.get(6).toString() : null);
         if (basicInfo.get(7)!=null) {
           answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
         }
@@ -225,7 +225,7 @@ class ChargingStationController {
         answer.put("Rating", (Double) basicInfo.get(9));
         answer.put("Cost Per kWh", (Double) basicInfo.get(10));
         answer.put("Comments", (String) basicInfo.get(5));
-        answer.put("Date Created", basicInfo.get(6).toString());
+        answer.put("Date Created", basicInfo.get(6)!=null ? basicInfo.get(6).toString() : null);
         if (basicInfo.get(7)!=null) {
           answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
         }

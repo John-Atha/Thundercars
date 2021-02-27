@@ -42,7 +42,8 @@ class Station extends React.Component {
             addressGenComments: null,
             country: null,
             continent: null,
-            spotsList: []
+            spotsList: [],
+            error: null
         }
         this.attr1 = "Current Provider's Name";
         this.attr2 = "Cost Per kWh";
@@ -59,6 +60,11 @@ class Station extends React.Component {
         this.attr13 = "Access Comments";
         this.attr14 = "Address' Related URL";
         this.attr15 = "Adderss' General Comments";
+        this.updateStation = this.updateStation.bind(this);
+    }
+
+    updateStation = () => {
+        window.location.href=`/stations/${this.state.stationsId}/update`
     }
 
     componentDidMount() {
@@ -98,6 +104,7 @@ class Station extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            window.location.href="/error";
         })
     }
 
@@ -216,6 +223,11 @@ class Station extends React.Component {
                                 }
                             </div>
     
+                        </div>
+                        <div className="station-update-button-container center-content">
+                            <button className="station-update-button" onClick={this.updateStation}>
+                                Update station
+                            </button>
                         </div>
                     </div>
                 </div>
