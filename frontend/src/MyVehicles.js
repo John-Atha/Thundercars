@@ -1,8 +1,7 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import './MyVehicles.css';
 import {getVehicles} from './api'
 import MyNavBar from './MyNavbar'; 
-import logo from './images/thundera.png';
 
 class SpecVehicle extends React.Component {
     

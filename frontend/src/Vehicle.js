@@ -1,9 +1,8 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import './Vehicle.css';
 import './Station.css'
 import {getOneVehicle} from './api'
 import MyNavBar from './MyNavbar'; 
-import logo from './images/thundera.png';
 
 class Vehicle extends React.Component {
     
@@ -70,7 +69,7 @@ class Vehicle extends React.Component {
                 }
             }
             for(let i = sizeofdc; i > 0; i--) {
-                if(i == 1) {
+                if(i === 1) {
                     dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"];
                 }
                 else {
@@ -116,7 +115,7 @@ class Vehicle extends React.Component {
                 </div>
             )
         }
-        else if(localStorage.getItem('role')=="StationOwner") {
+        else if(localStorage.getItem('role')==="StationOwner") {
             console.log("Station Owner Error");
             setTimeout(() =>{window.location.href = "/home"},10000);
             return(
