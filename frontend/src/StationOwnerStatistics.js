@@ -181,7 +181,20 @@ class StationOwnerStatistics extends React.Component {
             role: localStorage.getItem('role'),
             statsList: [],
             stationsList: [],
+            startDate: "",
+            endDate:"",
         }
+        this.handleInput=this.handleInput.bind(this);
+    }
+
+    handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState( {
+            [name]: value
+        })
+        console.log(name+":  ");
+        console.log(value);
     }
 
     componentDidMount() {
@@ -217,6 +230,12 @@ class StationOwnerStatistics extends React.Component {
                     <div className="general-page-container more-blur center-content">
                         <div className="specific-title">
                             Statistics
+                        </div>
+                        <div className="time-filters-container center-content margin-bottom">
+                                <label className="start-date-label" htmlFor="startDate">From</label>
+                                <label className="end-date-label"   htmlFor="endDate">To</label>
+                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput} />
+                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
                         </div>
                         <div className="station-stats-info-container">
                             {

@@ -87,7 +87,7 @@ ReactDOM.render(
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
         </Route>
-        <Route path="/StationOwnerStatistics">
+        <Route path="/StationsMonthlyStatistics">
           <StationOwnerStatistics />
         </Route>
         <Route path="/mySpotsDetailedSessions" exact>

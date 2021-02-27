@@ -142,9 +142,12 @@ class MySpotsDetailedSessions extends React.Component {
             stationsList: [],
             spotsList: [],
             showingSpotId: null,
-            error: "Choose a spot to see its sessions"
+            error: "Choose a spot to see its sessions",
+            startDate: "",
+            endDate: "",
         }
-        this.selectSpot = this.selectSpot.bind(this);    
+        this.selectSpot = this.selectSpot.bind(this);  
+        this.handleInput = this.handleInput.bind(this);  
     }
 
     componentDidMount() {
@@ -166,6 +169,17 @@ class MySpotsDetailedSessions extends React.Component {
         })
     }
 
+    handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState( {
+            [name]: value
+        })
+        console.log(name+":  ");
+        console.log(value);
+    }
+
+
     selectSpot = (event) => {
         this.setState({
             showingSpotId: event.target.innerText.replace("Spot ", ""),
@@ -182,7 +196,8 @@ class MySpotsDetailedSessions extends React.Component {
             return (
                 <div className="spot-sessions-all-page">
                         <MyNavbar />
-                        <div className="spots-sessions-page-container more-blur center-content">
+                        <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
+                            
                             <div className="specific-title orangeColor">
                                 Detailed Sesions Per Charging Point
                                 {this.state.error!==null && ( 
@@ -191,6 +206,7 @@ class MySpotsDetailedSessions extends React.Component {
                                     </div>
                                 )}  
                             </div>
+
                             <div className="spots-buttons-container center-content">
                                 {   
                                     this.state.spotsList.map((value, index) => {
@@ -199,6 +215,17 @@ class MySpotsDetailedSessions extends React.Component {
                                     })
                                 }
                             </div>
+
+                            <div className="time-filters-container center-content">
+                                <label className="start-date-label" for="startDate">From</label>
+                                <label className="end-date-label"   for="endDate">To</label>
+                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            </div>
+
+
+
+
                             
                             {   this.state.showingSpotId && 
                                     <div className="spots-container">

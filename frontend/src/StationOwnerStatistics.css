@@ -5,3 +5,7 @@
     grid-template-rows: 5% 20% 20% 20% 20%;
     row-gap: 0%;
 }
+
+.margin-bottom {
+    margin-bottom: 5%;
+}

@@ -27,7 +27,7 @@
     padding: 1% 1%;
     width: 350px;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: min-content min-content;
     grid-template-rows: min-content;
     column-gap: 2px;
     border-radius: 5px;
@@ -70,7 +70,8 @@
     display: grid;
     height: min-content;
     grid-template-columns: 50% 50%;
-    width: 100%;
+    width: 80%;
+    margin-left: 10%;
     column-gap: 5%;
 }
 
@@ -87,3 +88,17 @@
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
 }
+
+.time-filters-container {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 150px 150px;
+    width: 100%;
+    /*margin-left: 500px;*/
+    column-gap: 5%;
+}
+
+.padding-bottom5 {
+    padding-bottom: 5%;
+}
+

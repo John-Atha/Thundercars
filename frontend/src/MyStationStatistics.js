@@ -161,7 +161,9 @@ class MyStationStatistics extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             error: null,
-            stationsList: []
+            stationsList: [],
+            startDate: "",
+            endDate: "",
         }
 
         // because names contain space char and values cannot be retrieved
@@ -170,6 +172,7 @@ class MyStationStatistics extends React.Component {
         this.attr1Name = "Stations Visited";
         this.attr2Name = "Total Cost";
         this.attr3Name = "Total kWh Delivered";
+        this.handleInput = this.handleInput.bind(this);
     }
 
     componentDidMount () {
@@ -186,6 +189,16 @@ class MyStationStatistics extends React.Component {
         }
     }
 
+    handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState( {
+            [name]: value
+        })
+        console.log(name+":  ");
+        console.log(value);
+    }
+
     render() {
         if (!localStorage.getItem('userId') || this.state.role==="VehicleOwner") {
             window.location.href = "/";
@@ -198,6 +211,14 @@ class MyStationStatistics extends React.Component {
                         <div className="specific-title">
                             Statistics
                         </div>
+
+                        <div className="time-filters-container center-content">
+                                <label className="start-date-label" for="startDate">From</label>
+                                <label className="end-date-label"   for="endDate">To</label>
+                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                        </div>
+
                         <div id="stats-info-container">
                             {
                                 this.state.stationsList.map((value, key, index)=> {
