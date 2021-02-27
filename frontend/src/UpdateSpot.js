@@ -56,7 +56,7 @@ class UpdateSpot extends React.Component {
                 });
             }
             for (i=0; i<allowedSpots.length; i++) {
-                if (allowedSpots[i]==this.state.spotId) {
+                if (parseInt(allowedSpots[i])===parseInt(this.state.spotId)) {
                     this.setState({
                         ownership: true,
                     })
