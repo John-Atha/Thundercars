@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.Address;
 import gr.ntua.ece.softeng35.backend.models.AddressRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class AddressController {
   private final AddressRepository repository;
+  private final UserRepository repository2;
 
-  AddressController(AddressRepository repository) {
+  AddressController(AddressRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/addresses")
-  List<Address> all() {
+  @GetMapping("/evcharge/api/admin/{apikey}/addresses")
+  List<Address> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/addressesmod")
-  Address newAddress(@RequestBody Address newAddress) {
+  @PostMapping("/evcharge/api/admin/{apikey}/addressesmod")
+  Address newAddress(@RequestBody Address newAddress, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newAddress);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/addresses/{id}")
-  Address one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/admin/{apikey}/addresses/{id}")
+  Address one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new AddressNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/addressesmod/{id}")
-  Address replaceAddress(@RequestBody Address newAddress, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/admin/{apikey}/addressesmod/{id}")
+  Address replaceAddress(@RequestBody Address newAddress, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(address -> {
         address.setTitle(newAddress.getTitle());
@@ -60,8 +83,13 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/addressesmod/{id}")
-  void deleteAddress(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/addressesmod/{id}")
+  void deleteAddress(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

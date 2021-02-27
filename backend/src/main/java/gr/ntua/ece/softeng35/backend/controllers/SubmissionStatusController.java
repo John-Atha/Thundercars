@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.SubmissionStatus;
 import gr.ntua.ece.softeng35.backend.models.SubmissionStatusRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class SubmissionStatusController {
   private final SubmissionStatusRepository repository;
+  private final UserRepository repository2;
 
-  SubmissionStatusController(SubmissionStatusRepository repository) {
+  SubmissionStatusController(SubmissionStatusRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/submissionstatus")
-  List<SubmissionStatus> all() {
+  @GetMapping("/evcharge/api/admin/{apikey}/submissionstatus")
+  List<SubmissionStatus> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/submissionstatusmod")
-  SubmissionStatus newSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus) {
+  @PostMapping("/evcharge/api/admin/{apikey}/submissionstatusmod")
+  SubmissionStatus newSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newSubmissionStatus);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/submissionstatus/{id}")
-  SubmissionStatus one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/admin/{apikey}/submissionstatus/{id}")
+  SubmissionStatus one(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new SubmissionStatusNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/submissionstatusmod/{id}")
-  SubmissionStatus replaceSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/admin/{apikey}/submissionstatusmod/{id}")
+  SubmissionStatus replaceSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus, @PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(submissionStatus -> {
         submissionStatus.setTitle(newSubmissionStatus.getTitle());
@@ -48,8 +71,13 @@ submissionStatus.setIsLive(newSubmissionStatus.getIsLive());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/submissionstatusmod/{id}")
-  void deleteSubmissionStatus(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/submissionstatusmod/{id}")
+  void deleteSubmissionStatus(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

@@ -70,8 +70,13 @@ public class AdminController{
     
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/users/{username}")
-    User oneUser(@PathVariable String username) {
+    @GetMapping("/evcharge/api/admin/{apikey}/users/{username}")
+    User oneUser(@PathVariable String username, @PathVariable String apikey) {
+        CliController validator = new CliController(repository);
+
+        if (!validator.validate(apikey)){
+          throw new NotAuthorizedException();
+        }
         if (repository.findByUsername(username)!=null) {
             return repository.findByUsername(username);
         }
@@ -81,8 +86,13 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/stationowners/{username}")
-    StationOwner oneOwner(@PathVariable String username) {
+    @GetMapping("/evcharge/api/admin/{apikey}/stationowners/{username}")
+    StationOwner oneOwner(@PathVariable String username, @PathVariable String apikey) {
+        CliController validator = new CliController(repository);
+
+        if (!validator.validate(apikey)){
+          throw new NotAuthorizedException();
+        }
         if (repository2.findByUsername(username)!=null) {
             return repository2.findByUsername(username);
         }
@@ -92,9 +102,15 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/usermod/{username}/{password}")
+    @PostMapping("/evcharge/api/admin/{apikey}/usermod/{username}/{password}")
     User newUser(@PathVariable String username,
-                 @PathVariable String password) {
+                 @PathVariable String password,
+                 @PathVariable String apikey) {
+        CliController validator = new CliController(repository);
+
+        if (!validator.validate(apikey)){
+          throw new NotAuthorizedException();
+        }             
         List<String> Usernames = repository.findAllUsernames();
         if (Usernames.contains(username)) {
             User user1 = repository.findByUsername(username);
@@ -113,9 +129,16 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/stationownermod/{username}/{password}")
+    @PostMapping("/evcharge/api/admin/{apikey}/stationownermod/{username}/{password}")
     StationOwner newOwner(@PathVariable String username,
-                 @PathVariable String password) {
+                 @PathVariable String password,
+                 @PathVariable String apikey) {
+
+        CliController validator = new CliController(repository);
+
+        if (!validator.validate(apikey)){
+          throw new NotAuthorizedException();
+        }
         List<String> Usernames = repository2.findAllUsernames();
         if (Usernames.contains(username)) {
             StationOwner user1 = repository2.findByUsername(username);
@@ -132,6 +155,4 @@ public class AdminController{
             return repository2.save(newUser);
         }
     }
-
-
 }

@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.AcChargerPort;
 import gr.ntua.ece.softeng35.backend.models.AcChargerPortRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class AcChargerPortController {
   private final AcChargerPortRepository repository;
+  private final UserRepository repository2;
 
-  AcChargerPortController(AcChargerPortRepository repository) {
+  AcChargerPortController(AcChargerPortRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/acchargerports")
-  List<AcChargerPort> all() {
+  @GetMapping("/evcharge/api/admin/{apikey}/acchargerports")
+  List<AcChargerPort> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/acchargerportsmod")
-  AcChargerPort newAcChargerPort(@RequestBody AcChargerPort newAcChargerPort) {
+  @PostMapping("/evcharge/api/admin/{apikey}/acchargerportsmod")
+  AcChargerPort newAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newAcChargerPort);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/acchargerports/{id}")
-  AcChargerPort one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/admin/{apikey}/acchargerports/{id}")
+  AcChargerPort one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new AcChargerPortNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/acchargerportsmod/{id}")
-  AcChargerPort replaceAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/admin/{apikey}/acchargerportsmod/{id}")
+  AcChargerPort replaceAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(acChargerPort -> {
         acChargerPort.setPortname(newAcChargerPort.getPortname());
@@ -48,8 +71,13 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/adminacchargerportsmod/{id}")
-  void deleteAcChargerPort(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/acchargerportsmod/{id}")
+  void deleteAcChargerPort(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

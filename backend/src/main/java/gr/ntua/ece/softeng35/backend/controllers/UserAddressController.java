@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.UserAddress;
 import gr.ntua.ece.softeng35.backend.models.UserAddressRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class UserAddressController {
   private final UserAddressRepository repository;
+  private final UserRepository repository2;
 
-  UserAddressController(UserAddressRepository repository) {
+  UserAddressController(UserAddressRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/useraddresses")
-  List<UserAddress> all() {
+  @GetMapping("/evcharge/api/admin/{apikey}/useraddresses")
+  List<UserAddress> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/useraddressesmod")
-  UserAddress newUserAddress(@RequestBody UserAddress newUserAddress) {
+  @PostMapping("/evcharge/api/admin/{apikey}/useraddressesmod")
+  UserAddress newUserAddress(@RequestBody UserAddress newUserAddress,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newUserAddress);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/useraddresses/{id}")
-  UserAddress one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/admin/{apikey}/useraddresses/{id}")
+  UserAddress one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new UserAddressNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/useraddressesmod/{id}")
-  UserAddress replaceUserAddress(@RequestBody UserAddress newUserAddress, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/admin/{apikey}/useraddressesmod/{id}")
+  UserAddress replaceUserAddress(@RequestBody UserAddress newUserAddress, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(userAddress -> {
         userAddress.setUserAddressLine1(newUserAddress.getUserAddressLine1());
@@ -52,8 +75,13 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/useraddressesmod/{id}")
-  void deleteUserAddress(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/useraddressesmod/{id}")
+  void deleteUserAddress(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

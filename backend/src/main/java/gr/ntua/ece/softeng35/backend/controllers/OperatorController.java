@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.Operator;
 import gr.ntua.ece.softeng35.backend.models.OperatorRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class OperatorController {
   private final OperatorRepository repository;
+  private final UserRepository repository2;
 
-  OperatorController(OperatorRepository repository) {
+  OperatorController(OperatorRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/operators")
-  List<Operator> all() {
+  @GetMapping("/evcharge/api/admin/{apikey}/operators")
+  List<Operator> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/operatorsmod")
-  Operator newOperator(@RequestBody Operator newOperator) {
+  @PostMapping("/evcharge/api/admin/{apikey}/operatorsmod")
+  Operator newOperator(@RequestBody Operator newOperator, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newOperator);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/operators/{id}")
-  Operator one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/admin/{apikey}/operators/{id}")
+  Operator one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new OperatorNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/operatorsmod/{id}")
-  Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/admin/{apikey}/operatorsmod/{id}")
+  Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(operator -> {
         operator.setTitle(newOperator.getTitle());
@@ -55,8 +78,13 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/operatorsmod/{id}")
-  void deleteOperator(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/operatorsmod/{id}")
+  void deleteOperator(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

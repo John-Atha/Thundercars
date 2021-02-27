@@ -32,8 +32,13 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/profile")
-  JsonNode myProfile(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/profile")
+  JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allUsers = repository.findAllUsersIds();
     if (!allUsers.contains(id)) {
       throw new BadRequestException();
@@ -118,8 +123,13 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/myvehicles")
-  JsonNode myVehicles(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/myvehicles")
+  JsonNode myVehicles(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allUsers = repository.findAllUsersIds();
     if (!allUsers.contains(id)) {
       throw new BadRequestException();
@@ -231,9 +241,14 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/acchargers",
-                     "/evcharge/api/acchargers/{chargerid}"})
-  JsonNode acCharger(@PathVariable Optional<Integer> chargerid) {        
+  @GetMapping(value={"/evcharge/api/{apikey}/acchargers",
+                     "/evcharge/api/{apikey}/acchargers/{chargerid}"})
+  JsonNode acCharger(@PathVariable Optional<Integer> chargerid,@PathVariable String apikey) {       
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    } 
     
     if (!chargerid.isPresent()) {
       List<Integer> allChargers = repository.findAllAcChargersIds();
@@ -362,9 +377,14 @@ class UserController {
    }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/dcchargers",
-                     "/evcharge/api/dcchargers/{chargerid}"})
-  JsonNode dcCharger(@PathVariable Optional<Integer> chargerid) {        
+  @GetMapping(value={"/evcharge/api/{apikey}/dcchargers",
+                     "/evcharge/api/{apikey}/dcchargers/{chargerid}"})
+  JsonNode dcCharger(@PathVariable Optional<Integer> chargerid,@PathVariable String apikey) {  
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }      
     if (!chargerid.isPresent()) {
       List<Integer> allChargers = repository.findAllDcChargersIds();
 
@@ -457,8 +477,13 @@ class UserController {
   }
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/mysessions")
-  List<JsonNode> mySessions(@PathVariable Optional<Integer> id) {
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions")
+  List<JsonNode> mySessions(@PathVariable Optional<Integer> id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
 
     if(!id.isPresent()) {
         throw new BadRequestException();
@@ -616,9 +641,15 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/mysessions/perstation/{stationid}")
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/perstation/{stationid}")
   JsonNode mySessions(@PathVariable Optional<Integer> id,
-                      @PathVariable Optional<Integer> stationid) {
+                      @PathVariable Optional<Integer> stationid,
+                      @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
 
     if(!id.isPresent()) {
         throw new BadRequestException();
@@ -721,10 +752,16 @@ class UserController {
 }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/mysessions/perprovider/{providerid}")
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/perprovider/{providerid}")
   JsonNode myProvSessions(@PathVariable Optional<Integer> id,
-                      @PathVariable Optional<Integer> providerid) {
+                      @PathVariable Optional<Integer> providerid,
+                      @PathVariable String apikey) {
 
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     if(!id.isPresent()) {
         throw new BadRequestException();
     }
@@ -799,9 +836,15 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/mysessions/pervehicle/{vehicleid}")
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/pervehicle/{vehicleid}")
   JsonNode myEVSessions(@PathVariable Optional<Integer> id,
-                      @PathVariable Optional<Integer> vehicleid) {
+                      @PathVariable Optional<Integer> vehicleid,
+                      @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
 
     if(!id.isPresent()) {
         throw new BadRequestException();
@@ -885,27 +928,47 @@ class UserController {
 
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/users")
-  List<User> all() {
+  @GetMapping("/evcharge/api/{apikey}/users")
+  List<User> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/usersmod")
-  User newUser(@RequestBody User newUser) {
+  @PostMapping("/evcharge/api/admin/{apikey}/usersmod")
+  User newUser(@RequestBody User newUser, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newUser);
   }
-  /*
-  @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/users/{id}")
-  User one(@PathVariable Integer id) {
-    return repository.findById(id)
-      .orElseThrow(() -> new UserNotFoundException(id));
-  }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/usersmod/{id}")
-  User replaceUser(@RequestBody User newUser, @PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/users/{id}")
+  User one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
+    return repository.findById(id)
+      .orElseThrow(() -> new UserNotFoundException(id));
+  }
+
+  @CrossOrigin(origins = "http://localhost:3000")
+  @PutMapping("/evcharge/api/admin/{apikey}/usersmod/{id}")
+  User replaceUser(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(user -> {
         user.setUsername(newUser.getUsername());
@@ -915,8 +978,13 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/usersmod/{id}")
-  void deleteUser(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/admin/{apikey}/usersmod/{id}")
+  void deleteUser(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }
