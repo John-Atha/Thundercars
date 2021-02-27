@@ -120,6 +120,22 @@ export const getUserStats = (id) => {
     return axios.get(requestUrl);
 }
 
+export const getVehicleSessions = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerEV/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
+    return axios.get(requestUrl);
+}
+
+export const getUserProfile = (id) => {
+    const requestUrl = `user/${id}/profile`;
+    return axios.get(requestUrl);
+}
+
 export const getStations = (id) => {
     const requestUrl = `stationowners/${id}/mystations`;
     return axios.get(requestUrl);

@@ -11,6 +11,7 @@ import Vehicle from './Vehicle';
 import AcCharger from './AcCharger';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
+import UserVehicleStatistics from './UserVehicleStatistics';
 import MyStations from './MyStations';
 import MySpots from './MySpots';
 import Station from './Station';
@@ -82,7 +83,7 @@ ReactDOM.render(
           <UserMyStatistics />
         </Route>
         <Route path="/UserVehicleStatistics" exact>
-          <UserMyStatistics />
+          <UserVehicleStatistics />
         </Route>
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
