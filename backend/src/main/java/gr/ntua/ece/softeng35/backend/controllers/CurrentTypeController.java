@@ -71,7 +71,7 @@ currentType.setDescription(newCurrentType.getDescription());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/currenttypesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/currenttypesmod/{id}")
   void deleteCurrentType(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

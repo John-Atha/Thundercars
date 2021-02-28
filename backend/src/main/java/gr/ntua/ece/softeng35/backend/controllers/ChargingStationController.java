@@ -33,7 +33,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingstations")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstations")
   List<ChargingStation> all( @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -44,7 +44,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/chargingstationsmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingstationsmod")
   ChargingStation newChargingStation(@RequestBody ChargingStation newChargingStation, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -55,7 +55,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingstations/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstations/{id}")
   ChargingStation one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -386,7 +386,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/chargingstationsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingstationsmod/{id}")
   ChargingStation replaceChargingStation(@RequestBody ChargingStation newChargingStation, @PathVariable Integer id,
                                         @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
@@ -414,7 +414,7 @@ class ChargingStationController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/chargingstationsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingstationsmod/{id}")
   void deleteChargingStation(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

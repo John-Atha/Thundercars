@@ -19,7 +19,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/operators")
+  @GetMapping("/evcharge/api/{apikey}/admin/operators")
   List<Operator> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/operatorsmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/operatorsmod")
   Operator newOperator(@RequestBody Operator newOperator, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/operators/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/operators/{id}")
   Operator one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/operatorsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/operatorsmod/{id}")
   Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -78,7 +78,7 @@ class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/operatorsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/operatorsmod/{id}")
   void deleteOperator(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

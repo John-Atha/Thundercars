@@ -19,7 +19,7 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingstationspots")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstationspots")
   List<ChargingStationSpots> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/chargingstationspotsmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod")
   ChargingStationSpots newChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingstationspots/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstationspots/{id}")
   ChargingStationSpots one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/chargingstationspotsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod/{id}")
   ChargingStationSpots replaceChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable Integer id,
                                                   @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
@@ -74,7 +74,7 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/chargingstationspotsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod/{id}")
   void deleteChargingStationSpots(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

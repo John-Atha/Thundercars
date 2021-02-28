@@ -23,7 +23,7 @@ class CountryController {
        returns error because a country can belong to many addresses */
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/{apikey}/countries")
+    @GetMapping("/evcharge/api/{apikey}/admin/countries")
     List<Country> all(@PathVariable String apikey) {
         CliController validator = new CliController(repository2);
 
@@ -34,7 +34,7 @@ class CountryController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/{apikey}/countriesmod")
+    @PostMapping("/evcharge/api/{apikey}/admin/countriesmod")
     Country newCountry(@RequestBody Country newCountry, @PathVariable String apikey) {
         CliController validator = new CliController(repository2);
 
@@ -45,7 +45,7 @@ class CountryController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/{apikey}/countries/{id}")
+    @GetMapping("/evcharge/api/{apikey}/admin/countries/{id}")
     Country one(@PathVariable Integer id,@PathVariable String apikey) {
         CliController validator = new CliController(repository2);
 
@@ -57,7 +57,7 @@ class CountryController {
     }
     
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping("/evcharge/api/admin/{apikey}/countriesmod/{id}")
+    @PutMapping("/evcharge/api/{apikey}/admin/countriesmod/{id}")
     Country replaceCountry(@RequestBody Country newCountry, @PathVariable Integer id,@PathVariable String apikey) {
         CliController validator = new CliController(repository2);
 
@@ -75,7 +75,7 @@ class CountryController {
     }   
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @DeleteMapping("/evcharge/api/admin/{apikey}/countriesmod/{id}")
+    @DeleteMapping("/evcharge/api/{apikey}/admin/countriesmod/{id}")
     void deleteCountry(@PathVariable Integer id, @PathVariable String apikey) {
         CliController validator = new CliController(repository2);
 

@@ -19,7 +19,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/useraddresses")
+  @GetMapping("/evcharge/api/{apikey}/admin/useraddresses")
   List<UserAddress> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/useraddressesmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/useraddressesmod")
   UserAddress newUserAddress(@RequestBody UserAddress newUserAddress,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/useraddresses/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/useraddresses/{id}")
   UserAddress one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/useraddressesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/useraddressesmod/{id}")
   UserAddress replaceUserAddress(@RequestBody UserAddress newUserAddress, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -75,7 +75,7 @@ class UserAddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/useraddressesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/useraddressesmod/{id}")
   void deleteUserAddress(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

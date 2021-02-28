@@ -29,7 +29,7 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/acchargersmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/acchargersmod")
   AcCharger newAcCharger(@RequestBody AcCharger newAcCharger,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -47,7 +47,7 @@ class AcChargerController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/acchargersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/acchargersmod/{id}")
   AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -65,7 +65,7 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/acchargersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/acchargersmod/{id}")
   void deleteAcCharger(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

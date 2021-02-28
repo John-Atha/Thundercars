@@ -343,7 +343,7 @@ class StationownerController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/stationowners")
+  @GetMapping("/evcharge/api/{apikey}/admin/stationowners")
   List<StationOwner> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -354,7 +354,7 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/stationownersmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/stationownersmod")
   StationOwner newStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -379,7 +379,7 @@ class StationownerController {
   
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/stationownersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/stationownersmod/{id}")
   StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -401,7 +401,7 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/stationownersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/stationownersmod/{id}")
   void deleteStationOwner(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

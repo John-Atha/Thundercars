@@ -19,7 +19,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/statustypes")
+  @GetMapping("/evcharge/api/{apikey}/admin/statustypes")
   List<StatusType> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/statustypesmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/statustypesmod")
   StatusType newStatusType(@RequestBody StatusType newStatusType,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/statustypes/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/statustypes/{id}")
   StatusType one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/statustypesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/statustypesmod/{id}")
   StatusType replaceStatusType(@RequestBody StatusType newStatusType, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -71,7 +71,7 @@ class StatusTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/statustypesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/statustypesmod/{id}")
   void deleteStatusType(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

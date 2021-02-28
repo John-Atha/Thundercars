@@ -209,7 +209,7 @@ class ChargingSpotController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/chargingspotsmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingspotsmod")
   ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -220,7 +220,7 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingspots/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingspots/{id}")
   ChargingSpot one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -232,7 +232,7 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/chargingspotsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
   ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -254,7 +254,7 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/chargingspotsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
   void deleteChargingSpot(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

@@ -19,7 +19,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/currentproviders")
+  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders")
   List<CurrentProvider> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/currentprovidersmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/currentprovidersmod")
   CurrentProvider newCurrentProvider(@RequestBody CurrentProvider newCurrentProvider,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/currentproviders/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders/{id}")
   CurrentProvider one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/currentprovidersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
   CurrentProvider replaceCurrentProvider(@RequestBody CurrentProvider newCurrentProvider, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -70,7 +70,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/currentprovidersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
   void deleteCurrentProvider(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

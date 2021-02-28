@@ -70,7 +70,7 @@ public class AdminController{
     
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/{apikey}/users/{username}")
+    @GetMapping("/evcharge/api/{apikey}/admin/users/{username}")
     User oneUser(@PathVariable String username, @PathVariable String apikey) {
         CliController validator = new CliController(repository);
 
@@ -86,7 +86,7 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/admin/{apikey}/stationowners/{username}")
+    @GetMapping("/evcharge/api/{apikey}/admin/stationowners/{username}")
     StationOwner oneOwner(@PathVariable String username, @PathVariable String apikey) {
         CliController validator = new CliController(repository);
 
@@ -102,7 +102,7 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/{apikey}/usermod/{username}/{password}")
+    @PostMapping("/evcharge/api/{apikey}/admin/usermod/{username}/{password}")
     User newUser(@PathVariable String username,
                  @PathVariable String password,
                  @PathVariable String apikey) {
@@ -129,7 +129,7 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/{apikey}/stationownermod/{username}/{password}")
+    @PostMapping("/evcharge/api/{apikey}/admin/stationownermod/{username}/{password}")
     StationOwner newOwner(@PathVariable String username,
                  @PathVariable String password,
                  @PathVariable String apikey) {

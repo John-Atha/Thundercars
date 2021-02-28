@@ -37,7 +37,7 @@ class ChargingProcessController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingprocesses")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingprocesses")
   List<ChargingProcess> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -3453,7 +3453,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
 }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/{apikey}/chargingprocessesmod")
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingprocessesmod")
   ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -3464,7 +3464,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/{apikey}/chargingprocesses/{id}")
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingprocesses/{id}")
   ChargingProcess one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -3476,7 +3476,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/{apikey}/chargingprocessesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingprocessesmod/{id}")
   ChargingProcess replaceChargingProcess(@RequestBody ChargingProcess newChargingProcess, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -3504,7 +3504,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}/chargingprocessesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingprocessesmod/{id}")
   void deleteChargingProcess(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
