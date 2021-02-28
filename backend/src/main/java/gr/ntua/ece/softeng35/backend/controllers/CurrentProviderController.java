@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.CurrentProvider;
 import gr.ntua.ece.softeng35.backend.models.CurrentProviderRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class CurrentProviderController {
   private final CurrentProviderRepository repository;
+  private final UserRepository repository2;
 
-  CurrentProviderController(CurrentProviderRepository repository) {
+  CurrentProviderController(CurrentProviderRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/currentproviders")
-  List<CurrentProvider> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders")
+  List<CurrentProvider> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/currentprovidersmod")
-  CurrentProvider newCurrentProvider(@RequestBody CurrentProvider newCurrentProvider) {
+  @PostMapping("/evcharge/api/{apikey}/admin/currentprovidersmod")
+  CurrentProvider newCurrentProvider(@RequestBody CurrentProvider newCurrentProvider,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newCurrentProvider);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/currentproviders/{id}")
-  CurrentProvider one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders/{id}")
+  CurrentProvider one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new CurrentProviderNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/currentprovidersmod/{id}")
-  CurrentProvider replaceCurrentProvider(@RequestBody CurrentProvider newCurrentProvider, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
+  CurrentProvider replaceCurrentProvider(@RequestBody CurrentProvider newCurrentProvider, @PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(currentProvider -> {
         currentProvider.setName(newCurrentProvider.getName());
@@ -47,8 +70,13 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/currentprovidersmod/{id}")
-  void deleteCurrentProvider(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
+  void deleteCurrentProvider(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

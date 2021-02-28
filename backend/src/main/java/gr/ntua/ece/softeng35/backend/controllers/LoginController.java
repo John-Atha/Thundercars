@@ -28,12 +28,14 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 public class LoginController{
-    
+
     private final UserRepository repository;
+    
 
     LoginController(UserRepository repository){
         this.repository = repository;
     }
+
 
     public static String getMd5(String input) 
     { 
@@ -64,8 +66,13 @@ public class LoginController{
     } 
   
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/login")
-    JsonNode userLogin(@RequestBody String encoded) {
+    @PostMapping("/evcharge/api/{apikey}/login")
+    JsonNode userLogin(@RequestBody String encoded, @PathVariable String apikey) {
+      CliController validator = new CliController(repository);
+
+      if (!validator.validate(apikey)){
+        throw new NotAuthorizedException();
+      }
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
       if (encoded.indexOf(":") == encoded.length()-1 || encoded.indexOf(":") == 0){
@@ -107,8 +114,8 @@ public class LoginController{
             Integer userId = (Integer) user.get(0);
             answer.put("Id", userId);
             answer.put("Token", "VehicleOwner");
-            String ugly = answer.toString();
             try {
+            String ugly = answer.toString();
               JsonNode node = mapper.readTree(ugly);
               return node;
             }

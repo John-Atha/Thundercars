@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.StationOwner;
 import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -26,9 +27,11 @@ import org.json.*;
 @RestController
 class StationownerController {
   private final StationOwnerRepository repository;
+  private final UserRepository repository2;
 
-  StationownerController(StationOwnerRepository repository) {      
+  StationownerController(StationOwnerRepository repository, UserRepository repository2) {      
     this.repository = repository;
+    this.repository2 = repository2;
   }
   
   /*
@@ -45,8 +48,13 @@ class StationownerController {
    */
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners/{id}/profile")
-  JsonNode myProfile(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/profile")
+  JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allStationOwners = repository.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
@@ -146,8 +154,13 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners/{id}/mystations")
-  JsonNode myStations(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/mystations")
+  JsonNode myStations(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allStationOwners = repository.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
@@ -285,8 +298,13 @@ class StationownerController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners/{id}/mystatistics")
-  JsonNode myStatistics(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/mystatistics")
+  JsonNode myStatistics(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allStationOwners = repository.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
@@ -325,29 +343,49 @@ class StationownerController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/stationowners")
-  List<StationOwner> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/stationowners")
+  List<StationOwner> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/stationownersmod")
-  StationOwner newStationOwner(@RequestBody StationOwner newStationOwner) {
+  @PostMapping("/evcharge/api/{apikey}/admin/stationownersmod")
+  StationOwner newStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newStationOwner);
   }
 
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/stationowners/{id}")
-  StationOwner one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}")
+  StationOwner one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
   }
   
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/stationownersmod/{id}")
-  StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/stationownersmod/{id}")
+  StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(stationOwner -> {
         stationOwner.setUsername(newStationOwner.getUsername());
@@ -363,8 +401,13 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/stationownersmod/{id}")
-  void deleteStationOwner(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/stationownersmod/{id}")
+  void deleteStationOwner(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

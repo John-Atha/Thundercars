@@ -27,15 +27,19 @@ public class Admin {
   @Column(unique = false, length = 60, nullable = true)
   private Date dateOfBirth;
 
+  @Column(unique = true , length = 16, nullable = true)
+  private String apiKey;
+
   public Admin() {}
 
-  public Admin(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address) {
+  public Admin(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address , String apiKey) {
     this.username = username;
     this.password = password;
     this.emailAddr = emailAddr;
     this.firstName = firstName;
     this.lastName = lastName;
     this.dateOfBirth = dateOfBirth;
+    this.apiKey = apiKey;
 }
 
   public Integer getId() {
@@ -94,6 +98,14 @@ public void setDateOfBirth(Date dateOfBirth) {
     this.dateOfBirth=dateOfBirth;
 }
 
+public String getApiKey() {
+  return this.apiKey;
+}
+
+public void setApiKey(String apiKey) {
+  this.apiKey=apiKey;
+}
+
 
   @Override
   public boolean equals(Object o) {
@@ -106,7 +118,8 @@ public void setDateOfBirth(Date dateOfBirth) {
                   Objects.equals(this.emailAddr, u.emailAddr) &&
                   Objects.equals(this.firstName, u.firstName) &&
                   Objects.equals(this.lastName, u.lastName) &&
-                  Objects.equals(this.dateOfBirth, u.dateOfBirth); 
+                  Objects.equals(this.dateOfBirth, u.dateOfBirth)&&
+                  Objects.equals(this.apiKey, u.apiKey); 
   }
 
   @Override
@@ -117,7 +130,8 @@ public void setDateOfBirth(Date dateOfBirth) {
                   this.emailAddr,
                   this.firstName,
                   this.lastName,
-                  this.dateOfBirth);
+                  this.dateOfBirth,
+                  this.apiKey);
   }
 
   @Override
