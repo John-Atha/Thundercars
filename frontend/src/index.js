@@ -8,6 +8,7 @@ import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
+import AddVehicle from './AddVehicle';
 import AcCharger from './AcCharger';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
@@ -76,6 +77,9 @@ ReactDOM.render(
         </Route>
         <Route path="/vehicles/:id">
           <FindVehicle />  
+        </Route>
+        <Route path="/AddVehicle" exact>
+          <AddVehicle />
         </Route>
         <Route path="/acchargers/:id">
           <FindAcCharger />

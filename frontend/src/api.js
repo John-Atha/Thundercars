@@ -14,6 +14,21 @@ export const loginPost = (obj) => {
                       });
 };
 
+export const getAcChargers = () => {
+    const requestUrl="admin/acchargers";
+    return axios.get(requestUrl);
+}
+
+export const getDcChargers = () => {
+    const requestUrl="admin/dcchargers";
+    return axios.get(requestUrl);
+}
+
+export const getPowerPerCharging = () => {
+    const requestUrl="admin/powerperchargingpoint"
+    return axios.get(requestUrl);
+}
+
 export const getVehicles = (id) => {
     const requestUrl = `/user/${id}/myvehicles`;
     return axios.get(requestUrl);
