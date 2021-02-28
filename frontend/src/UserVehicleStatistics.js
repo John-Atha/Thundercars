@@ -1,11 +1,7 @@
 import React from 'react';
 import './UserVehicleStatistics.css';
-import {getVehicleSessions, getUserProfile, getVehicles} from './api'
+import {getVehicleSessions, getVehicles, getAllUserVehicle} from './api'
 import MyNavbar from './MyNavbar'; 
-import CanvasJSReact from './canvasjs.react';
-//var CanvasJSReact = require('./canvasjs.react');
-//var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 class VehicleStatisticsDiv extends React.Component {
@@ -13,9 +9,11 @@ class VehicleStatisticsDiv extends React.Component {
         super(props);
         this.state = {
             key: this.props.key,
-            id: this.props.id,
+            vehId: this.props.vehId,
+            userVehId: this.props.id,
             brand: this.props.brand,
             model: this.props.model,
+            dataHere: this.props.dataHere,
             error: null,
             sessions: 0,
             totalCost: 0,
@@ -29,7 +27,7 @@ class VehicleStatisticsDiv extends React.Component {
     }
 
     componentDidMount() {
-        getVehicleSessions(this.state.id, this.state.startDate, this.state.endDate)
+        getVehicleSessions(this.state.userVehid, this.state.startDate, this.state.endDate)
         .then(response => {
             console.log(response);
             let sessions = response.data[this.attr1];
@@ -51,8 +49,9 @@ class VehicleStatisticsDiv extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
-            getVehicleSessions(this.state.id, this.props.startDate, this.props.endDate)
+        if (prevProps.id!==this.props.id || prevProps.dataHere!==this.props.dataHere || prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
+            console.log(`UPDATE to ${this.props.id}, ${this.props.startDate}, ${this.props.endDate}`);
+            getVehicleSessions(this.props.id, this.props.startDate, this.props.endDate)
             .then(response => {
                 console.log(response);
                 let sessions = response.data[this.attr1];
@@ -71,8 +70,8 @@ class VehicleStatisticsDiv extends React.Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    totalKWh: 0,
                     totalCost: 0,
+                    totalKWh: 0,
                     sessions: 0,
                 })
             })
@@ -83,13 +82,23 @@ class VehicleStatisticsDiv extends React.Component {
         return(
             <div className="one-station-container center-content">
                 <h5 className="orangeColor center-content">Vehicle {this.props.id}</h5>
-                <div className="station-page-info-container">
-                    <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
-                    <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
-                    <div className="station-info-title darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
-                    <div className="station-info-title">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
-                    <div className="station-info-title darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
-                </div>
+                {   !this.props.dataHere && 
+
+                        <div>
+                            Loading...
+                        </div>
+
+                }
+
+                { this.props.dataHere &&
+                    <div className="station-page-info-container">
+                        <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
+                        <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
+                        <div className="station-info-title darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
+                        <div className="station-info-title">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
+                        <div className="station-info-title darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
+                    </div>
+                }
             </div>
 
         )
@@ -100,14 +109,17 @@ class VehicleStatisticsDiv extends React.Component {
 
 
 class UserVehicleStatistics extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             vehList: [],
-            startDate: "2021-01-27",
+            userHasVehicleIds: [],
+            startDate: "2019-01-01",
             endDate: "",
+            dataHere: false,
         }
         this.attr1="Vehicles List";
         this.handleInput = this.handleInput.bind(this);
@@ -129,6 +141,50 @@ class UserVehicleStatistics extends React.Component {
             console.log(response);
             this.setState({
                 vehList: response.data[this.attr1],
+            })
+            /*this.state.vehList.forEach(el => {
+                el.userVeh = 0;
+            })*/
+            getAllUserVehicle()
+            .then(response => {
+                console.log(response);
+                let userVehiclesList = response.data;
+                // find userHasVehicle objects that referr to current user
+                userVehiclesList.forEach(el => {
+                    //console.log("user: " + el.user.id);
+                    if (parseInt(el.user.id)===parseInt(this.state.userId)) {
+                        console.log("brhka "+ el.user.id);
+                        let temp = this.state.userHasVehicleIds;
+                        temp.push(
+                            {userVeh: el.id,
+                            veh: el.vehicle.id,
+                            });
+                        this.setState({
+                            userHasVehicleIds: temp,
+                        })
+                    }
+                })
+                // find userHasVehicle objects of current user that referr to current vehicles
+                console.log("old veh list: " + this.state.vehList);
+                this.state.vehList.forEach(el => {
+                    
+                    //console.log("object: "+ el);
+                    console.log("vehicle1: "+ el.Vehicle);
+                    
+                    this.state.userHasVehicleIds.forEach(el2 => {
+                        console.log("vehicle2: "+ el2.veh);
+                        if (parseInt(el.Vehicle)===parseInt(el2.veh)) {
+                            el.userVeh = el2.userVeh;
+                        }
+                    })
+                })
+                console.log("new veh list: " + this.state.vehList);
+                this.setState({
+                    dataHere: true
+                })
+            })
+            .catch(err=>{
+                console.log(err);
             })
         })
         .catch(err => {
@@ -165,7 +221,9 @@ class UserVehicleStatistics extends React.Component {
                                     console.log(key);
                                     return (<VehicleStatisticsDiv
                                             key={key} 
-                                            id={value.Vehicle}
+                                            id={value.userVeh}
+                                            vehId={value.veh}
+                                            dataHere={this.state.dataHere}
                                             brand={value.Brand}
                                             model={value.Model}
                                             startDate={this.state.startDate}

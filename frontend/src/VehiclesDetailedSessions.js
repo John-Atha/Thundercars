@@ -1,5 +1,5 @@
 import React from 'react';
-import './MySpotsDetailedSessions.css';
+import './VehiclesDetailedSessions.css';
 import {getVehicles, getAllUserVehicle, getVehicleSessions} from './api';
 import MyNavbar from './MyNavbar';
 
@@ -27,7 +27,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container to-be-deleted">
+            <div className="one-vehicle-sessions-container">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -78,38 +78,52 @@ class OneVehSessionsDiv extends React.Component {
         this.attr7 = "Vehicle Charging Sessions List";
         this.attr8 = "Session Cost";
         this.attr9 = "Visited Points";
-        this.attr9 = "Total kWh Consumed";
+        this.attr10 = "Total kWh Consumed";
     }
 
     componentDidMount() {
+        this.setState({
+            error: "Loading results..."
+        })
         getAllUserVehicle()
         .then(response => {
             console.log(response);
             let userVehiclesList = response.data;
+            // find userHasVehicle objects that referr to current user
             userVehiclesList.forEach(el => {
-                console.log(el.user.id);
+                //console.log("user: " + el.user.id);
                 if (parseInt(el.user.id)===parseInt(this.state.userId)) {
-                    console.log("brhka");
+                    console.log("brhka "+ el.user.id);
                     let temp = this.state.userHasVehicleIds;
-                    temp.push([el.id, el.vehicle.id]);
+                    temp.push(
+                        {userVeh: el.id,
+                         veh: el.vehicle.id,
+                        });
                     this.setState({
                         userHasVehicleIds: temp,
                     })
                 }
             })
+            // find userHasVehicle objects of current user that referr to current vehicle
             this.state.userHasVehicleIds.forEach(el => {
-                if (el[1]===this.state.vehId) {
+                //console.log("object: "+ el);
+                console.log("userVeh: "+ el.userVeh);
+                console.log("vehicle: "+ el.veh);
+                console.log("--my vehicle: "+ this.state.vehId);
+                if (parseInt(el.veh)===parseInt(this.state.vehId)) {
                     this.setState({
-                        userHasVehicleCurrent: el[0]
+                        userHasVehicleCurrent: el.userVeh,
                     })
+                    //console.log("aaaaaaaaaaa "+ el.userVeh);
                 }
             })
-            console.log("aaaaaa "+ this.state.userHasVehicleCurrent);
+            //console.log("aaaaaa "+ this.state.userHasVehicleCurrent);
             getVehicleSessions(this.state.userHasVehicleCurrent, this.state.startDate, this.state.endDate)
             .then(response=> {
                 this.setState({
+                    error: null,
                     procList: response.data[this.attr7],
-                    totalkWh: response.data[this.attr9],
+                    totalkWh: response.data[this.attr10],
                     visitedPoints: response.data[this.attr9],
                     procNumber: response.data.Sessions
                 })
@@ -120,7 +134,7 @@ class OneVehSessionsDiv extends React.Component {
                     error: "Could not find sessions for this vehicle2"
                 })            
             })
-    
+
             console.log("ProcList:")
             console.log(this.state.procList);
         })
@@ -171,7 +185,7 @@ class OneVehSessionsDiv extends React.Component {
             <div className="spot-sessions-block center-content">
                 <h5 className="orangeColor center-content">Vehicle {this.state.vehId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="spot-info-container center-content">
+                    <div className="vehicle-info-container center-content">
                         <div className="station-info-title">Processes: </div>
                         <div className="station-info">{this.state.procNumber}</div>
                         <div className="station-info-title">Total kWh delivered: </div>
@@ -219,11 +233,12 @@ class VehiclesDetailedSessions extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             vehList: [],
-            showingVehId: null,
+            //showingVehId: null,
             error: "Choose a vehicle to see its sessions",
-            startDate: "2021-01-27",
+            startDate: "2019-01-01",
             endDate: "",
         }
+        this.showingVehId = null;
         this.attr1="Vehicles List";
         this.selectEV = this.selectEV.bind(this);  
         this.handleInput = this.handleInput.bind(this);  
@@ -238,10 +253,12 @@ class VehiclesDetailedSessions extends React.Component {
                 tempVehiclesList.push([element.Vehicle, element.Brand+" "+element.Type]);     // spot's id
             });
             this.setState({
-                vehList: tempVehiclesList
+                vehList: tempVehiclesList,
+                //showingVehId: tempVehiclesList[0][0],
             });
             console.log("Vehicles: ");
             console.log(this.state.vehList);
+            //console.log(this.state.showingVehId);
         })
     }
 
@@ -258,10 +275,12 @@ class VehiclesDetailedSessions extends React.Component {
 
     selectEV = (event) => {
         this.setState({
-            showingVehId: event.target.innerText.substring(0, event.target.innerText.indexOf(':')).replace('Vehicle ', ''),
+            //showingVehId: event.target.innerText.substring(0, event.target.innerText.indexOf(':')).replace('Vehicle ', ''),
             error: null,
         })
-        console.log("pressed: " + this.state.showingVehId)
+        this.showingVehId = event.target.innerText.substring(0, event.target.innerText.indexOf(':')).replace('Vehicle ', ''); 
+        console.log("pressed: " + event.target.innerText.substring(0, event.target.innerText.indexOf(':')).replace('Vehicle ', ''))
+        console.log("pressed: " + this./*state.*/showingVehId)
     }
 
     render() {
@@ -286,7 +305,7 @@ class VehiclesDetailedSessions extends React.Component {
                             <div className="spots-buttons-container center-content">
                                 {   
                                     this.state.vehList.map((value, index) => {
-                                        console.log(index);
+                                        //console.log(index);
                                         return (<button className="spot-choose-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
                                     })
                                 }
@@ -300,11 +319,11 @@ class VehiclesDetailedSessions extends React.Component {
                             </div>
 
 
-                            {   this.state.showingVehId && 
+                            {   this./*state.*/showingVehId && 
                                     <div className="spots-container margin-top">
                                         <OneVehSessionsDiv
-                                            id={this.state.showingVehId}
-                                            key={this.state.showingVehId}
+                                            id={this./*state.*/showingVehId}
+                                            key={this./*state.*/showingVehId}
                                             startDate={this.state.startDate}
                                             endDate={this.state.endDate}
                                         /> 

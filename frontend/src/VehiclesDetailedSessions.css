@@ -1,0 +1,22 @@
+.vehicle-info-container {
+    grid-row: 2;
+    padding: 1% 1%;
+    width: 350px;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: min-content;
+    column-gap: 2px;
+    border-radius: 5px;
+}
+
+.one-vehicle-sessions-container {
+    text-align: center;
+    padding: 1%;
+    border: 2px solid grey;
+    display: grid;
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 30%;
+    width: 350px;
+    height: 90%;
+    border-radius: 5px;
+    margin: 3% 0%;
+}
