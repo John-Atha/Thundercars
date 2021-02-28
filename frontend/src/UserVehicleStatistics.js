@@ -121,6 +121,7 @@ class UserVehicleStatistics extends React.Component {
             endDate: "",
             dataHere: false,
             noVehicles: false,
+            error: null,
         }
         this.attr1="Vehicles List";
         this.handleInput = this.handleInput.bind(this);
@@ -209,7 +210,7 @@ class UserVehicleStatistics extends React.Component {
                             Sessions summary
                         </div>
 
-                        {this.state.noVehicles!==null && 
+                        {this.state.noVehicles && 
                             <div>
                                 <div className="error-message margin-top">
                                     You don't own any vehicles
