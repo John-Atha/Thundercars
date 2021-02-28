@@ -120,6 +120,7 @@ class UserVehicleStatistics extends React.Component {
             startDate: "2019-01-01",
             endDate: "",
             dataHere: false,
+            noVehicles: false,
         }
         this.attr1="Vehicles List";
         this.handleInput = this.handleInput.bind(this);
@@ -190,7 +191,7 @@ class UserVehicleStatistics extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "No vehicles found",
+                noVehicles: false,
             })
         })
     }
@@ -203,35 +204,53 @@ class UserVehicleStatistics extends React.Component {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
                             Sessions summary
                         </div>
 
-                        <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                        </div>
+                        {this.state.noVehicles!==null && 
+                            <div>
+                                <div className="error-message margin-top">
+                                    You don't own any vehicles
+                                </div>
+                                <a href="/addVehicle">Add one</a>
+                            </div>
+                        }
 
-                        <div id="stats-info-container">
-                            {
-                                this.state.vehList.map((value, key, index)=> {
-                                    console.log(key);
-                                    return (<VehicleStatisticsDiv
-                                            key={key} 
-                                            id={value.userVeh}
-                                            vehId={value.veh}
-                                            dataHere={this.state.dataHere}
-                                            brand={value.Brand}
-                                            model={value.Model}
-                                            startDate={this.state.startDate}
-                                            endDate={this.state.endDate}
-                                            /> )
-                                })
-                            }
-                        </div>
+                        {this.state.error===null &&  
+
+
+                            <div className="time-filters-container center-content">
+                                    <label className="start-date-label" htmlFor="startDate">From</label>
+                                    <label className="end-date-label"   htmlFor="endDate">To</label>
+                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            </div>
+
+                        }
+
+                        {this.state.error===null &&  
+
+                            <div id="stats-info-container">
+                                {
+                                    this.state.vehList.map((value, key, index)=> {
+                                        console.log(key);
+                                        return (<VehicleStatisticsDiv
+                                                key={key} 
+                                                id={value.userVeh}
+                                                vehId={value.veh}
+                                                dataHere={this.state.dataHere}
+                                                brand={value.Brand}
+                                                model={value.Model}
+                                                startDate={this.state.startDate}
+                                                endDate={this.state.endDate}
+                                                /> )
+                                    })
+                                }
+                            </div>
+
+                        }
                     </div>
                 </div>
             )

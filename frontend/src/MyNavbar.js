@@ -58,7 +58,10 @@ class MyNavbar extends React.Component {
 
 
           {this.state.role==="VehicleOwner" && (
-            <Nav.Link id="nav-link" href="/myVehicles">My vehicles</Nav.Link>
+              <NavDropdown title="Vehicles" id="nav-link">
+                <NavDropdown.Item href="/myVehicles">My vehicles</NavDropdown.Item>
+                <NavDropdown.Item href="/addVehicle">Add vehicle</NavDropdown.Item>
+              </NavDropdown>
           )}
 
           {this.state.role==="StationOwner" && (

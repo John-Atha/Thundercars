@@ -188,22 +188,32 @@ class UserPiesContainer extends React.Component {
             console.log(err);
             this.setState({
                 diagram: false,
+                error: "No sessions found, go charge!!"
             })
         })
     }
 
     render() {
-        if (this.state.diagram) {
-            return (
-                <div className="vehicle-owners-stats-pie-diagrams">
-                    <h5 className="orangeColor center-content">Monthly data</h5>
-                    <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                    <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
-                    <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
-                    <CanvasJSChart id="pie-diagram4" options = {this.state.diagramOptions4} />
-                </div>
-            )
-        }
+        return (
+            <div>
+                { this.state.diagram && 
+                    
+                        <div className="vehicle-owners-stats-pie-diagrams">
+                            <h5 className="orangeColor center-content">Monthly data</h5>
+                            <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
+                            <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
+                            <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
+                            <CanvasJSChart id="pie-diagram4" options = {this.state.diagramOptions4} />
+                        </div>
+                    
+                }
+                { this.state.diagram===false &&
+                        <div className="error-message margin-top">
+                            {this.state.error}
+                        </div>
+                }
+            </div>
+        )
     }
 }
 
@@ -217,6 +227,7 @@ class UserMyStatistics extends React.Component {
             role: localStorage.getItem('role'),
             error: null,
             firstname: null,
+            username: null,
 
             //userStatsList: [],
         }
@@ -252,7 +263,8 @@ class UserMyStatistics extends React.Component {
         .then(response =>{
             console.log(response);
             this.setState({
-                firstname: response.data[this.attr4]
+                firstname: response.data[this.attr4],
+                username: response.data.Username
             });
         })
     }
@@ -265,9 +277,9 @@ class UserMyStatistics extends React.Component {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
-                            {this.state.firstname}: Statistics
+                            {this.state.username}: Statistics
                         </div>
                         <UserPiesContainer />
                     </div>

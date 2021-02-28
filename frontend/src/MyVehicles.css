@@ -83,3 +83,19 @@
     padding-right: 4%;
     animation: appearing 1s;
 }
+
+.vehicle-delete-button {
+    width: 100px;
+    font-size: medium;
+    color: white;
+    background-color: red;
+    padding: 1%;
+    margin-bottom: 1%;
+    height: min-content;
+    border-radius: 5px;
+}
+
+.vehicle-delete-button:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}

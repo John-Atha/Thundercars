@@ -237,6 +237,7 @@ class VehiclesDetailedSessions extends React.Component {
             error: "Choose a vehicle to see its sessions",
             startDate: "2019-01-01",
             endDate: "",
+            noVehicles: false,
         }
         this.showingVehId = null;
         this.attr1="Vehicles List";
@@ -259,6 +260,12 @@ class VehiclesDetailedSessions extends React.Component {
             console.log("Vehicles: ");
             console.log(this.state.vehList);
             //console.log(this.state.showingVehId);
+        })
+        .catch(err=> {
+            console.log(err);
+            this.setState({
+                noVehicles: true,
+            })
         })
     }
 
@@ -295,31 +302,42 @@ class VehiclesDetailedSessions extends React.Component {
                             
                             <div className="specific-title orangeColor">
                                 Detailed Sesions Per Vehicle
-                                {this.state.error!==null && ( 
+                                {!this.state.noVehicles && this.state.error!==null && ( 
                                     <div className="error-message">
                                         {this.state.error}
                                     </div>
-                                )}  
+                                )}
                             </div>
 
-                            <div className="spots-buttons-container center-content">
-                                {   
-                                    this.state.vehList.map((value, index) => {
-                                        //console.log(index);
-                                        return (<button className="spot-choose-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
-                                    })
-                                }
-                            </div>
+                            {this.state.noVehicles &&
+                                <div>
+                                    <div className="error-message margin-top">
+                                        You don't own any vehicles
+                                    </div>
+                                    <a href="/addVehicle">Add one</a>
+                                </div>
+                            }  
 
-                            <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                            </div>
+                            {!this.state.noVehicles &&
+                                <div className="spots-buttons-container center-content">
+                                    {   
+                                        this.state.vehList.map((value, index) => {
+                                            //console.log(index);
+                                            return (<button className="spot-choose-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
+                                        })
+                                    }
+                                </div>
+                            }
+                            {!this.state.noVehicles &&
+                                <div className="time-filters-container center-content">
+                                    <label className="start-date-label" htmlFor="startDate">From</label>
+                                    <label className="end-date-label"   htmlFor="endDate">To</label>
+                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
+                            }
 
-
-                            {   this./*state.*/showingVehId && 
+                            {!this.state.noVehicles && this./*state.*/showingVehId && 
                                     <div className="spots-container margin-top">
                                         <OneVehSessionsDiv
                                             id={this./*state.*/showingVehId}

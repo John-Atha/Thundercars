@@ -136,6 +136,11 @@ export const getAllUserVehicle = () => {
     return axios.get(requestUrl);
 }
 
+export const UserVehicleDelete = (id) => {
+    const requestUrl = `admin/userhasvehiclesmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
     return axios.get(requestUrl);
