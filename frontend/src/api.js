@@ -14,19 +14,29 @@ export const loginPost = (obj) => {
                       });
 };
 
-export const getAcChargers = () => {
-    const requestUrl="admin/acchargers";
-    return axios.get(requestUrl);
+export const dcChargerPost = (obj) => {
+    const requestUrl = "/admin/dcchargersmod";
+    return axios.post(requestUrl, obj);
 }
 
-export const getDcChargers = () => {
-    const requestUrl="admin/dcchargers";
-    return axios.get(requestUrl);
+export const acChargerPost = (obj) => {
+    const requestUrl = "/admin/acchargersmod";
+    return axios.post(requestUrl, obj);
 }
 
-export const getPowerPerCharging = () => {
-    const requestUrl="admin/powerperchargingpoint"
-    return axios.get(requestUrl);
+export const acChargerPortPost = (obj) => {
+    const requestUrl = "/admin/acchargerportsmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const dcChargerPortPost = (obj) => {
+    const requestUrl = "/admin/dcchargerportsmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const PowerPerChargingPost = (obj) => {
+    const requestUrl = "admin/powerperchargingpointmod";
+    return axios.post(requestUrl, obj);
 }
 
 export const getVehicles = (id) => {
@@ -42,6 +52,11 @@ export const getOneVehicle = (userId,vehId) => {
 export const getOneAcCharger = (acId) => {
     const requestUrl = `acchargers/${acId}`;
     return axios.get(requestUrl);
+}
+
+export const vehiclePost = (obj) => {
+    const requestUrl = "admin/vehiclesmod";
+    return axios.post(requestUrl, obj);
 }
 
 export const countriesGet = () => {

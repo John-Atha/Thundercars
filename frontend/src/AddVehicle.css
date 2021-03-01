@@ -5,7 +5,7 @@
     width: 70%;
     margin-left: 15%;
     display: grid;
-    grid-template-rows: 38% 10% 57% 10%;
+    grid-template-rows: 38% 10% 250px 10%;
     grid-template-columns: 100%;
 }
 
@@ -23,7 +23,7 @@
 }
 .chargers-inputs {
     display: grid;
-    grid-template-rows: min-content auto;
+    grid-template-rows: 50px 200px;
     grid-template-columns: 50% 50%;
     column-gap: 2px;
 }
@@ -41,7 +41,7 @@
     padding-top: 2%;
     display: grid;
     grid-template-rows: 100%;
-    grid-template-columns: 100px 30px 100px 30px;
+    grid-template-columns: 90px 30px 90px 30px;
 }
 .radio-charge {
     margin-top: 20%;
