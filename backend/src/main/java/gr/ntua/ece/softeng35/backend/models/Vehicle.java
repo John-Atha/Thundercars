@@ -31,7 +31,7 @@ public class Vehicle {
     private Double energyConsumption;
 
     @ManyToOne
-    @JoinColumn(name= "ac_charger_id",nullable = false)
+    @JoinColumn(name= "ac_charger_id",nullable = true)
     private AcCharger acCharger;
 
     @ManyToOne
