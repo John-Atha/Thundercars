@@ -70,7 +70,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/{apikey}userhasvehiclesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod/{id}")
   void deleteUserHasVehicle(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
