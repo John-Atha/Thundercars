@@ -39,6 +39,11 @@ export const PowerPerChargingPost = (obj) => {
     return axios.post(requestUrl, obj);
 }
 
+export const UserVehiclePost = (obj) => {
+    const requestUrl = `admin/userhasvehiclesmod`;
+    return axios.post(requestUrl, obj);
+}
+
 export const getVehicles = (id) => {
     const requestUrl = `/user/${id}/myvehicles`;
     return axios.get(requestUrl);
@@ -173,6 +178,11 @@ export const UserVehicleDelete = (id) => {
 
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
+    return axios.get(requestUrl);
+}
+
+export const getUserOBJECT = (id) => {
+    const requestUrl = `users/${id}`;
     return axios.get(requestUrl);
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddVehicle.css';
 import MyNavbar from './MyNavbar';
-import {dcChargerPost, acChargerPost, dcChargerPortPost, acChargerPortPost, PowerPerChargingPost, vehiclePost} from './api';
+import {dcChargerPost, acChargerPost, dcChargerPortPost, acChargerPortPost, PowerPerChargingPost, vehiclePost, UserVehiclePost, getUserOBJECT} from './api';
 
 class AddVehicle extends React.Component {
     constructor(props) {
@@ -83,6 +83,33 @@ class AddVehicle extends React.Component {
                     vehiclePost(vehicleObj)
                     .then(response => {
                         console.log(response);
+                        let vehicleObject = response.data;
+                        getUserOBJECT(this.state.userId)
+                        .then(response => {
+                            let userObject = response.data;
+                            let userVehicleObject = {
+                                user: userObject,
+                                vehicle: vehicleObject
+                            }
+                            UserVehiclePost(userVehicleObject)
+                            .then(response => {
+                                console.log(response);
+                                window.location.href = "/myVehicles";
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                this.setState({
+                                    error: "Could not add vehicle"
+                                })        
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not add vehicle"
+                            })        
+                        })
+
                     })
                     .catch(err => {
                         console.log(err);
@@ -143,6 +170,33 @@ class AddVehicle extends React.Component {
                     vehiclePost(vehicleObj)
                     .then(response => {
                         console.log(response);
+                        let vehicleObject = response.data;
+                        getUserOBJECT(this.state.userId)
+                        .then(response => {
+                            let userObject = response.data;
+                            let userVehicleObject = {
+                                user: userObject,
+                                vehicle: vehicleObject
+                            }
+                            UserVehiclePost(userVehicleObject)
+                            .then(response => {
+                                console.log(response);
+                                window.location.href = "/myVehicles";
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                this.setState({
+                                    error: "Could not add vehicle"
+                                })        
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not add vehicle"
+                            })        
+                        })
+
                     })
                     .catch(err => {
                         console.log(err);
@@ -241,6 +295,33 @@ class AddVehicle extends React.Component {
                             vehiclePost(vehicleObj)
                             .then(response => {
                                 console.log(response);
+                                let vehicleObject = response.data;
+                                getUserOBJECT(this.state.userId)
+                                .then(response => {
+                                    let userObject = response.data;
+                                    let userVehicleObject = {
+                                        user: userObject,
+                                        vehicle: vehicleObject
+                                    }
+                                    UserVehiclePost(userVehicleObject)
+                                    .then(response => {
+                                        console.log(response);
+                                        window.location.href = "/myVehicles";
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        this.setState({
+                                            error: "Could not add vehicle"
+                                        })        
+                                    })
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    this.setState({
+                                        error: "Could not add vehicle"
+                                    })        
+                                })
+        
                             })
                             .catch(err => {
                                 console.log(err);
