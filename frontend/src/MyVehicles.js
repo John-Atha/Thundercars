@@ -25,9 +25,9 @@ class SpecVehicle extends React.Component {
 
     render() {
         return ( 
-            <div className="one-station-container center-content">
+            <div className="one-station-container center-content box-colors flex-item-medium-big">
                 <h5 className="orangeColor center-content">Vehicle {this.state.index}: General Info</h5>
-                <div className="station-page-info-container">
+                <div className="station-page-info-container center-content">
                     <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                     <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                     <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
@@ -116,7 +116,7 @@ class MyVehicles extends React.Component {
                     }
 
                     {this.state.error===null &&                     
-                        <div id="spots-container">
+                        <div id="spots-container" className="fix-width flex-layout">
                         {
                             this.state.vehicles.map((value, key, index)=> {
                                 console.log(value+": "+key);

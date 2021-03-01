@@ -1,10 +1,26 @@
-.one-station-container {
-    padding-left: 2%;
-    text-align: center;
-    padding-bottom: 4%;
-    padding-top: 4%;
-    border-bottom: 2px solid grey;
+body {
+    --color2: rgb(233, 21, 21);
 }
+
+.one-station-container {
+    margin-left: 2%;
+    text-align: center;
+    margin-bottom: 4%;
+    margin-top: 4%;
+    border-radius: 7px;
+}
+
+.small-spot-page-info-container {
+    text-align: left;
+    padding: 2% 0%;
+    width: 90%;
+    margin-left: 5%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: min-content;
+    column-gap: 2px;
+}
+
 
 .station-info-line {
     text-align: left;
@@ -23,12 +39,12 @@
 }
 
 .station-info-title {
-    color: rgb(163, 63, 5);
+    color: var(--color2);
     grid-column: 1;
 }
 
 .orangeColor {
-    color: rgb(163, 63, 5);
+    color: var(--color2);
 }
 
 .station-link {
@@ -37,4 +53,9 @@
 
 .station-link:hover {
     cursor: pointer;
+}
+
+#stations-container {
+    width: 90%;
+    margin-left: 5%;
 }

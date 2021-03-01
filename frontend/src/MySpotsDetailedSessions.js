@@ -26,7 +26,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container flex-item-medium">
+            <div className="one-spot-sessions-container flex-item-medium box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -99,7 +99,8 @@ class OneSpotSessionsDiv extends React.Component {
             console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
             // remove previous objects from dom
             this.setState({
-                procList: []
+                procList: [],
+                error: null,
             });
             getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
             .then(response => {

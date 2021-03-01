@@ -177,7 +177,7 @@ class Vehicle extends React.Component {
                     </div>
                         
                     {!this.state.error &&
-                        <div className="station-page-info-container">
+                        <div className="station-page-info-container box-colors margin-top-small center-content">
                             <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                             <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                             <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>

@@ -79,7 +79,11 @@ class StationStatisticsDiv extends React.Component {
                     height: 250,
                     title: {
                         text: "Number of sessions per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "red",
+                    },
+                    legend: {
+                        fontColor: "red",
                     },
                     data: [{
                         type: "pie",
@@ -88,6 +92,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "red",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData1
                     }]
@@ -100,7 +105,11 @@ class StationStatisticsDiv extends React.Component {
                     height: 250,
                     title: {
                         text: "kWh delivered per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "red",
+                    },
+                    legend: {
+                        fontColor: "red",
                     },
                     data: [{
                         type: "pie",
@@ -109,6 +118,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "red",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData2
                     }]
@@ -168,8 +178,12 @@ class StationStatisticsDiv extends React.Component {
                         height: 250,
                         title: {
                             text: "Number of sessions per charging spot",
-                            fontSize: 20
+                            fontSize: 20,
+                            fontColor: "red",
                         },
+                        legend: {
+                            fontColor: "red",
+                        },    
                         data: [{
                             type: "pie",
                             startAngle: 75,
@@ -177,6 +191,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
+                            indexLabelFontColor: "red",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData1
                         }]
@@ -189,8 +204,12 @@ class StationStatisticsDiv extends React.Component {
                         height: 250,
                         title: {
                             text: "kWh delivered per charging spot",
-                            fontSize: 20
+                            fontSize: 20,
+                            fontColor: "red",
                         },
+                        legend: {
+                            fontColor: "red",
+                        },    
                         data: [{
                             type: "pie",
                             startAngle: 75,
@@ -198,6 +217,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
+                            indexLabelFontColor: "red",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData2
                         }]

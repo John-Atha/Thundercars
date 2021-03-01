@@ -1,3 +1,7 @@
+body {
+    --color2: rgb(233, 21, 21);
+}
+
 .stat-owners-stats-pie-diagrams {
     margin-top: 4%;
     display: grid;
@@ -20,19 +24,19 @@
 
 .carousel-indicators {
     top: 96%;
-    color: red;
+    color: var(--color2);
 }
 
 .carousel-indicators li {
-    background-color: red !important;
+    background-color: var(--color2) !important;
     height: 5px;
 }
 .carousel-caption {
     z-index: 0;
     top: 0%;
     left: 50% !important;
-    font-weight: bold;
-    color: red !important;
+    color: var(--color2) !important;
+    font-size: large !important;
 }
 
 .carousel-item #canvasjs-reacct-chart-container1 .canvasjs-chart-container .canvasjs-chart-canvas{
@@ -46,6 +50,6 @@
 .station-title-container {
     width: 70%;
     margin-left: 15%;
-    color: red !important;
-    font-size: xx-large;
+    color: var(--color2) !important;
+    font-size: x-large;
 }

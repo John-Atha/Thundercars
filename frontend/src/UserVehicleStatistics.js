@@ -80,18 +80,18 @@ class VehicleStatisticsDiv extends React.Component {
 
     render() {
         return(
-            <div className="one-station-container center-content">
+            <div className="one-station-container center-content box-colors">
                 <h5 className="orangeColor center-content">Vehicle {this.props.id}</h5>
                 {   !this.props.dataHere && 
 
-                        <div>
+                        <div className="loading-message">
                             Loading...
                         </div>
 
                 }
 
                 { this.props.dataHere &&
-                    <div className="station-page-info-container">
+                    <div className="station-page-info-container flex-item-medium-big center-content">
                         <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                         <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                         <div className="station-info-title darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
@@ -233,7 +233,7 @@ class UserVehicleStatistics extends React.Component {
 
                         {this.state.error===null &&  
 
-                            <div id="stats-info-container">
+                            <div id="stats-info-container" className="flex-layout fix-width">
                                 {
                                     this.state.vehList.map((value, key, index)=> {
                                         console.log(key);

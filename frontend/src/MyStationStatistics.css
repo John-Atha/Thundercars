@@ -1,9 +1,14 @@
+body {
+    --color2: rgb(233, 21, 21);
+}
+
+
 .station-stats-info-container {
     width: 50%;
     margin-left: 25%;
     display: grid;
     border-radius: 7px;
-    border: 5px solid black;
+    background-color: rgb(48, 47, 47);
 }
 
 .spots-pie-diagrams {
@@ -36,5 +41,9 @@
 .flex-item-medium {
     flex-grow: 1;
     width: 300px !important;
+}
 
+.flex-item-medium-big {
+    flex-grow: 1;
+    width: 400px !important;
 }

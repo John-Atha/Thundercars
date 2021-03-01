@@ -32,28 +32,28 @@ class ControlledCarousel extends React.Component {
 
         return (
         <Carousel activeIndex={this.state.index} onSelect={this.handleSelect}>
-            <Carousel.Item interval={1000000}>
+            <Carousel.Item interval={10000}>
                 <CanvasJSChart id="pie-diagram1" options = {this.props.options1} />
             <Carousel.Caption>
                 <h3>Number of sessions per Month</h3>
             </Carousel.Caption>
             </Carousel.Item>
             
-            <Carousel.Item interval={1000000}>
+            <Carousel.Item interval={10000}>
             <CanvasJSChart id="pie-diagram2" options = {this.props.options2}/>
             <Carousel.Caption>
                 <h3>Number of users per month</h3>
             </Carousel.Caption>
             </Carousel.Item>
 
-            <Carousel.Item interval={1000000}>
+            <Carousel.Item interval={10000}>
                 <CanvasJSChart id="pie-diagram3" options = {this.props.options3}/>
             <Carousel.Caption>
                 <h3>Earnings per month</h3>
             </Carousel.Caption>
             </Carousel.Item>
 
-            <Carousel.Item interval={1000000}>
+            <Carousel.Item interval={10000}>
                 <CanvasJSChart id="pie-diagram4" options = {this.props.options4}/>
             <Carousel.Caption>
                 <h3>kWh delivered per month</h3>

@@ -1,0 +1,13 @@
+
+body {
+    --color2: rgb(233, 21, 21);
+}
+
+.loading-message {
+    color: var(--color2);
+}
+
+.fix-width {
+    width: 90%;
+    margin-left: 5%;
+}

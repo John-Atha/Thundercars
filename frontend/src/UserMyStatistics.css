@@ -1,3 +1,7 @@
+body {
+    --color2: rgb(233, 21, 21);
+}
+
 .allPage {
     position: top;
 }
@@ -6,6 +10,7 @@
     color: white;
     font-size: xx-large;
     border-bottom: 2px solid grey;
+    color: var(--color2);
 }
 
 .general-page-container {
@@ -13,7 +18,6 @@
     margin-bottom: 5%;
     height: max(700px, min-content);
     width: max(99vw, 300px);
-    margin-left: 0%;
 }
 
 .more-blur {

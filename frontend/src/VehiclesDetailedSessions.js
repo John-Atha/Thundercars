@@ -27,7 +27,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-vehicle-sessions-container">
+            <div className="one-vehicle-sessions-container flex-item box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -74,7 +74,7 @@ class OneVehSessionsDiv extends React.Component {
         this.attr3 = "Finished On";
         this.attr4 = "kWh Delivered";
         this.attr5 = "Price Policy Ref";
-        this.attr6 = "Cost Per kwh";
+        this.attr6 = "Cost Per kWh";
         this.attr7 = "Vehicle Charging Sessions List";
         this.attr8 = "Session Cost";
         this.attr9 = "Visited Points";
@@ -195,7 +195,7 @@ class OneVehSessionsDiv extends React.Component {
                     </div>
                 }
                 { this.state.error===null &&
-                    <div className="all-spots-sessions-container center-content">
+                    <div className="all-spots-sessions-container center-content flex-layout">
                         {
                             this.state.procList.map((value, index) => {
                                 return(
@@ -218,7 +218,7 @@ class OneVehSessionsDiv extends React.Component {
                 }
                 {
                     this.state.error!==null &&
-                    <p className="red-color">{this.state.error}</p>
+                    <p className="loading-message">{this.state.error}</p>
                 }
             </div>
         )
