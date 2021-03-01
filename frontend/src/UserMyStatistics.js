@@ -3,6 +3,7 @@ import './UserMyStatistics.css';
 import {getUserStats, getUserProfile} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
+import Carousel from 'react-bootstrap/Carousel';
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -36,6 +37,66 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 }
 */
 
+
+class ControlledCarousel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            index: 0,
+        };
+        this.setIndex = this.setIndex.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+    }
+
+    setIndex = (selected) => {
+        this.setState({
+            index: selected,
+        })
+    }
+  
+    handleSelect = (selectedIndex, e) => {
+      this.setIndex(selectedIndex);
+    };
+  
+    render() {
+
+        return (
+        <Carousel activeIndex={this.state.index} onSelect={this.handleSelect}>
+            <Carousel.Item>
+                <CanvasJSChart id="pie-diagram1" options = {this.props.options1} />
+            <Carousel.Caption>
+                <h3>Number of sessions per Month</h3>
+            </Carousel.Caption>
+            </Carousel.Item>
+            
+            <Carousel.Item>
+            <CanvasJSChart id="pie-diagram2" options = {this.props.options2}/>
+            <Carousel.Caption>
+                <h3>Number of stations visited per month</h3>
+            </Carousel.Caption>
+            </Carousel.Item>
+
+            <Carousel.Item>
+                <CanvasJSChart id="pie-diagram3" options = {this.props.options3}/>
+            <Carousel.Caption>
+                <h3>kWh provided per month</h3>
+            </Carousel.Caption>
+            </Carousel.Item>
+
+            <Carousel.Item>
+                <CanvasJSChart id="pie-diagram4" options = {this.props.options4}/>
+            <Carousel.Caption>
+                <h3>Cost per month</h3>
+            </Carousel.Caption>
+            </Carousel.Item>
+
+        </Carousel>
+        );
+    }
+}
+
+
+
 class UserPiesContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -59,42 +120,30 @@ class UserPiesContainer extends React.Component {
             let kwhList = [];
             let costList = [];
 
-            let totalSessions = 0;
-            let totalStations = 0;
-            let totalKWh = 0;
-            let totalCost = 0;
-
             let str2="Stations Visited";
             let str3="Total kWh Delivered";
             let str4="Total Cost";
 
             for (var i=0; i<response.data.Summary.length; i++) {
-                totalSessions = totalSessions + response.data.Summary[i].Sessions;
-                totalStations = totalStations + response.data.Summary[i][str2];
-                totalKWh = totalKWh + response.data.Summary[i][str3];
-                totalCost = totalCost + response.data.Summary[i][str4];
-            }
-
-            for (i=0; i<response.data.Summary.length; i++) {
-                let lab = response.data.Summary[i].Month+"/"+response.data.Summary[i].Year;
+                let month = response.data.Summary[i].Month
+                let year = response.data.Summary[i].Year;
                 sessionsList.push({
-                    label: lab,
-                    y: Math.round(100* response.data.Summary[i].Sessions / totalSessions)
+                    x: new Date(year, month, 1),
+                    y: parseInt(response.data.Summary[i].Sessions),
                 })
                 stationsList.push({
-                    label: lab,
-                    y: Math.round( 100* response.data.Summary[i][str2]/ totalStations)
+                    x: new Date(year, month, 1),
+                    y: parseInt(response.data.Summary[i][str2]),
                 })
                 kwhList.push({
-                    label: lab,
-                    y: Math.round(100* response.data.Summary[i][str3] / totalKWh)
+                    x: new Date(year, month, 1),
+                    y: parseInt(response.data.Summary[i][str3])
                 })
                 costList.push({
-                    label: lab,
-                    y: Math.round(100* response.data.Summary[i][str4] / totalCost)
+                    x: new Date(year, month, 1),
+                    y: parseInt(response.data.Summary[i][str4])
                 })
             }
-            console.log(totalSessions);
             console.log(sessionsList);
             console.log(costList);
             console.log(kwhList);
@@ -105,80 +154,68 @@ class UserPiesContainer extends React.Component {
                 diagramOptions1: {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
-                    height: 250,
-                    title: {
-                        text: "Number of sessions per month",
-                        fontSize: 20
+                    backgroundColor: "black",
+                    axisX : {
+                        labelFontColor: "red",
                     },
+                    axisY : {
+                        labelFontColor: "red",
+                    },
+                    height: 300,
                     data: [{
-                        type: "pie",
-                        startAngle: 75,
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        showInLegend: "true",
-                        legendText: "{label}",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
+                        color: "red",
+                        type: "line",
                         dataPoints: sessionsList
                     }]
                 },
                 diagramOptions2: {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
-                    height: 250,
-                    title: {
-                        text: "Number of stations visited per month",
-                        fontSize: 20
+                    backgroundColor: "black",
+                    axisX : {
+                        labelFontColor: "red",
                     },
+                    axisY : {
+                        labelFontColor: "red",
+                    },
+                    height: 300,
                     data: [{
-                        type: "pie",
-                        startAngle: 75,
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        showInLegend: "true",
-                        legendText: "{label}",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
+                        color: "red",
+                        type: "line",
                         dataPoints: stationsList
                     }]
                 },
                 diagramOptions3: {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
-                    height: 250,
-                    title: {
-                        text: "kWh provided per month",
-                        fontSize: 20
+                    backgroundColor: "black",
+                    axisX : {
+                        labelFontColor: "red",
                     },
+                    axisY : {
+                        labelFontColor: "red",
+                    },
+                    height: 300,
                     data: [{
-                        type: "pie",
-                        startAngle: 75,
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        showInLegend: "true",
-                        legendText: "{label}",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
+                        color: "red",
+                        type: "line",
                         dataPoints: kwhList
                     }]
                 },
                 diagramOptions4: {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
-                    height: 250,
-                    title: {
-                        text: "Money spent per month",
-                        fontSize: 20
+                    backgroundColor: "black",
+                    axisX : {
+                        labelFontColor: "red",
                     },
+                    axisY : {
+                        labelFontColor: "red",
+                    },
+                    height: 300,
                     data: [{
-                        type: "pie",
-                        startAngle: 75,
-                        toolTipContent: "<b>{label}</b>: {y}%",
-                        showInLegend: "true",
-                        legendText: "{label}",
-                        indexLabelFontSize: 16,
-                        indexLabel: "{label} - {y}%",
+                        color: "red",
+                        type: "line",
                         dataPoints: costList
                     }]
                 } 
@@ -194,27 +231,28 @@ class UserPiesContainer extends React.Component {
     }
 
     render() {
+        return <ControlledCarousel
+        options1 = {this.state.diagramOptions1} 
+        options2 = {this.state.diagramOptions2}
+        options3 = {this.state.diagramOptions3}
+        options4 = {this.state.diagramOptions4} />
+    };
+        
+
+    /*  
         return (
-            <div>
-                { this.state.diagram && 
-                    
-                        <div className="vehicle-owners-stats-pie-diagrams">
-                            <h5 className="orangeColor center-content">Monthly data</h5>
-                            <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                            <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
-                            <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
-                            <CanvasJSChart id="pie-diagram4" options = {this.state.diagramOptions4} />
-                        </div>
-                    
-                }
-                { this.state.diagram===false &&
-                        <div className="error-message margin-top">
-                            {this.state.error}
-                        </div>
-                }
-            </div>
-        )
-    }
+
+                <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
+
+                <CanvasJSChart id="pie-diagram2" options = {this.state.diagramOptions2} />
+
+                <CanvasJSChart id="pie-diagram3" options = {this.state.diagramOptions3} />
+
+                <CanvasJSChart id="pie-diagram4" options = {this.state.diagramOptions4} />
+
+      }
+
+    //render(<ControlledCarousel />);*/
 }
 
 

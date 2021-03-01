@@ -10,15 +10,16 @@
 }
 
 .station-info-title {
-    grid-column: 1;
+    grid-column: 1; 
 }
 
 .station-info {
     grid-column: 2;
+    color: white;
 }
 
 .darker {
-    background-color: rgb(153, 145, 145);
+    background-color: rgb(18, 17, 17);
 }
 
 .spot-link:hover {

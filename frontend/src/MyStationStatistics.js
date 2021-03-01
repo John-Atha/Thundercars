@@ -75,7 +75,7 @@ class StationStatisticsDiv extends React.Component {
                 diagramOptions1 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "Number of sessions per charging spot",
@@ -96,7 +96,7 @@ class StationStatisticsDiv extends React.Component {
                 diagramOptions2 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "kWh delivered per charging spot",
@@ -164,7 +164,7 @@ class StationStatisticsDiv extends React.Component {
                     diagramOptions1 : {
                         exportEnabled: true,
                         animationEnabled: true,
-                        backgroundColor: "#DADCDB",
+                        backgroundColor: "black",
                         height: 250,
                         title: {
                             text: "Number of sessions per charging spot",
@@ -185,7 +185,7 @@ class StationStatisticsDiv extends React.Component {
                     diagramOptions2 : {
                         exportEnabled: true,
                         animationEnabled: true,
-                        backgroundColor: "#DADCDB",
+                        backgroundColor: "black",
                         height: 250,
                         title: {
                             text: "kWh delivered per charging spot",
@@ -219,7 +219,7 @@ class StationStatisticsDiv extends React.Component {
     render() {
         return (
             <div className="one-station-stats-container center-content">
-                <h5 className="orangeColor center-content margins-top-bottom">Station's General Info</h5>
+                <h5 className="orangeColor center-content margin-top-small">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -233,12 +233,19 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
-                    <div className="spots-pie-diagrams">
-                        <h5 className="orangeColor center-content">Station's statistics</h5>
-                        <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                        <CanvasJSChart id="pie-diagram2"options = {this.state.diagramOptions2} />
+                    <h5 className="orangeColor margin-top-small center-content">Station's statistics</h5>
+                }
+                { this.state.diagram1!==0 && this.state.diagram2!==0 &&
+                    <div className="spots-pie-diagrams margin-top-small">
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions1} />
+                        </div>
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions2} />
+                        </div>
                     </div>
                 }
+                
             </div>
 
         )
@@ -313,7 +320,7 @@ class MyStationStatistics extends React.Component {
                                 <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
                         </div>
 
-                        <div id="stats-info-container">
+                        <div className="stats-info-container">
                             {
                                 this.state.stationsList.map((value, key, index)=> {
                                     console.log(value+": "+key);

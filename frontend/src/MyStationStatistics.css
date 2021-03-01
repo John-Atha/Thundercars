@@ -1,18 +1,40 @@
 .station-stats-info-container {
-    width: 70%;
-    margin-left: 15%;
+    width: 50%;
+    margin-left: 25%;
     display: grid;
+    border-radius: 7px;
+    border: 5px solid black;
 }
 
 .spots-pie-diagrams {
-    margin-top: 4%;
-    display: grid;
-    grid-template-columns: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    /*grid-template-columns: 50% 50%;
     grid-template-rows: 5% 47.5% 47.5%;
-    row-gap: 0%;
+    row-gap: 0%;*/
 }
 
+.flex-layout {
+    display: flex;
+    flex-flow: row wrap;
+}
 
 .margins-top-bottom {
     margin-top: 5%;
+}
+
+.flex-item {
+    flex-grow: 1;
+    width: 500px !important;
+}
+
+.flex-item-small {
+    flex-grow: 1;
+    width: 200px !important;
+}
+
+.flex-item-medium {
+    flex-grow: 1;
+    width: 300px !important;
+
 }

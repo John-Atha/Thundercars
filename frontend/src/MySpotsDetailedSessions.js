@@ -26,7 +26,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container to-be-deleted">
+            <div className="one-spot-sessions-container flex-item-medium">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -128,15 +128,20 @@ class OneSpotSessionsDiv extends React.Component {
             <div className="spot-sessions-block center-content">
                 <h5 className="orangeColor center-content">Spot {this.state.spotId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="spot-info-container center-content">
-                        <div className="station-info-title">Spot's operator: </div>
-                        <div className="station-info">{this.state.operator}</div>
-                        <div className="station-info-title">Processes: </div>
-                        <div className="station-info">{this.state.procNumber}</div>
+                    <div className="center-content">
+                    
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Spot's operator: </div>
+                            <div className="station-info flex-item-medium">{this.state.operator}</div>
+                        </div>
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Processes: </div>
+                            <div className="station-info flex-item-medium">{this.state.procNumber}</div>
+                        </div>
                     </div>
                 }
                 { this.state.error===null &&
-                    <div className="all-spots-sessions-container center-content">
+                    <div className="all-spots-sessions-container flex-layout center-content">
                         {
                             this.state.procList.map((value, index) => {
                                 return(
@@ -239,11 +244,11 @@ class MySpotsDetailedSessions extends React.Component {
                                 )}  
                             </div>
 
-                            <div className="spots-buttons-container center-content">
+                            <div className="spots-buttons-container flex-layout center-content">
                                 {   
                                     this.state.spotsList.map((value, index) => {
                                         console.log(index);
-                                        return (<button className="spot-choose-button" key={value} onClick={this.selectSpot}>Spot {value}</button>)
+                                        return (<button className="spot-choose-button flex-item-small" key={value} onClick={this.selectSpot}>Spot {value}</button>)
                                     })
                                 }
                             </div>
@@ -260,7 +265,7 @@ class MySpotsDetailedSessions extends React.Component {
 
                             
                             {   this.state.showingSpotId && 
-                                    <div className="spots-container margin-top">
+                                    <div className="margin-top-small">
                                         <OneSpotSessionsDiv
                                             id={this.state.showingSpotId}
                                             key={this.state.showingSpotId}

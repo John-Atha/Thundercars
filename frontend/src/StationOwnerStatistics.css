@@ -9,3 +9,43 @@
 .margin-bottom {
     margin-bottom: 5%;
 }
+
+.height-500 {
+    height: 500px;
+}
+
+.carousel {
+    height: 100%;
+}
+
+.carousel-indicators {
+    top: 96%;
+    color: red;
+}
+
+.carousel-indicators li {
+    background-color: red !important;
+    height: 5px;
+}
+.carousel-caption {
+    z-index: 0;
+    top: 0%;
+    left: 50% !important;
+    font-weight: bold;
+    color: red !important;
+}
+
+.carousel-item #canvasjs-reacct-chart-container1 .canvasjs-chart-container .canvasjs-chart-canvas{
+    width: 100% !important;
+} 
+
+.small-margin-bottom {
+    margin-bottom: 2%;
+}
+
+.station-title-container {
+    width: 70%;
+    margin-left: 15%;
+    color: red !important;
+    font-size: xx-large;
+}

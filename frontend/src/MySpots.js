@@ -44,7 +44,7 @@ class SpotsDiv extends React.Component {
 
     render() {
         return(
-            <div className="one-station-container center-content">
+            <div className="one-station-container center-content flex-item">
                 <h5 className="orangeColor center-content">Spot {this.state.index}: General Info</h5>
                 <div className="station-page-info-container">
                     <div className="station-info-title darker">Station's title: </div>
@@ -110,7 +110,7 @@ class MySpots extends React.Component {
                         <div className="specific-title orangeColor">
                             My Spots
                         </div>
-                        <div id="spots-container">
+                        <div className="flex-layout">
                             {   
                                 this.state.spotsList.map((value, index) => {
                                     console.log(index);
