@@ -1,7 +1,7 @@
 import React from 'react';
 import './UpdateSpot.css';
 import MyNavbar from './MyNavbar';
-import {getStations, getOneSpotOBJECT, spotPut, connTypesGet, currTypesGet, levelsGet} from './api';
+import {getStations, stationSpotGet, getOneSpotOBJECT, spotPut, connTypesGet, currTypesGet, levelsGet} from './api';
 
 class UpdateSpot extends React.Component {
     
@@ -11,6 +11,7 @@ class UpdateSpot extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             spotId: this.props.id,
+            realSpotId: null,
             error: null,
             ownership: false,
             stationId: "",
@@ -68,71 +69,84 @@ class UpdateSpot extends React.Component {
                 this.setState({
                     stations: response.data.StationsList,
                 });
-                getOneSpotOBJECT(this.state.spotId)
+                stationSpotGet(this.state.spotId)
                 .then(response => {
-                    this.initObject=response.data;
+                    console.log(response);
                     this.setState({
-                        amps:     response.data.amps     ? (response.data.amps.length===0 ? "" : response.data.amps    ) : "",
-                        voltage:  response.data.voltage  ? (response.data.voltage.length===0 ? "" : response.data.voltage ) : "",
-                        power:  response.data.powerkw  ? (response.data.powerkw.length===0 ? "" : response.data.powerkw ) : "",
-                        comments: response.data.comments ? (response.data.comments.length===0 ? "" : response.data.comments) : "",
+                        realSpotId: response.data.chargingSpot.id
                     })
-                    connTypesGet()
-                    .then(response =>{
-                        console.log(response);
+                    getOneSpotOBJECT(this.state.realSpotId)
+                    .then(response => {
+                        this.initObject=response.data;
                         this.setState({
-                            connTypes: response.data,
-                            connType: this.initObject.connectionType ? 
-                                this.initObject.connectionType.id+",,"+
-                                this.initObject.connectionType.title+",,"+
-                                this.initObject.connectionType.formalName+",,"+
-                                this.initObject.connectionType.category :
-                                "null,,null,,null,,null"
+                            amps:     response.data.amps     ? (response.data.amps.length===0 ? "" : response.data.amps    ) : "",
+                            voltage:  response.data.voltage  ? (response.data.voltage.length===0 ? "" : response.data.voltage ) : "",
+                            power:  response.data.powerkw  ? (response.data.powerkw.length===0 ? "" : response.data.powerkw ) : "",
+                            comments: response.data.comments ? (response.data.comments.length===0 ? "" : response.data.comments) : "",
+                        })
+                        connTypesGet()
+                        .then(response =>{
+                            console.log(response);
+                            this.setState({
+                                connTypes: response.data,
+                                connType: this.initObject.connectionType ? 
+                                    this.initObject.connectionType.id+",,"+
+                                    this.initObject.connectionType.title+",,"+
+                                    this.initObject.connectionType.formalName+",,"+
+                                    this.initObject.connectionType.category :
+                                    "null,,null,,null,,null"
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not connect to database, please try again."
+                            })        
+                        })
+                        currTypesGet()
+                        .then(response => {
+                            console.log(response);
+                            this.setState({
+                                currTypes: response.data,
+                                currType: this.initObject.currentType ? 
+                                    this.initObject.currentType.id+",,"+
+                                    this.initObject.currentType.title+",,"+
+                                    this.initObject.currentType.description :
+                                    "null,,null,,null"
+                            })
+                        })
+                        .catch(err=> {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not connect to database, please try again."
+                            })        
+                        })
+                        levelsGet()
+                        .then(response => {
+                            console.log(response);
+                            this.setState({
+                                levels: response.data,
+                                level: this.initObject.level ? 
+                                    this.initObject.level.id+",,"+
+                                    this.initObject.level.title+",,"+
+                                    this.initObject.level.comments+",,"+
+                                    this.initObject.level.isFastChargeCapable :
+                                    "null,,null,,null,,null"
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not connect to database, please try again."
+                            })
+                                    
                         })
                     })
                     .catch(err => {
                         console.log(err);
                         this.setState({
                             error: "Could not connect to database, please try again."
-                        })        
-                    })
-                    currTypesGet()
-                    .then(response => {
-                        console.log(response);
-                        this.setState({
-                            currTypes: response.data,
-                            currType: this.initObject.currentType ? 
-                                this.initObject.currentType.id+",,"+
-                                this.initObject.currentType.title+",,"+
-                                this.initObject.currentType.description :
-                                "null,,null,,null"
-                        })
-                    })
-                    .catch(err=> {
-                        console.log(err);
-                        this.setState({
-                            error: "Could not connect to database, please try again."
-                        })        
-                    })
-                    levelsGet()
-                    .then(response => {
-                        console.log(response);
-                        this.setState({
-                            levels: response.data,
-                            level: this.initObject.level ? 
-                                this.initObject.level.id+",,"+
-                                this.initObject.level.title+",,"+
-                                this.initObject.level.comments+",,"+
-                                this.initObject.level.isFastChargeCapable :
-                                "null,,null,,null,,null"
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.setState({
-                            error: "Could not connect to database, please try again."
-                        })
-                                
+                        })  
                     })
                 })
                 .catch(err => {
@@ -141,7 +155,6 @@ class UpdateSpot extends React.Component {
                         error: "Could not connect to database, please try again."
                     })  
                 })
-                
             }
             else {
                 this.setState({

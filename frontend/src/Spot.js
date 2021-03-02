@@ -1,7 +1,7 @@
 import React from 'react';
 import './Spot.css';
 import MyNavbar from './MyNavbar';
-import {getOneSpot, getOneSpotOBJECT} from './api'; 
+import {getOneSpot, getOneSpotOBJECT, stationSpotGet, StationSpotDelete} from './api'; 
 
 class Spot extends React.Component {
     constructor(props) {
@@ -10,6 +10,7 @@ class Spot extends React.Component {
             useId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             spotId: this.props.id,
+            realSpotId: null,
             stationId: null,
             stationTitle: null,
             connType: null,
@@ -30,7 +31,7 @@ class Spot extends React.Component {
         this.attr5="Fast Charge";
         this.attr5="Power (kW)";
         this.stationPageRedirect = this.stationPageRedirect.bind(this);    
-        this.updateSpot = this.updateSpot.bind(this);    
+        this.deleteSpot = this.deleteSpot.bind(this);    
     }
 
     stationPageRedirect = () => {
@@ -39,6 +40,7 @@ class Spot extends React.Component {
     }
 
     componentDidMount() {
+        console.log("SPOT ID: "+this.state.spotId);
         getOneSpot(this.state.spotId)
         .then( response => {
             console.log(response);
@@ -46,32 +48,59 @@ class Spot extends React.Component {
                 stationId: response.data[this.attr6],
                 stationTitle: response.data[this.attr2],
             });
-            getOneSpotOBJECT(this.state.spotId)
+            stationSpotGet(this.state.spotId)
             .then(response => {
+                console.log(response);
                 this.setState({
-                    connType:          response.data[this.attr1]  ? response.data[this.attr1].title : "-",   
-                    level:             response.data.level        ? response.data.level.title       : "-", 
-                    levelComments:     response.data.level        ? response.data.level.comments    : "-",
-                    fastCharge:        response.data.level        ? response.data.level.isFastChargeCapable : "-",   
-                    currentType:       response.data.currentType  ? response.data.currentType.title : "-",   
-                    amps:              response.data.amps         ? response.data.amps : "-",  
-                    voltage:           response.data.voltage      ? response.data.voltage : "-",  
-                    power:             response.data.powerkw      ? response.data.powerkw : "-",    
-                    comments:          response.data.comments     ? (response.data.Comments.length!==0    ? response.data.Comments    : "-") : "-",     
+                    realSpotId: response.data.chargingSpot.id
+                })
+                getOneSpotOBJECT(this.state.realSpotId)
+                .then(response => {
+                    this.setState({
+                        connType:          response.data[this.attr1]  ? response.data[this.attr1].title : "-",   
+                        level:             response.data.level        ? response.data.level.title       : "-", 
+                        levelComments:     response.data.level        ? response.data.level.comments    : "-",
+                        fastCharge:        response.data.level        ? response.data.level.isFastChargeCapable : "-",   
+                        currentType:       response.data.currentType  ? response.data.currentType.title : "-",   
+                        amps:              response.data.amps         ? response.data.amps : "-",  
+                        voltage:           response.data.voltage      ? response.data.voltage : "-",  
+                        power:             response.data.powerkw      ? response.data.powerkw : "-",    
+                        comments:          response.data.comments     ? (response.data.comments.length!==0    ? response.data.comments    : "-") : "-",     
+                    })
+                })
+                .catch(err=> {
+                    console.log(err);
                 })
             })
             .catch(err=> {
                 console.log(err);
+                this.setState({
+                    error: "No data found for this spot"
+                })
             })
         })
         .catch(err => {
             console.log(err);
-            window.location.href="/error";
+            this.setState({
+                error: "No data found for this spot"
+            })
         })
     }
 
-    updateSpot = () => {
-        window.location.href=`/spots/${this.state.spotId}/update`;
+    deleteSpot = () => {
+        StationSpotDelete(this.state.spotId)
+        .then(response => {
+            console.log(response);
+            this.setState({
+                error: "Spot deleted successfully"
+            });
+            window.location.href=`/myspots`;
+        })
+        .catch(err => {
+            this.setState({
+                error: "Could not delete spot",
+            })
+        })
     }
 
 
@@ -119,8 +148,8 @@ class Spot extends React.Component {
                     </div>
                 
                     <div className="station-update-button-container center-content">
-                            <button className="update-button my-button" onClick={this.updateSpot}>
-                                Update spot
+                            <button className="delete-button my-button margin-top-small" onClick={this.deleteSpot}>
+                               Delete spot
                             </button>
                     </div>
                 </div>

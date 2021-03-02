@@ -28,6 +28,11 @@ import StationOwnerStatistics from './StationOwnerStatistics';
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
+/*
+<Route path="/spots/:id/update" exact>
+<FindUpdateSpot />
+</Route>
+*/
 
 function FindStation() {
   let {id} = useParams();
@@ -122,10 +127,7 @@ ReactDOM.render(
         </Route>
         <Route path="/spots/:id" exact>
           <FindSpot />
-        </Route>
-        <Route path="/spots/:id/update" exact>
-          <FindUpdateSpot />
-        </Route>
+        </Route>    
         <Route path="*">
           <NotFound />
         </Route>
