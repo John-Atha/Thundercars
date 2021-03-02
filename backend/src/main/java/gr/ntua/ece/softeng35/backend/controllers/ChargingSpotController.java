@@ -104,9 +104,9 @@ class ChargingSpotController {
         else {
           answer.put("Current Type", "Unknown");
         }
-        answer.put("Amps", (Integer) info.get(3));
-        answer.put("Voltage", (Integer) info.get(4));
-        answer.put("Power (kW)", (Integer) info.get(5));
+        answer.put("Amps", (Double) info.get(3));
+        answer.put("Voltage", (Double) info.get(4));
+        answer.put("Power (kW)", (Double) info.get(5));
         answer.put("Comments", (String) info.get(6));
         answerList.add(answer);
       }
@@ -184,9 +184,9 @@ class ChargingSpotController {
       else {
         answer.put("Current Type", "Unknown");
       }
-      answer.put("Amps", (Integer) info.get(3));
-      answer.put("Voltage", (Integer) info.get(4));
-      answer.put("Power (kW)", (Integer) info.get(5));
+      answer.put("Amps", (Double) info.get(3));
+      answer.put("Voltage", (Double) info.get(4));
+      answer.put("Power (kW)", (Double) info.get(5));
       answer.put("Comments", (String) info.get(6));
 
       String ugly = answer.toString();
