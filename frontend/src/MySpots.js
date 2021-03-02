@@ -106,10 +106,16 @@ class MySpots extends React.Component {
             return (
                 <div className="allpage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title orangeColor">
                             My Spots
                         </div>
+                        
+                        {!this.state.spotsList.length && 
+                            <div className="error-message margin-top-small center-content">No spots found,<br></br><br></br><a href="/addSpot">add one from here</a></div>
+                        }
+
+                        
                         <div className="flex-layout all-spots-container">
                             {   
                                 this.state.spotsList.map((value, index) => {

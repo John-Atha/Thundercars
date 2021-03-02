@@ -283,7 +283,7 @@ class MyStationStatistics extends React.Component {
         this.state={
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
-            error: null,
+            error: false,
             stationsList: [],
             startDate: "2021-01-27",
             endDate: "",
@@ -309,6 +309,12 @@ class MyStationStatistics extends React.Component {
                     stationsList: response.data.StationsList
                 });
             })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: true,
+                })
+            })
         }
     }
 
@@ -330,34 +336,41 @@ class MyStationStatistics extends React.Component {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
                             Statistics
                         </div>
 
-                        <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                        </div>
-
-                        <div className="stats-info-container">
-                            {
-                                this.state.stationsList.map((value, key, index)=> {
-                                    console.log(value+": "+key);
-                                    return (<StationStatisticsDiv
-                                            key={key} 
-                                            stationId={value.Id}
-                                            stationTitle={value.Title}
-                                            index={index+1}
-                                            startDate={this.state.startDate}
-                                            endDate={this.state.endDate}
-                                            stationOperator={value["Operator's Name"]}
-                                            /> )
-                                })
-                            }
-                        </div>
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
+                        
+                        {this.state.stationsList.length>0 &&
+                            <div className="time-filters-container center-content">
+                                    <label className="start-date-label" htmlFor="startDate">From</label>
+                                    <label className="end-date-label"   htmlFor="endDate">To</label>
+                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            </div>
+                        }
+                        {this.state.stationsList.length>0 &&
+                            <div className="stats-info-container">
+                                {
+                                    this.state.stationsList.map((value, key, index)=> {
+                                        console.log(value+": "+key);
+                                        return (<StationStatisticsDiv
+                                                key={key} 
+                                                stationId={value.Id}
+                                                stationTitle={value.Title}
+                                                index={index+1}
+                                                startDate={this.state.startDate}
+                                                endDate={this.state.endDate}
+                                                stationOperator={value["Operator's Name"]}
+                                                /> )
+                                    })
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             )

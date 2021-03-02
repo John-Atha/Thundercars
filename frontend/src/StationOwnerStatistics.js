@@ -248,28 +248,36 @@ class StationOwnerStatistics extends React.Component {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content ">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
                             Statistics
                         </div>
-                        <div className="station-title-container small-margin-bottom">
-                            {
-                                this.state.stationsList.map((value, key) => {
-                                        if (typeof(value)==="number") {
-                                            return (
-                                                <div key={key}>Station {value}</div>
-                                            )
-                                        }
-                                        else {
-                                            return (
-                                                <div key={key}>{value}</div>
+                        
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
 
-                                            )
-                                        }
-                                })
-                            }       
-                        </div>
-                        <StatOwnerPiesContainer />
+                            <div className="station-title-container small-margin-bottom">
+                                {
+                                    this.state.stationsList.map((value, key) => {
+                                            if (typeof(value)==="number") {
+                                                return (
+                                                    <div key={key}>Station {value}</div>
+                                                )
+                                            }
+                                            else {
+                                                return (
+                                                    <div key={key}>{value}</div>
+
+                                                )
+                                            }
+                                    })
+                                }       
+                            </div>
+                        {this.state.stationsList.length>0 &&
+                            <StatOwnerPiesContainer />
+                        }
+
                     </div>
                 </div>
             )

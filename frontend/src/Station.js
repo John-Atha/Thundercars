@@ -82,7 +82,7 @@ class Station extends React.Component {
                 statusType:          response.data[this.attr4]  ? (response.data[this.attr4].length===0  ? "-" :response.data[this.attr4]  ) : "-",
                 submissionStatus:    response.data[this.attr5]  ? (response.data[this.attr5].length===0  ? "-" :response.data[this.attr5]  ) : "-",
                 usageType:           response.data[this.attr6]  ? (response.data[this.attr6].length===0  ? "-" :response.data[this.attr6]  ) : "-",
-                operator:            response.data.Operator     ? (response.data.Operator.length===0     ? "-" :response.data.Operator     ) : "-",
+                operator:            response.data["Operator's Name"] ? (response.data["Operator's Name"].length===0 ? "-" :response.data["Operator's Name"] ) : "-",
                 firstAddress:        response.data[this.attr7]  ? (response.data[this.attr7].length===0  ? "-" :response.data[this.attr7]  ) : "-",
                 secondAddress:       response.data[this.attr8]  ? (response.data[this.attr8].length===0  ? "-" :response.data[this.attr8]  ) : "-",
                 Town:                response.data.Town         ? (response.data.Town.length===0         ? "-" :response.data.Town         ) : "-",

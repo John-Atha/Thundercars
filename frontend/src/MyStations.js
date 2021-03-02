@@ -29,7 +29,7 @@ class StationsDiv extends React.Component {
     render() {
         return (
             <div className="one-station-container center-content box-colors margin-top-small">
-                <h5 className="color2 center-content">Station {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Station {this.state.id}: General Info</h5>
                 <div className="station-page-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.title}</div>
@@ -92,6 +92,11 @@ class MyStations extends React.Component {
                         <div className="specific-title orangeColor">
                             My Stations
                         </div>
+                        
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
+
                         <div id="stations-container">
                             {   
                                 this.state.stationsList.map((value, index) => {

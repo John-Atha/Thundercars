@@ -164,7 +164,7 @@ class OneSpotSessionsDiv extends React.Component {
                 }
                 {
                     this.state.error!==null &&
-                    <p className="red-color">{this.state.error}</p>
+                    <p className="error-message margin-top-small">{this.state.error}</p>
                 }
             </div>
         )
@@ -238,12 +238,17 @@ class MySpotsDetailedSessions extends React.Component {
                             
                             <div className="specific-title">
                                 Detailed Sesions Per Charging Point
-                                {this.state.error!==null && ( 
+                                { this.state.stationsList.length>0 && this.state.error!==null && ( 
                                     <div className="error-message">
                                         {this.state.error}
                                     </div>
                                 )}  
                             </div>
+
+                            {!this.state.stationsList.length && 
+                                <div className="error-message margin-top-small center-content">No spots found,<br></br><br></br><a href="/addSpot">add one from here</a></div>
+                            }
+
 
                             <div className="spots-buttons-container flex-layout center-content">
                                 {   
@@ -254,14 +259,16 @@ class MySpotsDetailedSessions extends React.Component {
                                 }
                             </div>
 
-                            <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                            </div>
+                            {this.state.spotsList.length>0 && 
 
+                                <div className="time-filters-container center-content">
+                                    <label className="start-date-label" htmlFor="startDate">From</label>
+                                    <label className="end-date-label"   htmlFor="endDate">To</label>
+                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
 
+                            }
 
 
                             

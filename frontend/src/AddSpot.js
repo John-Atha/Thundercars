@@ -52,8 +52,8 @@ class AddSpot extends React.Component {
             console.log(response);
             this.setState({
                 stations: response.data.StationsList,
-                stationId: response.data.StationsList[0].Id,
-                stationTitle: response.data.StationsList[0].Title ? response.data.StationsList[0].Title : "Unknown title",
+                stationId: response.data.StationsList.length>0 ? response.data.StationsList[0].Id : null,
+                stationTitle: response.data.StationsList.length>0 ? (response.data.StationsList[0].Title ? response.data.StationsList[0].Title : "Unknown title") : null,
             });
             console.log(this.state.stations);
             console.log(this.state.stationId);
@@ -189,20 +189,22 @@ class AddSpot extends React.Component {
         return (
             <div className="allpage">
                 <MyNavbar />
-                <div className="general-page-container more-blur center-content">
+                <div className="general-page-container more-blur center-content padding-bottom">
                     
-                <div className="add-station-specific-title">
-                        <div className="station-info-title">
-                            Add spot
-                            {this.state.error!==null && ( 
-                                <div className="error-message">
-                                    {this.state.error}
-                                </div>
-                            )}    
-                        </div> 
+                    <div className="add-station-specific-title">
+                            <div className="station-info-title">
+                                Add spot
+                                {this.state.error!==null && ( 
+                                    <div className="error-message">
+                                        {this.state.error}
+                                    </div>
+                                )}    
+                            </div> 
                     </div>
+
+                    {this.state.stations.length>0 &&
                     
-                    <form id="add-spot-info-container">
+                        <form id="add-spot-info-container">
 
                         <div className="add-spot-first-container">                        
                             <input className="add-station-input" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} />
@@ -264,6 +266,12 @@ class AddSpot extends React.Component {
                         <input id="add-station-submit" className="my-button add-active-button" name="submit" type="submit" value="Add spot" onClick={this.handleSubmit}/>
                                                                         
                     </form>
+                    }
+
+                    {!this.state.stations.length && 
+                        <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add a station from here</a></div>
+                    }
+
 
                 </div>
             </div>
