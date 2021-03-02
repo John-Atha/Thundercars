@@ -96,7 +96,6 @@ class ControlledCarousel extends React.Component {
 }
 
 
-
 class UserPiesContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -151,6 +150,7 @@ class UserPiesContainer extends React.Component {
 
             this.setState({
                 data: response.data.Summary,
+                diagram: sessionsList.length>0,
                 diagramOptions1: {
                     exportEnabled: true,
                     animationEnabled: true,
@@ -231,11 +231,22 @@ class UserPiesContainer extends React.Component {
     }
 
     render() {
-        return <ControlledCarousel
-        options1 = {this.state.diagramOptions1} 
-        options2 = {this.state.diagramOptions2}
-        options3 = {this.state.diagramOptions3}
-        options4 = {this.state.diagramOptions4} />
+        if (this.state.diagram) {
+            return <ControlledCarousel
+            options1 = {this.state.diagramOptions1} 
+            options2 = {this.state.diagramOptions2}
+            options3 = {this.state.diagramOptions3}
+            options4 = {this.state.diagramOptions4} />
+        }
+        else {
+            return (
+                <div className="error-message margin-top">
+                    We couldn't find any sessions <br></br><br></br> <p className="color2">Go charge!!</p>
+                </div>
+            )
+        }
+        
+
     };
         
 
@@ -254,7 +265,6 @@ class UserPiesContainer extends React.Component {
 
     //render(<ControlledCarousel />);*/
 }
-
 
 class UserMyStatistics extends React.Component {
 
@@ -304,6 +314,12 @@ class UserMyStatistics extends React.Component {
                 firstname: response.data[this.attr4],
                 username: response.data.Username
             });
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: "Could not find data, please try again later"
+            })
         })
     }
 

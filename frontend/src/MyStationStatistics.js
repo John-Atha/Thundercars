@@ -164,7 +164,6 @@ class StationStatisticsDiv extends React.Component {
                 }
                 //console.log(pieData2);
                 this.setState({
-                    operatorName: response.data[this.attr1],
                     totalKWhDelivered: response.data[this.attr2],
                     sessionsNumber: response.data[this.attr3],
                     spotsUsedNumber: response.data[this.attr4],

@@ -165,7 +165,7 @@ class OneVehSessionsDiv extends React.Component {
             .then(response=> {
                 this.setState({
                     procList: response.data[this.attr7],
-                    totalkWh: response.data[this.attr9],
+                    totalkWh: response.data[this.attr10],
                     visitedPoints: response.data[this.attr9],
                     procNumber: response.data.Sessions
                 })
@@ -314,6 +314,7 @@ class VehiclesDetailedSessions extends React.Component {
                                     <div className="error-message margin-top">
                                         You don't own any vehicles
                                     </div>
+                                    <br></br>
                                     <a href="/addVehicle">Add one</a>
                                 </div>
                             }  

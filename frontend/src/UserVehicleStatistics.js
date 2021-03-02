@@ -192,7 +192,7 @@ class UserVehicleStatistics extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                noVehicles: false,
+                noVehicles: true,
             })
         })
     }
@@ -215,11 +215,12 @@ class UserVehicleStatistics extends React.Component {
                                 <div className="error-message margin-top">
                                     You don't own any vehicles
                                 </div>
+                                <br></br>
                                 <a href="/addVehicle">Add one</a>
                             </div>
                         }
 
-                        {this.state.error===null &&  
+                        {this.state.error===null &&  !this.state.noVehicles &&
 
 
                             <div className="time-filters-container center-content flex-layout fix-width center-content">
@@ -235,7 +236,7 @@ class UserVehicleStatistics extends React.Component {
 
                         }
 
-                        {this.state.error===null &&  
+                        {this.state.error===null &&  !this.state.noVehicles &&
 
                             <div id="stats-info-container" className="flex-layout fix-width">
                                 {
