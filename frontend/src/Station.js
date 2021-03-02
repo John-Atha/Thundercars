@@ -98,13 +98,12 @@ class Station extends React.Component {
                 addressGenComments:  response.data[this.attr15] ? (response.data[this.attr15].length===0 ? "-" :response.data[this.attr15] ) : "-",
                 country:             response.data.Country      ? (response.data.Country.length===0      ? "-" :response.data.Country      ) : "-",
                 continent:           response.data.Continent    ? (response.data.Continent.length===0    ? "-" :response.data.Continent    ) : "-",   
-                spotsList:           response.data.Spots        ? (response.data.Spots.length===0        ? "-" :response.data.Spots        ) : "-" 
+                spotsList:           response.data.Spots, 
             });
             console.log(this.state.spotsList);
         })
         .catch(err => {
             console.log(err);
-            window.location.href="/error";
         })
     }
 

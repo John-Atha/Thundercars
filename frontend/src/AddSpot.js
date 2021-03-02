@@ -12,8 +12,7 @@ class AddSpot extends React.Component {
             role: localStorage.getItem('role'),
             error: "",
             submitDisabled: true,
-            stationId: "",
-            stationTitle: "",
+            station: "",
             connType: "",
             currType: "",
             level: "",
@@ -52,8 +51,9 @@ class AddSpot extends React.Component {
             console.log(response);
             this.setState({
                 stations: response.data.StationsList,
-                stationId: response.data.StationsList.length>0 ? response.data.StationsList[0].Id : null,
-                stationTitle: response.data.StationsList.length>0 ? (response.data.StationsList[0].Title ? response.data.StationsList[0].Title : "Unknown title") : null,
+                station: response.data.StationsList.length>0 ? response.data.StationsList[0].Id+",,"+response.data.StationsList[0].Title : null,
+                //stationId: response.data.StationsList.length>0 ? response.data.StationsList[1].Id : null,
+                //stationTitle: response.data.StationsList.length>0 ? (response.data.StationsList[1].Title ? response.data.StationsList[1].Title : "Unknown title") : null,
             });
             console.log(this.state.stations);
             console.log(this.state.stationId);
@@ -136,13 +136,16 @@ class AddSpot extends React.Component {
             powerkw:     this.state.power.length===0        ? null : parseFloat(this.state.power)       ,
             comments:    this.state.spotComments.length===0 ? null : this.state.spotComments
         }
+        let stationStr = this.state.station;
+        let stationParts = stationStr.split(",,");
         spotPost(spotObjPost)
         .then(response => {
             console.log("postara to spot:");
             console.log(response);
             let spotObjGet = response.data;
             let spotId = response.data.id;
-            getOneStationOBJECT(this.state.stationId)
+            console.log("retrieving info for station: "+stationParts[0])
+            getOneStationOBJECT(stationParts[0])
             .then(response => {
                 console.log(response);
                 let stationObjGet = response.data;
@@ -153,13 +156,15 @@ class AddSpot extends React.Component {
                     quantityAvailable:     this.state.quantityAvailable.length===0   ? null : parseInt(this.state.quantityAvailable)  ,
                     quantityOperational :  this.state.quantityOperational.length===0 ? null : parseInt(this.state.quantityOperational),
                 }
+                console.log(`posting station-spot object:`);
+                console.log(stationSpotObject);
                 stationSpotPost(stationSpotObject)
                 .then(response => {
                     console.log(response);
                     this.setState({
                         error: "Submitted succesfully"
                     })
-                    window.location.href=`spots/${spotId}`;
+                    window.location.href=`spots/${response.data.id}`;
                 })
                 .catch(err => {
                     console.log(err);
@@ -218,12 +223,12 @@ class AddSpot extends React.Component {
                         <textarea className="add-station-input" id="add-spot-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} />                       
 
                         <div className="add-station-selects-container">
-                        <select className="add-station-input" id="add-spot-station" name="station" value={this.state.station } onChange={this.handleInput} >
+                        <select className="add-station-input" id="add-spot-station" name="station" value={this.state.station} onChange={this.handleInput} >
                             {
                                 this.state.stations.map((key, value) =>{
-                                    //console.log(value);
-                                        return(
-                                            <option key={key.Id} value={key.Id}>Station {key.Id} ({key.Title})</option>
+                                    console.log(key.Id);
+                                    return(
+                                            <option key={key.Id} value={key.Id+",,"+key.Title}>Station {key.Id} ({key.Title})</option>
                                         )
 
                                 })
