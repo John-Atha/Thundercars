@@ -26,13 +26,13 @@ class SpecVehicle extends React.Component {
     render() {
         return ( 
             <div className="one-station-container center-content box-colors flex-item-medium-big">
-                <h5 className="orangeColor center-content">Vehicle {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Vehicle {this.state.index}: General Info</h5>
                 <div className="station-page-info-container center-content">
                     <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                     <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                     <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.vehiclePageRedirect}>More details</a>
+                <button className="more-details-button my-button center-content" onClick={this.vehiclePageRedirect}>More details</button>
             </div>
         );
     }

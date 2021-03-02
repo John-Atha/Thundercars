@@ -346,11 +346,15 @@ class MyStationStatistics extends React.Component {
                         }
                         
                         {this.state.stationsList.length>0 &&
-                            <div className="time-filters-container center-content">
-                                    <label className="start-date-label" htmlFor="startDate">From</label>
-                                    <label className="end-date-label"   htmlFor="endDate">To</label>
-                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                <div className="start-date-container flex-item-small">
+                                    <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                    <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                </div>
+                                <div className="end-date-container flex-item-small">
+                                    <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                    <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
                             </div>
                         }
                         {this.state.stationsList.length>0 &&

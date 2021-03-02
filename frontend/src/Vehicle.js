@@ -192,7 +192,7 @@ class Vehicle extends React.Component {
                     }
                     {!this.state.error &&
                         <div className="station-update-button-container center-content">
-                            <button className="vehicle-delete-button" onClick={this.deleteVehicle}>
+                            <button className="delete-button my-button" onClick={this.deleteVehicle}>
                                 Delete
                             </button>
                         </div>

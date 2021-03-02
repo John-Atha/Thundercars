@@ -16,14 +16,19 @@ body {
 .one-vehicle-sessions-container {
     text-align: center;
     padding: 1%;
+    padding-bottom: 5%;
     display: grid;
-    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 30%;
+    grid-template-rows: auto auto auto auto auto auto auto min-content;
     width: 350px;
-    height: 95%;
+    height: 100%;
     border-radius: 5px;
     margin: 3% 1%;
 }
 
 .loading-message {
     color: var(--color2);
+}
+
+.padding-0 {
+    padding: 0% !important;
 }

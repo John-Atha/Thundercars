@@ -156,14 +156,14 @@ class UserPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: sessionsList
                     }]
@@ -173,14 +173,14 @@ class UserPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: stationsList
                     }]
@@ -190,14 +190,14 @@ class UserPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: kwhList
                     }]
@@ -207,14 +207,14 @@ class UserPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: costList
                     }]

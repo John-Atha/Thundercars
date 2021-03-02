@@ -71,15 +71,6 @@ body {
     -webkit-transform: scale(1.1);
 }
 
-.time-filters-container {
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 150px 150px;
-    width: 100%;
-    /*margin-left: 500px;*/
-    column-gap: 5%;
-}
-
 .padding-bottom5 {
     padding-bottom: 5%;
 }
@@ -94,5 +85,11 @@ body {
 
 .start-date-label, .end-date-label {
     color: var(--color2);
+}
+
+.end-date-container, .start-date-container {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    margin-left: 2%;
 }
 

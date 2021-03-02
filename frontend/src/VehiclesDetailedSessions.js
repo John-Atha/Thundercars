@@ -27,7 +27,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-vehicle-sessions-container flex-item box-colors">
+            <div className="one-vehicle-sessions-container flex-item-medium-big box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -42,7 +42,7 @@ class OneSession extends React.Component {
                 <div className="station-info">{this.state.cost}</div>
                 <div className="station-info-title darker">Cost per kWh: </div>
                 <div className="station-info darker">{this.state.costPerkWh}</div>
-                <div className="station-info-title">Energy Provider </div>
+                <div className="station-info-title">Energy Provider: </div>
                 <div className="station-info">{this.state.energyProv}</div>
             </div>
         )
@@ -161,7 +161,7 @@ class OneVehSessionsDiv extends React.Component {
                     })
                 }
             })
-            getVehicleSessions(this.state.userHasVehicleCurrent, this.state.startDate, this.state.endDate)
+            getVehicleSessions(this.state.userHasVehicleCurrent, this.props.startDate, this.props.endDate)
             .then(response=> {
                 this.setState({
                     procList: response.data[this.attr7],
@@ -183,9 +183,9 @@ class OneVehSessionsDiv extends React.Component {
         console.log("i will show the spot's sessions");
         return (
             <div className="spot-sessions-block center-content">
-                <h5 className="orangeColor center-content">Vehicle {this.state.vehId} Sessions</h5>
+                <h5 className="color2 center-content">Vehicle {this.state.vehId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="vehicle-info-container center-content">
+                    <div className="vehicle-info-container center-content padding-0">
                         <div className="station-info-title">Processes: </div>
                         <div className="station-info">{this.state.procNumber}</div>
                         <div className="station-info-title">Total kWh delivered: </div>
@@ -218,7 +218,7 @@ class OneVehSessionsDiv extends React.Component {
                 }
                 {
                     this.state.error!==null &&
-                    <p className="loading-message">{this.state.error}</p>
+                    <p className="error-message margin-top">{this.state.error}</p>
                 }
             </div>
         )
@@ -323,22 +323,26 @@ class VehiclesDetailedSessions extends React.Component {
                                     {   
                                         this.state.vehList.map((value, index) => {
                                             //console.log(index);
-                                            return (<button className="spot-choose-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
+                                            return (<button className="choice-button my-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
                                         })
                                     }
                                 </div>
                             }
                             {!this.state.noVehicles &&
-                                <div className="time-filters-container center-content">
-                                    <label className="start-date-label" htmlFor="startDate">From</label>
-                                    <label className="end-date-label"   htmlFor="endDate">To</label>
-                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                    <div className="start-date-container flex-item-small">
+                                        <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                        <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    </div>
+                                    <div className="end-date-container flex-item-small">
+                                        <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                        <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                    </div>
                                 </div>
                             }
 
                             {!this.state.noVehicles && this./*state.*/showingVehId && 
-                                    <div className="spots-container margin-top">
+                                    <div className="spots-container margin-top-small">
                                         <OneVehSessionsDiv
                                             id={this./*state.*/showingVehId}
                                             key={this./*state.*/showingVehId}

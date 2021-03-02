@@ -81,7 +81,7 @@ class VehicleStatisticsDiv extends React.Component {
     render() {
         return(
             <div className="one-station-container center-content box-colors">
-                <h5 className="orangeColor center-content">Vehicle {this.props.id}</h5>
+                <h5 className="color2 center-content">Vehicle {this.props.id}</h5>
                 {   !this.props.dataHere && 
 
                         <div className="loading-message">
@@ -91,12 +91,12 @@ class VehicleStatisticsDiv extends React.Component {
                 }
 
                 { this.props.dataHere &&
-                    <div className="station-page-info-container flex-item-medium-big center-content">
-                        <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
-                        <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
-                        <div className="station-info-title darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
-                        <div className="station-info-title">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
-                        <div className="station-info-title darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
+                    <div className="vehicle-page-info-container flex-item-medium-big center-content">
+                        <div className="station-info-title color2 darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
+                        <div className="station-info-title color2 ">Model: </div><div className="station-info">{this.state.model}</div>
+                        <div className="station-info-title color2 darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
+                        <div className="station-info-title color2 ">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
+                        <div className="station-info-title color2 darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
                     </div>
                 }
             </div>
@@ -222,11 +222,15 @@ class UserVehicleStatistics extends React.Component {
                         {this.state.error===null &&  
 
 
-                            <div className="time-filters-container center-content">
-                                    <label className="start-date-label" htmlFor="startDate">From</label>
-                                    <label className="end-date-label"   htmlFor="endDate">To</label>
-                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                <div className="start-date-container flex-item-small">
+                                    <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                    <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                </div>
+                                <div className="end-date-container flex-item-small">
+                                    <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                    <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
                             </div>
 
                         }
