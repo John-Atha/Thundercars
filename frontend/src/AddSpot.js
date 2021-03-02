@@ -131,9 +131,9 @@ class AddSpot extends React.Component {
             connectionType: connType,
             level: level,
             currentType: currType,
-            amps:        this.state.amps.length===0         ? null : this.state.amps        ,
-            voltage:     this.state.voltage.length===0      ? null : this.state.voltage     ,
-            powerkw:     this.state.power.length===0        ? null : this.state.power       ,
+            amps:        this.state.amps.length===0         ? null : parseFloat(this.state.amps)        ,
+            voltage:     this.state.voltage.length===0      ? null : parseFloat(this.state.voltage)     ,
+            powerkw:     this.state.power.length===0        ? null : parseFloat(this.state.power)       ,
             comments:    this.state.spotComments.length===0 ? null : this.state.spotComments
         }
         spotPost(spotObjPost)
@@ -149,9 +149,9 @@ class AddSpot extends React.Component {
                 let stationSpotObject = {
                     chargingStation: stationObjGet,
                     chargingSpot: spotObjGet,
-                    quantity:              this.state.quantity.length===0            ? null : this.state.quantity           ,
-                    quantityAvailable:     this.state.quantityAvailable.length===0   ? null : this.state.quantityAvailable  ,
-                    quantityOperational :  this.state.quantityOperational.length===0 ? null : this.state.quantityOperational,
+                    quantity:              this.state.quantity.length===0            ? null : parseInt(this.state.quantity)           ,
+                    quantityAvailable:     this.state.quantityAvailable.length===0   ? null : parseInt(this.state.quantityAvailable)  ,
+                    quantityOperational :  this.state.quantityOperational.length===0 ? null : parseInt(this.state.quantityOperational),
                 }
                 stationSpotPost(stationSpotObject)
                 .then(response => {
@@ -261,7 +261,7 @@ class AddSpot extends React.Component {
                         </div>
                         
 
-                        <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" onClick={this.handleSubmit}/>
+                        <input id="add-station-submit" className="my-button add-active-button" name="submit" type="submit" value="Add spot" onClick={this.handleSubmit}/>
                                                                         
                     </form>
 

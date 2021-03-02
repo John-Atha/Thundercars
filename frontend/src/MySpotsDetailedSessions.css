@@ -1,5 +1,5 @@
 body {
-    --color2: rgb(233, 21, 21);
+    --color2: rgb(180, 212, 206);
 }
 
 .one-spot-sessions-container {
@@ -57,13 +57,14 @@ body {
     column-gap: 5%;
 }
 
-.spot-choose-button {
-    color: var(--color2);
+.choice-button {
+    color: black;
     margin-bottom: 1%;
     height: min-content;
     width: 100px !important;
     border-radius: 5px;
 }
+
 
 .spot-choose-button:hover {
     transform: scale(1.1);

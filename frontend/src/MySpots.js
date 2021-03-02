@@ -45,7 +45,7 @@ class SpotsDiv extends React.Component {
     render() {
         return(
             <div className="one-station-container center-content flex-item-medium-big box-colors">
-                <h5 className="orangeColor center-content">Spot {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Spot {this.state.index}: General Info</h5>
                 <div className="small-spot-page-info-container">
                     <div className="station-info-title darker">Station's title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -56,7 +56,7 @@ class SpotsDiv extends React.Component {
                     <div className="station-info-title">Current Type: </div>
                     <div className="station-info">{this.state.currentType}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.spotPageRedirect}>More details / update</a>
+                <button className="more-details-button my-button center-content" onClick={this.spotPageRedirect}>More details / update</button>
             </div>
 
         )

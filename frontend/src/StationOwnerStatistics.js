@@ -124,14 +124,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: SessionsList
                     }]
@@ -141,14 +141,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: UsersList
                     }]
@@ -158,14 +158,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: EarningsList
                     }]
@@ -175,14 +175,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: kWhDelivered
                     }]

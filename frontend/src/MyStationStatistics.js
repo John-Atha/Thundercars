@@ -80,10 +80,10 @@ class StationStatisticsDiv extends React.Component {
                     title: {
                         text: "Number of sessions per charging spot",
                         fontSize: 20,
-                        fontColor: "red",
+                        fontColor: "white",
                     },
                     legend: {
-                        fontColor: "red",
+                        fontColor: "white",
                     },
                     data: [{
                         type: "pie",
@@ -92,7 +92,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
-                        indexLabelFontColor: "red",
+                        indexLabelFontColor: "white",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData1
                     }]
@@ -106,10 +106,10 @@ class StationStatisticsDiv extends React.Component {
                     title: {
                         text: "kWh delivered per charging spot",
                         fontSize: 20,
-                        fontColor: "red",
+                        fontColor: "white",
                     },
                     legend: {
-                        fontColor: "red",
+                        fontColor: "white",
                     },
                     data: [{
                         type: "pie",
@@ -118,7 +118,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
-                        indexLabelFontColor: "red",
+                        indexLabelFontColor: "white",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData2
                     }]
@@ -179,10 +179,10 @@ class StationStatisticsDiv extends React.Component {
                         title: {
                             text: "Number of sessions per charging spot",
                             fontSize: 20,
-                            fontColor: "red",
+                            fontColor: "white",
                         },
                         legend: {
-                            fontColor: "red",
+                            fontColor: "white",
                         },    
                         data: [{
                             type: "pie",
@@ -191,7 +191,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
-                            indexLabelFontColor: "red",
+                            indexLabelFontColor: "white",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData1
                         }]
@@ -205,10 +205,10 @@ class StationStatisticsDiv extends React.Component {
                         title: {
                             text: "kWh delivered per charging spot",
                             fontSize: 20,
-                            fontColor: "red",
+                            fontColor: "white",
                         },
                         legend: {
-                            fontColor: "red",
+                            fontColor: "white",
                         },    
                         data: [{
                             type: "pie",
@@ -217,7 +217,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
-                            indexLabelFontColor: "red",
+                            indexLabelFontColor: "white",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData2
                         }]
@@ -239,7 +239,7 @@ class StationStatisticsDiv extends React.Component {
     render() {
         return (
             <div className="one-station-stats-container center-content">
-                <h5 className="orangeColor center-content margin-top-small">Station's General Info</h5>
+                <h5 className="color2 center-content margin-top-small">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -253,7 +253,7 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
-                    <h5 className="orangeColor margin-top-small center-content">Station's statistics</h5>
+                    <h5 className="color2 margin-top-small center-content">Station's statistics</h5>
                 }
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
                     <div className="spots-pie-diagrams margin-top-small">

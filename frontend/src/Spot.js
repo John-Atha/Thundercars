@@ -119,7 +119,7 @@ class Spot extends React.Component {
                     </div>
                 
                     <div className="station-update-button-container center-content">
-                            <button className="station-update-button" className="spot-choose-button" onClick={this.updateSpot}>
+                            <button className="update-button my-button" onClick={this.updateSpot}>
                                 Update spot
                             </button>
                     </div>

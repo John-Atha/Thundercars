@@ -1,3 +1,7 @@
+body {
+    --color2: rgb(180, 212, 206);;
+}
+
 #add-vehicle-info-container {
     text-align: left;
     padding-top: 2%;
@@ -55,7 +59,7 @@
     width: max(100px, 20%);
     margin-left: 40%;
     padding:0% 0%;
-    border: 1px solid rgb(163, 63, 5);
+    border: 1px solid var(--color2);
     color: black;
     border-radius: 5px;
 }

@@ -268,8 +268,8 @@ class UpdateStation extends React.Component {
             });
         }
         else {
-            submitButton.style.backgroundColor="rgb(233, 21, 21)";
-            submitButton.style.color="white";
+            submitButton.style.backgroundColor="rgb(109, 160, 205)";
+            submitButton.style.color="black";
             this.setState ({
                 submitDisabled: false
             });
@@ -544,7 +544,7 @@ class UpdateStation extends React.Component {
                                     </select>                  
                                 </div>
                                 
-                                <input id="update-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
+                                <input id="update-station-submit" className="submit-button my-button" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
                                                         
                             </form>
                         }

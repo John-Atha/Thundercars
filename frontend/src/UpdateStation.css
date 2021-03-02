@@ -1,12 +1,7 @@
 #update-station-submit {
     grid-row: 5;
     width: max(100px, 20%);
-    height: min-content;
     margin-left: 40%;
-    padding:0% 0%;
-    border: 1px solid rgb(163, 63, 5);
-    color: black;
-    border-radius: 5px;
     margin-top: 40px;
 }
 

@@ -225,7 +225,7 @@ class Station extends React.Component {
     
                         </div>
                         <div className="station-update-button-container center-content">
-                            <button className="station-update-button" onClick={this.updateStation}>
+                            <button className="update-button my-button" onClick={this.updateStation}>
                                 Update station
                             </button>
                         </div>

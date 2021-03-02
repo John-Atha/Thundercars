@@ -29,7 +29,7 @@ class StationsDiv extends React.Component {
     render() {
         return (
             <div className="one-station-container center-content box-colors margin-top-small">
-                <h5 className="orangeColor center-content">Station {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Station {this.state.index}: General Info</h5>
                 <div className="station-page-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.title}</div>
@@ -42,7 +42,7 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title darker">First Address: </div>
                     <div className="station-info darker">{this.state.firstAddress}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.stationPageRedirect}>More details / update</a>
+                <button className="my-button more-details-button center-content" onClick={this.stationPageRedirect}>More details / update</button>
             </div>
         )
     }

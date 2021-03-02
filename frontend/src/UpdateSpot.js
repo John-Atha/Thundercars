@@ -277,7 +277,7 @@ class UpdateSpot extends React.Component {
                         </div>
                         
 
-                        <input id="add-spot-submit" className="add-station-input" name="submit" type="submit" value="Submit" onClick={this.handleSubmit}/>
+                        <input id="add-spot-submit" className="submit-button my-button" name="submit" type="submit" value="Submit" onClick={this.handleSubmit}/>
                                                                         
                     </form>
                     )}

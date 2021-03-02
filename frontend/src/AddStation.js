@@ -110,7 +110,7 @@ class AddStation extends React.Component {
             });
         }
         else {
-            submitButton.style.backgroundColor="rgb(233, 21, 21)";
+            submitButton.style.backgroundColor="rgb(103 255 88 / 60%)";
             submitButton.style.color="white";
             this.setState ({
                 submitDisabled: false
@@ -599,7 +599,7 @@ class AddStation extends React.Component {
                             </div>
                             
 
-                            <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
+                            <input id="add-station-submit" className="my-button submit-button" name="submit" type="submit" value="Add station" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
                                                                             
                         </form>
 

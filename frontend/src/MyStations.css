@@ -1,5 +1,9 @@
 body {
-    --color2: rgb(233, 21, 21);
+    --color2: rgb(180, 212, 206);
+}
+
+.color2 {
+    color: var(--color2);
 }
 
 .one-station-container {
@@ -43,9 +47,6 @@ body {
     grid-column: 1;
 }
 
-.orangeColor {
-    color: var(--color2);
-}
 
 .station-link {
     text-decoration: underline;
@@ -54,6 +55,36 @@ body {
 .station-link:hover {
     cursor: pointer;
 }
+
+
+.more-details-button {
+    color: black;
+    background-color: var(--color2);;
+}
+
+.my-button {
+    border-radius: 5px;
+    height: min-content;
+    margin-bottom: 1%;
+}
+
+.my-button:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
+
+.update-button {
+    background-color: rgb(109, 160, 205);
+}
+
+.submit-button {
+    background-color: rgb(146, 145, 145);
+}
+
+.add-active-button {
+    background-color: rgb(103 255 88 / 60%);
+}
+
 
 #stations-container {
     width: 90%;

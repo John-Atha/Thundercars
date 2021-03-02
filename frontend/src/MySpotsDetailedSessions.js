@@ -127,7 +127,7 @@ class OneSpotSessionsDiv extends React.Component {
         console.log("i will show the spot's sessions");
         return (
             <div className="spot-sessions-block center-content">
-                <h5 className="orangeColor center-content">Spot {this.state.spotId} Sessions</h5>
+                <h5 className="color2 center-content">Spot {this.state.spotId} Sessions</h5>
                 { this.state.error===null &&
                     <div className="center-content">
                     
@@ -236,7 +236,7 @@ class MySpotsDetailedSessions extends React.Component {
                         <MyNavbar />
                         <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
                             
-                            <div className="specific-title orangeColor">
+                            <div className="specific-title">
                                 Detailed Sesions Per Charging Point
                                 {this.state.error!==null && ( 
                                     <div className="error-message">
@@ -249,7 +249,7 @@ class MySpotsDetailedSessions extends React.Component {
                                 {   
                                     this.state.spotsList.map((value, index) => {
                                         console.log(index);
-                                        return (<button className="spot-choose-button flex-item-small" key={value} onClick={this.selectSpot}>Spot {value}</button>)
+                                        return (<button className="choice-button flex-item-small" key={value} onClick={this.selectSpot}>Spot {value}</button>)
                                     })
                                 }
                             </div>
