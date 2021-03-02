@@ -81,6 +81,11 @@ body {
     background-color: rgb(146, 145, 145);
 }
 
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
 .add-active-button {
     background-color: rgb(103 255 88 / 60%);
 }

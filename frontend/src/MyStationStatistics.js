@@ -1,6 +1,6 @@
 import React from 'react';
 import './MyStationStatistics.css';
-import {getStationStats, getStations} from './api'
+import {getStationStats, getStations, getOneStation} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
 //var CanvasJSReact = require('./canvasjs.react');
@@ -16,10 +16,10 @@ class StationStatisticsDiv extends React.Component {
             index: this.props.index,
             stationId: this.props.stationId,
             stationTitle: this.props.stationTitle,
-            operatorName: null,
-            totalKWhDelivered: null,
-            sessionsNumber: null,
-            spotsUsedNumber: null,
+            operatorName: this.props.stationOperator,
+            totalKWhDelivered: 0,
+            sessionsNumber: 0,
+            spotsUsedNumber: 0,
             pointsSummary: [],
             diagramOptions1: null,
             diagramOptions2: null,
@@ -28,7 +28,6 @@ class StationStatisticsDiv extends React.Component {
             startDate: this.props.startDate,
             endDate: this.props.endDate,
         }
-        this.attr1="Operator Name";
         this.attr2="Total kWh Delivered";
         this.attr3="Sessions Number";
         this.attr4="Distinct Spots Used";
@@ -66,11 +65,11 @@ class StationStatisticsDiv extends React.Component {
             }
             console.log(pieData2);
             this.setState({
-                operatorName: response.data[this.attr1],
                 totalKWhDelivered: response.data[this.attr2],
                 sessionsNumber: response.data[this.attr3],
                 spotsUsedNumber: response.data[this.attr4],
                 pointsSummary: response.data[this.attr5],
+                
                 diagram1: pieData1.length,
                 diagramOptions1 : {
                     exportEnabled: true,
@@ -238,7 +237,7 @@ class StationStatisticsDiv extends React.Component {
 
     render() {
         return (
-            <div className="one-station-stats-container center-content">
+            <div className="one-station-stats-container center-content padding-bottom">
                 <h5 className="color2 center-content margin-top-small">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
@@ -252,6 +251,9 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info-title darker">Spots used: </div>
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
+                { (this.state.diagram1===0 || this.state.diagram2===0) &&
+                    <div className="error-message margin-top-small center-content">No sessions found, try changing the dates.</div>
+                }
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
                     <h5 className="color2 margin-top-small center-content">Station's statistics</h5>
                 }
@@ -351,6 +353,7 @@ class MyStationStatistics extends React.Component {
                                             index={index+1}
                                             startDate={this.state.startDate}
                                             endDate={this.state.endDate}
+                                            stationOperator={value["Operator's Name"]}
                                             /> )
                                 })
                             }

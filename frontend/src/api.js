@@ -144,6 +144,11 @@ export const stationSpotPost = (obj) => {
     return axios.post(requestUrl, obj);
 }
 
+export const stationSpotGet = (id) => {
+    const requestUrl = `admin/chargingstationspots/${id}`;
+    return axios.get(requestUrl);
+}
+
 
 export const userPost = (obj, postAddr) => {
     const requestUrl = `/admin/${postAddr}`;
@@ -173,6 +178,11 @@ export const getAllUserVehicle = () => {
 
 export const UserVehicleDelete = (id) => {
     const requestUrl = `admin/userhasvehiclesmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const StationSpotDelete = (id) => {
+    const requestUrl = `admin/chargingstationspotsmod/${id}`;
     return axios.delete(requestUrl);
 }
 

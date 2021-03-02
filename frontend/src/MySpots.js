@@ -45,7 +45,7 @@ class SpotsDiv extends React.Component {
     render() {
         return(
             <div className="one-station-container center-content flex-item-medium-big box-colors">
-                <h5 className="color2 center-content">Spot {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Spot {this.state.spotId}: General Info</h5>
                 <div className="small-spot-page-info-container">
                     <div className="station-info-title darker">Station's title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
