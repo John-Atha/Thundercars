@@ -75,6 +75,7 @@ class StatOwnerPiesContainer extends React.Component {
             diagramOptions2: {},
             diagramOptions3: {},
             diagramOptions4: {},
+            diagrams: true,
         }
     }
 
@@ -119,6 +120,7 @@ class StatOwnerPiesContainer extends React.Component {
 
             this.setState({
                 data: response.data.Summary,
+                diagrams: SessionsList.length>0,
                 diagramOptions1: {
                     exportEnabled: true,
                     animationEnabled: true,
@@ -191,16 +193,29 @@ class StatOwnerPiesContainer extends React.Component {
         })
         .catch(err=> {
             console.log(err);
+            this.setState({
+                diagrams: false,
+            })
         })
 
     }
 
     render() {
-        return <ControlledCarousel
-            options1 = {this.state.diagramOptions1} 
-            options2 = {this.state.diagramOptions2}
-            options3 = {this.state.diagramOptions3}
-            options4 = {this.state.diagramOptions4} />
+        if (this.state.diagrams) {
+            return (
+                <ControlledCarousel
+                    options1 = {this.state.diagramOptions1} 
+                    options2 = {this.state.diagramOptions2}
+                    options3 = {this.state.diagramOptions3}
+                    options4 = {this.state.diagramOptions4} />
+            )
+        }
+        else {
+            return (
+                <div className="error-message margin-top-small center-content">No sessions found,<br></br>go charge!</div>
+
+            )
+        }
         
     }
 
@@ -226,8 +241,7 @@ class StationOwnerStatistics extends React.Component {
             console.log(response);
             stationsInitList = response.data.StationsList;
             stationsInitList.forEach(element => {
-                stationsTempList.push(element.Id);
-                stationsTempList.push(element.Title);
+                stationsTempList.push(element.Id+",,"+element.Title);
             })
             this.setState({
                 stationsList: stationsTempList
@@ -260,17 +274,11 @@ class StationOwnerStatistics extends React.Component {
                             <div className="station-title-container small-margin-bottom">
                                 {
                                     this.state.stationsList.map((value, key) => {
-                                            if (typeof(value)==="number") {
-                                                return (
-                                                    <div key={key}>Station {value}</div>
-                                                )
-                                            }
-                                            else {
-                                                return (
-                                                    <div key={key}>{value}</div>
-
-                                                )
-                                            }
+                                        let valueParts = value.split(",,");
+                                        return (
+                                            <div key={key}>Station {valueParts[0]}: {valueParts[1]}</div>
+                                        )
+                                            
                                     })
                                 }       
                             </div>
