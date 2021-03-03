@@ -49,7 +49,7 @@ public class ChargingSpot {
         }
     }
 
-    ChargingSpot() {}
+    public ChargingSpot() {}
 
 	public ChargingSpot(Integer id, ConnectionType connectionType, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType currentType, String comments) {
 		this.id = id;

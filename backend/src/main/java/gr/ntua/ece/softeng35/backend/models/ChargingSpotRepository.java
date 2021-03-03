@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
     
 public interface ChargingSpotRepository extends JpaRepository<ChargingSpot, Integer> {
 
+    @Query
+    Optional<ChargingSpot> findById(Integer spotId);
+   
     @Query(value= "SELECT u.id FROM ChargingStationSpots u ORDER BY u.id")
     List<Integer> findAllStationSpotsIds();
 

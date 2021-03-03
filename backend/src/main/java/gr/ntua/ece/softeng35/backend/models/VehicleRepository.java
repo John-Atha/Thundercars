@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
+    @Query
+    Optional<Vehicle> findById(Integer vehicleId);
+
     @Query(value = "SELECT u.vehicle.id FROM UserHasVehicle u WHERE u.user.id= ?1")
     List<Integer> findUserVehicles(Integer userId);
 

@@ -80,7 +80,7 @@ public class ChargingStation {
 		}
     }
 
-	ChargingStation() {}
+	public ChargingStation() {}
 
     public ChargingStation(Integer id, String uuid, Operator operator, UsageType usageType, Address address, String comments, Date dateLastConfirmed, Date dateLastStatusUpdate, Date dateCreated, StatusType statusType, SubmissionStatus submissionStatus, /*Blob media_items, */Double rating, Double costPerKwh, StationOwner stationOwner) {
 		this.id = id;

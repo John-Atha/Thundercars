@@ -895,13 +895,13 @@ class UserController {
   User newUser(@RequestBody User newUser) {
     return repository.save(newUser);
   }
-  /*
+  
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/users/{id}")
+  @GetMapping("/evcharge/api/users/{id}")
   User one(@PathVariable Integer id) {
     return repository.findById(id)
       .orElseThrow(() -> new UserNotFoundException(id));
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
   @PutMapping("/evcharge/api/admin/usersmod/{id}")

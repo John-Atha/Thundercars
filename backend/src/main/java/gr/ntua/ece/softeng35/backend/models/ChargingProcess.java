@@ -53,7 +53,7 @@ public class ChargingProcess {
     @Column(unique = false, nullable = false)
     private String chargingProgram;
 
-    ChargingProcess() {}
+    public ChargingProcess() {}
 
     public ChargingProcess(Integer id, User user, Vehicle vehicle, ChargingStation chargingStation, ChargingSpot chargingSpot, Date connectionTime, Date disconnectTime, Date doneChargingTime, String timezone, Double kwhDelivered, Double cost, String paymentWay, Double rating, String chargingProgram) {
         this.id = id;

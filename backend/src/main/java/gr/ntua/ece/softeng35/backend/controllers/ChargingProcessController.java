@@ -3396,11 +3396,11 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 }
 
-  /*@CrossOrigin(origins = "http://localhost:3000")
+  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/evcharge/api/admin/chargingprocessesmod")
   ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess) {
     return repository.save(newChargingProcess);
-  }*/
+  }
 
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/admin/chargingprocesses/{id}")
