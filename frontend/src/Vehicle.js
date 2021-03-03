@@ -110,20 +110,24 @@ class Vehicle extends React.Component {
             let userVehiclesList = response.data;
             // find userHasVehicle objects that referr to current user
             for (let i=0; i<userVehiclesList.length; i++) {
-                if (parseInt(userVehiclesList[i].user.id)===parseInt(this.state.userId) && parseInt(userVehiclesList[i].vehicle.id)===parseInt(this.state.vehId)) {
-                    UserVehicleDelete(userVehiclesList[i].id)
-                    .then(response => {
-                        console.log(response);
-                        this.setState({
-                            error: "Deleted succesfully"
+                
+                if (userVehiclesList[i].user && userVehiclesList[i].vehicle) {
+
+                    if (parseInt(userVehiclesList[i].user.id)===parseInt(this.state.userId) && parseInt(userVehiclesList[i].vehicle.id)===parseInt(this.state.vehId)) {
+                        UserVehicleDelete(userVehiclesList[i].id)
+                        .then(response => {
+                            console.log(response);
+                            this.setState({
+                                error: "Deleted succesfully"
+                            })
                         })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.setState({
-                            error: "Could not delete vehicle"
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not delete vehicle"
+                            })
                         })
-                    })
+                    }
                 }
             }            
         })
@@ -178,16 +182,16 @@ class Vehicle extends React.Component {
                         
                     {!this.state.error &&
                         <div className="station-page-info-container box-colors margin-top-small center-content">
-                            <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
-                            <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
-                            <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
-                            <div className="station-info-title">Release Year: </div><div className="station-info">{this.state.releaseYear}</div>
-                            <div className="station-info-title darker">Usable Battery Size(kWh): </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
-                            <div className="station-info-title">Energy Consumption(Wh/km): </div><div className="station-info">{this.state.energyConsumption}</div>
-                            <div className="station-info-title darker">AC Charging: </div><div className="station-info darker">{this.state.acCharging}</div>
-                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
-                            <div className="station-info-title darker">DC Charging: </div><div className="station-info darker">{this.state.dcCharging}</div>
-                            <div className="station-info-title">DC Charger Type(s): </div><div className="station-info">{this.state.dcChargerTypes}</div>
+                            <div className="station-info-title center-content darker">Brand: </div><div className="station-info center-content darker">{this.state.brand}</div>
+                            <div className="station-info-title center-content">Model: </div><div className="station-info center-content">{this.state.model}</div>
+                            <div className="station-info-title center-content darker">Type: </div><div className="station-info darker center-content">{this.state.type}</div>
+                            <div className="station-info-title center-content">Release Year: </div><div className="station-info center-content">{this.state.releaseYear}</div>
+                            <div className="station-info-title center-content darker">Usable Battery Size (kWh): </div><div className="station-info darker center-content">{this.state.usableBatterySize}</div>
+                            <div className="station-info-title center-content">Energy Consumption (Wh/km): </div><div className="station-info center-content">{this.state.energyConsumption}</div>
+                            <div className="station-info-title center-content darker">AC Charging: </div><div className="station-info darker center-content ">{this.state.acCharging}</div>
+                            <div className="station-info-title center-content">AC Charger Type(s): </div><a className="station-link station-info center-content" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
+                            <div className="station-info-title center-content darker">DC Charging: </div><div className="station-info darker center-content">{this.state.dcCharging}</div>
+                            <div className="station-info-title center-content">DC Charger Type(s): </div><div className="station-info center-content">{this.state.dcChargerTypes}</div>
                         </div>            
                     }
                     {!this.state.error &&

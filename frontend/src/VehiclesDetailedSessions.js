@@ -92,16 +92,19 @@ class OneVehSessionsDiv extends React.Component {
             // find userHasVehicle objects that referr to current user
             userVehiclesList.forEach(el => {
                 //console.log("user: " + el.user.id);
-                if (parseInt(el.user.id)===parseInt(this.state.userId)) {
-                    console.log("brhka "+ el.user.id);
-                    let temp = this.state.userHasVehicleIds;
-                    temp.push(
-                        {userVeh: el.id,
-                         veh: el.vehicle.id,
-                        });
-                    this.setState({
-                        userHasVehicleIds: temp,
-                    })
+                
+                if (el.user && el.vehicle) {
+                    if (parseInt(el.user.id)===parseInt(this.state.userId)) {
+                        console.log("brhka "+ el.user.id);
+                        let temp = this.state.userHasVehicleIds;
+                        temp.push(
+                            {userVeh: el.id,
+                            veh: el.vehicle.id,
+                            });
+                        this.setState({
+                            userHasVehicleIds: temp,
+                        })
+                    }
                 }
             })
             // find userHasVehicle objects of current user that referr to current vehicle
@@ -131,7 +134,7 @@ class OneVehSessionsDiv extends React.Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    error: "Could not find sessions for this vehicle2"
+                    error: "Could not find sessions for this vehicle"
                 })            
             })
 
@@ -141,7 +144,7 @@ class OneVehSessionsDiv extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not find sessions for this vehicle1"
+                error: "Could not find sessions for this vehicle"
             })
         })
     }
@@ -152,7 +155,8 @@ class OneVehSessionsDiv extends React.Component {
             console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
             // remove previous objects from dom
             this.setState({
-                procList: []
+                procList: [],
+                error: null,
             });
             this.state.userHasVehicleIds.forEach(el => {
                 if (el[1]===this.state.vehId) {

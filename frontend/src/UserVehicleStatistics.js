@@ -154,16 +154,18 @@ class UserVehicleStatistics extends React.Component {
                 // find userHasVehicle objects that referr to current user
                 userVehiclesList.forEach(el => {
                     //console.log("user: " + el.user.id);
-                    if (parseInt(el.user.id)===parseInt(this.state.userId)) {
-                        console.log("brhka "+ el.user.id);
-                        let temp = this.state.userHasVehicleIds;
-                        temp.push(
-                            {userVeh: el.id,
-                            veh: el.vehicle.id,
-                            });
-                        this.setState({
-                            userHasVehicleIds: temp,
-                        })
+                    if (el.user && el.vehicle) {
+                        if (parseInt(el.user.id)===parseInt(this.state.userId)) {
+                            console.log("brhka "+ el.user.id);
+                            let temp = this.state.userHasVehicleIds;
+                            temp.push(
+                                {userVeh: el.id,
+                                veh: el.vehicle.id,
+                                });
+                            this.setState({
+                                userHasVehicleIds: temp,
+                            })
+                        }
                     }
                 })
                 // find userHasVehicle objects of current user that referr to current vehicles
