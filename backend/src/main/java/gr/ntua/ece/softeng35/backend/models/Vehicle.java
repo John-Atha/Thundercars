@@ -53,7 +53,7 @@ public class Vehicle {
         }
     }
     
-    Vehicle(){}
+    public Vehicle(){}
 
     public Vehicle(Integer id, String brand, String brandId, String type, String model, Integer releaseYear, Double usableBatterySize, Double energyConsumption, AcCharger acCharger, DcCharger dcCharger) {
         this.id = id;
