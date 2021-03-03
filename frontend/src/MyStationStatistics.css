@@ -19,11 +19,6 @@ body {
     row-gap: 0%;*/
 }
 
-.flex-layout {
-    display: flex;
-    flex-flow: row wrap;
-}
-
 .margins-top-bottom {
     margin-top: 5%;
 }

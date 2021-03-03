@@ -1,8 +1,9 @@
 .station-page-info-container {
     text-align: left;
     padding: 2% 1%;
-    width: 60%;
-    margin-left: 20%;
+    width: 70%;
+    min-width: min-content;
+    margin-left: 15%;
     display: grid;
     grid-template-columns: 40% 60%;
     grid-template-rows: min-content;
