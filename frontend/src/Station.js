@@ -134,7 +134,7 @@ class Station extends React.Component {
                             <div className="station-info-title">Station:</div> 
                             {this.state.title}
                         </div>
-                        <div className="station-page-info-container">
+                        <div className="station-page-info-container box-colors margin-top-small">
                             
                             <div className="station-info-title darker">UUID:</div> 
                             <div className="station-info darker">{this.state.uuid}</div>

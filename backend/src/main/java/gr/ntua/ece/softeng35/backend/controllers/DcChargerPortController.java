@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.DcChargerPort;
 import gr.ntua.ece.softeng35.backend.models.DcChargerPortRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class DcChargerPortController {
   private final DcChargerPortRepository repository;
+  private final UserRepository repository2;
 
-  DcChargerPortController(DcChargerPortRepository repository) {
+  DcChargerPortController(DcChargerPortRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/dcchargerports")
-  List<DcChargerPort> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/dcchargerports")
+  List<DcChargerPort> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/dcchargerportsmod")
-  DcChargerPort newDcChargerPort(@RequestBody DcChargerPort newDcChargerPort) {
+  @PostMapping("/evcharge/api/{apikey}/admin/dcchargerportsmod")
+  DcChargerPort newDcChargerPort(@RequestBody DcChargerPort newDcChargerPort,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newDcChargerPort);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/dcchargerports/{id}")
-  DcChargerPort one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/dcchargerports/{id}")
+  DcChargerPort one(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new DcChargerPortNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/dcchargerportsmod/{id}")
-  DcChargerPort replaceDcChargerPort(@RequestBody DcChargerPort newDcChargerPort, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/dcchargerportsmod/{id}")
+  DcChargerPort replaceDcChargerPort(@RequestBody DcChargerPort newDcChargerPort, @PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(dcChargerPort -> {
         dcChargerPort.setPortname(newDcChargerPort.getPortname());
@@ -48,8 +71,13 @@ dcChargerPort.setDcCharger(newDcChargerPort.getDcCharger());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/dcchargerportsmod/{id}")
-  void deleteDcChargerPort(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/dcchargerportsmod/{id}")
+  void deleteDcChargerPort(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

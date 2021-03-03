@@ -1,7 +1,55 @@
+body {
+    --color2: rgb(233, 21, 21);
+}
+
 .stat-owners-stats-pie-diagrams {
     margin-top: 4%;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 5% 20% 20% 20% 20%;
     row-gap: 0%;
+}
+
+.margin-bottom {
+    margin-bottom: 5%;
+}
+
+.height-500 {
+    height: 500px;
+}
+
+.carousel {
+    height: 100%;
+}
+
+.carousel-indicators {
+    top: 96%;
+    color: var(--color2);
+}
+
+.carousel-indicators li {
+    background-color: var(--color2) !important;
+    height: 5px;
+}
+.carousel-caption {
+    z-index: 0;
+    top: 0%;
+    left: 50% !important;
+    color: var(--color2) !important;
+    font-size: large !important;
+}
+
+.carousel-item #canvasjs-reacct-chart-container1 .canvasjs-chart-container .canvasjs-chart-canvas{
+    width: 100% !important;
+} 
+
+.small-margin-bottom {
+    margin-bottom: 2%;
+}
+
+.station-title-container {
+    width: 70%;
+    margin-left: 15%;
+    color: var(--color2) !important;
+    font-size: x-large;
 }

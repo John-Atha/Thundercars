@@ -1,23 +1,27 @@
+body {
+    --color2: rgb(233, 21, 21);
+}
+
 .allPage {
     position: top;
 }
 
 .specific-title {
-    color: black;
+    color: white;
     font-size: xx-large;
     border-bottom: 2px solid grey;
+    color: var(--color2);
 }
 
 .general-page-container {
-    margin-top: 5%;
+    margin-top: 0%;
     margin-bottom: 5%;
     height: max(700px, min-content);
-    width: max(inherit, min-content);
-    margin-left: 0%;
+    width: max(99vw, 300px);
 }
 
 .more-blur {
-    background: rgba(253, 255, 254, 0.857);
+    background: rgba(0, 0, 0, 0.857);
     box-shadow: 0 8px 32px 0 rgba(163, 13, 13, 0.37);
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
@@ -61,3 +65,4 @@
     grid-row: 3;
     grid-column: 2;
 }
+

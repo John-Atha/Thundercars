@@ -66,7 +66,7 @@ class UpdateStation extends React.Component {
                 for (var i=0; i<response.data.StationsList.length; i++) {
                     console.log(response.data.StationsList[i].Id);
                     console.log(this.state.stationId);
-                    if (response.data.StationsList[i].Id==this.state.stationId) {
+                    if (parseInt(response.data.StationsList[i].Id)===parseInt(this.state.stationId)) {
                         this.setState({
                             ownership: true,
                         });

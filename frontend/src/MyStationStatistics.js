@@ -24,7 +24,9 @@ class StationStatisticsDiv extends React.Component {
             diagramOptions1: null,
             diagramOptions2: null,
             diagram1: 0,
-            diagram2: 0
+            diagram2: 0,
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
         }
         this.attr1="Operator Name";
         this.attr2="Total kWh Delivered";
@@ -37,7 +39,7 @@ class StationStatisticsDiv extends React.Component {
     }
 
     componentDidMount() {
-        getStationStats(this.state.stationId)
+        getStationStats(this.state.stationId, this.state.startDate, this.state.endDate)
         .then(response => {
             console.log(response);
             let l = response.data[this.attr5];
@@ -73,11 +75,15 @@ class StationStatisticsDiv extends React.Component {
                 diagramOptions1 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "Number of sessions per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "red",
+                    },
+                    legend: {
+                        fontColor: "red",
                     },
                     data: [{
                         type: "pie",
@@ -86,6 +92,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "red",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData1
                     }]
@@ -94,11 +101,15 @@ class StationStatisticsDiv extends React.Component {
                 diagramOptions2 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "kWh delivered per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "red",
+                    },
+                    legend: {
+                        fontColor: "red",
                     },
                     data: [{
                         type: "pie",
@@ -107,6 +118,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "red",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData2
                     }]
@@ -122,10 +134,112 @@ class StationStatisticsDiv extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
+            console.log(`from ${prevProps.startDate} to ${this.props.startDate}`);
+            console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
+            getStationStats(this.state.stationId, this.props.startDate, this.props.endDate)
+            .then(response => {
+                //console.log(response);
+                let l = response.data[this.attr5];
+                let pieData1 = [];
+                //console.log(l);
+                for( var i=0; i<l.length; i++) {
+                    //console.log(100*l[i][this.attr6]/response.data[this.attr3]);
+                    //console.log("Point "+l[i][this.attr7]);
+                    pieData1.push({
+                        y: Math.round(100*l[i][this.attr6]/response.data[this.attr3]),
+                        label: "Point "+l[i][this.attr7]
+                    })
+                }
+                //console.log(pieData1);
+                let pieData2 = [];
+                //console.log(l);
+                for( i=0; i<l.length; i++) {
+                    //console.log(100*l[i][this.attr8]/response.data[this.attr2]);
+                    //console.log("Point "+l[i][this.attr7]);
+                    pieData2.push({
+                        y: Math.round(100*l[i][this.attr8]/response.data[this.attr2]),
+                        label: "Point "+l[i][this.attr7]
+                    })
+                }
+                //console.log(pieData2);
+                this.setState({
+                    operatorName: response.data[this.attr1],
+                    totalKWhDelivered: response.data[this.attr2],
+                    sessionsNumber: response.data[this.attr3],
+                    spotsUsedNumber: response.data[this.attr4],
+                    pointsSummary: response.data[this.attr5],
+                    diagram1: pieData1.length,
+                    diagramOptions1 : {
+                        exportEnabled: true,
+                        animationEnabled: true,
+                        backgroundColor: "black",
+                        height: 250,
+                        title: {
+                            text: "Number of sessions per charging spot",
+                            fontSize: 20,
+                            fontColor: "red",
+                        },
+                        legend: {
+                            fontColor: "red",
+                        },    
+                        data: [{
+                            type: "pie",
+                            startAngle: 75,
+                            toolTipContent: "<b>{label}</b>: {y}%",
+                            showInLegend: "true",
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabelFontColor: "red",
+                            indexLabel: "{label} - {y}%",
+                            dataPoints: pieData1
+                        }]
+                    },
+                    diagram2: pieData2.length,
+                    diagramOptions2 : {
+                        exportEnabled: true,
+                        animationEnabled: true,
+                        backgroundColor: "black",
+                        height: 250,
+                        title: {
+                            text: "kWh delivered per charging spot",
+                            fontSize: 20,
+                            fontColor: "red",
+                        },
+                        legend: {
+                            fontColor: "red",
+                        },    
+                        data: [{
+                            type: "pie",
+                            startAngle: 75,
+                            toolTipContent: "<b>{label}</b>: {y}%",
+                            showInLegend: "true",
+                            legendText: "{label}",
+                            indexLabelFontSize: 16,
+                            indexLabelFontColor: "red",
+                            indexLabel: "{label} - {y}%",
+                            dataPoints: pieData2
+                        }]
+                    }
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    diagram1: 0,
+                    diagram2: 0,
+                })
+            })
+        }
+    }
+
+
+
     render() {
         return (
             <div className="one-station-stats-container center-content">
-                <h5 className="orangeColor center-content margins-top-bottom">Station's General Info</h5>
+                <h5 className="orangeColor center-content margin-top-small">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -139,12 +253,19 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
-                    <div className="spots-pie-diagrams">
-                        <h5 className="orangeColor center-content">Station's statistics</h5>
-                        <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                        <CanvasJSChart id="pie-diagram2"options = {this.state.diagramOptions2} />
+                    <h5 className="orangeColor margin-top-small center-content">Station's statistics</h5>
+                }
+                { this.state.diagram1!==0 && this.state.diagram2!==0 &&
+                    <div className="spots-pie-diagrams margin-top-small">
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions1} />
+                        </div>
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions2} />
+                        </div>
                     </div>
                 }
+                
             </div>
 
         )
@@ -161,7 +282,9 @@ class MyStationStatistics extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             error: null,
-            stationsList: []
+            stationsList: [],
+            startDate: "2021-01-27",
+            endDate: "",
         }
 
         // because names contain space char and values cannot be retrieved
@@ -170,6 +293,7 @@ class MyStationStatistics extends React.Component {
         this.attr1Name = "Stations Visited";
         this.attr2Name = "Total Cost";
         this.attr3Name = "Total kWh Delivered";
+        this.handleInput = this.handleInput.bind(this);
     }
 
     componentDidMount () {
@@ -186,6 +310,16 @@ class MyStationStatistics extends React.Component {
         }
     }
 
+    handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState( {
+            [name]: value
+        })
+        console.log(name+":  ");
+        console.log(value);
+    }
+
     render() {
         if (!localStorage.getItem('userId') || this.state.role==="VehicleOwner") {
             window.location.href = "/";
@@ -198,7 +332,15 @@ class MyStationStatistics extends React.Component {
                         <div className="specific-title">
                             Statistics
                         </div>
-                        <div id="stats-info-container">
+
+                        <div className="time-filters-container center-content">
+                                <label className="start-date-label" htmlFor="startDate">From</label>
+                                <label className="end-date-label"   htmlFor="endDate">To</label>
+                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                        </div>
+
+                        <div className="stats-info-container">
                             {
                                 this.state.stationsList.map((value, key, index)=> {
                                     console.log(value+": "+key);
@@ -207,6 +349,8 @@ class MyStationStatistics extends React.Component {
                                             stationId={value.Id}
                                             stationTitle={value.Title}
                                             index={index+1}
+                                            startDate={this.state.startDate}
+                                            endDate={this.state.endDate}
                                             /> )
                                 })
                             }

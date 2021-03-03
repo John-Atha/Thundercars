@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.*;
 import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.Vehicle;
 import gr.ntua.ece.softeng35.backend.models.VehicleRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,34 +24,57 @@ import org.json.*;
 @RestController
 class VehicleController {
   private final VehicleRepository repository;
+  private final UserRepository repository2;
 
-  VehicleController(VehicleRepository repository) {
+  VehicleController(VehicleRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/vehicles")
-  List<Vehicle> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/vehicles")
+  List<Vehicle> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
       return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/vehiclesmod")
-  Vehicle newVehicle(@RequestBody Vehicle newVehicle) {
+  @PostMapping("/evcharge/api/{apikey}/admin/vehiclesmod")
+  Vehicle newVehicle(@RequestBody Vehicle newVehicle, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
         return repository.save(newVehicle);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/vehicles/{id}")
-  Vehicle one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/vehicles/{id}")
+  Vehicle one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new VehicleNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/user/{id}/myvehicles/{vehicleId}")
+  @GetMapping("/evcharge/api/{apikey}/user/{id}/myvehicles/{vehicleId}")
   JsonNode myVehicle(@PathVariable Integer id,
-                     @PathVariable Integer vehicleId) {
+                     @PathVariable Integer vehicleId,
+                     @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     List<Integer> allUsers = repository.findAllUsersIds();
     if (!allUsers.contains(id)) {
       throw new BadRequestException();
@@ -155,8 +179,13 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/vehiclesmod/{id}")
-  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/vehiclesmod/{id}")
+  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(vehicle -> {
         vehicle.setBrand(newVehicle.getBrand());
@@ -174,8 +203,13 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/vehiclesmod/{id}")
-  void deleteVehicle(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/vehiclesmod/{id}")
+  void deleteVehicle(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

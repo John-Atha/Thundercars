@@ -6,37 +6,61 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.ChargingStationSpots;
 import gr.ntua.ece.softeng35.backend.models.ChargingStationSpotsRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class ChargingStationSpotsController {
   private final ChargingStationSpotsRepository repository;
+  private final UserRepository repository2;
 
-  ChargingStationSpotsController(ChargingStationSpotsRepository repository) {
+  ChargingStationSpotsController(ChargingStationSpotsRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/chargingstationspots")
-  List<ChargingStationSpots> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstationspots")
+  List<ChargingStationSpots> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/chargingstationspotsmod")
-  ChargingStationSpots newChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots) {
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod")
+  ChargingStationSpots newChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newChargingStationSpots);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/chargingstationspots/{id}")
-  ChargingStationSpots one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingstationspots/{id}")
+  ChargingStationSpots one(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new ChargingStationSpotsNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/chargingstationspotsmod/{id}")
-  ChargingStationSpots replaceChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod/{id}")
+  ChargingStationSpots replaceChargingStationSpots(@RequestBody ChargingStationSpots newChargingStationSpots, @PathVariable Integer id,
+                                                  @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(chargingStationSpots -> {
         chargingStationSpots.setChargingStation(newChargingStationSpots.getChargingStation());
@@ -50,8 +74,13 @@ class ChargingStationSpotsController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/chargingstationspotsmod/{id}")
-  void deleteChargingStationSpots(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingstationspotsmod/{id}")
+  void deleteChargingStationSpots(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

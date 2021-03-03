@@ -14,6 +14,36 @@ export const loginPost = (obj) => {
                       });
 };
 
+export const dcChargerPost = (obj) => {
+    const requestUrl = "/admin/dcchargersmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const acChargerPost = (obj) => {
+    const requestUrl = "/admin/acchargersmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const acChargerPortPost = (obj) => {
+    const requestUrl = "/admin/acchargerportsmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const dcChargerPortPost = (obj) => {
+    const requestUrl = "/admin/dcchargerportsmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const PowerPerChargingPost = (obj) => {
+    const requestUrl = "admin/powerperchargingpointmod";
+    return axios.post(requestUrl, obj);
+}
+
+export const UserVehiclePost = (obj) => {
+    const requestUrl = `admin/userhasvehiclesmod`;
+    return axios.post(requestUrl, obj);
+}
+
 export const getVehicles = (id) => {
     const requestUrl = `/user/${id}/myvehicles`;
     return axios.get(requestUrl);
@@ -27,6 +57,11 @@ export const getOneVehicle = (userId,vehId) => {
 export const getOneAcCharger = (acId) => {
     const requestUrl = `acchargers/${acId}`;
     return axios.get(requestUrl);
+}
+
+export const vehiclePost = (obj) => {
+    const requestUrl = "admin/vehiclesmod";
+    return axios.post(requestUrl, obj);
 }
 
 export const countriesGet = () => {
@@ -120,6 +155,37 @@ export const getUserStats = (id) => {
     return axios.get(requestUrl);
 }
 
+export const getVehicleSessions = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerEV/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
+    return axios.get(requestUrl);
+}
+
+export const getAllUserVehicle = () => {
+    const requestUrl = 'admin/userhasvehicles';
+    return axios.get(requestUrl);
+}
+
+export const UserVehicleDelete = (id) => {
+    const requestUrl = `admin/userhasvehiclesmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const getUserProfile = (id) => {
+    const requestUrl = `user/${id}/profile`;
+    return axios.get(requestUrl);
+}
+
+export const getUserOBJECT = (id) => {
+    const requestUrl = `users/${id}`;
+    return axios.get(requestUrl);
+}
+
 export const getStations = (id) => {
     const requestUrl = `stationowners/${id}/mystations`;
     return axios.get(requestUrl);
@@ -140,8 +206,14 @@ export const getOneSpotOBJECT = (id) => {
     return axios.get(requestUrl);
 }
 
-export const getStationStats = (id) => {
-    const requestUrl = `SessionsPerStation/${id}`;
+export const getStationStats = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerStation/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
     return axios.get(requestUrl);
 }
 
@@ -155,8 +227,14 @@ export const getStationOwnerStatistics = (id) => {
     return axios.get(requestUrl);
 }
 
-export const getSpotSessions = (id) => {
-    const requestUrl = `SessionsPerPoint/${id}`;
+export const getSpotSessions = (id, startDate, endDate) => {
+    let requestUrl = `SessionsPerPoint/${id}`;
+    if (startDate.length!==0) {
+        requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
+        if (endDate.length!==0) {
+            requestUrl = requestUrl.concat('/').concat(endDate.replace('-','').replace('-',''));  
+        }
+    }
     return axios.get(requestUrl);
 }
 

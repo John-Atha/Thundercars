@@ -85,7 +85,7 @@ class Spot extends React.Component {
                         <div onClick={this.stationPageRedirect} className="station-info-title">Spot {this.state.spotId}</div> 
                     </div>
                     
-                    <div className="station-page-info-container">
+                    <div className="station-page-info-container box-colors margin-top-small">
                         
                         <div className="station-info-title darker">Station:</div> 
                         <a onClick={this.stationPageRedirect} className="station-info darker station-link">{this.state.stationTitle}</a>

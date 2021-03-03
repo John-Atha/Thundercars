@@ -115,7 +115,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "SELECT u.id FROM DcCharger u ORDER BY u.id")
     List<Integer> findAllDcChargersIds();
-
-
+    
+    @Query(value = "SELECT u.id FROM User u WHERE u.apiKey = ?1")
+    List<Integer> findUserByApiKey(String apikey);
+    
+    @Query(value = "SELECT u.id FROM StationOwner u WHERE u.apiKey = ?1")
+    List<Integer> findStationOwnerByApiKey(String apikey);
+    
+    @Query(value = "SELECT u.id FROM Admin u WHERE u.apiKey = ?1")
+    List<Integer> findAdminByApiKey(String apikey);
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.ChargingSpot;
 import gr.ntua.ece.softeng35.backend.models.ChargingSpotRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -24,15 +25,23 @@ import org.json.*;
 @RestController
 class ChargingSpotController {
   private final ChargingSpotRepository repository;
+  private final UserRepository repository2;
 
-  ChargingSpotController(ChargingSpotRepository repository) {
+  ChargingSpotController(ChargingSpotRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/chargingspots",
-                     "/evcharge/api/chargingspots/{id}"})
-  JsonNode spot(@PathVariable Optional<Integer> id) {
+  @GetMapping(value={"/evcharge/api/{apikey}/chargingspots",
+                     "/evcharge/api/{apikey}/chargingspots/{id}"})
+  JsonNode spot(@PathVariable Optional<Integer> id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
+
     if (!id.isPresent()) {
       List<Integer> stationspots = repository.findAllStationSpotsIds();
       ObjectMapper mapper = new ObjectMapper();
@@ -200,21 +209,36 @@ class ChargingSpotController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/chargingspotsmod")
-  ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot) {
+  @PostMapping("/evcharge/api/{apikey}/admin/chargingspotsmod")
+  ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newChargingSpot);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/chargingspots/{id}")
-  ChargingSpot one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/chargingspots/{id}")
+  ChargingSpot one(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new ChargingSpotNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/chargingspotsmod/{id}")
-  ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
+  ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(chargingSpot -> {
         chargingSpot.setConnectionType(newChargingSpot.getConnectionType());
@@ -230,8 +254,13 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/chargingspotsmod/{id}")
-  void deleteChargingSpot(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
+  void deleteChargingSpot(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

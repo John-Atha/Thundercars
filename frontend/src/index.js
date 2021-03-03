@@ -8,9 +8,11 @@ import Register from './Register';
 import Home from './Home';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
+import AddVehicle from './AddVehicle';
 import AcCharger from './AcCharger';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
+import UserVehicleStatistics from './UserVehicleStatistics';
 import MyStations from './MyStations';
 import MySpots from './MySpots';
 import Station from './Station';
@@ -20,6 +22,7 @@ import UpdateStation from './UpdateStation';
 import UpdateSpot from './UpdateSpot';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
+import VehiclesDetailedSessions from './VehiclesDetailedSessions';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
 import StationOwnerStatistics from './StationOwnerStatistics'; 
 //import reportWebVitals from './reportWebVitals';
@@ -75,6 +78,9 @@ ReactDOM.render(
         <Route path="/vehicles/:id">
           <FindVehicle />  
         </Route>
+        <Route path="/AddVehicle" exact>
+          <AddVehicle />
+        </Route>
         <Route path="/acchargers/:id">
           <FindAcCharger />
         </Route>
@@ -82,16 +88,19 @@ ReactDOM.render(
           <UserMyStatistics />
         </Route>
         <Route path="/UserVehicleStatistics" exact>
-          <UserMyStatistics />
+          <UserVehicleStatistics />
         </Route>
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
         </Route>
-        <Route path="/StationOwnerStatistics">
+        <Route path="/StationsMonthlyStatistics">
           <StationOwnerStatistics />
         </Route>
         <Route path="/mySpotsDetailedSessions" exact>
           <MySpotsDetailedSessions />
+        </Route>
+        <Route path="/VehiclesDetailedSessions" exact>
+          <VehiclesDetailedSessions />
         </Route>
         <Route path="/myStations" exact>
           <MyStations />

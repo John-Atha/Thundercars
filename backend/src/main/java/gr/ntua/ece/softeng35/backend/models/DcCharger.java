@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class DcCharger{
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = false ,nullable = true)

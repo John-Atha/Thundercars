@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.UserHasVehicle;
 import gr.ntua.ece.softeng35.backend.models.UserHasVehicleRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class UserHasVehicleController {
   private final UserHasVehicleRepository repository;
+  private final UserRepository repository2;
 
-  UserHasVehicleController(UserHasVehicleRepository repository) {
+  UserHasVehicleController(UserHasVehicleRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/userhasvehicles")
-  List<UserHasVehicle> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/userhasvehicles")
+  List<UserHasVehicle> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/userhasvehiclesmod")
-  UserHasVehicle newUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle) {
+  @PostMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod")
+  UserHasVehicle newUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newUserHasVehicle);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/userhasvehicles/{id}")
-  UserHasVehicle one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/userhasvehicles/{id}")
+  UserHasVehicle one(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new UserHasVehicleNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/userhasvehiclesmod/{id}")
-  UserHasVehicle replaceUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod/{id}")
+  UserHasVehicle replaceUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle, @PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(userHasVehicle -> {
         userHasVehicle.setUser(newUserHasVehicle.getUser());
@@ -47,8 +70,13 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/userhasvehiclesmod/{id}")
-  void deleteUserHasVehicle(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod/{id}")
+  void deleteUserHasVehicle(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

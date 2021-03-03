@@ -9,3 +9,7 @@
     animation: appearing 1s;
     color: grey;
 }
+
+.padding-bottom {
+    padding-bottom: 5%;
+}

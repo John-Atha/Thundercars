@@ -6,37 +6,60 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.PowerPerChargingPoint;
 import gr.ntua.ece.softeng35.backend.models.PowerPerChargingPointRepository;
+import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
 class PowerPerChargingPointController {
   private final PowerPerChargingPointRepository repository;
+  private final UserRepository repository2;
 
-  PowerPerChargingPointController(PowerPerChargingPointRepository repository) {
+  PowerPerChargingPointController(PowerPerChargingPointRepository repository, UserRepository repository2) {
     this.repository = repository;
+    this.repository2 = repository2;
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/powerperchargingpoint")
-  List<PowerPerChargingPoint> all() {
+  @GetMapping("/evcharge/api/{apikey}/admin/powerperchargingpoint")
+  List<PowerPerChargingPoint> all(@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/admin/powerperchargingpointmod")
-  PowerPerChargingPoint newPowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint) {
+  @PostMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod")
+  PowerPerChargingPoint newPowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.save(newPowerPerChargingPoint);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/admin/powerperchargingpoint/{id}")
-  PowerPerChargingPoint one(@PathVariable Integer id) {
+  @GetMapping("/evcharge/api/{apikey}/admin/powerperchargingpoint/{id}")
+  PowerPerChargingPoint one(@PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .orElseThrow(() -> new PowerPerChargingPointNotFoundException(id));
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/admin/powerperchargingpointmod/{id}")
-  PowerPerChargingPoint replacePowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint, @PathVariable Integer id) {
+  @PutMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod/{id}")
+  PowerPerChargingPoint replacePowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint, @PathVariable Integer id,@PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     return repository.findById(id)
       .map(powerPerChargingPoint -> {
         powerPerChargingPoint.setAcCharger(newPowerPerChargingPoint.getAcCharger());
@@ -54,8 +77,13 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/admin/powerperchargingpointmod/{id}")
-  void deletePowerPerChargingPoint(@PathVariable Integer id) {
+  @DeleteMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod/{id}")
+  void deletePowerPerChargingPoint(@PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
     repository.deleteById(id);
   }
 }

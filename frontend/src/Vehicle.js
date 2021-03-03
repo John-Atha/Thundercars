@@ -1,9 +1,7 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import './Vehicle.css';
-import './Station.css'
-import {getOneVehicle} from './api'
+import {getOneVehicle, getAllUserVehicle, UserVehicleDelete} from './api'
 import MyNavBar from './MyNavbar'; 
-import logo from './images/thundera.png';
 
 class Vehicle extends React.Component {
     
@@ -25,7 +23,8 @@ class Vehicle extends React.Component {
             dcChargerId: null,
             dcCharging: null,
             dcChargers: null,
-            dcChargerTypes: null
+            dcChargerTypes: null,
+            error: null,
         }
 
         this.attr1Name = "Release Year"
@@ -36,6 +35,7 @@ class Vehicle extends React.Component {
         this.attr6Name = "Dc Charging"
         this.attr7Name = "Dc Charger Ports"
         this.acChargerPageRedirect = this.acChargerPageRedirect.bind(this);
+        this.deleteVehicle = this.deleteVehicle.bind(this);
     }    
 
     componentDidMount () {
@@ -70,7 +70,7 @@ class Vehicle extends React.Component {
                 }
             }
             for(let i = sizeofdc; i > 0; i--) {
-                if(i == 1) {
+                if(i === 1) {
                     dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"];
                 }
                 else {
@@ -91,6 +91,9 @@ class Vehicle extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                error: "Could not find information about this vehicle (probably you don't own it)"
+            })
         })
     }
 
@@ -99,7 +102,39 @@ class Vehicle extends React.Component {
         window.location.href=`/acchargers/${id}`;
     }
 
-
+    deleteVehicle = () => {
+        console.log("chose to delete")
+        getAllUserVehicle()
+        .then(response => {
+            console.log(response);
+            let userVehiclesList = response.data;
+            // find userHasVehicle objects that referr to current user
+            for (let i=0; i<userVehiclesList.length; i++) {
+                if (parseInt(userVehiclesList[i].user.id)===parseInt(this.state.userId) && parseInt(userVehiclesList[i].vehicle.id)===parseInt(this.state.vehId)) {
+                    UserVehicleDelete(userVehiclesList[i].id)
+                    .then(response => {
+                        console.log(response);
+                        this.setState({
+                            error: "Deleted succesfully"
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.setState({
+                            error: "Could not delete vehicle"
+                        })
+                    })
+                }
+            }            
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: "Could not delete vehicle"
+            })
+        })
+    }
+    
     render() {
         if((!localStorage.getItem('userId'))) {
             console.log("User not logged in error");
@@ -116,7 +151,7 @@ class Vehicle extends React.Component {
                 </div>
             )
         }
-        else if(localStorage.getItem('role')=="StationOwner") {
+        else if(localStorage.getItem('role')==="StationOwner") {
             console.log("Station Owner Error");
             setTimeout(() =>{window.location.href = "/home"},10000);
             return(
@@ -136,26 +171,38 @@ class Vehicle extends React.Component {
             return (
                 <div className="allPage">
                     <MyNavBar />
-                <div className="general-page-container more-blur center-content">
+                <div className="general-page-container more-blur center-content padding-bottom">
                     <div className="specific-title orangeColor">
-                        My Vehicle
+                        Vehicle {this.state.vehId}
                     </div>
-                    <div className="vehicle-desc-text">Your vehicle's details! To view more details about the vehicle's charger types ,click on either charger type.</div>
                         
-                    <div className="one-station-container center-content">
-                    <div className="station-page-info-container">
+                    {!this.state.error &&
+                        <div className="station-page-info-container box-colors margin-top-small center-content">
                             <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                             <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                             <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
                             <div className="station-info-title">Release Year: </div><div className="station-info">{this.state.releaseYear}</div>
-                            <div className="station-info-title darker">Usable Battery Size: </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
-                            <div className="station-info-title">Energy Consumption: </div><div className="station-info">{this.state.energyConsumption} Wh/km</div>
+                            <div className="station-info-title darker">Usable Battery Size(kWh): </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
+                            <div className="station-info-title">Energy Consumption(Wh/km): </div><div className="station-info">{this.state.energyConsumption}</div>
                             <div className="station-info-title darker">AC Charging: </div><div className="station-info darker">{this.state.acCharging}</div>
-                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link blackColor station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
+                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
                             <div className="station-info-title darker">DC Charging: </div><div className="station-info darker">{this.state.dcCharging}</div>
-                            <div className="station-info-title">DC Charger Type(s): </div><a className="station-link blackColor station-info">{this.state.dcChargerTypes}</a>
+                            <div className="station-info-title">DC Charger Type(s): </div><div className="station-info">{this.state.dcChargerTypes}</div>
                         </div>            
-                    </div>
+                    }
+                    {!this.state.error &&
+                        <div className="station-update-button-container center-content">
+                            <button className="vehicle-delete-button" onClick={this.deleteVehicle}>
+                                Delete
+                            </button>
+                        </div>
+                    }
+                    {this.state.error!==null && ( 
+                        <div className="error-message margin-top">
+                            {this.state.error}
+                        </div>
+                    )}
+
                 </div>
                 </div>
             );

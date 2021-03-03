@@ -24,8 +24,9 @@ class OneSession extends React.Component {
     }
 
     render() {
+        console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container">
+            <div className="one-spot-sessions-container flex-item-medium box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -57,6 +58,8 @@ class OneSpotSessionsDiv extends React.Component {
             procNumber: null,
             procList: [],
             error: null,
+            startDate: this.props.startDate,
+            endDate: this.props.endDate,
         }
         this.attr1 = "Started On";
         this.attr2 = "Charged On";
@@ -70,7 +73,7 @@ class OneSpotSessionsDiv extends React.Component {
     }
 
     componentDidMount() {
-        getSpotSessions(this.state.spotId)
+        getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
         .then(response => {
             console.log(response);
             this.setState({
@@ -90,21 +93,56 @@ class OneSpotSessionsDiv extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.startDate!==this.props.startDate || prevProps.endDate!==this.props.endDate) {
+            console.log(`from ${prevProps.startDate} to ${this.props.startDate}`);
+            console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
+            // remove previous objects from dom
+            this.setState({
+                procList: [],
+                error: null,
+            });
+            getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    stationId: response.data[this.attr8],
+                    operator: response.data.Operator,
+                    procNumber: response.data[this.attr9],
+                    procList: response.data[this.attr7]
+                });
+                console.log("ProcList:")
+                console.log(this.state.procList);
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Could not find sessions for this spot"
+                })
+            })
+        }
+    }
+
     render() {
         console.log("i will show the spot's sessions");
         return (
             <div className="spot-sessions-block center-content">
                 <h5 className="orangeColor center-content">Spot {this.state.spotId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="spot-info-container center-content">
-                        <div className="station-info-title">Spot's operator: </div>
-                        <div className="station-info">{this.state.operator}</div>
-                        <div className="station-info-title">Processes: </div>
-                        <div className="station-info">{this.state.procNumber}</div>
+                    <div className="center-content">
+                    
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Spot's operator: </div>
+                            <div className="station-info flex-item-medium">{this.state.operator}</div>
+                        </div>
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Processes: </div>
+                            <div className="station-info flex-item-medium">{this.state.procNumber}</div>
+                        </div>
                     </div>
                 }
                 { this.state.error===null &&
-                    <div className="all-spots-sessions-container center-content">
+                    <div className="all-spots-sessions-container flex-layout center-content">
                         {
                             this.state.procList.map((value, index) => {
                                 return(
@@ -142,9 +180,12 @@ class MySpotsDetailedSessions extends React.Component {
             stationsList: [],
             spotsList: [],
             showingSpotId: null,
-            error: "Choose a spot to see its sessions"
+            error: "Choose a spot to see its sessions",
+            startDate: "2021-01-27",
+            endDate: "",
         }
-        this.selectSpot = this.selectSpot.bind(this);    
+        this.selectSpot = this.selectSpot.bind(this);  
+        this.handleInput = this.handleInput.bind(this);  
     }
 
     componentDidMount() {
@@ -166,6 +207,17 @@ class MySpotsDetailedSessions extends React.Component {
         })
     }
 
+    handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState( {
+            [name]: value
+        })
+        console.log(name+":  ");
+        console.log(value);
+    }
+
+
     selectSpot = (event) => {
         this.setState({
             showingSpotId: event.target.innerText.replace("Spot ", ""),
@@ -182,7 +234,8 @@ class MySpotsDetailedSessions extends React.Component {
             return (
                 <div className="spot-sessions-all-page">
                         <MyNavbar />
-                        <div className="spots-sessions-page-container more-blur center-content">
+                        <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
+                            
                             <div className="specific-title orangeColor">
                                 Detailed Sesions Per Charging Point
                                 {this.state.error!==null && ( 
@@ -191,20 +244,34 @@ class MySpotsDetailedSessions extends React.Component {
                                     </div>
                                 )}  
                             </div>
-                            <div className="spots-buttons-container center-content">
+
+                            <div className="spots-buttons-container flex-layout center-content">
                                 {   
                                     this.state.spotsList.map((value, index) => {
                                         console.log(index);
-                                        return (<button className="spot-choose-button" key={value} onClick={this.selectSpot}>Spot {value}</button>)
+                                        return (<button className="spot-choose-button flex-item-small" key={value} onClick={this.selectSpot}>Spot {value}</button>)
                                     })
                                 }
                             </div>
+
+                            <div className="time-filters-container center-content">
+                                <label className="start-date-label" htmlFor="startDate">From</label>
+                                <label className="end-date-label"   htmlFor="endDate">To</label>
+                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            </div>
+
+
+
+
                             
                             {   this.state.showingSpotId && 
-                                    <div className="spots-container">
+                                    <div className="margin-top-small">
                                         <OneSpotSessionsDiv
                                             id={this.state.showingSpotId}
                                             key={this.state.showingSpotId}
+                                            startDate={this.state.startDate}
+                                            endDate={this.state.endDate}
                                         /> 
                                     </div>
                                 

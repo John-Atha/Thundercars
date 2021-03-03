@@ -1,8 +1,7 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import './MyVehicles.css';
 import {getVehicles} from './api'
 import MyNavBar from './MyNavbar'; 
-import logo from './images/thundera.png';
 
 class SpecVehicle extends React.Component {
     
@@ -13,6 +12,7 @@ class SpecVehicle extends React.Component {
             vehId: this.props.vehId,
             brand: this.props.brand,
             type: this.props.type,
+            index: this.props.index,
             model: this.props.model
         }
         this.vehiclePageRedirect = this.vehiclePageRedirect.bind(this);
@@ -25,13 +25,14 @@ class SpecVehicle extends React.Component {
 
     render() {
         return ( 
-            <div className="one-station-container center-content">
-                <div className="station-page-info-container">
+            <div className="one-station-container center-content box-colors flex-item-medium-big">
+                <h5 className="orangeColor center-content">Vehicle {this.state.index}: General Info</h5>
+                <div className="station-page-info-container center-content">
                     <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                     <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                     <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
                 </div>
-                <a className="station-link orangeColor center-content" onClick={this.vehiclePageRedirect}>For details click here</a>
+                <a className="station-link center-content" onClick={this.vehiclePageRedirect}>More details</a>
             </div>
         );
     }
@@ -59,6 +60,9 @@ class MyVehicles extends React.Component {
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                error: "You don't own any vehicles"
+            })
         })
     }
 
@@ -95,23 +99,30 @@ class MyVehicles extends React.Component {
             )
         }
         else {
-            let vehicle_title = "My Vehicles";
-            if(this.state.vehicles.length===1){
-                vehicle_title = "My Vehicle";
-            }
+
             return (
                 <div className="allPage">
                     <MyNavBar />
-                <div className="general-page-container more-blur center-content">
+                <div className="general-page-container more-blur center-content padding-bottom">
                     <h5 className="orangeColor specific-title">
-                        {vehicle_title}
+                        My vehicles
                     </h5>
-                    <div id="spots-container">
+                    
+                    {this.state.error!==null && 
+                        <div className="error-message margin-top">
+                            {this.state.error}<br></br><br></br>
+                            <a href="/addVehicle">Add one</a>
+                        </div>
+                    }
+
+                    {this.state.error===null &&                     
+                        <div id="spots-container" className="fix-width flex-layout">
                         {
-                            this.state.vehicles.map((value, key)=> {
+                            this.state.vehicles.map((value, key, index)=> {
                                 console.log(value+": "+key);
                                 return(<SpecVehicle
                                     key={key}
+                                    index={key+1}
                                     vehId={value.Vehicle}
                                     brand={value.Brand} 
                                     model={value.Model}
@@ -120,6 +131,7 @@ class MyVehicles extends React.Component {
                             })
                         }                    
                     </div>
+                    }
                 </div>
                 </div>
             );
