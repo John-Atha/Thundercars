@@ -23,3 +23,15 @@ body {
 .profile-basic-info-container {
     min-height: 250px;
 }
+
+.profile-buttons-container {
+    margin: 2%;
+}
+
+.success-message {
+    color: green;
+}
+
+input:focus {
+    border: solid 1px red;
+}

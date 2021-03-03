@@ -2,15 +2,17 @@ import React from 'react';
 import './Profile.css';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
-import {getUserProfile, getStationOwnerProfile, getUserOBJECT, stationOwnerObjectGet } from './api';
+import {getUserProfile, getStationOwnerProfile, UserDelete, stationOwnerDelete, userDelete } from './api';
 
 class Profile extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             error: null,
+            success: null,
             username: null,
             email: null,
             firstName: null,
@@ -25,6 +27,37 @@ class Profile extends React.Component {
             country: null,
             continent: null,
         }
+        this.delete = this.delete.bind(this);
+        this.update = this.update.bind(this);
+        this.logout = this.logout.bind(this);
+    }
+
+    logout = () => {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
+        window.location.href="/";
+    }
+
+
+    delete = () => {
+        userDelete(this.state.userId)
+        .then(response => {
+            console.log(response);
+            this.setState({
+                success: "Account deleted successfully, you are being redirected to home page"
+            })
+            this.logout();
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: "Could not delete account, please try again later"
+            })
+        })
+    }
+
+    update = () => {
+
     }
 
 
@@ -84,14 +117,34 @@ class Profile extends React.Component {
                 <div className="allpage">
                     <MyNavbar />
                     <div className="general-page-container more-blur center-content">
-                        <div className="specific-title">
-                            <div className="station-info-title">{this.state.username}</div> 
-                        </div>
-                        <div className="profile-container flex-layout padding-bottom">
+                        
+                        {
+                            this.state.error && 
+                                <div className="error-message">{this.state.error}</div>
+                        }
+
+                        {
+                            this.state.success &&
+                                <div className="success-message">{this.state.success}</div>
+                        }
+                        
+                        {
+                            !this.state.error && !this.state.success && 
+                                <div className="specific-title">
+                                    <div className="station-info-title">{this.state.username}</div> 
+                                </div>
+                        }
+
+                        {
+                            !this.state.error && !this.state.success && 
+                                <div className="profile-container flex-layout padding-bottom">
+                            
                             <div className="profile-icon-container margin-top-small flex-item-small">
                                 <img src={icon}/>
                             </div>
+
                             <div className="profile-basic-info-container box-colors margin-top-small flex-layout">
+                                
                                 <div className="profile-secondary-info-container padding-bottom flex-item">
                                     <div className="color2 line">Email:  
                                         <i className="white"> {this.state.email}</i>
@@ -133,11 +186,20 @@ class Profile extends React.Component {
                                         <i className="white"> {this.state.continent}</i>
                                     </div>
                                 </div>
+                            
                             </div>
+
+                            <div className="profile-buttons-container flex-layout-column flex-item margin-top-small">
+                                <button className="update-button my-button flex-item-smaller" onClick={this.update}>Update</button>
+                                <button className="delete-button my-button flex-item-smaller" onClick={this.delete}>Delete account</button>
+
+                            </div>
+
+                        
                         </div>
-
-
+                        }
                     </div>
+
                 </div>
             )
 

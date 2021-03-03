@@ -186,6 +186,16 @@ export const StationSpotDelete = (id) => {
     return axios.delete(requestUrl);
 }
 
+export const userDelete = (id) => {
+    const requestUrl = `admin/usersmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const stationOwnerDelete = (id) => {
+    const requestUrl = `admin/stationownersmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
     return axios.get(requestUrl);
