@@ -25,6 +25,7 @@ class Vehicle extends React.Component {
             dcChargers: null,
             dcChargerTypes: null,
             error: null,
+            showModal: false,
         }
 
         this.attr1Name = "Release Year"
@@ -36,6 +37,8 @@ class Vehicle extends React.Component {
         this.attr7Name = "Dc Charger Ports"
         this.acChargerPageRedirect = this.acChargerPageRedirect.bind(this);
         this.deleteVehicle = this.deleteVehicle.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.preDelete = this.preDelete.bind(this);
     }    
 
     componentDidMount () {
@@ -102,6 +105,19 @@ class Vehicle extends React.Component {
         window.location.href=`/acchargers/${id}`;
     }
 
+    preDelete = () => {
+        this.setState({
+            showModal: true,
+        })
+    }
+
+    hideModal = () => {
+        this.setState({
+            showModal: false,
+        })
+    }
+
+
     deleteVehicle = () => {
         console.log("chose to delete")
         getAllUserVehicle()
@@ -120,6 +136,7 @@ class Vehicle extends React.Component {
                             this.setState({
                                 error: "Deleted succesfully"
                             })
+                            window.location.href="/myvehicles";
                         })
                         .catch(err => {
                             console.log(err);
@@ -196,7 +213,7 @@ class Vehicle extends React.Component {
                     }
                     {!this.state.error &&
                         <div className="station-update-button-container center-content">
-                            <button className="delete-button my-button" onClick={this.deleteVehicle}>
+                            <button className="delete-button my-button" onClick={this.preDelete}>
                                 Delete
                             </button>
                         </div>
@@ -206,6 +223,20 @@ class Vehicle extends React.Component {
                             {this.state.error}
                         </div>
                     )}
+                    {this.state.showModal===true &&
+                    
+                        <div className="modal-box box-colors">
+                            <div className="message">
+                                Are you sure you want delete your account?<br></br>
+                                All your privileges here will be lost...
+                            </div>
+                            <div className="modal-buttons-container flex-layout margin-top-small">
+                                <button className="delete-button my-button flex-item-smaller" onClick={this.deleteVehicle}>Yes, delete anyway</button>                                        
+                                <button className="update-button my-button flex-item-smaller margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                            </div>
+                        </div>
+                    
+                    }
 
                 </div>
                 </div>
