@@ -8,23 +8,9 @@ body {
     height: 100%;
     width: 70%;
     margin-left: 15%;
-    display: grid;
-    grid-template-rows: 38% 10% 250px 10%;
-    grid-template-columns: 100%;
 }
 
-.padding-bottom-more {
-    padding-bottom: 20%;
-}
-
-.add-vehicle-first-container {
-    grid-row: 1;
-    display: grid;
-    grid-template-rows: 22% 22% 22% 22%;
-    grid-template-columns: 50% 50%;
-    row-gap: 3%;
-    column-gap: 2px;
-}
+/*
 .chargers-inputs {
     display: grid;
     grid-template-rows: 50px 200px;
@@ -39,39 +25,21 @@ body {
     column-gap: 2px;
     row-gap: 2px;
 }
-
+*/
 .chargers-radios-container {
     padding-left: 2%;
     padding-top: 2%;
-    display: grid;
-    grid-template-rows: 100%;
-    grid-template-columns: 90px 30px 90px 30px;
 }
+
+.one-radio-container {
+    display: grid;
+    grid-template-columns: 90px 30px;
+}
+
 .radio-charge {
     margin-top: 20%;
 }
 
-.charger-title {
-    color: white;
-}
-
-#add-vehicle-submit {
-    width: max(100px, 20%);
-    margin-left: 40%;
-    padding:0% 0%;
-    border: 1px solid var(--color2);
-    color: black;
-    border-radius: 5px;
-}
-
-#add-vehice-ac-power-per-charging {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 23% 23% 23% 23%;
-    column-gap: 2px;
-    row-gap: 2%;
-    height: 100%;
-}
 
 .row-1 {
     grid-row: 1;

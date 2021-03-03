@@ -12,7 +12,7 @@ class AddVehicle extends React.Component {
             error: null,
             brand: "",
             brandId: "",
-            type: "",
+            type: "bev",
             model: "",
             releaseYear: "",
             usableBatterySize: "",
@@ -479,7 +479,7 @@ class AddVehicle extends React.Component {
             return(
                 <div className="allpage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content padding-bottom-more">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="add-station-specific-title">
                             <div className="station-info-title">
                                 Add vehicle
@@ -493,54 +493,57 @@ class AddVehicle extends React.Component {
 
                         <form id="add-vehicle-info-container">
 
-                            <div className="add-vehicle-first-container row-1">                        
-                                <input className="add-station-input row-1 column-1" id="add-vehicle-brand" placeholder="Brand" type="text" name="brand" value={this.state.brand} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input row-1 column-2" id="add-vehicle-brand-id" placeholder="Brand Id" name="brandId" type="text" value={this.state.brandId} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <select className="add-station-input" id="add-vehice-type" placeholder="Type" name="type" value={this.state.type} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
+                            <div className="add-vehicle-first-container flex-layout">                        
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-brand" placeholder="Brand" type="text" name="brand" value={this.state.brand} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-brand-id" placeholder="Brand Id" name="brandId" type="text" value={this.state.brandId} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <select className="add-station-input flex-item-medium" id="add-vehice-type" placeholder="Type" name="type" value={this.state.type} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
                                     <option value="bev">bev</option>
                                     <option value="phev">phev</option>
                                 </select>                       
-                                <input className="add-station-input" id="add-vehicle-model" placeholder="Model" name="model" type="text" value={this.state.model} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                <input className="add-station-input" id="add-vehicle-release-year" placeholder="Release Year" name="releaseYear" type="number" min="2010" max="2021" step="1" value={this.state.releaseYear} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                <input className="add-station-input" id="add-vehicle-usable-battery-size" placeholder="Usable Battery size" name="usableBatterySize" type="number" min="0" step=".1" value={this.state.usableBatterySize} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                <input className="add-station-input" id="add-vehicle-energy-consumption" placeholder="Energy Consumption" name="energyConsumption" type="number" min="0" step=".1" value={this.state.energyConsumption} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-model" placeholder="Model" name="model" type="text" value={this.state.model} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-release-year" placeholder="Release Year" name="releaseYear" type="number" min="2010" max="2021" step="1" value={this.state.releaseYear} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-usable-battery-size" placeholder="Usable Battery size" name="usableBatterySize" type="number" min="0" step=".1" value={this.state.usableBatterySize} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" id="add-vehicle-energy-consumption" placeholder="Energy Consumption" name="energyConsumption" type="number" min="0" step=".1" value={this.state.energyConsumption} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                             </div>    
 
-                            <div className="chargers-radios-container row-2">
-                                <label  className="row-1 column-1 charger-title" htmlFor="ac charger">Ac charger</label>
-                                <input className="row-1 column-2 radio-charge" type="radio" name="ac charger" checked={this.hasAc} value={this.hasAc} onClick={this.acChange} />
-                                <label className="row-1 column-3 charger-title" htmlFor="dc charger">Dc charger</label>
-                                <input className="row-1 column-4 radio-charge" type="radio" name="dc charger" checked={this.hasDc} value={this.hasDc} onClick={this.dcChange} />
+                            <div className="chargers-radios-container flex-layout">
+                                <div className="flex-item one-radio-container">
+                                    <label className="row-1 column-1 charger-title color2" htmlFor="ac charger">Ac charger</label>
+                                    <input className="row-1 column-2 radio-charge" type="radio" name="ac charger" checked={this.hasAc} value={this.hasAc} onClick={this.acChange} />
+                                </div>
+                                <div className="flex-item one-radio-container">
+                                    <label className="row-1 column-3 charger-title color2" htmlFor="dc charger">Dc charger</label>
+                                    <input className="row-1 column-4 radio-charge" type="radio" name="dc charger" checked={this.hasDc} value={this.hasDc} onClick={this.dcChange} />
+                                </div>
                             </div>
 
                             
                             
                             
-                            <div className="chargers-inputs row-3">
-                                <div className="row-1 column-1 charger-title" hidden={!this.hasAc}>Ac charger basics and power per charging point</div> 
-                                <div className="ac-charger-inputs column-1 row-2" hidden={!this.hasAc}>
-                                    <input className="add-station-input" id="add-vehicle-ac-usable-phases" placeholder="Ac charger usable phases*" name="acUsablePhases" type="number" min="0" max="3" step="1" value={this.state.acUsablePhases} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                    <input className="add-station-input" id="add-vehicle-ac-max-power" placeholder="Ac charger max power*" name="acMaxPower" type="number" min="0" step=".1" value={this.state.acMaxPower} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                    <select className="add-station-input" id="add-vehice-ac-portname" placeholder="Ac charger portname*" name="acPortName" value={this.state.acPortName} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
+                            <div className="chargers-inputs flex-layout">
+
+                                <div className="ac-charger-inputs flex-layout flex-item" hidden={!this.hasAc}>
+                                    <div className="row-1 column-1 charger-title color2 flex-item-expand" hidden={!this.hasAc}>Ac charger basics and power per charging point</div> 
+                                    <input className="add-station-input flex-item" id="add-vehicle-ac-usable-phases" placeholder="Ac charger usable phases*" name="acUsablePhases" type="number" min="0" max="3" step="1" value={this.state.acUsablePhases} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item" id="add-vehicle-ac-max-power" placeholder="Ac charger max power*" name="acMaxPower" type="number" min="0" step=".1" value={this.state.acMaxPower} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <select className="add-station-input flex-item" id="add-vehice-ac-portname" placeholder="Ac charger portname*" name="acPortName" value={this.state.acPortName} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
                                         <option value="type1">type1</option>
                                         <option value="type2">type2</option>
                                     </select>
-                                    <div className="add-station-input row-4" id="add-vehice-ac-power-per-charging" name="acPowerPerChargingPoint" value={this.state.acPowerPerChargingPoint} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 2.0*" name="point20" type="number" min="0" step=".1" value={this.state.point20} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 2.3*" name="point23" type="number" min="0" step=".1" value={this.state.point23} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 3.7*" name="point37" type="number" min="0" step=".1" value={this.state.point37} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 7.4*" name="point74" type="number" min="0" step=".1" value={this.state.point74} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 11.0*" name="point110" type="number" min="0" step=".1" value={this.state.point110} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 16.0*" name="point160" type="number" min="0" step=".1" value={this.state.point160} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 22.0*" name="point220" type="number" min="0" step=".1" value={this.state.point220} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                        <input className="add-station-input" id="add-vehicle-point" placeholder="Ac charger power point 43.0*" name="point430" type="number" min="0" step=".1" value={this.state.point430} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                    </div>
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 2.0*" name="point20" type="number" min="0" step=".1" value={this.state.point20} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 2.3*" name="point23" type="number" min="0" step=".1" value={this.state.point23} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 3.7*" name="point37" type="number" min="0" step=".1" value={this.state.point37} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 7.4*" name="point74" type="number" min="0" step=".1" value={this.state.point74} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 11.0*" name="point110" type="number" min="0" step=".1" value={this.state.point110} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 16.0*" name="point160" type="number" min="0" step=".1" value={this.state.point160} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 22.0*" name="point220" type="number" min="0" step=".1" value={this.state.point220} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <input className="add-station-input flex-item-small" id="add-vehicle-point" placeholder="Ac charger power point 43.0*" name="point430" type="number" min="0" step=".1" value={this.state.point430} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                                 </div>
 
-                                <div className="row-1 column-2 charger-title" hidden={!this.hasDc}>Dc charger basics</div> 
-                                <div className="dc-charger-inputs column-2 row-2" hidden={!this.hasDc}>
-                                    <input className="add-station-input" id="add-vehicle-dc-max-power" placeholder="Dc charger max power*" name="dcMaxPower" type="number" min="0" step=".1" value={this.state.dcMaxPower} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                    <select className="add-station-input" id="add-vehice-dc-portname" placeholder="Dc charger portname*" name="dcPortName" value={this.state.dcPortName} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
+                                <div className="dc-charger-inputs column-2 row-2 flex-layout flex-item" hidden={!this.hasDc}>
+                                    <div className="row-1 column-2 charger-title flex-item-expand color2" hidden={!this.hasDc}>Dc charger basics</div> 
+                                    <input className="add-station-input  flex-item" id="add-vehicle-dc-max-power" placeholder="Dc charger max power*" name="dcMaxPower" type="number" min="0" step=".1" value={this.state.dcMaxPower} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                    <select className="add-station-input flex-item" id="add-vehice-dc-portname" placeholder="Dc charger portname*" name="dcPortName" value={this.state.dcPortName} onChange={this.handleInput} onKeyUp ={this.submitActivate}>
                                         <option value="chademo">chademo</option>
                                         <option value="ccs">ccs</option>
                                         <option value="tesla_ccs">tesla ccs</option>
@@ -549,9 +552,8 @@ class AddVehicle extends React.Component {
                                 </div>
                             </div>
                             
-                            <input className="row-4 submit-button my-button" name="submit" type="submit" value="Add vehicle" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
-
                         </form>
+                            <input id="add-vehicle-submit" className="row-4 submit-button my-button margin-top-small" name="submit" type="submit" value="Add vehicle" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
 
                     </div>
                 </div>
