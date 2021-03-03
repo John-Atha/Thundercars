@@ -56,20 +56,41 @@ class Profile extends React.Component {
     }
 
     delete = () => {
-        userDelete(this.state.userId)
-        .then(response => {
-            console.log(response);
-            this.setState({
-                success: "Account deleted successfully, you are being redirected to home page"
+        if (this.state.role==="VehicleOwner") {
+            userDelete(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    success: "Account deleted successfully, you are being redirected to home page"
+                })
+                this.logout();
             })
-            this.logout();
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({
-                error: "Could not delete account, please try again later"
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Could not delete account, please try again later"
+                })
             })
-        })
+        }
+        else if (this.state.role==="StationOwner") {
+            stationOwnerDelete(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    success: "Account deleted successfully, you are being redirected to home page"
+                })
+                this.logout();
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Could not delete account, please try again later"
+                })
+            })
+
+
+
+        }
     }
 
     update = () => {
@@ -111,9 +132,27 @@ class Profile extends React.Component {
             getStationOwnerProfile(this.state.userId)
             .then(response => {
                 console.log(response);
+                this.setState({
+                    username: response.data["Station Owner name"],
+                    email: response.data.Email,
+                    firstName: response.data["First Name"],
+                    lastName: response.data["Last Name"],
+                    dateOfBirth: response.data["Date Of Birth"],
+                    address1: response.data["AddressLine 1"],
+                    town: response.data.Town,
+                    stateOrProvince: response.data["State Or Province"],
+                    postcode: response.data.Postcode,
+                    tel1: response.data["Contact Telephone 1"],
+                    tel2: response.data["Contact Telephone 2"],
+                    country: response.data.Country,
+                    continent: response.data.Continent,
+                })
             })
             .catch(err => {
                 console.log(err);
+                this.setState({
+                    error: "We couldn't find your info, please try again later"
+                })
             })
 
 
@@ -160,8 +199,8 @@ class Profile extends React.Component {
                                         All your privileges here will be lost...
                                     </div>
                                     <div className="modal-buttons-container flex-layout margin-top-small">
-                                        <button className="delete-button my-button flex-item-smaller" onClick={this.delete}>Yes, delete anyway</button>                                        
-                                        <button className="update-button my-button flex-item-smaller margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                        <button className="update-button my-button flex-item-expand margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                        <button className="delete-button my-button flex-item-expand" onClick={this.delete}>Yes, delete anyway</button>                                        
                                     </div>
                                 </div>
                         

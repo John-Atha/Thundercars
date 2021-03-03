@@ -179,8 +179,8 @@ class Spot extends React.Component {
                                         All of its statistics will be lost...
                                     </div>
                                     <div className="modal-buttons-container flex-layout margin-top-small">
-                                        <button className="delete-button my-button flex-item-smaller" onClick={this.deleteSpot}>Yes, delete anyway</button>                                        
-                                        <button className="update-button my-button flex-item-smaller margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                        <button className="update-button my-button flex-item-expand margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                        <button className="delete-button my-button flex-item-expand" onClick={this.deleteSpot}>Yes, delete anyway</button>                                        
                                     </div>
                                 </div>
                         
