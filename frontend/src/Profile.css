@@ -1,0 +1,25 @@
+body {
+    --color2: rgb(180, 212, 206);
+}
+
+.profile-icon-container {
+    border: 1px solid var(--color2);
+    border-radius: 5px;
+    margin-left: 2%;
+    margin-right: 2%;
+    max-width: 250px !important;
+    height: 250px;
+}
+
+.white {
+    color: white;
+}
+
+.line {
+    width: 100%;
+    text-align: left;
+}
+
+.profile-basic-info-container {
+    min-height: 250px;
+}

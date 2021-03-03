@@ -77,6 +77,11 @@ body {
     height: min-content;
 }
 
+.flex-item-expand2 {
+    flex-basis: 70%;
+    height: min-content;
+}
+
 /*}*/
 
 

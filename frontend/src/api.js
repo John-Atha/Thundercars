@@ -191,6 +191,11 @@ export const getUserProfile = (id) => {
     return axios.get(requestUrl);
 }
 
+export const getStationOwnerProfile = (id) => {
+    const requestUrl = `stationowners/${id}/profile`;
+    return axios.get(requestUrl);
+}
+
 export const getUserOBJECT = (id) => {
     const requestUrl = `users/${id}`;
     return axios.get(requestUrl);

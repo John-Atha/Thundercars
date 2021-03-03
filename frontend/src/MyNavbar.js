@@ -3,6 +3,7 @@ import "./MyNavbar.css";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown'
+import icon from './images/user-icon.png';
 
 class MyNavbar extends React.Component {
   constructor(props) {
@@ -79,8 +80,12 @@ class MyNavbar extends React.Component {
             <Nav.Link id="nav-link" href="/register">Register</Nav.Link>
           )}
           {this.state.userId && (
-            <Nav.Link id="nav-link" onClick={this.logout}>Logout</Nav.Link>
+            <NavDropdown title={<img className="user-icon user-choices" src={icon}/>} id="nav-link">
+              <NavDropdown.Item className="user-choices2" href="/profile">My profile</NavDropdown.Item>
+              <NavDropdown.Item className="user-choices" onClick={this.logout}>Logout</NavDropdown.Item>
+            </NavDropdown>
           )}
+
         </Nav>
       </Navbar>
       
