@@ -13,13 +13,6 @@ body {
     color: var(--color2);
 }
 
-.general-page-container {
-    margin-top: 0%;
-    margin-bottom: 5%;
-    height: max(700px, min-content);
-    width: max(99vw, 300px);
-}
-
 .more-blur {
     background: rgba(0, 0, 0, 0.857);
     box-shadow: 0 8px 32px 0 rgba(163, 13, 13, 0.37);

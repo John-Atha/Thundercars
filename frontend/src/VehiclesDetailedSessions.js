@@ -27,7 +27,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-vehicle-sessions-container flex-item-medium-big box-colors">
+            <div className="one-vehicle-sessions-container flex-item box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -300,7 +300,7 @@ class VehiclesDetailedSessions extends React.Component {
                         <MyNavbar />
                         <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
                             
-                            <div className="specific-title orangeColor">
+                            <div className="specific-title color2">
                                 Detailed Sesions Per Vehicle
                                 {!this.state.noVehicles && this.state.error!==null && ( 
                                     <div className="error-message">
@@ -320,11 +320,11 @@ class VehiclesDetailedSessions extends React.Component {
                             }  
 
                             {!this.state.noVehicles &&
-                                <div className="spots-buttons-container center-content">
+                                <div className="spots-buttons-container center-content flex-layout">
                                     {   
                                         this.state.vehList.map((value, index) => {
                                             //console.log(index);
-                                            return (<button className="choice-button my-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
+                                            return (<button className="choice-button my-button flex-item-small" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
                                         })
                                     }
                                 </div>

@@ -27,23 +27,3 @@ body {
 .margins-top-bottom {
     margin-top: 5%;
 }
-
-.flex-item {
-    flex-grow: 1;
-    width: 500px !important;
-}
-
-.flex-item-small {
-    flex-grow: 1;
-    width: 200px !important;
-}
-
-.flex-item-medium {
-    flex-grow: 1;
-    width: 300px !important;
-}
-
-.flex-item-medium-big {
-    flex-grow: 1;
-    width: 400px !important;
-}

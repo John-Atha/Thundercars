@@ -80,7 +80,7 @@ class VehicleStatisticsDiv extends React.Component {
 
     render() {
         return(
-            <div className="one-station-container center-content box-colors">
+            <div className="one-station-container flex-item center-content box-colors">
                 <h5 className="color2 center-content">Vehicle {this.props.id}</h5>
                 {   !this.props.dataHere && 
 
@@ -91,7 +91,7 @@ class VehicleStatisticsDiv extends React.Component {
                 }
 
                 { this.props.dataHere &&
-                    <div className="vehicle-page-info-container flex-item-medium-big center-content">
+                    <div className="vehicle-page-info-container center-content">
                         <div className="station-info-title color2 darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                         <div className="station-info-title color2 ">Model: </div><div className="station-info">{this.state.model}</div>
                         <div className="station-info-title color2 darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>

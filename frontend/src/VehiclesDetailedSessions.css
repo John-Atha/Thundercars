@@ -16,9 +16,8 @@ body {
 .one-vehicle-sessions-container {
     text-align: center;
     padding: 1%;
-    padding-bottom: 5%;
     display: grid;
-    grid-template-rows: auto auto auto auto auto auto auto min-content;
+    grid-template-rows: min-content;
     width: 350px;
     height: 100%;
     border-radius: 5px;

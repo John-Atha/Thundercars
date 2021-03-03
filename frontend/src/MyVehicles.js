@@ -25,7 +25,7 @@ class SpecVehicle extends React.Component {
 
     render() {
         return ( 
-            <div className="one-station-container center-content box-colors flex-item-medium-big">
+            <div className="one-station-container center-content box-colors flex-item">
                 <h5 className="color2 center-content">Vehicle {this.state.index}: General Info</h5>
                 <div className="station-page-info-container center-content">
                     <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
