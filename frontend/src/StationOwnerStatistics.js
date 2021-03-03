@@ -212,7 +212,7 @@ class StatOwnerPiesContainer extends React.Component {
         }
         else {
             return (
-                <div className="error-message margin-top-small center-content">No sessions found,<br></br>go charge!</div>
+                <div className="error-message margin-top-small center-content">No sessions found!</div>
 
             )
         }

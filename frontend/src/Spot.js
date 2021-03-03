@@ -1,15 +1,16 @@
 import React from 'react';
 import './Spot.css';
 import MyNavbar from './MyNavbar';
-import {getOneSpot, getOneSpotOBJECT, stationSpotGet, StationSpotDelete} from './api'; 
+import {getOneSpot, getOneSpotOBJECT, stationSpotGet, StationSpotDelete, getStations} from './api'; 
 
 class Spot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            useId: localStorage.getItem('userId'),
+            userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             spotId: this.props.id,
+            stationsList: [],
             realSpotId: null,
             stationId: null,
             stationTitle: null,
@@ -22,7 +23,8 @@ class Spot extends React.Component {
             voltage: null,
             power: null,
             comments: null,
-            showModal: false,   
+            showModal: false, 
+            ownership: false,  
         }
         this.attr1="Connection Type";
         this.attr2="Station Title";
@@ -59,6 +61,34 @@ class Spot extends React.Component {
 
     componentDidMount() {
         console.log("SPOT ID: "+this.state.spotId);
+        getStations(this.state.userId)
+        .then( response => {
+            console.log(response);
+            this.setState({
+                stationsList: response.data.StationsList
+            });
+            let tempSpotsList = [];
+            this.state.stationsList.forEach(element => {
+                element.Spots.forEach(spot => {
+                    tempSpotsList.push(spot.Spot);
+                })
+            });
+            console.log("I own the spots: ");
+            console.log(tempSpotsList);
+            tempSpotsList.forEach(el => {
+                if (parseInt(el)===parseInt(this.state.spotId)) {
+                    this.setState({
+                        ownership: true,
+                    })
+                }
+            })
+            console.log("Spots: ");
+            console.log(this.state.spotsList);
+        })
+        .catch(err => {
+            console.log(err);
+        }) 
+        
         getOneSpot(this.state.spotId)
         .then( response => {
             console.log(response);
@@ -126,7 +156,7 @@ class Spot extends React.Component {
         return(
             <div className="allpage">
                 <MyNavbar />
-                <div className="general-page-container more-blur center-content">
+                <div className="general-page-container more-blur center-content padding-bottom">
                     
                     <div className="specific-title">
                         <div onClick={this.stationPageRedirect} className="station-info-title">Spot {this.state.spotId}</div> 
@@ -165,11 +195,15 @@ class Spot extends React.Component {
                         <div className="station-info">{this.state.comments}</div>                    
                     </div>
                 
-                    <div className="station-update-button-container center-content">
-                            <button className="delete-button my-button margin-top-small" onClick={this.preDelete}>
-                               Delete spot
-                            </button>
-                    </div>
+                    {   this.state.ownership===true &&
+                    
+                            <div className="station-update-button-container center-content">
+                                    <button className="delete-button my-button margin-top-small" onClick={this.preDelete}>
+                                    Delete spot
+                                    </button>
+                            </div>
+                    
+                    }
 
                     {
                             this.state.showModal===true && 
