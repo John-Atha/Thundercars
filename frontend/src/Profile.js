@@ -26,10 +26,13 @@ class Profile extends React.Component {
             tel2: null,
             country: null,
             continent: null,
+            showModal: false,
         }
         this.delete = this.delete.bind(this);
+        this.preDelete = this.preDelete.bind(this);
         this.update = this.update.bind(this);
         this.logout = this.logout.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
     logout = () => {
@@ -38,6 +41,19 @@ class Profile extends React.Component {
         window.location.href="/";
     }
 
+    preDelete = () => {
+        this.setState({
+            showModal: true,
+        })
+        console.log("show modal: " + this.state.showModal)
+    }
+
+    hideModal = () => {
+        this.setState({
+            showModal: false,
+        })
+        console.log("show modal: " + this.state.showModal)
+    }
 
     delete = () => {
         userDelete(this.state.userId)
@@ -135,6 +151,25 @@ class Profile extends React.Component {
                                 </div>
                         }
 
+                        
+                        {
+                            this.state.showModal===true && 
+                                <div className="modal-box box-colors">
+                                    <div className="message">
+                                        Are you sure you want delete your account?<br></br>
+                                        All your privileges here will be lost...
+                                    </div>
+                                    <div className="modal-buttons-container flex-layout margin-top-small">
+                                        <button className="delete-button my-button flex-item-smaller" onClick={this.delete}>Yes, delete anyway</button>                                        
+                                        <button className="update-button my-button flex-item-smaller margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                    </div>
+                                </div>
+                        
+                        }
+                        
+                        
+                        
+                        
                         {
                             !this.state.error && !this.state.success && 
                                 <div className="profile-container flex-layout padding-bottom">
@@ -191,7 +226,7 @@ class Profile extends React.Component {
 
                             <div className="profile-buttons-container flex-layout-column flex-item margin-top-small">
                                 <button className="update-button my-button flex-item-smaller" onClick={this.update}>Update</button>
-                                <button className="delete-button my-button flex-item-smaller" onClick={this.delete}>Delete account</button>
+                                <button className="delete-button my-button flex-item-smaller" onClick={this.preDelete}>Delete account</button>
 
                             </div>
 

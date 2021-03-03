@@ -35,3 +35,14 @@ body {
 input:focus {
     border: solid 1px red;
 }
+
+.modal-box {
+    z-index: 5;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    padding: 5%;
+    background-color: rgb(240, 180, 180) !important;
+    border-radius: 5px;
+}
