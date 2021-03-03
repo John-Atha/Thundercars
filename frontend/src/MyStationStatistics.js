@@ -227,6 +227,9 @@ class StationStatisticsDiv extends React.Component {
                 this.setState({
                     diagram1: 0,
                     diagram2: 0,
+                    totalKWhDelivered: 0,
+                    sessionsNumber: 0,
+                    spotsUsedNumber: 0,
                 })
             })
         }

@@ -227,8 +227,8 @@ class Vehicle extends React.Component {
                     
                         <div className="modal-box box-colors">
                             <div className="message">
-                                Are you sure you want delete your account?<br></br>
-                                All your privileges here will be lost...
+                                Are you sure you want delete this vehicle?<br></br>
+                                All of its statistics will be lost...
                             </div>
                             <div className="modal-buttons-container flex-layout margin-top-small">
                                 <button className="delete-button my-button flex-item-smaller" onClick={this.deleteVehicle}>Yes, delete anyway</button>                                        

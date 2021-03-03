@@ -21,7 +21,8 @@ class Spot extends React.Component {
             amps: null,
             voltage: null,
             power: null,
-            comments: null   
+            comments: null,
+            showModal: false,   
         }
         this.attr1="Connection Type";
         this.attr2="Station Title";
@@ -31,8 +32,25 @@ class Spot extends React.Component {
         this.attr5="Fast Charge";
         this.attr5="Power (kW)";
         this.stationPageRedirect = this.stationPageRedirect.bind(this);    
-        this.deleteSpot = this.deleteSpot.bind(this);    
+        this.deleteSpot = this.deleteSpot.bind(this);
+        this.preDelete = this.preDelete.bind(this);
+        this.hideModal = this.hideModal.bind(this);    
     }
+
+    hideModal = () => {
+        this.setState({
+            showModal: false,
+        })
+    }
+
+    preDelete = () => {
+        this.setState({
+            showModal: true,
+        })
+    }
+
+
+
 
     stationPageRedirect = () => {
         let id=this.state.stationId;
@@ -148,10 +166,26 @@ class Spot extends React.Component {
                     </div>
                 
                     <div className="station-update-button-container center-content">
-                            <button className="delete-button my-button margin-top-small" onClick={this.deleteSpot}>
+                            <button className="delete-button my-button margin-top-small" onClick={this.preDelete}>
                                Delete spot
                             </button>
                     </div>
+
+                    {
+                            this.state.showModal===true && 
+                                <div className="modal-box box-colors">
+                                    <div className="message">
+                                        Are you sure you want delete this spot?<br></br>
+                                        All of its statistics will be lost...
+                                    </div>
+                                    <div className="modal-buttons-container flex-layout margin-top-small">
+                                        <button className="delete-button my-button flex-item-smaller" onClick={this.deleteSpot}>Yes, delete anyway</button>                                        
+                                        <button className="update-button my-button flex-item-smaller margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                    </div>
+                                </div>
+                        
+                    }
+
                 </div>
             </div>
         )

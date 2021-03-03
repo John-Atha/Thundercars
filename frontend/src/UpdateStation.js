@@ -546,7 +546,7 @@ class UpdateStation extends React.Component {
                             <input id="update-station-submit" className="submit-button my-button flex-item-small margin-top-small" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
                         }
                         
-                        }
+                        
                     </div>
                 </div>
             )
