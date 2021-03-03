@@ -6,7 +6,7 @@ body {
 
 .login-page-container {
     display: grid;
-    grid-template-rows: 20% 15% 40% 10%;
+    grid-template-rows: 30% 15% 40% 10%;
     height: 400px;
     width: 400px;
     margin-left: 10vw;
@@ -90,13 +90,6 @@ body {
 #submit-input:hover {
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
-}
-
-
-
-.image-container {
-    height: 100%;
-    width: 100%;
 }
 
 .logo {

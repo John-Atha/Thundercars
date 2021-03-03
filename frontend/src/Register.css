@@ -229,7 +229,8 @@ body {
 }
 
 .image-container {
-    height: 10%;
+    height: 150px;
+    padding-top: 5%;
     width: 100%;
 }
 
