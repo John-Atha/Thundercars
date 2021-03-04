@@ -70,10 +70,10 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <Route path="/home" exact>
+        <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/" exact>
+        <Route path="/login" exact>
           <Login />
         </Route>
         <Route path="/register" exact>
@@ -88,13 +88,13 @@ ReactDOM.render(
         <Route path="/myVehicles" exact>
           <MyVehicles />
         </Route>
-        <Route path="/vehicles/:id">
+        <Route path="/vehicles/:id" exact>
           <FindVehicle />  
         </Route>
         <Route path="/AddVehicle" exact>
           <AddVehicle />
         </Route>
-        <Route path="/acchargers/:id">
+        <Route path="/acchargers/:id" exact>
           <FindAcCharger />
         </Route>
         <Route path="/UserMyStatistics" exact>
@@ -106,7 +106,7 @@ ReactDOM.render(
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
         </Route>
-        <Route path="/StationsMonthlyStatistics">
+        <Route path="/StationsMonthlyStatistics" exact>
           <StationOwnerStatistics />
         </Route>
         <Route path="/mySpotsDetailedSessions" exact>
