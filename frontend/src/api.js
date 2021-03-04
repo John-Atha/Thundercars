@@ -69,6 +69,32 @@ export const countriesGet = () => {
     return axios.get(requestUrl);
 }
 
+export const userAddressPut = (id, obj) => {
+    const requestUrl = `/admin/useraddressesmod/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const userPutWithPass = (id, obj) => {
+    const requestUrl = `usersmodandpass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const userPutNoPass = (id, obj) => {
+    const requestUrl = `usersmodnopass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const stationOwnerPut = (id, obj) => {
+    const requestUrl = `admin/stationownersmod/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const stationOwnerPutNoPass = (id, obj) => {
+    const requestUrl = `admin/stationownersmodnopass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+
 export const currentProvidersGet = () => {
     const requestUrl = "/admin/currentproviders";
     return axios.get(requestUrl);
