@@ -222,6 +222,11 @@ export const stationOwnerDelete = (id) => {
     return axios.delete(requestUrl);
 }
 
+export const stationDelete = (id) => {
+    const requestUrl = `admin/chargingstationsmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
     return axios.get(requestUrl);
