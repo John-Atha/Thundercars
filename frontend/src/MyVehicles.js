@@ -71,14 +71,18 @@ class MyVehicles extends React.Component {
         if((!localStorage.getItem('userId'))) {
             return (
                     <UnAuthorized 
-                        message="You need to create an account to have your vehicles listing page" 
+                        message="You need to create an account to have your vehicles listing page"
+                        linkMessage="Create an account"
+                        link="/register" 
                     />
             )
         }
         else if(localStorage.getItem('role')=="StationOwner") {
             return (
                 <UnAuthorized 
-                    message="You need to create an account as a vehicle owner to have your vehicles listing page" 
+                    message="You need to create an account as a vehicle owner to have your vehicles listing page"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
                 />
             )
 

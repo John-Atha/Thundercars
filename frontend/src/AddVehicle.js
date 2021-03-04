@@ -476,14 +476,18 @@ class AddVehicle extends React.Component {
         if (!this.state.userId) {
             return (
                 <UnAuthorized 
-                    message="You need to create an account to add your vehicles" 
+                    message="You need to create an account to add your vehicles"
+                    linkMessage="Create an account"
+                    link="/register" 
                 />
             )
         }
         else if (this.state.role==="StationOwner") {
             return (
                 <UnAuthorized 
-                    message="You need to create an account as a vehicle owner to add your vehicles" 
+                    message="You need to create an account as a vehicle owner to add your vehicles"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register" 
                 />
             )
         }

@@ -85,7 +85,9 @@ class AcCharger extends React.Component {
         if((!localStorage.getItem('userId'))) {
             return (
                 <UnAuthorized 
-                    message="You need to create an account to see information about chargers" 
+                    message="You need to create an account to see information about chargers"
+                    linkMessage="Create an account"
+                    link="/register" 
                 />
             )
         }

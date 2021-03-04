@@ -167,7 +167,9 @@ class Profile extends React.Component {
         if (!this.state.userId) {
             return(
                 <UnAuthorized 
-                    message="You need to create an account to have your personal profile page" 
+                    message="You need to create an account to have your personal profile page"
+                    linkMessage="Create an account"
+                    link="/register"
                 />
             )
         }

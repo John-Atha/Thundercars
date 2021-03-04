@@ -4,39 +4,11 @@ import {getUserStats, getUserProfile} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
 import Carousel from 'react-bootstrap/Carousel';
+import UnAuthorized from './UnAuthorized';
+
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-/*class UserStatisticsDiv extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state={
-            key: this.props.key,
-            month: this.props.month,
-            sessions: this.props.sessions,
-            stationsVisited: this.props.stationsVisited,
-            totalCost: this.props.totalCost,
-            totalKWhDelivered: this.props.totalKWhDelivered,
-            year: this.props.year,
-        }
-    }
-
-    render() {
-        return (
-            <div className="sub-list-container center-content">
-                <div id="stats-session-year">Year: {this.state.year}</div>
-                <div id="stats-session-month">Month: {this.state.month}</div>
-                <div id="stats-session-sessions">Sessions: {this.state.sessions}</div>
-                <div id="stats-session-stations-visited">Stations visited: {this.state.stationsVisited}</div>
-                <div id="stats-session-total-cost">Total cost($): {this.state.totalCost}</div>
-                <div id="stats-session-total-kWh-del">Total energy delivered(kWh): {this.state.totalKWhDelivered}</div>
-            </div>
-        )
-    }
-}
-*/
-
 
 class ControlledCarousel extends React.Component {
     constructor(props) {
@@ -324,8 +296,26 @@ class UserMyStatistics extends React.Component {
     }
 
     render() {
-        if (!localStorage.getItem('userId') || this.state.role==="StationOwner") {
-            window.location.href = "/";
+        if (!localStorage.getItem('userId')) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+
+        else if(localStorage.getItem('role')==="StationOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
+                    link2Message="See your stations' statistics"
+                    link2="/mystationstatistics" 
+                />
+            )
         }
         else {     
             return (
