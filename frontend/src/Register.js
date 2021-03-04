@@ -139,7 +139,7 @@ class Register extends React.Component {
                 console.log(response);
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('role', this.state.role);
-                window.location.href="/home";
+                window.location.href="/";
             })
             .catch(err => {
                 console.log(err);
@@ -265,8 +265,12 @@ class Register extends React.Component {
                     
                     <div className="reg-login-container center-content">
                         Already have an account?<br></br>
-                        <a className="reg-login-link" href="/">Login.</a>            
-                    </div>   
+                        <a className="reg-login-link" href="/login">Login.</a>            
+                    </div>
+                    <div className="reg-login-container center-content">
+                        Don't want to create an account?<br></br>
+                        <a className="reg-login-link" href="/">Continue with limited access to our features.</a>            
+                    </div>    
                 </div>
             )
         }

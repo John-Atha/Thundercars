@@ -41,6 +41,7 @@ body {
 @media only screen and (min-width: 300px) {
     .register-page-container {
         margin-left: 5% !important;
+        padding-bottom: 2%;
     }
     
     .general-page-container, .spots-sessions-page-container {

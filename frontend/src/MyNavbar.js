@@ -28,7 +28,7 @@ class MyNavbar extends React.Component {
     return (
       <Navbar className="color-nav">
         <Nav className="mr-auto">
-          <Nav.Link id="nav-link" href="/home">Home</Nav.Link>
+          <Nav.Link id="nav-link" href="/">Home</Nav.Link>
 
           {this.state.role==="StationOwner" && (
           <NavDropdown title="My statistics" id="nav-link">
@@ -74,7 +74,7 @@ class MyNavbar extends React.Component {
           )}
 
           {!this.state.userId && (
-            <Nav.Link id="nav-link" href="/">Login</Nav.Link>
+            <Nav.Link id="nav-link" href="/login">Login</Nav.Link>
           )}
           {!this.state.userId && (
             <Nav.Link id="nav-link" href="/register">Register</Nav.Link>

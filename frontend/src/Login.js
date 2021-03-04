@@ -40,7 +40,7 @@ class Login extends React.Component {
             console.log("response => userId: " + response.data.Id);
             localStorage.setItem('userId', response.data.Id);
             localStorage.setItem('role', response.data.Token);
-            window.location.href = "/home";
+            window.location.href = "/";
         })
         .catch(err => {
             console.log(err);
@@ -92,13 +92,13 @@ class Login extends React.Component {
         else {
             return (
                 <div className="login-page-container blur center-content">
-                    <div className="image-container">
+                    <div className="image-container row-1 column-1">
                         <img className="logo" src={logo} alt="Thundercars-logo"/>
                     </div>
-                    <div className="title-container">
+                    <div className="title-container row-2 column-1">
                         Thundercars
                     </div>
-                    <div className="login-form-container center-content">
+                    <div className="login-form-container center-content row-3 column-1">
                         <div id="login-title">
                             Login
                             {this.state.error!==null && (
@@ -113,10 +113,15 @@ class Login extends React.Component {
                             <input id="submit-input" className="login-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
                         </form>
                     </div>
-                    <div className="register-container">
+                    <div className="register-container row-4 column-1">
                         First time here?<br></br>
                         <a className="register-link" href="/register">Create an account.</a>            
-                    </div>  
+                    </div>
+                    <div className="register-container center-content row-5 column-1">
+                        Don't want to create an account?<br></br>
+                        <a className="reg-login-link" href="/">Continue with limited access to our features.</a>            
+                    </div>    
+  
                 </div>
             )
         }
