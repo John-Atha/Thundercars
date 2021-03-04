@@ -401,6 +401,27 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
+  @PutMapping("/evcharge/api/{apikey}/admin/stationownersmodnopass/{id}")
+  StationOwner replaceStationOwnerNoPass(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository2);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
+    return repository.findById(id)
+      .map(stationOwner -> {
+        stationOwner.setUsername(newStationOwner.getUsername());
+        stationOwner.setEmailAddr(newStationOwner.getEmailAddr());
+        stationOwner.setFirstName(newStationOwner.getFirstName());
+        stationOwner.setLastName(newStationOwner.getLastName());
+        stationOwner.setAddress(newStationOwner.getAddress());
+        stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
+        return repository.save(stationOwner);
+      })
+      .orElseThrow(() -> new StationOwnerNotFoundException(id));
+  }
+
+  @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/evcharge/api/{apikey}/admin/stationownersmod/{id}")
   void deleteStationOwner(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
