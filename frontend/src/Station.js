@@ -173,7 +173,7 @@ class Station extends React.Component {
                             <div className="station-info">{this.state.secondAddress}</div>
                             
                             <div className="station-info-title darker">Town:</div>
-                            <div className="station-info darker">{this.state.town}</div>
+                            <div className="station-info darker">{this.state.Town}</div>
                             
                             
                             <div className="station-info-title">State/Province:</div>
