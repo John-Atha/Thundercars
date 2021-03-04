@@ -4,6 +4,7 @@ import md5 from 'crypto-js/md5';
 import { getUserOBJECT, stationOwnerOBJECTGet, countriesGet, userAddressPut, stationOwnerPut, stationOwnerPutNoPass, userPutWithPass, userPutNoPass} from './api';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
+import UnAuthorized from './UnAuthorized';
 
 class UpdateProfile extends React.Component {
 
@@ -340,61 +341,73 @@ class UpdateProfile extends React.Component {
     }
 
     render() {
-        return(
+        
+        if (!this.state.userId) {
+            return(
+                <UnAuthorized 
+                    message="You need to create an account to have your personal profile page" 
+                />
+            )
+        }
 
-            <div className="allpage">
-                
-                <MyNavbar />
-                
-                <div className="general-page-container more-blur center-content">
+        else {
+        
+            return(
 
-                            
-                                <div className="specific-title">
-                                    <div className="station-info-title">Profile Update</div>
-                                    <div className="error-message">{this.state.error}</div> 
-                                    <div className="success-message">{this.state.success}</div> 
-                                </div>
+                <div className="allpage">
                     
-                            <div className="update-profile-container center-content">
+                    <MyNavbar />
+                    
+                    <div className="general-page-container more-blur center-content">
 
-                                <div className="update-profile-icon-container margin-small">
-                                    <img src={icon}/>
+                                
+                                    <div className="specific-title">
+                                        <div className="station-info-title">Profile Update</div>
+                                        <div className="error-message">{this.state.error}</div> 
+                                        <div className="success-message">{this.state.success}</div> 
+                                    </div>
+                        
+                                <div className="update-profile-container center-content">
+
+                                    <div className="update-profile-icon-container margin-small">
+                                        <img src={icon}/>
+                                    </div>
+
+                                    <form className="profile-pic-and-form-container flex-layout fix-width">
+
+                                        <input id="reg-username-input" className="register-input flex-item-small" name="username" value={this.state.username} type="text" placeholder="Username*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-password-input" className="register-input flex-item-small" name="password" value={this.state.password} type="password" placeholder="Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-confirm-password-input" className="register-input flex-item-small" name="confirmPassword" value={this.state.confirmPassword} type="password" placeholder="Confirm Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-email-input" className="register-input flex-item-small" name="email" value={this.state.email} type="email" placeholder="Email*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-first-name-input" className="register-input flex-item-small" name="firstName" value={this.state.firstName} type="text" placeholder="First name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-last-name-input" className="register-input flex-item-small" name="lastName" value={this.state.lastName} type="text" placeholder="Last name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-date-of-birth-input" className="register-input flex-item-small" name="dateOfBirth" value={this.state.dateOfBirth} type="date" placeholder="Date of Birth" onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <select id="reg-country-input" className="register-input flex-item-small" name="country" value={this.state.country} type="text" placeholder="Country..." onChange={this.handleInput} onKeyUp ={this.submitActivate}>
+                                            {this.state.countries.map((key, value) => {
+                                                return(
+                                                    <option key={value} value={key.id+",,"+key.title+",,"+key.isocode+",,"+key.continentcode}>{key.title}</option>
+                                                )
+                                            })}
+                                        </select>                  
+                                        <input id="reg-town-input" className="register-input flex-item-small" name="town" value={this.state.town} type="text" placeholder="Town..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-state-input" className="register-input flex-item-small" name="stateOrProvince" value={this.state.stateOrProvince} type="text" placeholder="State/Province..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-post-code-input" className="register-input flex-item-small" name="postCode" value={this.state.postCode} type="text" placeholder="Postcode..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-tel1-input" className="register-input flex-item-small" name="tel1" value={this.state.tel1} type="tel" placeholder="Telephone number 1..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-tel2-input" className="register-input flex-item-small" name="tel2" value={this.state.tel2} type="tel" placeholder="Telephone number 2..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-addr-line-input" className="register-input flex-item-small" name="addrLine" value={this.state.addrLine} type="text" placeholder="Address line..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                               
+                                    </form>
+                                    <input id="upd-submit-input-button" className="my-button submit-button flex-item-small margin-top-small" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
+
+
+
                                 </div>
 
-                                <form className="profile-pic-and-form-container flex-layout fix-width">
-
-                                    <input id="reg-username-input" className="register-input flex-item-small" name="username" value={this.state.username} type="text" placeholder="Username*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-password-input" className="register-input flex-item-small" name="password" value={this.state.password} type="password" placeholder="Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-confirm-password-input" className="register-input flex-item-small" name="confirmPassword" value={this.state.confirmPassword} type="password" placeholder="Confirm Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-email-input" className="register-input flex-item-small" name="email" value={this.state.email} type="email" placeholder="Email*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-first-name-input" className="register-input flex-item-small" name="firstName" value={this.state.firstName} type="text" placeholder="First name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-last-name-input" className="register-input flex-item-small" name="lastName" value={this.state.lastName} type="text" placeholder="Last name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-date-of-birth-input" className="register-input flex-item-small" name="dateOfBirth" value={this.state.dateOfBirth} type="date" placeholder="Date of Birth" onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <select id="reg-country-input" className="register-input flex-item-small" name="country" value={this.state.country} type="text" placeholder="Country..." onChange={this.handleInput} onKeyUp ={this.submitActivate}>
-                                        {this.state.countries.map((key, value) => {
-                                            return(
-                                                <option key={value} value={key.id+",,"+key.title+",,"+key.isocode+",,"+key.continentcode}>{key.title}</option>
-                                            )
-                                        })}
-                                    </select>                  
-                                    <input id="reg-town-input" className="register-input flex-item-small" name="town" value={this.state.town} type="text" placeholder="Town..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-state-input" className="register-input flex-item-small" name="stateOrProvince" value={this.state.stateOrProvince} type="text" placeholder="State/Province..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-post-code-input" className="register-input flex-item-small" name="postCode" value={this.state.postCode} type="text" placeholder="Postcode..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-tel1-input" className="register-input flex-item-small" name="tel1" value={this.state.tel1} type="tel" placeholder="Telephone number 1..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-tel2-input" className="register-input flex-item-small" name="tel2" value={this.state.tel2} type="tel" placeholder="Telephone number 2..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                    <input id="reg-addr-line-input" className="register-input flex-item-small" name="addrLine" value={this.state.addrLine} type="text" placeholder="Address line..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                               
-                                </form>
-                                <input id="upd-submit-input-button" className="my-button submit-button flex-item-small margin-top-small" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
-
-
-
-                            </div>
+                    </div>
 
                 </div>
 
-            </div>
-
-        )
+            )
+        }
     }
 
 }

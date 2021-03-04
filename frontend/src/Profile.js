@@ -3,6 +3,7 @@ import './Profile.css';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
 import {getUserProfile, getStationOwnerProfile, stationOwnerDelete, userDelete } from './api';
+import UnAuthorized from './UnAuthorized';
 
 class Profile extends React.Component {
     
@@ -164,7 +165,11 @@ class Profile extends React.Component {
     render() {
         
         if (!this.state.userId) {
-            window.location.href = "/";
+            return(
+                <UnAuthorized 
+                    message="You need to create an account to have your personal profile page" 
+                />
+            )
         }
 
         else {
