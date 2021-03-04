@@ -2,6 +2,7 @@ import React from "react"
 import "./MySpots.css";
 import MyNavbar from './MyNavbar'; 
 import { getStations, getOneSpot } from "./api";
+import UnAuthorized from './UnAuthorized';
 
 class SpotsDiv extends React.Component {
     constructor(props) {
@@ -99,8 +100,25 @@ class MySpots extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your spots listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your spots listing feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles listing"
+                    link2="/MyVehicles" 
+                />
+            )
         }
         else {
             return (

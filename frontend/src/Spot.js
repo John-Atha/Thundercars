@@ -51,9 +51,6 @@ class Spot extends React.Component {
         })
     }
 
-
-
-
     stationPageRedirect = () => {
         let id=this.state.stationId;
         window.location.href=`/stations/${id}`;
@@ -150,7 +147,6 @@ class Spot extends React.Component {
             })
         })
     }
-
 
     render() {
         return(

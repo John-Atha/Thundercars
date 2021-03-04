@@ -82,37 +82,25 @@ class AcCharger extends React.Component {
     }
 
     render() {
-        if((!localStorage.getItem('userId'))) {
-            return (
-                <UnAuthorized 
-                    message="You need to create an account to see information about chargers"
-                    linkMessage="Create an account"
-                    link="/register" 
-                />
-            )
-        }
-
-        else {
-            return (
-                <div className="allPage">
-                    <MyNavBar />
-                <div className="general-page-container more-blur center-content">
-                    <div className="specific-title orangeColor">
-                        My AC Charger
+        return (
+            <div className="allPage">
+                <MyNavBar />
+            <div className="general-page-container more-blur center-content">
+                <div className="specific-title orangeColor">
+                    AC Charger {this.state.acId}
+                </div>   
+                <div className="one-station-container center-content">
+                    <div className="station-page-info-container">
+                        <div className="station-info-title darker">Types: </div><div className="station-info darker">{this.state.types}</div>
+                        <div className="station-info-title">Usable Phases: </div><div className="station-info">{this.state.usablePhases}</div>
+                        <div className="station-info-title darker">Maximum Power: </div><div className="station-info darker">{this.state.maxPower} kW</div>
                     </div>   
-                    <div className="one-station-container center-content">
-                        <div className="station-page-info-container">
-                            <div className="station-info-title darker">Types: </div><div className="station-info darker">{this.state.types}</div>
-                            <div className="station-info-title">Usable Phases: </div><div className="station-info">{this.state.usablePhases}</div>
-                            <div className="station-info-title darker">Maximum Power: </div><div className="station-info darker">{this.state.maxPower} kW</div>
-                        </div>   
-                        <div><CanvasJSChart options = {this.state.diagramOptions} /></div>         
-                    </div>
+                    <div><CanvasJSChart options = {this.state.diagramOptions} /></div>         
+                </div>
 
-                </div>
-                </div>
-            );
-        }
+            </div>
+            </div>
+        );
     }
 }
 

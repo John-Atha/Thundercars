@@ -437,7 +437,7 @@ class AddStation extends React.Component {
         if (!this.state.userId) {
             return (
                 <UnAuthorized 
-                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    message="You need to create an account as a station owner to to add a new station"
                     linkMessage="Create an account"
                     link="/register" 
                 />

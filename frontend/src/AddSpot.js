@@ -2,6 +2,7 @@ import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
 import {getStations, getOneStationOBJECT, spotPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet} from './api';
+import UnAuthorized from './UnAuthorized';
 
 class AddSpot extends React.Component {
     
@@ -43,7 +44,6 @@ class AddSpot extends React.Component {
         console.log(name+":  ");
         console.log(value);
     }
-
 
     componentDidMount() {
         getStations(this.state.userId)
@@ -191,6 +191,30 @@ class AddSpot extends React.Component {
     }
 
     render() {
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to to add a new spot"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to add a new spot"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+
+                />
+            )
+        }
+
+        
+        
+        
+        
         return (
             <div className="allpage">
                 <MyNavbar />
