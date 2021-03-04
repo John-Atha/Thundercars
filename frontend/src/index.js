@@ -7,6 +7,7 @@ import Login from './Login';
 import Register from './Register';
 import Home from './Home';
 import Profile from './Profile';
+import UpdateProfile from './UpdateProfile';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
 import AddVehicle from './AddVehicle';
@@ -80,6 +81,9 @@ ReactDOM.render(
         </Route>
         <Route path="/profile" exact>
           <Profile />
+        </Route>
+        <Route path="/updateprofile" exact>
+          <UpdateProfile />
         </Route>
         <Route path="/myVehicles" exact>
           <MyVehicles />

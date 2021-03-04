@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
-import {getUserProfile, getStationOwnerProfile, UserDelete, stationOwnerDelete, userDelete } from './api';
+import {getUserProfile, getStationOwnerProfile, stationOwnerDelete, userDelete } from './api';
 
 class Profile extends React.Component {
     
@@ -94,7 +94,7 @@ class Profile extends React.Component {
     }
 
     update = () => {
-
+        window.location.href="/updateprofile";
     }
 
 
