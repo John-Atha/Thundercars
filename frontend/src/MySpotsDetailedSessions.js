@@ -2,6 +2,7 @@ import React from 'react';
 import './MySpotsDetailedSessions.css';
 import {getStations, getSpotSessions} from './api';
 import MyNavbar from './MyNavbar';
+import UnAuthorized from './UnAuthorized';
 
 //import CanvasJSReact from './canvasjs.react';
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -227,8 +228,25 @@ class MySpotsDetailedSessions extends React.Component {
     }
 
     render() {
-        if ((!this.state.userId) || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the detailed sessions history feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to the detailed sessions history per spot feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles detailed sessions history"
+                    link2="/VehiclesDetailedSessions" 
+                />
+            )
         }
         else {        
             return (
