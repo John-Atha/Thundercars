@@ -210,7 +210,7 @@ class Register extends React.Component {
 
     render() {
         if (localStorage.getItem('userId')) {
-            window.location.href="/home";
+            window.location.href="/";
         }
         else {
             return(

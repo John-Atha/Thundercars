@@ -87,10 +87,7 @@ class Login extends React.Component {
  
     render() {
         if (localStorage.getItem('userId')) {
-            this.setState({
-               userId:  localStorage.getItem('userId')
-            })
-            window.location.href="/home";
+            window.location.href="/";
         }
         else {
             return (
