@@ -5,7 +5,9 @@ import {getStations, getOneStationOBJECT,
     countriesGet, currentProvidersGet,
     operatorsGet, statusTypesGet, usageTypesGet,
     stationOwnerOBJECTGet, stationAddressPost,
-    stationPut} from './api'; 
+    stationPut} from './api';
+import UnAuthorized from './UnAuthorized';
+ 
 
 class UpdateStation extends React.Component {
     constructor(props) {
@@ -428,9 +430,25 @@ class UpdateStation extends React.Component {
 
 
     render() {
-        if (!this.state.userId || this.state.role==="VehicleOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
         }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to update the information about a station you own"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                />
+            )
+        }
+
         else {
             return(
                 <div className="allpage">

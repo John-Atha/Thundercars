@@ -2,6 +2,7 @@ import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
 import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, spotPost} from './api';
+import UnAuthorized from './UnAuthorized';
 
 class AddStation extends React.Component {
     
@@ -433,8 +434,24 @@ class AddStation extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role==="VehicleOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to add a new station"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+
+                />
+            )
         }
         else {
         return (

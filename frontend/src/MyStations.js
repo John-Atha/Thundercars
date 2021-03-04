@@ -2,7 +2,7 @@ import React from "react"
 import "./MyStations.css";
 import MyNavbar from './MyNavbar'; 
 import {getStations} from './api';
-
+import UnAuthorized from './UnAuthorized';
 
 class StationsDiv extends React.Component {
     constructor(props) {
@@ -50,9 +50,6 @@ class StationsDiv extends React.Component {
 }
 
 
-
-
-
 class MyStations extends React.Component {
 
     constructor(props) {
@@ -81,8 +78,25 @@ class MyStations extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles listing"
+                    link2="/MyVehicles" 
+                />
+            )
         }
         else {
             return (
