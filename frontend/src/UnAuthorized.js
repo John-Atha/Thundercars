@@ -25,7 +25,7 @@ class UnAuthorized extends React.Component {
 
     action = (e) => {
         let message=e.target.innerText;
-        if (message==="Log out and create an account as a vehicle owner") {
+        if (message==="Log out and create an account as a vehicle owner" || message==="Log out and create an account as a station owner") {
             this.logout();
             window.location.href="/register";
             e.preventDefault();

@@ -312,8 +312,8 @@ class UserMyStatistics extends React.Component {
                     message="You need to create an account as a vehicle owner to have access to this statistics feature"
                     linkMessage="Log out and create an account as a vehicle owner"
                     link="/register"
-                    link2Message="See your stations' statistics"
-                    link2="/mystationstatistics" 
+                    link2Message="See your statistics"
+                    link2="/StationsMonthlyStatistics" 
                 />
             )
         }

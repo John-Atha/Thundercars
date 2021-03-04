@@ -3,6 +3,8 @@ import './MyStationStatistics.css';
 import {getStationStats, getStations, getOneStation} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
+import UnAuthorized from './UnAuthorized';
+
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -331,8 +333,26 @@ class MyStationStatistics extends React.Component {
     }
 
     render() {
-        if (!localStorage.getItem('userId') || this.state.role==="VehicleOwner") {
-            window.location.href = "/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles' statistics"
+                    link2="/uservehiclestatistics" 
+                />
+            )
+
         }
         else {
             return (

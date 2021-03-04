@@ -2,6 +2,7 @@ import React from 'react';
 import './UserVehicleStatistics.css';
 import {getVehicleSessions, getVehicles, getAllUserVehicle} from './api'
 import MyNavbar from './MyNavbar'; 
+import UnAuthorized from './UnAuthorized';
 
 
 class VehicleStatisticsDiv extends React.Component {
@@ -200,8 +201,26 @@ class UserVehicleStatistics extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role==="Station Owner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="StationOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
+                    link2Message="See your stations' statistics"
+                    link2="/mystationstatistics" 
+                />
+            )
+
         }
         else {
             return (

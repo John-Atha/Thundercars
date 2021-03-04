@@ -4,6 +4,8 @@ import MyNavbar from './MyNavbar';
 import {getStationOwnerStatistics, getStations} from './api';
 import CanvasJSReact from './canvasjs.react';
 import Carousel from 'react-bootstrap/Carousel';
+import UnAuthorized from './UnAuthorized';
+
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -255,8 +257,25 @@ class StationOwnerStatistics extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!==('StationOwner')) {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your statistics"
+                    link2="/usermystatistics" 
+                />
+            )
         }
         else {
             return (
