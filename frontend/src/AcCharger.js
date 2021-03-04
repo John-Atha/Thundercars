@@ -3,6 +3,8 @@ import './AcCharger.css';
 import MyNavBar from'./MyNavbar';
 import {getOneAcCharger} from './api';
 import CanvasJSReact from'./canvasjs.react';
+import UnAuthorized from './UnAuthorized';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class AcCharger extends React.Component {
@@ -81,36 +83,13 @@ class AcCharger extends React.Component {
 
     render() {
         if((!localStorage.getItem('userId'))) {
-            console.log("User not logged in error");
-            setTimeout(() =>{window.location.href = "/"},10000);
             return (
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are not logged in...
-                        You will be redirected to the login page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+                <UnAuthorized 
+                    message="You need to create an account to see information about chargers" 
+                />
             )
         }
-        else if(localStorage.getItem('role')=="StationOwner") {
-            console.log("Station Owner Error");
-            setTimeout(() =>{window.location.href = "/home"},10000);
-            return(
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are logged in as a Station Owner...<br></br>
-                        Log in to your Vehicle Owner account to view your Vehicles' AC Chargers.<br></br>
-                        You will be redirected to the Home page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
-            )
-        }
+
         else {
             return (
                 <div className="allPage">

@@ -2,6 +2,7 @@ import React from 'react';
 import './AddVehicle.css';
 import MyNavbar from './MyNavbar';
 import {dcChargerPost, acChargerPost, dcChargerPortPost, acChargerPortPost, PowerPerChargingPost, vehiclePost, UserVehiclePost, getUserOBJECT} from './api';
+import UnAuthorized from './UnAuthorized';
 
 class AddVehicle extends React.Component {
     constructor(props) {
@@ -472,8 +473,19 @@ class AddVehicle extends React.Component {
 
     render() {
 
-        if (!this.state.userId || this.state.role!=="VehicleOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to add your vehicles" 
+                />
+            )
+        }
+        else if (this.state.role==="StationOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to add your vehicles" 
+                />
+            )
         }
         else {      
             return(

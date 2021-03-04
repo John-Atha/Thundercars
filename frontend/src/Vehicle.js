@@ -2,6 +2,7 @@ import React from 'react';
 import './Vehicle.css';
 import {getOneVehicle, getAllUserVehicle, UserVehicleDelete} from './api'
 import MyNavBar from './MyNavbar'; 
+import UnAuthorized from './UnAuthorized'
 
 class Vehicle extends React.Component {
     
@@ -158,34 +159,17 @@ class Vehicle extends React.Component {
     
     render() {
         if((!localStorage.getItem('userId'))) {
-            console.log("User not logged in error");
-            setTimeout(() =>{window.location.href = "/"},10000);
             return (
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are not logged in...
-                        You will be redirected to the login page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+                <UnAuthorized 
+                    message="You need to create an account to see information about a vehicle you own" 
+                />
             )
         }
         else if(localStorage.getItem('role')==="StationOwner") {
-            console.log("Station Owner Error");
-            setTimeout(() =>{window.location.href = "/home"},10000);
-            return(
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are logged in as a Station Owner...<br></br>
-                        Log in to your Vehicle Owner account to view your vehicles.<br></br>
-                        You will be redirected to the Home page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to see information about a vehicle you own" 
+                />
             )
         }
         else {
