@@ -72,7 +72,9 @@ class MyNavbar extends React.Component {
           {this.state.role==="VehicleOwner" && (
             <Nav.Link id="nav-link" href="/VehiclesDetailedSessions">Detailed Sessions</Nav.Link>
           )}
-
+          {this.state.userId && (
+            <Nav.Link id="nav-link" href="/developers">For developers</Nav.Link>
+          )}
           {!this.state.userId && (
             <Nav.Link id="nav-link" href="/login">Login</Nav.Link>
           )}
