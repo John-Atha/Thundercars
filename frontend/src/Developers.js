@@ -132,9 +132,9 @@ class Developers extends React.Component {
                             API-CLI access
                         </div>
                         <div className="developers-page-main-container center-content">
-                            <div className="white margin-top-small">
+                            <div className="white margin-top-small border-bottom padding-bottom-small">
                                 If you want to use our Command Line Interface, or use our data straight out of our API, you will need your personal API key.<br></br><br></br>
-                                Note that you can have only one API key from each account.<br></br>
+                                Note that you can have only one API key for each account.<br></br>
                                 So, if you already have an API key from this account, generating a new one will deactivate it.
                             </div>
                             
