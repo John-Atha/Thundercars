@@ -67,9 +67,10 @@ class SpecStation extends React.Component {
               </span>
               </div>
               <div style={okText}>
-              Rating:
+              Rating:<br></br>
+              <Rating initialRating={this.props.rating} readonly={true} fullSymbol={<img className="logorating" src={logo} alt="Thundercars-logo"/>}></Rating>
               </div>
-            <Rating initialRating={this.props.rating} readonly={true} fullSymbol={<img className="logorating" src={logo} alt="Thundercars-logo"/>}></Rating>
+            
           </Popup>
         </Marker>
       );
