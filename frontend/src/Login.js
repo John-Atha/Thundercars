@@ -108,9 +108,9 @@ class Login extends React.Component {
                             )}
                         </div>
                         <form id="login-form">
-                            <input id="username-input" className="login-input" name="username" value={this.state.username} type="text" placeholder="Username..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input id="password-input" className="login-input" name="password" value={this.state.password} type="password" placeholder="Password..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                            <input id="submit-input" className="login-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
+                            <input id="username-input" title="Username" className="login-input" name="username" value={this.state.username} type="text" placeholder="Username..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input id="password-input" title="Password" className="login-input" name="password" value={this.state.password} type="password" placeholder="Password..." onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                            <input id="submit-input" title="Login" className="login-input" name="submit" type="submit" value="Submit" disabled={this.state.sumbitDisabled} onClick={this.handleSubmit}/>
                         </form>
                     </div>
                     <div className="register-container row-4 column-1">
