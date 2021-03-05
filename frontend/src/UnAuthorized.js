@@ -1,6 +1,6 @@
 import React from 'react';
 import './UnAuthorized.css';
-import MyNavBar from './MyNavbar';
+import MyNavbar from './MyNavbar';
 import logo from './images/thundera.png';
 
 class UnAuthorized extends React.Component {
@@ -36,7 +36,7 @@ class UnAuthorized extends React.Component {
 
         return (
             <div className="allpage">
-                <MyNavBar />
+                <MyNavbar />
                 <div className="unauthorized-message-container more-blur center-content color2 fix-width">
                     <div className="image-container">
                         <img className="logo" src={logo} alt="Thundercars-logo"/>
