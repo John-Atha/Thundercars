@@ -6,7 +6,7 @@ body {
 
 .login-page-container {
     display: grid;
-    grid-template-rows: 27% 15% 30% 15% 15%;
+    grid-template-rows: 27% 12% 35% 13% 13%;
     height: 450px;
     width: 400px;
     margin-left: 10vw;
