@@ -1,0 +1,32 @@
+.DeviceMap {
+    font-family: sans-serif;
+    text-align: center;
+    
+  }
+  
+  .leaflet-container {
+    height: 80vh;
+    width: 100%;
+  }
+  
+  .leaflet-div-icon {
+    background: transparent;
+    border: none;
+  }
+  .logorating {
+    height: 30px;
+    width: 30px;
+  }
+  
+  .request-popup .leaflet-popup-content-wrapper {
+    border-radius: 15px;
+    background-color: rgb(37, 36, 36);
+    opacity: 0.9;
+    color:aliceblue;
+  }
+  .popupHead  {
+    width:100%;
+    font-weight: bold;
+    font-size: 22px;
+
+  };
