@@ -395,6 +395,7 @@ class StationownerController {
         stationOwner.setLastName(newStationOwner.getLastName());
         stationOwner.setAddress(newStationOwner.getAddress());
         stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
+        stationOwner.setApiKey(newStationOwner.getApiKey());
         return repository.save(stationOwner);
       })
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
@@ -416,6 +417,7 @@ class StationownerController {
         stationOwner.setLastName(newStationOwner.getLastName());
         stationOwner.setAddress(newStationOwner.getAddress());
         stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
+        stationOwner.setApiKey(newStationOwner.getApiKey());
         return repository.save(stationOwner);
       })
       .orElseThrow(() -> new StationOwnerNotFoundException(id));
