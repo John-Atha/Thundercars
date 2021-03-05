@@ -135,7 +135,7 @@ class UpdateProfile extends React.Component {
                     .catch(err=> {
                         console.log(err);
                         this.setState({
-                            error: "Could not update profile, please try again later",
+                            error: "Could not update profile, maybe the username/email you entered are used by another account",
                         })
                     })
                 }
@@ -152,7 +152,7 @@ class UpdateProfile extends React.Component {
                     .catch(err=> {
                         console.log(err);
                         this.setState({
-                            error: "Could not update profile, please try again later",
+                            error: "Could not update profile, maybe the username/email you entered are used by another account",
                         })
                     })
                 }
@@ -172,7 +172,7 @@ class UpdateProfile extends React.Component {
                     .catch(err=> {
                         console.log(err);
                         this.setState({
-                            error: "Could not update profile, please try again later",
+                            error: "Could not update profile, maybe the username/email you entered are used by another account",
                         })
                     })
                 }
@@ -189,7 +189,7 @@ class UpdateProfile extends React.Component {
                     .catch(err=> {
                         console.log(err);
                         this.setState({
-                            error: "Could not update profile, please try again later",
+                            error: "Could not update profile, maybe the username/email you entered are used by another account",
                         })
                     })
 
@@ -200,7 +200,7 @@ class UpdateProfile extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not update profile, please try again later",
+                error: "Could not update profile, maybe the username/email you entered are used by another account",
             })
         })
         e.preventDefault();
@@ -374,31 +374,30 @@ class UpdateProfile extends React.Component {
                                     <div className="update-profile-icon-container margin-small">
                                         <img src={icon}/>
                                     </div>
-
+                                    <div className="color2">Move your cursor over a field to for an explanation of its role</div>
                                     <form className="profile-pic-and-form-container flex-layout fix-width">
-
-                                        <input id="reg-username-input" className="register-input flex-item-small" name="username" value={this.state.username} type="text" placeholder="Username*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-password-input" className="register-input flex-item-small" name="password" value={this.state.password} type="password" placeholder="Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-confirm-password-input" className="register-input flex-item-small" name="confirmPassword" value={this.state.confirmPassword} type="password" placeholder="Confirm Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-email-input" className="register-input flex-item-small" name="email" value={this.state.email} type="email" placeholder="Email*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-first-name-input" className="register-input flex-item-small" name="firstName" value={this.state.firstName} type="text" placeholder="First name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-last-name-input" className="register-input flex-item-small" name="lastName" value={this.state.lastName} type="text" placeholder="Last name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-date-of-birth-input" className="register-input flex-item-small" name="dateOfBirth" value={this.state.dateOfBirth} type="date" placeholder="Date of Birth" onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <select id="reg-country-input" className="register-input flex-item-small" name="country" value={this.state.country} type="text" placeholder="Country..." onChange={this.handleInput} onKeyUp ={this.submitActivate}>
+                                        <input id="reg-username-input" title="Username" className="register-input flex-item-small" name="username" value={this.state.username} type="text" placeholder="Username*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-password-input" title="Password" className="register-input flex-item-small" name="password" value={this.state.password} type="password" placeholder="Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-confirm-password-input" title="Confirm Password" className="register-input flex-item-small" name="confirmPassword" value={this.state.confirmPassword} type="password" placeholder="Confirm Password*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-email-input" title="Email"className="register-input flex-item-small" name="email" value={this.state.email} type="email" placeholder="Email*..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-first-name-input" title="First Name" className="register-input flex-item-small" name="firstName" value={this.state.firstName} type="text" placeholder="First name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-last-name-input" title="Last Name" className="register-input flex-item-small" name="lastName" value={this.state.lastName} type="text" placeholder="Last name..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-date-of-birth-input" title="Date Of Birth" className="register-input flex-item-small" name="dateOfBirth" value={this.state.dateOfBirth} type="date" placeholder="Date of Birth" onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <select id="reg-country-input" title="Country" className="register-input flex-item-small" name="country" value={this.state.country} type="text" placeholder="Country..." onChange={this.handleInput} onKeyUp ={this.submitActivate}>
                                             {this.state.countries.map((key, value) => {
                                                 return(
                                                     <option key={value} value={key.id+",,"+key.title+",,"+key.isocode+",,"+key.continentcode}>{key.title}</option>
                                                 )
                                             })}
                                         </select>                  
-                                        <input id="reg-town-input" className="register-input flex-item-small" name="town" value={this.state.town} type="text" placeholder="Town..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-state-input" className="register-input flex-item-small" name="stateOrProvince" value={this.state.stateOrProvince} type="text" placeholder="State/Province..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-post-code-input" className="register-input flex-item-small" name="postCode" value={this.state.postCode} type="text" placeholder="Postcode..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-tel1-input" className="register-input flex-item-small" name="tel1" value={this.state.tel1} type="tel" placeholder="Telephone number 1..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-tel2-input" className="register-input flex-item-small" name="tel2" value={this.state.tel2} type="tel" placeholder="Telephone number 2..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
-                                        <input id="reg-addr-line-input" className="register-input flex-item-small" name="addrLine" value={this.state.addrLine} type="text" placeholder="Address line..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                               
+                                        <input id="reg-town-input" title="Town" className="register-input flex-item-small" name="town" value={this.state.town} type="text" placeholder="Town..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-state-input" title="State/Province" className="register-input flex-item-small" name="stateOrProvince" value={this.state.stateOrProvince} type="text" placeholder="State/Province..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-post-code-input" title="Postcode" className="register-input flex-item-small" name="postCode" value={this.state.postCode} type="text" placeholder="Postcode..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-tel1-input" title="Contact Tel1" className="register-input flex-item-small" name="tel1" value={this.state.tel1} type="tel" placeholder="Telephone number 1..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-tel2-input" title="Contact Tel2" className="register-input flex-item-small" name="tel2" value={this.state.tel2} type="tel" placeholder="Telephone number 2..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>
+                                        <input id="reg-addr-line-input" title="Address Line" className="register-input flex-item-small" name="addrLine" value={this.state.addrLine} type="text" placeholder="Address line..." onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                               
                                     </form>
-                                    <input id="upd-submit-input-button" className="my-button submit-button flex-item-small margin-top-small" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
+                                    <input id="upd-submit-input-button" title="Update Profile" className="my-button submit-button flex-item-small margin-top-small" name="submit" type="submit" value="Update Profile" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
 
 
 

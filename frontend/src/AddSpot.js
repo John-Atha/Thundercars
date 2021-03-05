@@ -211,102 +211,100 @@ class AddSpot extends React.Component {
             )
         }
 
-        
-        
-        
-        
-        return (
-            <div className="allpage">
-                <MyNavbar />
-                <div className="general-page-container more-blur center-content padding-bottom">
-                    
-                    <div className="add-station-specific-title">
-                            <div className="station-info-title">
-                                Add spot
-                                {this.state.error!==null && ( 
-                                    <div className="error-message">
-                                        {this.state.error}
-                                    </div>
-                                )}    
-                            </div> 
+        else {
+            return (
+                <div className="allpage">
+                    <MyNavbar />
+                    <div className="general-page-container more-blur center-content padding-bottom">
+                        
+                        <div className="add-station-specific-title">
+                                <div className="station-info-title">
+                                    Add spot
+                                    {this.state.error!==null && ( 
+                                        <div className="error-message">
+                                            {this.state.error}
+                                        </div>
+                                    )}    
+                                </div> 
+                        </div>
+
+                        {this.state.stations.length>0 &&
+                        
+                            <form id="add-spot-info-container">
+                                <div className="color2">Move your cursor over a field to for an explanation of its role</div>
+                                <div className="add-spot-first-container flex-layout">                        
+                                    <input className="add-station-input flex-item-medium" title="Amperes" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} />
+                                    <input className="add-station-input flex-item-medium" title="Voltage" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} />
+                                    <input className="add-station-input flex-item-medium" title="Power" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} />                       
+                                    <input className="add-station-input flex-item-medium" title="Quantity" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} />                       
+                                    <input className="add-station-input flex-item-medium" title="Quantity Available" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} />                       
+                                    <input className="add-station-input flex-item-medium" title="Quantity Operational" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} />                       
+                                </div>
+                                
+                                <textarea className="add-station-input-textarea" title="Comments" id="add-spot-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} />                       
+
+                                <div className="add-station-selects-container flex-layout">
+                                    <select className="add-station-input flex-item-medium" title="Station's title" id="add-spot-station" name="station" value={this.state.station} onChange={this.handleInput} >
+                                        {
+                                            this.state.stations.map((key, value) =>{
+                                                console.log(key.Id);
+                                                return(
+                                                        <option key={key.Id} value={key.Id+",,"+key.Title}>Station {key.Id} ({key.Title})</option>
+                                                    )
+
+                                            })
+                                        }
+                                    </select>
+                                    <select className="add-station-input flex-item-medium" title="Connection Type" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
+                                        {
+                                            this.state.connTypes.map((key, value) =>{
+                                                //console.log(value);
+                                                return(
+                                                    <option key={key.id} value={key.id+",,"+key.title+",,"+key.formalName+",,"+key.category}>{key.title}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                    <select className="add-station-input flex-item-medium" title="Level" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
+                                        {
+                                            this.state.levels.map((key, value) =>{
+                                                //console.log(value);
+                                                    return(
+                                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.comments+",,"+key.isFastChargeCapable}>{key.title}</option>
+                                                    )
+                                            })
+                                        }
+                                    </select>
+                                    <select className="add-station-input flex-item-medium" title="Current Type" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
+                                        {
+                                            this.state.currTypes.map((key, value) =>{
+                                                //console.log(value);
+                                                    return(
+                                                        <option key={key.id} value={key.id+",,"+key.title+",,"+key.description}>{key.title}</option>
+                                                    )
+                                            })
+                                        }
+                                    </select>
+
+                                </div>
+                                                                                                        
+                            </form>
+                        }
+
+                        {this.state.stations.length>0 &&
+                            <input id="add-station-submit" className="my-button add-active-button" title="Add spot" name="submit" type="submit" value="Add spot" onClick={this.handleSubmit}/>
+                        }
+
+                        {!this.state.stations.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add a station from here</a></div>
+                        }
+
+
                     </div>
-
-                    {this.state.stations.length>0 &&
-                    
-                        <form id="add-spot-info-container">
-
-                            <div className="add-spot-first-container flex-layout">                        
-                                <input className="add-station-input flex-item-medium" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} />
-                                <input className="add-station-input flex-item-medium" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} />
-                                <input className="add-station-input flex-item-medium" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} />                       
-                                <input className="add-station-input flex-item-medium" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} />                       
-                                <input className="add-station-input flex-item-medium" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} />                       
-                                <input className="add-station-input flex-item-medium" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} />                       
-                            </div>
-                            
-                            <textarea className="add-station-input-textarea" id="add-spot-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} />                       
-
-                            <div className="add-station-selects-container flex-layout">
-                                <select className="add-station-input flex-item-medium" id="add-spot-station" name="station" value={this.state.station} onChange={this.handleInput} >
-                                    {
-                                        this.state.stations.map((key, value) =>{
-                                            console.log(key.Id);
-                                            return(
-                                                    <option key={key.Id} value={key.Id+",,"+key.Title}>Station {key.Id} ({key.Title})</option>
-                                                )
-
-                                        })
-                                    }
-                                </select>
-                                <select className="add-station-input flex-item-medium" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
-                                    {
-                                        this.state.connTypes.map((key, value) =>{
-                                            //console.log(value);
-                                            return(
-                                                <option key={key.id} value={key.id+",,"+key.title+",,"+key.formalName+",,"+key.category}>{key.title}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
-                                <select className="add-station-input flex-item-medium" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
-                                    {
-                                        this.state.levels.map((key, value) =>{
-                                            //console.log(value);
-                                                return(
-                                                    <option key={key.id} value={key.id+",,"+key.title+",,"+key.comments+",,"+key.isFastChargeCapable}>{key.title}</option>
-                                                )
-                                        })
-                                    }
-                                </select>
-                                <select className="add-station-input flex-item-medium" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
-                                    {
-                                        this.state.currTypes.map((key, value) =>{
-                                            //console.log(value);
-                                                return(
-                                                    <option key={key.id} value={key.id+",,"+key.title+",,"+key.description}>{key.title}</option>
-                                                )
-                                        })
-                                    }
-                                </select>
-
-                            </div>
-                                                                                                    
-                        </form>
-                    }
-
-                    {this.state.stations.length>0 &&
-                        <input id="add-station-submit" className="my-button add-active-button" name="submit" type="submit" value="Add spot" onClick={this.handleSubmit}/>
-                    }
-
-                    {!this.state.stations.length && 
-                        <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add a station from here</a></div>
-                    }
-
-
                 </div>
-            </div>
 
-        )
+            )
+        }
     }
 
 
