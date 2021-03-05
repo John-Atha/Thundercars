@@ -27,6 +27,7 @@ import MyStationStatistics from './MyStationStatistics';
 import VehiclesDetailedSessions from './VehiclesDetailedSessions';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
 import StationOwnerStatistics from './StationOwnerStatistics'; 
+import Developers from './Developers';
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -135,6 +136,9 @@ ReactDOM.render(
         </Route>
         <Route path="/spots/:id" exact>
           <FindSpot />
+        </Route>
+        <Route path="/Developers" exact>
+          <Developers />
         </Route>    
         <Route path="*">
           <NotFound />
