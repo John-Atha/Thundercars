@@ -1,7 +1,8 @@
 .station-page-info-container {
     text-align: left;
-    padding: 2% 0%;
+    padding: 2% 1%;
     width: 70%;
+    min-width: min-content;
     margin-left: 15%;
     display: grid;
     grid-template-columns: 40% 60%;
@@ -9,17 +10,24 @@
     column-gap: 2px;
 }
 
+.box-colors {
+    border: 2px solid grey;
+    background-color: rgba(181, 181, 181, 0.174); 
+}
+
+
 .station-info-title {
-    grid-column: 1;
+    grid-column: 1; 
 }
 
 .station-info {
     grid-column: 2;
+    color: white;
 }
 
-.darker {
-    background-color: rgb(153, 145, 145);
-}
+/*.darker {
+    background-color: rgb(18, 17, 17);
+}*/
 
 .spot-link:hover {
     cursor:pointer;

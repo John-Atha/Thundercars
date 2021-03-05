@@ -978,6 +978,53 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
+  @PutMapping("/evcharge/api/{apikey}/usersmodandpass/{id}")
+  User replaceUserWithPass(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
+    return repository.findById(id)
+      .map(user -> {
+        user.setUsername(newUser.getUsername());
+        user.setPassword(newUser.getPassword());
+        user.setEmailAddr(newUser.getEmailAddr());
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.setUserAddress(newUser.getUserAddress());
+        user.setDateOfBirth(newUser.getDateOfBirth());
+        user.setApiKey(newUser.getapiKey());
+        return repository.save(user);
+      })
+      .orElseThrow(() -> new UserNotFoundException(id));
+  }
+
+  @CrossOrigin(origins = "http://localhost:3000")
+  @PutMapping("/evcharge/api/{apikey}/usersmodnopass/{id}")
+  User replaceUserNoPass(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
+    CliController validator = new CliController(repository);
+
+    if (!validator.validate(apikey)){
+      throw new NotAuthorizedException();
+    }
+    return repository.findById(id)
+      .map(user -> {
+        user.setUsername(newUser.getUsername());
+        user.setEmailAddr(newUser.getEmailAddr());
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.setUserAddress(newUser.getUserAddress());
+        user.setDateOfBirth(newUser.getDateOfBirth());
+        user.setApiKey(newUser.getapiKey());
+        return repository.save(user);
+      })
+      .orElseThrow(() -> new UserNotFoundException(id));
+  }
+
+
+
+  @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/evcharge/api/{apikey}/admin/usersmod/{id}")
   void deleteUser(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository);

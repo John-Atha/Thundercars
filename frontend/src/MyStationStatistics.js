@@ -1,8 +1,10 @@
 import React from 'react';
 import './MyStationStatistics.css';
-import {getStationStats, getStations} from './api'
+import {getStationStats, getStations, getOneStation} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
+import UnAuthorized from './UnAuthorized';
+
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -16,10 +18,10 @@ class StationStatisticsDiv extends React.Component {
             index: this.props.index,
             stationId: this.props.stationId,
             stationTitle: this.props.stationTitle,
-            operatorName: null,
-            totalKWhDelivered: null,
-            sessionsNumber: null,
-            spotsUsedNumber: null,
+            operatorName: this.props.stationOperator,
+            totalKWhDelivered: 0,
+            sessionsNumber: 0,
+            spotsUsedNumber: 0,
             pointsSummary: [],
             diagramOptions1: null,
             diagramOptions2: null,
@@ -28,7 +30,6 @@ class StationStatisticsDiv extends React.Component {
             startDate: this.props.startDate,
             endDate: this.props.endDate,
         }
-        this.attr1="Operator Name";
         this.attr2="Total kWh Delivered";
         this.attr3="Sessions Number";
         this.attr4="Distinct Spots Used";
@@ -66,20 +67,24 @@ class StationStatisticsDiv extends React.Component {
             }
             console.log(pieData2);
             this.setState({
-                operatorName: response.data[this.attr1],
                 totalKWhDelivered: response.data[this.attr2],
                 sessionsNumber: response.data[this.attr3],
                 spotsUsedNumber: response.data[this.attr4],
                 pointsSummary: response.data[this.attr5],
+                
                 diagram1: pieData1.length,
                 diagramOptions1 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "Number of sessions per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "white",
+                    },
+                    legend: {
+                        fontColor: "white",
                     },
                     data: [{
                         type: "pie",
@@ -88,6 +93,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "white",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData1
                     }]
@@ -96,11 +102,15 @@ class StationStatisticsDiv extends React.Component {
                 diagramOptions2 : {
                     exportEnabled: true,
                     animationEnabled: true,
-                    backgroundColor: "#DADCDB",
+                    backgroundColor: "black",
                     height: 250,
                     title: {
                         text: "kWh delivered per charging spot",
-                        fontSize: 20
+                        fontSize: 20,
+                        fontColor: "white",
+                    },
+                    legend: {
+                        fontColor: "white",
                     },
                     data: [{
                         type: "pie",
@@ -109,6 +119,7 @@ class StationStatisticsDiv extends React.Component {
                         showInLegend: "true",
                         legendText: "{label}",
                         indexLabelFontSize: 16,
+                        indexLabelFontColor: "white",
                         indexLabel: "{label} - {y}%",
                         dataPoints: pieData2
                     }]
@@ -155,7 +166,6 @@ class StationStatisticsDiv extends React.Component {
                 }
                 //console.log(pieData2);
                 this.setState({
-                    operatorName: response.data[this.attr1],
                     totalKWhDelivered: response.data[this.attr2],
                     sessionsNumber: response.data[this.attr3],
                     spotsUsedNumber: response.data[this.attr4],
@@ -164,12 +174,16 @@ class StationStatisticsDiv extends React.Component {
                     diagramOptions1 : {
                         exportEnabled: true,
                         animationEnabled: true,
-                        backgroundColor: "#DADCDB",
+                        backgroundColor: "black",
                         height: 250,
                         title: {
                             text: "Number of sessions per charging spot",
-                            fontSize: 20
+                            fontSize: 20,
+                            fontColor: "white",
                         },
+                        legend: {
+                            fontColor: "white",
+                        },    
                         data: [{
                             type: "pie",
                             startAngle: 75,
@@ -177,6 +191,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
+                            indexLabelFontColor: "white",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData1
                         }]
@@ -185,12 +200,16 @@ class StationStatisticsDiv extends React.Component {
                     diagramOptions2 : {
                         exportEnabled: true,
                         animationEnabled: true,
-                        backgroundColor: "#DADCDB",
+                        backgroundColor: "black",
                         height: 250,
                         title: {
                             text: "kWh delivered per charging spot",
-                            fontSize: 20
+                            fontSize: 20,
+                            fontColor: "white",
                         },
+                        legend: {
+                            fontColor: "white",
+                        },    
                         data: [{
                             type: "pie",
                             startAngle: 75,
@@ -198,6 +217,7 @@ class StationStatisticsDiv extends React.Component {
                             showInLegend: "true",
                             legendText: "{label}",
                             indexLabelFontSize: 16,
+                            indexLabelFontColor: "white",
                             indexLabel: "{label} - {y}%",
                             dataPoints: pieData2
                         }]
@@ -209,6 +229,9 @@ class StationStatisticsDiv extends React.Component {
                 this.setState({
                     diagram1: 0,
                     diagram2: 0,
+                    totalKWhDelivered: 0,
+                    sessionsNumber: 0,
+                    spotsUsedNumber: 0,
                 })
             })
         }
@@ -218,8 +241,8 @@ class StationStatisticsDiv extends React.Component {
 
     render() {
         return (
-            <div className="one-station-stats-container center-content">
-                <h5 className="orangeColor center-content margins-top-bottom">Station's General Info</h5>
+            <div className="one-station-stats-container center-content padding-bottom">
+                <h5 className="color2 center-content margin-top-small">Station's General Info</h5>
                 <div className="station-stats-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -232,13 +255,23 @@ class StationStatisticsDiv extends React.Component {
                     <div className="station-info-title darker">Spots used: </div>
                     <div className="station-info darker">{this.state.spotsUsedNumber}</div>
                 </div>
+                { (this.state.diagram1===0 || this.state.diagram2===0) &&
+                    <div className="error-message margin-top-small center-content">No sessions found, try changing the dates.</div>
+                }
                 { this.state.diagram1!==0 && this.state.diagram2!==0 &&
-                    <div className="spots-pie-diagrams">
-                        <h5 className="orangeColor center-content">Station's statistics</h5>
-                        <CanvasJSChart id="pie-diagram1" options = {this.state.diagramOptions1} />
-                        <CanvasJSChart id="pie-diagram2"options = {this.state.diagramOptions2} />
+                    <h5 className="color2 margin-top-small center-content">Station's statistics</h5>
+                }
+                { this.state.diagram1!==0 && this.state.diagram2!==0 &&
+                    <div className="spots-pie-diagrams margin-top-small">
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions1} />
+                        </div>
+                        <div className="flex-item">
+                            <CanvasJSChart options = {this.state.diagramOptions2} />
+                        </div>
                     </div>
                 }
+                
             </div>
 
         )
@@ -254,7 +287,7 @@ class MyStationStatistics extends React.Component {
         this.state={
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
-            error: null,
+            error: false,
             stationsList: [],
             startDate: "2021-01-27",
             endDate: "",
@@ -280,6 +313,12 @@ class MyStationStatistics extends React.Component {
                     stationsList: response.data.StationsList
                 });
             })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: true,
+                })
+            })
         }
     }
 
@@ -294,40 +333,70 @@ class MyStationStatistics extends React.Component {
     }
 
     render() {
-        if (!localStorage.getItem('userId') || this.state.role==="VehicleOwner") {
-            window.location.href = "/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles' statistics"
+                    link2="/uservehiclestatistics" 
+                />
+            )
+
         }
         else {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
                             Statistics
                         </div>
 
-                        <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                        </div>
-
-                        <div id="stats-info-container">
-                            {
-                                this.state.stationsList.map((value, key, index)=> {
-                                    console.log(value+": "+key);
-                                    return (<StationStatisticsDiv
-                                            key={key} 
-                                            stationId={value.Id}
-                                            stationTitle={value.Title}
-                                            index={index+1}
-                                            startDate={this.state.startDate}
-                                            endDate={this.state.endDate}
-                                            /> )
-                                })
-                            }
-                        </div>
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
+                        
+                        {this.state.stationsList.length>0 &&
+                            <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                <div className="start-date-container flex-item-small">
+                                    <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                    <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                </div>
+                                <div className="end-date-container flex-item-small">
+                                    <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                    <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
+                            </div>
+                        }
+                        {this.state.stationsList.length>0 &&
+                            <div className="stats-info-container">
+                                {
+                                    this.state.stationsList.map((value, key, index)=> {
+                                        console.log(value+": "+key);
+                                        return (<StationStatisticsDiv
+                                                key={key} 
+                                                stationId={value.Id}
+                                                stationTitle={value.Title}
+                                                index={index+1}
+                                                startDate={this.state.startDate}
+                                                endDate={this.state.endDate}
+                                                stationOperator={value["Operator's Name"]}
+                                                /> )
+                                    })
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             )

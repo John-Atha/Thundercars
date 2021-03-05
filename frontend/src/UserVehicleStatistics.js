@@ -2,6 +2,7 @@ import React from 'react';
 import './UserVehicleStatistics.css';
 import {getVehicleSessions, getVehicles, getAllUserVehicle} from './api'
 import MyNavbar from './MyNavbar'; 
+import UnAuthorized from './UnAuthorized';
 
 
 class VehicleStatisticsDiv extends React.Component {
@@ -80,23 +81,23 @@ class VehicleStatisticsDiv extends React.Component {
 
     render() {
         return(
-            <div className="one-station-container center-content">
-                <h5 className="orangeColor center-content">Vehicle {this.props.id}</h5>
+            <div className="one-station-container flex-item center-content box-colors">
+                <h5 className="color2 center-content">Vehicle {this.props.id}</h5>
                 {   !this.props.dataHere && 
 
-                        <div>
+                        <div className="loading-message">
                             Loading...
                         </div>
 
                 }
 
                 { this.props.dataHere &&
-                    <div className="station-page-info-container">
-                        <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
-                        <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
-                        <div className="station-info-title darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
-                        <div className="station-info-title">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
-                        <div className="station-info-title darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
+                    <div className="vehicle-page-info-container center-content">
+                        <div className="station-info-title color2 darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
+                        <div className="station-info-title color2 ">Model: </div><div className="station-info">{this.state.model}</div>
+                        <div className="station-info-title color2 darker">Sessions: </div><div className="station-info darker">{this.state.sessions}</div>
+                        <div className="station-info-title color2 ">Total money spent: </div><div className="station-info">{Math.round(100*this.state.totalCost)/100}</div>
+                        <div className="station-info-title color2 darker">Total energy(kWh) provided: </div><div className="station-info darker">{Math.round(100*this.state.totalKWh)/100}</div>
                     </div>
                 }
             </div>
@@ -154,16 +155,18 @@ class UserVehicleStatistics extends React.Component {
                 // find userHasVehicle objects that referr to current user
                 userVehiclesList.forEach(el => {
                     //console.log("user: " + el.user.id);
-                    if (parseInt(el.user.id)===parseInt(this.state.userId)) {
-                        console.log("brhka "+ el.user.id);
-                        let temp = this.state.userHasVehicleIds;
-                        temp.push(
-                            {userVeh: el.id,
-                            veh: el.vehicle.id,
-                            });
-                        this.setState({
-                            userHasVehicleIds: temp,
-                        })
+                    if (el.user && el.vehicle) {
+                        if (parseInt(el.user.id)===parseInt(this.state.userId)) {
+                            console.log("brhka "+ el.user.id);
+                            let temp = this.state.userHasVehicleIds;
+                            temp.push(
+                                {userVeh: el.id,
+                                veh: el.vehicle.id,
+                                });
+                            this.setState({
+                                userHasVehicleIds: temp,
+                            })
+                        }
                     }
                 })
                 // find userHasVehicle objects of current user that referr to current vehicles
@@ -192,14 +195,32 @@ class UserVehicleStatistics extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                noVehicles: false,
+                noVehicles: true,
             })
         })
     }
 
     render() {
-        if (!this.state.userId || this.state.role==="Station Owner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="StationOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
+                    link2Message="See your stations' statistics"
+                    link2="/mystationstatistics" 
+                />
+            )
+
         }
         else {
             return (
@@ -215,25 +236,30 @@ class UserVehicleStatistics extends React.Component {
                                 <div className="error-message margin-top">
                                     You don't own any vehicles
                                 </div>
+                                <br></br>
                                 <a href="/addVehicle">Add one</a>
                             </div>
                         }
 
-                        {this.state.error===null &&  
+                        {this.state.error===null &&  !this.state.noVehicles &&
 
 
-                            <div className="time-filters-container center-content">
-                                    <label className="start-date-label" htmlFor="startDate">From</label>
-                                    <label className="end-date-label"   htmlFor="endDate">To</label>
-                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                            <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                <div className="start-date-container flex-item-small">
+                                    <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                    <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                </div>
+                                <div className="end-date-container flex-item-small">
+                                    <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                    <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                </div>
                             </div>
 
                         }
 
-                        {this.state.error===null &&  
+                        {this.state.error===null &&  !this.state.noVehicles &&
 
-                            <div id="stats-info-container">
+                            <div id="stats-info-container" className="flex-layout fix-width">
                                 {
                                     this.state.vehList.map((value, key, index)=> {
                                         console.log(key);

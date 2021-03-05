@@ -18,13 +18,13 @@ public class ChargingSpot {
 	private Level level;
 
     @Column(unique = false, nullable = true)
-    private Integer amps;
+    private Double amps;
 
     @Column(unique = false, nullable = true)
-    private Integer voltage;
+    private Double voltage;
 
     @Column(unique = false, nullable = true)
-    private Integer powerkw;
+    private Double powerkw;
     
     @ManyToOne
 	@JoinColumn(name = "current_type_id", nullable = true)
@@ -49,9 +49,9 @@ public class ChargingSpot {
         }
     }
 
-    ChargingSpot() {}
+    public ChargingSpot() {}
 
-	public ChargingSpot(Integer id, ConnectionType connectionType, Level level, Integer amps, Integer voltage, Integer powerkw, CurrentType currentType, String comments) {
+	public ChargingSpot(Integer id, ConnectionType connectionType, Level level, Double amps, Double voltage, Double powerkw, CurrentType currentType, String comments) {
 		this.id = id;
 		this.connectionType = connectionType;
 		this.level = level;
@@ -86,27 +86,27 @@ public class ChargingSpot {
 		this.level=level;
 	}
 
-	public Integer getAmps() {
+	public Double getAmps() {
 		return this.amps;
 	}
 
-	public void setAmps(Integer amps) {
+	public void setAmps(Double amps) {
 		this.amps=amps;
 	}
 
-	public Integer getVoltage() {
+	public Double getVoltage() {
 		return this.voltage;
 	}
 
-	public void setVoltage(Integer voltage) {
+	public void setVoltage(Double voltage) {
 		this.voltage=voltage;
 	}
 
-	public Integer getPowerkw() {
+	public Double getPowerkw() {
 		return this.powerkw;
 	}
 
-	public void setPowerkw(Integer powerkw) {
+	public void setPowerkw(Double powerkw) {
 		this.powerkw=powerkw;
 	}
 

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 public interface ChargingProcessRepository extends JpaRepository<ChargingProcess, Integer> {
   
+    @Query(value = "SELECT COUNT(*) FROM ChargingProcess")
+    Long countAllProcesses();
+
     @Query(value= "SELECT u.id FROM ChargingStationSpots u ORDER BY u.id")
     List<Integer> findAllStationSpotsIDs();
     

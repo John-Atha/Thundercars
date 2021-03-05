@@ -6,13 +6,18 @@ body {
 
 .login-page-container {
     display: grid;
-    grid-template-rows: 20% 15% 40% 10%;
-    height: 400px;
+    grid-template-rows: 27% 12% 35% 13% 13%;
+    height: 450px;
     width: 400px;
     margin-left: 10vw;
     margin-top: 05%;
     grid-template-columns: 100%;
     border-radius: 4px;
+    padding-bottom: 2%;
+}
+
+.row-5 {
+    grid-row: 5;
 }
 
 .center-content {
@@ -90,13 +95,6 @@ body {
 #submit-input:hover {
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
-}
-
-
-
-.image-container {
-    height: 100%;
-    width: 100%;
 }
 
 .logo {

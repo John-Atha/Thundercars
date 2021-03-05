@@ -3,6 +3,8 @@ import './AcCharger.css';
 import MyNavBar from'./MyNavbar';
 import {getOneAcCharger} from './api';
 import CanvasJSReact from'./canvasjs.react';
+import UnAuthorized from './UnAuthorized';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class AcCharger extends React.Component {
@@ -80,58 +82,25 @@ class AcCharger extends React.Component {
     }
 
     render() {
-        if((!localStorage.getItem('userId'))) {
-            console.log("User not logged in error");
-            setTimeout(() =>{window.location.href = "/"},10000);
-            return (
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are not logged in...
-                        You will be redirected to the login page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-        else if(localStorage.getItem('role')=="StationOwner") {
-            console.log("Station Owner Error");
-            setTimeout(() =>{window.location.href = "/home"},10000);
-            return(
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are logged in as a Station Owner...<br></br>
-                        Log in to your Vehicle Owner account to view your Vehicles' AC Chargers.<br></br>
-                        You will be redirected to the Home page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div className="allPage">
-                    <MyNavBar />
-                <div className="general-page-container more-blur center-content">
-                    <div className="specific-title orangeColor">
-                        My AC Charger
+        return (
+            <div className="allPage">
+                <MyNavBar />
+            <div className="general-page-container more-blur center-content">
+                <div className="specific-title orangeColor">
+                    AC Charger {this.state.acId}
+                </div>   
+                <div className="one-station-container center-content">
+                    <div className="station-page-info-container">
+                        <div className="station-info-title darker">Types: </div><div className="station-info darker">{this.state.types}</div>
+                        <div className="station-info-title">Usable Phases: </div><div className="station-info">{this.state.usablePhases}</div>
+                        <div className="station-info-title darker">Maximum Power: </div><div className="station-info darker">{this.state.maxPower} kW</div>
                     </div>   
-                    <div className="one-station-container center-content">
-                        <div className="station-page-info-container">
-                            <div className="station-info-title darker">Types: </div><div className="station-info darker">{this.state.types}</div>
-                            <div className="station-info-title">Usable Phases: </div><div className="station-info">{this.state.usablePhases}</div>
-                            <div className="station-info-title darker">Maximum Power: </div><div className="station-info darker">{this.state.maxPower} kW</div>
-                        </div>   
-                        <div><CanvasJSChart options = {this.state.diagramOptions} /></div>         
-                    </div>
+                    <div><CanvasJSChart options = {this.state.diagramOptions} /></div>         
+                </div>
 
-                </div>
-                </div>
-            );
-        }
+            </div>
+            </div>
+        );
     }
 }
 

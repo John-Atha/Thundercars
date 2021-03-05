@@ -1,17 +1,23 @@
+body {
+    --color2: rgb(180, 212, 206);
+}
+
+
 .station-stats-info-container {
-    width: 70%;
-    margin-left: 15%;
+    width: 50%;
+    margin-left: 25%;
     display: grid;
+    border-radius: 7px;
+    background-color: rgb(48, 47, 47);
 }
 
 .spots-pie-diagrams {
-    margin-top: 4%;
-    display: grid;
-    grid-template-columns: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    /*grid-template-columns: 50% 50%;
     grid-template-rows: 5% 47.5% 47.5%;
-    row-gap: 0%;
+    row-gap: 0%;*/
 }
-
 
 .margins-top-bottom {
     margin-top: 5%;

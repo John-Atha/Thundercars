@@ -2,6 +2,7 @@ import React from 'react';
 import './MySpotsDetailedSessions.css';
 import {getStations, getSpotSessions} from './api';
 import MyNavbar from './MyNavbar';
+import UnAuthorized from './UnAuthorized';
 
 //import CanvasJSReact from './canvasjs.react';
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -26,7 +27,7 @@ class OneSession extends React.Component {
     render() {
         console.log("my start: "+this.props.start);
         return (
-            <div className="one-spot-sessions-container to-be-deleted">
+            <div className="one-spot-sessions-container flex-item box-colors">
                 <div className="station-info-title darker">Connected on: </div>
                 <div className="station-info darker">{this.state.start}</div>
                 <div className="station-info-title">Charged on </div>
@@ -99,7 +100,8 @@ class OneSpotSessionsDiv extends React.Component {
             console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
             // remove previous objects from dom
             this.setState({
-                procList: []
+                procList: [],
+                error: null,
             });
             getSpotSessions(this.state.spotId, this.props.startDate, this.props.endDate)
             .then(response => {
@@ -126,17 +128,22 @@ class OneSpotSessionsDiv extends React.Component {
         console.log("i will show the spot's sessions");
         return (
             <div className="spot-sessions-block center-content">
-                <h5 className="orangeColor center-content">Spot {this.state.spotId} Sessions</h5>
+                <h5 className="color2 center-content">Spot {this.state.spotId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="spot-info-container center-content">
-                        <div className="station-info-title">Spot's operator: </div>
-                        <div className="station-info">{this.state.operator}</div>
-                        <div className="station-info-title">Processes: </div>
-                        <div className="station-info">{this.state.procNumber}</div>
+                    <div className="center-content">
+                    
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Spot's operator: </div>
+                            <div className="station-info flex-item-medium">{this.state.operator}</div>
+                        </div>
+                        <div className="flex-layout">
+                            <div className="station-info-title flex-item-medium">Processes: </div>
+                            <div className="station-info flex-item-medium">{this.state.procNumber}</div>
+                        </div>
                     </div>
                 }
                 { this.state.error===null &&
-                    <div className="all-spots-sessions-container center-content">
+                    <div className="all-spots-sessions-container flex-layout center-content">
                         {
                             this.state.procList.map((value, index) => {
                                 return(
@@ -158,7 +165,7 @@ class OneSpotSessionsDiv extends React.Component {
                 }
                 {
                     this.state.error!==null &&
-                    <p className="red-color">{this.state.error}</p>
+                    <p className="error-message margin-top-small">{this.state.error}</p>
                 }
             </div>
         )
@@ -221,8 +228,25 @@ class MySpotsDetailedSessions extends React.Component {
     }
 
     render() {
-        if ((!this.state.userId) || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the detailed sessions history feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to the detailed sessions history per spot feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles detailed sessions history"
+                    link2="/VehiclesDetailedSessions" 
+                />
+            )
         }
         else {        
             return (
@@ -230,37 +254,48 @@ class MySpotsDetailedSessions extends React.Component {
                         <MyNavbar />
                         <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
                             
-                            <div className="specific-title orangeColor">
+                            <div className="specific-title">
                                 Detailed Sesions Per Charging Point
-                                {this.state.error!==null && ( 
+                                { this.state.stationsList.length>0 && this.state.error!==null && ( 
                                     <div className="error-message">
                                         {this.state.error}
                                     </div>
                                 )}  
                             </div>
 
-                            <div className="spots-buttons-container center-content">
+                            {!this.state.stationsList.length && 
+                                <div className="error-message margin-top-small center-content">No spots found,<br></br><br></br><a href="/addSpot">add one from here</a></div>
+                            }
+
+
+                            <div className="spots-buttons-container flex-layout center-content">
                                 {   
                                     this.state.spotsList.map((value, index) => {
                                         console.log(index);
-                                        return (<button className="spot-choose-button" key={value} onClick={this.selectSpot}>Spot {value}</button>)
+                                        return (<button className="choice-button flex-item-small" key={value} onClick={this.selectSpot}>Spot {value}</button>)
                                     })
                                 }
                             </div>
 
-                            <div className="time-filters-container center-content">
-                                <label className="start-date-label" htmlFor="startDate">From</label>
-                                <label className="end-date-label"   htmlFor="endDate">To</label>
-                                <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
-                            </div>
+                            {this.state.spotsList.length>0 && 
 
+                                <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                    <div className="start-date-container flex-item-small">
+                                        <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                        <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    </div>
+                                    <div className="end-date-container flex-item-small">
+                                        <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                        <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                    </div>
+                                </div>
 
+                            }
 
 
                             
                             {   this.state.showingSpotId && 
-                                    <div className="spots-container margin-top">
+                                    <div className="margin-top-small">
                                         <OneSpotSessionsDiv
                                             id={this.state.showingSpotId}
                                             key={this.state.showingSpotId}

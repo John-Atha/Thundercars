@@ -2,6 +2,7 @@ import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
 import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, spotPost} from './api';
+import UnAuthorized from './UnAuthorized';
 
 class AddStation extends React.Component {
     
@@ -110,7 +111,7 @@ class AddStation extends React.Component {
             });
         }
         else {
-            submitButton.style.backgroundColor="rgb(233, 21, 21)";
+            submitButton.style.backgroundColor="rgb(103 255 88 / 60%)";
             submitButton.style.color="white";
             this.setState ({
                 submitDisabled: false
@@ -433,14 +434,30 @@ class AddStation extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role==="VehicleOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to to add a new station"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to add a new station"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+
+                />
+            )
         }
         else {
-        return (
+            return (
                 <div className="allpage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="add-station-specific-title">
                             <div className="station-info-title">
                                 Add station
@@ -452,18 +469,18 @@ class AddStation extends React.Component {
                             </div> 
                         </div>
 
-                        <form id="add-station-info-container">
-
-                            <div className="add-station-first-container">                        
-                                <input className="add-station-input" id="add-station-uuid" placeholder="UUID*" type="text" name="uuid" value={this.state.uuid} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-date-created" placeholder="Date created" name="dateCreated" type="date" value={this.state.dateCreated} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-cost-per" placeholder="Cost per kWh*" name="costPerkWh" type="number" step=".01" value={this.state.costPerkWh} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                <input className="add-station-input" id="add-station-title" placeholder="Title*" name="title" type="text" value={this.state.title} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                        <form id="add-station-info-container" className="center-content fix-width">
+                            <div className="color2">Move your cursor over a field to for an explanation of its role</div>
+                            <div className="flex-layout margin-top-small">                        
+                                <input className="add-station-input flex-item-medium" title="UUID" id="add-station-uuid" placeholder="UUID*" type="text" name="uuid" value={this.state.uuid} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Date created" id="add-station-date-created" placeholder="Date created" name="dateCreated" type="date" value={this.state.dateCreated} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Cost per kWh" id="add-station-cost-per" placeholder="Cost per kWh*" name="costPerkWh" type="number" step=".01" value={this.state.costPerkWh} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" title="Title" id="add-station-title" placeholder="Title*" name="title" type="text" value={this.state.title} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                             </div>
-                            <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            <textarea className="add-station-input flex-item-expand" title="Comments" id="add-station-comments" placeholder="Comments" name="comments" value={this.state.comments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
                             
-                            <div className="add-station-selects-container">
-                                <select className="add-station-input" id="add-station-current" name="currentProvider" value={this.state.currentProvider} onChange={this.handleInput} >
+                            <div className="add-station-selects-container flex-layout">
+                                <select className="add-station-input flex-item-medium" title="Current Provider" id="add-station-current" name="currentProvider" value={this.state.currentProvider} onChange={this.handleInput} >
                                 {
                                     this.state.currentProviders.map((key, value) =>{
                                         //console.log(value);
@@ -475,7 +492,7 @@ class AddStation extends React.Component {
                                     })
                                 }
                                 </select>
-                                <select className="add-station-input" id="add-station-operator" name="operator" value={this.state.operator} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Operator" id="add-station-operator" name="operator" value={this.state.operator} onChange={this.handleInput} >
                                 {
                                     this.state.operators.map((key, value) =>{
                                         //console.log(value);
@@ -486,7 +503,7 @@ class AddStation extends React.Component {
                                     })
                                 }
                                 </select>
-                                <select className="add-station-input" id="add-station-status-type" name="statusType" value={this.state.statusType} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Status Type" id="add-station-status-type" name="statusType" value={this.state.statusType} onChange={this.handleInput} >
                                 {
                                     this.state.statusTypes.map((key, value) =>{
                                         //console.log(value);
@@ -496,7 +513,7 @@ class AddStation extends React.Component {
                                     })
                                 }
                                 </select>
-                                <select className="add-station-input" id="add-station-usage-type" name="usageType" value={this.state.usageType} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Usage Type" id="add-station-usage-type" name="usageType" value={this.state.usageType} onChange={this.handleInput} >
                                 {
                                     this.state.usageTypes.map((key, value) =>{
                                         //console.log(value);
@@ -508,29 +525,29 @@ class AddStation extends React.Component {
                                 </select>
                             </div>
                             
-                            <div className="add-station-address-container">
+                            <div className="add-station-address-container flex-layout">
 
-                                <input className="add-station-input" id="add-station-first-addr" placeholder="First address*" type="text" name="addressLine1" value={this.state.addressLine1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-second-addr" placeholder="Secondary address" type="text" name="addressLine2" value={this.state.addressLine2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Fist Address" id="add-station-first-addr" placeholder="First address*" type="text" name="addressLine1" value={this.state.addressLine1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Second Address" id="add-station-second-addr" placeholder="Secondary address" type="text" name="addressLine2" value={this.state.addressLine2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <input className="add-station-input" id="add-station-town" placeholder="Town" type="text" name="town" value={this.state.town} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-state" placeholder="State/Province" type="text" name="stateOrProvince" value={this.state.stateOrProvince} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Town" id="add-station-town" placeholder="Town" type="text" name="town" value={this.state.town} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="State/Province" id="add-station-state" placeholder="State/Province" type="text" name="stateOrProvince" value={this.state.stateOrProvince} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <input className="add-station-input" id="add-station-latitude" placeholder="Latitude*" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-longtitude" placeholder="Longtitude*" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Latitude" id="add-station-latitude" placeholder="Latitude*" type="number" step=".0001" name="latitude" value={this.state.latitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Longtitude" id="add-station-longtitude" placeholder="Longtitude*" type="number" step=".0001" name="longtitude" value={this.state.longtitude} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <input className="add-station-input" id="add-station-postcode" placeholder="Postcode" type="text" name="postCode" value={this.state.postCode} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-email" placeholder="Contact email*" type="email" name="contactEmail" value={this.state.contactEmail} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Postcode" id="add-station-postcode" placeholder="Postcode" type="text" name="postCode" value={this.state.postCode} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Email" id="add-station-email" placeholder="Contact email*" type="email" name="contactEmail" value={this.state.contactEmail} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <input className="add-station-input" id="add-station-tel1" placeholder="Contact telephone1*" type="tel" name="contactTelephone1" value={this.state.contactTelephone1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-station-tel2" placeholder="Contact telephone2" type="tel" name="contactTelephone2" value={this.state.contactTelephone2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Contact Tel1" id="add-station-tel1" placeholder="Contact telephone1*" type="tel" name="contactTelephone1" value={this.state.contactTelephone1} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Contact Tel2" id="add-station-tel2" placeholder="Contact telephone2" type="tel" name="contactTelephone2" value={this.state.contactTelephone2} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <textarea className="add-station-input" id="add-station-addr-gen-comments" placeholder="Address general comments" type="text" name="addressGenComments" value={this.state.addressGenComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <textarea className="add-station-input" id="add-station-access-comments" placeholder="Access comments" type="text" name="accessComments" value={this.state.accessComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <textarea className="add-station-input flex-item-expand" title="Address General Comments" id="add-station-addr-gen-comments" placeholder="Address general comments" type="text" name="addressGenComments" value={this.state.addressGenComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <textarea className="add-station-input flex-item-expand" title="Access Comments" id="add-station-access-comments" placeholder="Access comments" type="text" name="accessComments" value={this.state.accessComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <input className="add-station-input" id="add-station-addr-rel-url" placeholder="Address relative url" type="text" name="relatedUrl" value={this.state.relatedUrl} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Address relative URL" id="add-station-addr-rel-url" placeholder="Address relative url" type="text" name="relatedUrl" value={this.state.relatedUrl} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
 
-                                <select className="add-station-input" id="add-station-country-input" type="text"  name="country" value={this.state.country} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Country" id="add-station-country-input" type="text"  name="country" value={this.state.country} onChange={this.handleInput} >
                                 {
                                     this.state.countries.map((key, value) =>{
                                         //console.log(this.state.countries);
@@ -547,25 +564,25 @@ class AddStation extends React.Component {
                                                                             
                         </form>
 
-                        <div className="add-station-spot-specific-title">
+                        <div className="add-station-spot-specific-title margin-top-small">
                                 Add a charging spot to this station!
                         </div>
                         
-                        <form id="add-spot-info-container">
+                        <form id="add-spot-info-container" className="center-content fix-width">
 
-                            <div className="add-spot-first-container">                        
-                                <input className="add-station-input" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
-                                <input className="add-station-input" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
-                                <input className="add-station-input" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
-                                <input className="add-station-input" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
-                                <input className="add-station-input" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                            <div className="add-spot-first-container flex-layout">                        
+                                <input className="add-station-input flex-item-medium" title="Amperes" id="add-spot-amps" placeholder="Amperes" type="number" step=".01" name="amps" value={this.state.amps} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Voltage" id="add-spot-voltage" placeholder="Voltage" name="voltage" type="number" step=".01" value={this.state.voltage} onChange={this.handleInput} onKeyUp ={this.submitActivate} />
+                                <input className="add-station-input flex-item-medium" title="Power" id="add-spot-power" placeholder="Power(kW)" name="power" type="number" step=".01" value={this.state.power} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                                <input className="add-station-input flex-item-medium" title="Quantity" id="add-spot-quantity" placeholder="Quantity" name="quantity" type="number" step="1" min="0" value={this.state.quantity} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                                <input className="add-station-input flex-item-medium" title="Quantity Available" id="add-spot-quantity-available" placeholder="Quantity of available" name="quantityAvailable" type="number" step="1" min="0" value={this.state.quantityAvailable} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
+                                <input className="add-station-input flex-item-medium" title="Quantity Operational" id="add-spot-quantity-operational" placeholder="Quantity of operational" name="quantityOperational" type="number" step="1" min="0" value={this.state.quantityOperational} onChange={this.handleInput} onKeyUp ={this.submitActivate}/>                       
                             </div>
                             
-                            <textarea className="add-station-input" id="add-station-comments" placeholder="Comments" name="spotComments" value={this.state.spotComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
+                            <textarea className="add-station-input-textarea" title="Comments" id="add-station-comments" placeholder="Comments" name="spotComments" value={this.state.spotComments} onChange={this.handleInput} onKeyUp ={this.submitActivate} />                       
 
-                            <div className="add-station-selects-container">
-                                <select className="add-station-input" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
+                            <div className="add-station-selects-container flex-layout">
+                                <select className="add-station-input flex-item-medium" title="Connection Type" id="add-spot-connection-type" name="connType" value={this.state.connType} onChange={this.handleInput} >
                                 {
                                     this.state.connTypes.map((key, value) =>{
                                         //console.log(value);
@@ -575,7 +592,7 @@ class AddStation extends React.Component {
                                     })
                                 }
                                 </select>
-                                <select className="add-station-input" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Level" id="add-spot-level" name="level" value={this.state.level} onChange={this.handleInput} >
                                 {
                                     this.state.levels.map((key, value) =>{
                                         //console.log(value);
@@ -585,7 +602,7 @@ class AddStation extends React.Component {
                                     })
                                 }
                                 </select>
-                                <select className="add-station-input" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
+                                <select className="add-station-input flex-item-medium" title="Current Type" id="add-spot-current-type" name="currType" value={this.state.currType} onChange={this.handleInput} >
                                 {
                                     this.state.currTypes.map((key, value) =>{
                                         //console.log(value);
@@ -597,11 +614,10 @@ class AddStation extends React.Component {
                                 </select>
 
                             </div>
-                            
-
-                            <input id="add-station-submit" className="add-station-input" name="submit" type="submit" value="Submit" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
-                                                                            
+                                                                                                        
                         </form>
+
+                        <input id="add-station-submit" className="my-button submit-button margin-top-small" title="Add station" name="submit" type="submit" value="Add station" disabled={this.state.submitDisabled} onClick={this.handleSubmit}/>
 
                     </div>
                 </div>

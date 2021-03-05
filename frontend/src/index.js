@@ -6,6 +6,8 @@ import './index.css';
 import Login from './Login';
 import Register from './Register';
 import Home from './Home';
+import Profile from './Profile';
+import UpdateProfile from './UpdateProfile';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
 import AddVehicle from './AddVehicle';
@@ -25,9 +27,15 @@ import MyStationStatistics from './MyStationStatistics';
 import VehiclesDetailedSessions from './VehiclesDetailedSessions';
 import MySpotsDetailedSessions from './MySpotsDetailedSessions';
 import StationOwnerStatistics from './StationOwnerStatistics'; 
+import Developers from './Developers';
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
+/*
+<Route path="/spots/:id/update" exact>
+<FindUpdateSpot />
+</Route>
+*/
 
 function FindStation() {
   let {id} = useParams();
@@ -63,25 +71,31 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <Route path="/home" exact>
+        <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/" exact>
+        <Route path="/login" exact>
           <Login />
         </Route>
         <Route path="/register" exact>
           <Register />
         </Route>
+        <Route path="/profile" exact>
+          <Profile />
+        </Route>
+        <Route path="/updateprofile" exact>
+          <UpdateProfile />
+        </Route>
         <Route path="/myVehicles" exact>
           <MyVehicles />
         </Route>
-        <Route path="/vehicles/:id">
+        <Route path="/vehicles/:id" exact>
           <FindVehicle />  
         </Route>
         <Route path="/AddVehicle" exact>
           <AddVehicle />
         </Route>
-        <Route path="/acchargers/:id">
+        <Route path="/acchargers/:id" exact>
           <FindAcCharger />
         </Route>
         <Route path="/UserMyStatistics" exact>
@@ -93,7 +107,7 @@ ReactDOM.render(
         <Route path="/myStationStatistics" exact>
           <MyStationStatistics />
         </Route>
-        <Route path="/StationsMonthlyStatistics">
+        <Route path="/StationsMonthlyStatistics" exact>
           <StationOwnerStatistics />
         </Route>
         <Route path="/mySpotsDetailedSessions" exact>
@@ -123,9 +137,9 @@ ReactDOM.render(
         <Route path="/spots/:id" exact>
           <FindSpot />
         </Route>
-        <Route path="/spots/:id/update" exact>
-          <FindUpdateSpot />
-        </Route>
+        <Route path="/Developers" exact>
+          <Developers />
+        </Route>    
         <Route path="*">
           <NotFound />
         </Route>

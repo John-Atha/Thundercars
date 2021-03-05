@@ -12,11 +12,11 @@ public class ChargingStationSpots {
     private Integer id;
 
     @ManyToOne
-	@JoinColumn(name = "charging_station_id", nullable = false)
+	@JoinColumn(name = "charging_station_id", nullable = true)
     private ChargingStation chargingStation;
     
     @ManyToOne
-	@JoinColumn(name = "charging_spot_id", nullable = false)
+	@JoinColumn(name = "charging_spot_id", nullable = true)
 	private ChargingSpot chargingSpot;
 
     @Column(unique = false, nullable = true)

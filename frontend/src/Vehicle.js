@@ -2,6 +2,7 @@ import React from 'react';
 import './Vehicle.css';
 import {getOneVehicle, getAllUserVehicle, UserVehicleDelete} from './api'
 import MyNavBar from './MyNavbar'; 
+import UnAuthorized from './UnAuthorized'
 
 class Vehicle extends React.Component {
     
@@ -25,6 +26,7 @@ class Vehicle extends React.Component {
             dcChargers: null,
             dcChargerTypes: null,
             error: null,
+            showModal: false,
         }
 
         this.attr1Name = "Release Year"
@@ -36,6 +38,8 @@ class Vehicle extends React.Component {
         this.attr7Name = "Dc Charger Ports"
         this.acChargerPageRedirect = this.acChargerPageRedirect.bind(this);
         this.deleteVehicle = this.deleteVehicle.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.preDelete = this.preDelete.bind(this);
     }    
 
     componentDidMount () {
@@ -102,6 +106,19 @@ class Vehicle extends React.Component {
         window.location.href=`/acchargers/${id}`;
     }
 
+    preDelete = () => {
+        this.setState({
+            showModal: true,
+        })
+    }
+
+    hideModal = () => {
+        this.setState({
+            showModal: false,
+        })
+    }
+
+
     deleteVehicle = () => {
         console.log("chose to delete")
         getAllUserVehicle()
@@ -110,20 +127,25 @@ class Vehicle extends React.Component {
             let userVehiclesList = response.data;
             // find userHasVehicle objects that referr to current user
             for (let i=0; i<userVehiclesList.length; i++) {
-                if (parseInt(userVehiclesList[i].user.id)===parseInt(this.state.userId) && parseInt(userVehiclesList[i].vehicle.id)===parseInt(this.state.vehId)) {
-                    UserVehicleDelete(userVehiclesList[i].id)
-                    .then(response => {
-                        console.log(response);
-                        this.setState({
-                            error: "Deleted succesfully"
+                
+                if (userVehiclesList[i].user && userVehiclesList[i].vehicle) {
+
+                    if (parseInt(userVehiclesList[i].user.id)===parseInt(this.state.userId) && parseInt(userVehiclesList[i].vehicle.id)===parseInt(this.state.vehId)) {
+                        UserVehicleDelete(userVehiclesList[i].id)
+                        .then(response => {
+                            console.log(response);
+                            this.setState({
+                                error: "Deleted succesfully"
+                            })
+                            window.location.href="/myvehicles";
                         })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        this.setState({
-                            error: "Could not delete vehicle"
+                        .catch(err => {
+                            console.log(err);
+                            this.setState({
+                                error: "Could not delete vehicle"
+                            })
                         })
-                    })
+                    }
                 }
             }            
         })
@@ -137,34 +159,21 @@ class Vehicle extends React.Component {
     
     render() {
         if((!localStorage.getItem('userId'))) {
-            console.log("User not logged in error");
-            setTimeout(() =>{window.location.href = "/"},10000);
             return (
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are not logged in...
-                        You will be redirected to the login page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+                <UnAuthorized 
+                    message="You need to create an account to see information about a vehicle you own"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
             )
         }
         else if(localStorage.getItem('role')==="StationOwner") {
-            console.log("Station Owner Error");
-            setTimeout(() =>{window.location.href = "/home"},10000);
-            return(
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
-                        It seems that you are logged in as a Station Owner...<br></br>
-                        Log in to your Vehicle Owner account to view your vehicles.<br></br>
-                        You will be redirected to the Home page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to see information about a vehicle you own"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register" 
+                />
             )
         }
         else {
@@ -177,22 +186,22 @@ class Vehicle extends React.Component {
                     </div>
                         
                     {!this.state.error &&
-                        <div className="station-page-info-container">
-                            <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
-                            <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
-                            <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
-                            <div className="station-info-title">Release Year: </div><div className="station-info">{this.state.releaseYear}</div>
-                            <div className="station-info-title darker">Usable Battery Size(kWh): </div><div className="station-info darker">{this.state.usableBatterySize} kWh</div>
-                            <div className="station-info-title">Energy Consumption(Wh/km): </div><div className="station-info">{this.state.energyConsumption}</div>
-                            <div className="station-info-title darker">AC Charging: </div><div className="station-info darker">{this.state.acCharging}</div>
-                            <div className="station-info-title">AC Charger Type(s): </div><a className="station-link station-info" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
-                            <div className="station-info-title darker">DC Charging: </div><div className="station-info darker">{this.state.dcCharging}</div>
-                            <div className="station-info-title">DC Charger Type(s): </div><div className="station-info">{this.state.dcChargerTypes}</div>
+                        <div className="station-page-info-container box-colors margin-top-small center-content">
+                            <div className="station-info-title center-content darker">Brand: </div><div className="station-info center-content darker">{this.state.brand}</div>
+                            <div className="station-info-title center-content">Model: </div><div className="station-info center-content">{this.state.model}</div>
+                            <div className="station-info-title center-content darker">Type: </div><div className="station-info darker center-content">{this.state.type}</div>
+                            <div className="station-info-title center-content">Release Year: </div><div className="station-info center-content">{this.state.releaseYear}</div>
+                            <div className="station-info-title center-content darker">Usable Battery Size (kWh): </div><div className="station-info darker center-content">{this.state.usableBatterySize}</div>
+                            <div className="station-info-title center-content">Energy Consumption (Wh/km): </div><div className="station-info center-content">{this.state.energyConsumption}</div>
+                            <div className="station-info-title center-content darker">AC Charging: </div><div className="station-info darker center-content ">{this.state.acCharging}</div>
+                            <div className="station-info-title center-content">AC Charger Type(s): </div><a className="station-link station-info center-content" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
+                            <div className="station-info-title center-content darker">DC Charging: </div><div className="station-info darker center-content">{this.state.dcCharging}</div>
+                            <div className="station-info-title center-content">DC Charger Type(s): </div><div className="station-info center-content">{this.state.dcChargerTypes}</div>
                         </div>            
                     }
                     {!this.state.error &&
                         <div className="station-update-button-container center-content">
-                            <button className="vehicle-delete-button" onClick={this.deleteVehicle}>
+                            <button className="delete-button my-button" onClick={this.preDelete}>
                                 Delete
                             </button>
                         </div>
@@ -202,6 +211,20 @@ class Vehicle extends React.Component {
                             {this.state.error}
                         </div>
                     )}
+                    {this.state.showModal===true &&
+                    
+                        <div className="modal-box box-colors">
+                            <div className="message">
+                                Are you sure you want delete this vehicle?<br></br>
+                                All of its statistics will be lost...
+                            </div>
+                            <div className="modal-buttons-container flex-layout margin-top-small">
+                                <button className="update-button my-button flex-item-expand margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
+                                <button className="delete-button my-button flex-item-expand" onClick={this.deleteVehicle}>Yes, delete anyway</button>                                        
+                            </div>
+                        </div>
+                    
+                    }
 
                 </div>
                 </div>
