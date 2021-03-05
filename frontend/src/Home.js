@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 import MyNavbar from './MyNavbar'; 
+import DeviceMap from './DeviceMap';
 
 class Home extends React.Component {
 
@@ -29,6 +30,7 @@ class Home extends React.Component {
                     { this.state.role===null && (
                         <p className="test blackColor">User's role not specified</p>
                     )}
+                    <DeviceMap/>
                 </div>
             </div>
         )

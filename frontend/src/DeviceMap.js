@@ -6,7 +6,8 @@ import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import {getOneStation , getAllStations} from './api';
 import Station from './Station';
-import MyNavBar from './MyNavbar'; 
+import MyNavBar from './MyNavbar';
+import StationMap from './StationMap';
 
 class SpecStation extends React.Component {
     
@@ -23,8 +24,13 @@ class SpecStation extends React.Component {
           costperkw: this.props.costperkw
       }
       this.attr2 = "Cost Per kWh";
+      this.showstation=this.showstation.bind(this);
+      this.currenstation1=null;
   }
-
+  showstation=()=>{
+    console.log('Go to station link')
+    window.location.href=`/stations/${this.state.stationId}`
+  }
 
   render() {
     const popupContent = {
@@ -50,9 +56,10 @@ class SpecStation extends React.Component {
         <Marker position={[ this.props.latitude+0.00001, this.props.longtitude+0.0001]} >
           <Popup className="request-popup">
             <div style={popupContent}>
-              <div className="popupHead">
-              {this.props.title}<br></br>
-              </div>
+              <a className="popupHead" onClick={this.showstation}>
+              {this.props.title}
+              </a>
+              <br></br>
               Cost Per kWh:
               <br></br>
               <span style={popupText}>
@@ -127,18 +134,12 @@ class DeviceMap extends React.Component {
                         }          
                         
                   </MapContainer>
-
-              <h1>LONG 1</h1>
-              <h1>LAT 1</h1>
+              {this.state.currentstation && 
+                <StationMap id={this.state.currentstation}/>
+              }
             </div>
           );
               }
 }
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<DeviceMap />, rootElement);
 export default DeviceMap;
-export const getAllStations = () => {
-  const requestUrl = `chargingstations`;
-  return axios.get(requestUrl);
-}

@@ -236,7 +236,10 @@ export const getStationOwnerProfile = (id) => {
     const requestUrl = `stationowners/${id}/profile`;
     return axios.get(requestUrl);
 }
-
+export const getAllStations = () => {
+    const requestUrl = `chargingstations`;
+    return axios.get(requestUrl);
+  }
 export const getUserOBJECT = (id) => {
     const requestUrl = `users/${id}`;
     return axios.get(requestUrl);
