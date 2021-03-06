@@ -159,7 +159,6 @@ class DeviceMap extends React.Component {
               <TileLayer attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
                   {
                       this.state.stations.map((value, key)=> {
-                        if (value.Id<10) {
                         /*<SpecStation
                               key= {key}
                               stationId = {value.Id}
@@ -201,15 +200,13 @@ class DeviceMap extends React.Component {
                                     </div>
 
                                     <div className="address-extras-container center-content">
-                                      Address Line: {value["First Address"]} <br></br>
-                                      Tel: {value["Contact Telephone 1"]}
+                                      Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
+                                      Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
                                     </div>
                                   </div>
                                 </Popup>
                               </Marker>
                           )
-                          }
-                
                       })
                   }          
             </MapContainer>
