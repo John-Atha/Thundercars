@@ -30,7 +30,7 @@ public class ConnectionType {
 
     ConnectionType() {}
 
-	public ConnectionType(Integer id, String title, String formalName) {
+	public ConnectionType(Integer id, String title, String formalName, String category) {
 		this.id = id;
 		this.title = title;
 		this.formalName = formalName;
