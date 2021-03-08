@@ -188,6 +188,15 @@ class ChargingStationController {
             curr.put("Quantity", spot.get(1));
             curr.put("QuantityAvailable", spot.get(2));
             curr.put("QuantityOperational", spot.get(3));
+            Integer realSpot = spot.get(4);
+            if (realSpot!=null) {
+              String category = repository.findConnCategory(realSpot);
+              curr.put("Category", category);
+            }
+            else {
+              String category = null;
+              curr.put("Category", category);
+            }
             SpotsList.add(curr);
           }
         }
@@ -322,6 +331,15 @@ class ChargingStationController {
             curr.put("Quantity", spot.get(1));
             curr.put("QuantityAvailable", spot.get(2));
             curr.put("QuantityOperational", spot.get(3));
+            Integer realSpot = spot.get(4);
+            if (realSpot!=null) {
+              String category = repository.findConnCategory(realSpot);
+              curr.put("Category", category);
+            }
+            else {
+              String category = null;
+              curr.put("Category", category);
+            }
             SpotsList.add(curr);
           }
         }
