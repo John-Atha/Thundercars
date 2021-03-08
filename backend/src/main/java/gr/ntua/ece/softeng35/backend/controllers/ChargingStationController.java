@@ -187,7 +187,7 @@ class ChargingStationController {
             curr.put("Spot", spot.get(0));
             curr.put("Quantity", spot.get(1));
             curr.put("QuantityAvailable", spot.get(2));
-            curr.put("QuantityOperation", spot.get(3));
+            curr.put("QuantityOperational", spot.get(3));
             SpotsList.add(curr);
           }
         }
