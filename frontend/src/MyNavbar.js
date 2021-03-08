@@ -82,7 +82,7 @@ class MyNavbar extends React.Component {
             <Nav.Link id="nav-link" href="/register">Register</Nav.Link>
           )}
           {this.state.userId && (
-            <NavDropdown title={<img className="user-icon user-choices" src={icon}/>} id="nav-link">
+            <NavDropdown title={<img className="user-icon user-choices" src={icon} alt="user icon"/>} id="nav-link">
               <NavDropdown.Item className="user-choices2" href="/profile">My profile</NavDropdown.Item>
               <NavDropdown.Item className="user-choices" onClick={this.logout}>Logout</NavDropdown.Item>
             </NavDropdown>

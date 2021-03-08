@@ -240,7 +240,7 @@ class UpdateProfile extends React.Component {
                 return true;
             }
         }
-        return !(reason1&&reason2);
+       // return !(reason1&&reason2);
     }
 
     submitActivate = () => {
@@ -372,7 +372,7 @@ class UpdateProfile extends React.Component {
                                 <div className="update-profile-container center-content">
 
                                     <div className="update-profile-icon-container margin-small">
-                                        <img src={icon}/>
+                                        <img src={icon} alt="user icon"/>
                                     </div>
                                     <div className="color2">Move your cursor over a field to for an explanation of its role</div>
                                     <form className="profile-pic-and-form-container flex-layout fix-width">

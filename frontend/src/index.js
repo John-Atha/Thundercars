@@ -21,7 +21,6 @@ import Station from './Station';
 import AddStation from './AddStation';
 import AddSpot from './AddSpot';
 import UpdateStation from './UpdateStation';
-import UpdateSpot from './UpdateSpot';
 import Spot from './Spot';
 import MyStationStatistics from './MyStationStatistics';
 import VehiclesDetailedSessions from './VehiclesDetailedSessions';
@@ -31,11 +30,6 @@ import Developers from './Developers';
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
-/*
-<Route path="/spots/:id/update" exact>
-<FindUpdateSpot />
-</Route>
-*/
 
 function FindStation() {
   let {id} = useParams();
@@ -50,11 +44,6 @@ function FindSpot() {
 function FindUpdateStation() {
   let{id} = useParams();
   return <UpdateStation id={id} />;
-}
-
-function FindUpdateSpot() {
-  let{id} = useParams();
-  return <UpdateSpot id={id} />;
 }
 
 function FindVehicle() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import './MyStationStatistics.css';
-import {getStationStats, getStations, getOneStation} from './api'
+import {getStationStats, getStations} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
 import UnAuthorized from './UnAuthorized';

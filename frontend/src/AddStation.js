@@ -37,7 +37,7 @@ class AddStation extends React.Component {
             submissionStatus: "",
             rating: "",
             costPerkWh: "",
-            stationOwner: "",
+            //stationOwner: "",
             countries: [{}],
             currentProviders: [{}],
             operators: [{}],

@@ -77,7 +77,7 @@ class MyVehicles extends React.Component {
                     />
             )
         }
-        else if(localStorage.getItem('role')=="StationOwner") {
+        else if(localStorage.getItem('role')==="StationOwner") {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a vehicle owner to have your vehicles listing page"

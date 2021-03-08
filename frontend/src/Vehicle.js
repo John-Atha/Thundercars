@@ -66,7 +66,7 @@ class Vehicle extends React.Component {
             let dcchargers = "";
             let acchargers = "";
             for(let i = sizeofac; i > 0; i--) {
-                if(i == 1) {
+                if(i === 1) {
                     acchargers = acchargers+this.state.acChargers[i-1]["Port Name"];
                 }
                 else {

@@ -3,7 +3,6 @@ import './AcCharger.css';
 import MyNavBar from'./MyNavbar';
 import {getOneAcCharger} from './api';
 import CanvasJSReact from'./canvasjs.react';
-import UnAuthorized from './UnAuthorized';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 

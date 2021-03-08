@@ -221,7 +221,7 @@ class Profile extends React.Component {
                                 <div className="profile-container flex-layout padding-bottom">
                             
                             <div className="profile-icon-container margin-top-small flex-item-small">
-                                <img src={icon}/>
+                                <img src={icon} alt="user icon"/>
                             </div>
 
                             <div className="profile-basic-info-container box-colors margin-top-small flex-layout">

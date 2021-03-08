@@ -1,7 +1,6 @@
 import React from 'react';
 import './Developers.css';
 import MyNavbar from './MyNavbar';
-import logo from './images/thundera.png';
 import UnAuthorized from './UnAuthorized';
 import {getUserOBJECT, stationOwnerOBJECTGet, userPutWithPass, stationOwnerPut} from './api';
 

@@ -143,7 +143,6 @@ class AddSpot extends React.Component {
             console.log("postara to spot:");
             console.log(response);
             let spotObjGet = response.data;
-            let spotId = response.data.id;
             console.log("retrieving info for station: "+stationParts[0])
             getOneStationOBJECT(stationParts[0])
             .then(response => {
