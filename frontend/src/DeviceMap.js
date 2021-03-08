@@ -99,8 +99,11 @@ class DeviceMap extends React.Component {
   handleClick = (e) => {
     let area = document.getElementById('curr-station-container') ? document.getElementById('curr-station-container') : null;
     if (area) {
-      if (!area.contains(e.target)) {
+      if (!area.contains(e.target) && area.style.display!=="none") {
         area.style.display="none";
+      }
+      else if (area.contains(e.target) && area.style.display==="none") {
+        area.style.display="block";
       }
     }
   }
@@ -149,6 +152,45 @@ class DeviceMap extends React.Component {
   }
 
   render() {
+
+
+    const L = require('leaflet');
+
+    const yellowIcon = new L.Icon({
+      iconUrl: require('./images/mapIcons/yellow.png'),
+      iconRetinaUrl: require('./images/mapIcons/yellow.png'),
+      iconAnchor: null,
+      popupAnchor: [-3, -20],
+      shadowUrl: null,
+      shadowSize: null,
+      shadowAnchor: null,
+      iconSize: new L.Point(40, 60),
+      className: 'leaflet-div-icon'
+  })
+  const greenIcon = new L.Icon({
+    iconUrl: require('./images/mapIcons/green.png'),
+    iconRetinaUrl: require('./images/mapIcons/green.png'),
+    iconAnchor: null,
+    popupAnchor: [-3, -20],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: new L.Point(40, 60),
+    className: 'leaflet-div-icon'
+  })
+  const redIcon = new L.Icon({
+    iconUrl: require('./images/mapIcons/red.png'),
+    iconRetinaUrl: require('./images/mapIcons/red.png'),
+    iconAnchor: null,
+    popupAnchor: [-3, -20],
+    shadowUrl: null,
+    shadowSize: null,
+    shadowAnchor: null,
+    iconSize: new L.Point(40, 60),
+    className: 'leaflet-div-icon'
+  })
+
+
     console.log("Parent Data div for station: " + this.state.currStation)
     return (
           <div className="map-pop-up-container">
@@ -171,10 +213,27 @@ class DeviceMap extends React.Component {
                               tel1 = {value["Contact Telephone 1"]}
                               accessComm = {value["Access Comments"]}
                               */  
-                        
-                        return(
+                        let spots = value.Spots;
+                        let spotsAvailable = 0;
+                        let spotsOperational = 0;
+                        let pickedIcon = redIcon;
+                        spots.forEach(spot => {
+                          spotsAvailable += spot.QuantityAvailable;
+                          spotsOperational += spot.QuantityOperational;
+                        })
+                        if (spotsAvailable>0 && spotsAvailable<6) {
+                          pickedIcon = yellowIcon;
+                        }
+                        else if (spotsAvailable>6) {
+                          pickedIcon = greenIcon;
+                        }
+
+                        if (value.Latitude && value.Longtitude) {
+
+                          return(
                               <Marker key={key} 
-                                      position={[ value.Latitude+0.00001, value.Longtitude+0.0001]}
+                                      position={[ value.Latitude, value.Longtitude]}
+                                      icon={pickedIcon}
                                       onMouseOver={(e) => {
                                           e.target.openPopup();
                                       }}
@@ -199,6 +258,10 @@ class DeviceMap extends React.Component {
                                       <Rating initialRating={value.Rating} readonly={true} fullSymbol={<img className="logorating" src={logo} alt="Thundercars-logo"/>}></Rating>
                                     </div>
 
+                                    <div className="spots-free">
+                                      Spots available: {spotsAvailable} / {spotsOperational}
+                                    </div>
+
                                     <div className="address-extras-container center-content">
                                       Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
                                       Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
@@ -207,6 +270,7 @@ class DeviceMap extends React.Component {
                                 </Popup>
                               </Marker>
                           )
+                        }
                       })
                   }          
             </MapContainer>
