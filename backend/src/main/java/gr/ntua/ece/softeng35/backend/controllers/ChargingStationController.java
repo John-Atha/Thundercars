@@ -99,7 +99,7 @@ class ChargingStationController {
           addressInfo = addressInfos.get(0);
         }
 
-        List<Integer> spots = repository.findStationSpotsFromStation(i);
+        List<List<Integer>> spots = repository.findStationSpotsFromStation(i);
         
         ObjectNode answer = mapper.createObjectNode();
         answer.put("Id", i);
@@ -182,9 +182,12 @@ class ChargingStationController {
         }
         ArrayNode SpotsList = mapper.createArrayNode();
         if (spots.size()!=0) {
-          for (Integer spot : spots) {
+          for (List<Integer> spot : spots) {
             ObjectNode curr = mapper.createObjectNode();
-            curr.put("Spot", spot);
+            curr.put("Spot", spot.get(0));
+            curr.put("Quantity", spot.get(1));
+            curr.put("QuantityAvailable", spot.get(2));
+            curr.put("QuantityOperation", spot.get(3));
             SpotsList.add(curr);
           }
         }
@@ -229,7 +232,7 @@ class ChargingStationController {
           addressInfo = addressInfos.get(0);
         }
 
-        List<Integer> spots = repository.findStationSpotsFromStation(id.get());
+        List<List<Integer>> spots = repository.findStationSpotsFromStation(id.get());
         
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode answer = mapper.createObjectNode();
@@ -313,9 +316,12 @@ class ChargingStationController {
         }
         ArrayNode SpotsList = mapper.createArrayNode();
         if (spots.size()!=0) {
-          for (Integer spot : spots) {
+          for (List<Integer> spot : spots) {
             ObjectNode curr = mapper.createObjectNode();
-            curr.put("Spot", spot);
+            curr.put("Spot", spot.get(0));
+            curr.put("Quantity", spot.get(1));
+            curr.put("QuantityAvailable", spot.get(2));
+            curr.put("QuantityOperational", spot.get(3));
             SpotsList.add(curr);
           }
         }

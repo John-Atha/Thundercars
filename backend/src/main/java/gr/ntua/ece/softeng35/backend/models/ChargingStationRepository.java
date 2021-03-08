@@ -38,8 +38,8 @@ public interface ChargingStationRepository extends JpaRepository<ChargingStation
    @Query(value= "SELECT u.Title, u.ISOCode, u.ContinentCode FROM Country u WHERE u.id= ?1")
    List<List<Object>> findStationsCountryInfo(Integer countryId);
 
-   @Query(value= "SELECT u.id FROM ChargingStationSpots u WHERE u.chargingStation.id= ?1")
-   List<Integer> findStationSpotsFromStation(Integer stationId);
+   @Query(value= "SELECT u.id, u.quantity, u.quantityAvailable, u.quantityOperational FROM ChargingStationSpots u WHERE u.chargingStation.id= ?1")
+   List<List<Integer>> findStationSpotsFromStation(Integer stationId);
 
 
 
