@@ -1,7 +1,10 @@
 .DeviceMap {
     font-family: sans-serif;
     text-align: center;
-    
+}
+
+.padding-top {
+  padding-top: 3%;
 }
   
 .leaflet-container {

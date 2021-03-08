@@ -1,10 +1,24 @@
 import React from 'react';
 import Rating from 'react-rating';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+//import { geosearch } from 'esri-leaflet-geocoder';
+//import { BasemapLayer, FeatureLayer } from 'react-esri-leaflet/v2';
+import EsriLeafletGeoSearch from 'react-esri-leaflet/plugins/EsriLeafletGeoSearch';
+import "leaflet/dist/leaflet.css";
+import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css";
+import 'esri-leaflet';
+//import Search from "react-leaflet-search";
+//import { LatLng } from "leaflet";
+
+import "leaflet/dist/leaflet";
+import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder";
+
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import {getVehicles , getAllStations} from './api';
 import StationMap from './StationMap';
+//import L from "leaflet";
+//import * as ELG from "esri-leaflet-geocoder";
 
 /*
     class SpecStation extends React.Component {
@@ -80,6 +94,7 @@ import StationMap from './StationMap';
 
 
 class DeviceMap extends React.Component {
+  
   constructor(props){
       super(props);
       this.state={
@@ -102,6 +117,7 @@ class DeviceMap extends React.Component {
       this.selectEV = this.selectEV.bind(this);  
       this.showStation=this.showStation.bind(this);
       this.handleClick = this.handleClick.bind(this);
+      //this.leafletMap = React.createRef();
   }    
 
   selectEV = (event) => {
@@ -170,6 +186,18 @@ class DeviceMap extends React.Component {
   }
 
   componentDidMount () {
+      //const control = geosearch();
+      //control.addTo(this.leafletMap.current);
+      /*const map = this.leafletMap.current;
+      const searchControl = new ELG.Geosearch().addTo(map);
+      const results = new L.LayerGroup().addTo(map);
+  
+      searchControl.on("results", function(data) {
+        results.clearLayers();
+        for (let i = data.results.length - 1; i >= 0; i--) {
+          results.addLayer(L.marker(data.results[i].latlng));
+        }
+      });*/
       getAllStations()
       .then(response => {
           console.log(response);
@@ -259,10 +287,13 @@ class DeviceMap extends React.Component {
     console.log("Parent Data div for station: " + this.state.currStation)
     
       return (
-            <div className="page">
-              lalalal
-              {!this.state.noVehicles &&
-                  <div className="spots-buttons-container center-content flex-layout">
+            <div className="page padding-bottom padding-top">
+              <h5 className="color2 margin-bottom"> Welcome, pick the station you're looking for from the map</h5>
+
+              {this.state.userId && !this.state.noVehicles &&
+                <div classname="vehicle-map-select">
+                  <h5 className="color2"> Choose one of your vehicles to see its compatible stations</h5>
+                  <div className="spots-buttons-container center-content flex-layout margin-top">
                       {   
                           this.state.vehList.map((value, index) => {
                               //console.log(index);
@@ -270,6 +301,7 @@ class DeviceMap extends React.Component {
                           })
                       }
                   </div>
+                </div>
               }
 
               { this.state.userId && this.state.role==="VehicleOwner" && this.showingVehId &&
@@ -277,7 +309,10 @@ class DeviceMap extends React.Component {
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
                 }
-                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}>
+                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}
+                       /* ref={m => {
+                          this.leafletMap = m;
+                        }}*/>
                   <TileLayer attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
                       {
                           this.state.stations.map((value, key)=> {
@@ -355,18 +390,29 @@ class DeviceMap extends React.Component {
                               )
                             }
                           })
-                      }          
+                      }  
+
+                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
+                        eventHandlers={{
+                          requeststart: () => console.log('Started request...'),
+                          requestend: () => console.log('Ended request...'),
+                          results: (r) => console.log(r)
+                        }}
+                      />      
                 </MapContainer>
               </div>
               }
 
-              { this.state.role!=="VehicleOwner" &&
+              { (!this.state.userId || this.state.role!=="VehicleOwner") &&
                 <div className="map-pop-up-container">
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
                 }
-                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}>
-                  <TileLayer attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
+                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}
+                        /*ref={m => {
+                          this.leafletMap = m;
+                        }}*/>
+                  <TileLayer attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors" url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
                       {
                           this.state.stations.map((value, key)=> {
                             /*<SpecStation
@@ -440,7 +486,15 @@ class DeviceMap extends React.Component {
                               )
                             }
                           })
-                      }          
+                      }
+
+                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
+                        eventHandlers={{
+                          requeststart: () => console.log('Started request...'),
+                          requestend: () => console.log('Ended request...'),
+                          results: (r) => console.log(r)
+                        }}
+                      /> 
                 </MapContainer>
               </div>
               }
@@ -450,5 +504,13 @@ class DeviceMap extends React.Component {
       );
   }
 }
-
+/*
+                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
+                        eventHandlers={{
+                          requeststart: () => console.log('Started request...'),
+                          requestend: () => console.log('Ended request...'),
+                          results: (r) => console.log(r)
+                        }}
+                      /> 
+*/
 export default DeviceMap;
