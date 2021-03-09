@@ -82,7 +82,7 @@ class MyVehicles extends React.Component {
                 </div>
             )
         }
-        else if(localStorage.getItem('role')=="StationOwner") {
+        else if(localStorage.getItem('role')==="StationOwner") {
             console.log("Station Owner Error");
             setTimeout(() =>{window.location.href = "/home"},10000);
             return(

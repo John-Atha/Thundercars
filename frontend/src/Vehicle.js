@@ -62,7 +62,7 @@ class Vehicle extends React.Component {
             let dcchargers = "";
             let acchargers = "";
             for(let i = sizeofac; i > 0; i--) {
-                if(i == 1) {
+                if(i === 1) {
                     acchargers = acchargers+this.state.acChargers[i-1]["Port Name"];
                 }
                 else {
@@ -143,7 +143,7 @@ class Vehicle extends React.Component {
                 <div className="allPage">
                     <MyNavBar />
                     <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
+                        <div className= "center-content error-message">
                         It seems that you are not logged in...
                         You will be redirected to the login page in 10 seconds.
                         </div>
@@ -158,7 +158,7 @@ class Vehicle extends React.Component {
                 <div className="allPage">
                     <MyNavBar />
                     <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" className="error-message">
+                        <div className= "center-content error-message">
                         It seems that you are logged in as a Station Owner...<br></br>
                         Log in to your Vehicle Owner account to view your vehicles.<br></br>
                         You will be redirected to the Home page in 10 seconds.
