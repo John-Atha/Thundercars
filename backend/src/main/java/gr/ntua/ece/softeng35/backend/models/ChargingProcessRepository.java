@@ -3,6 +3,8 @@ package gr.ntua.ece.softeng35.backend.models;
 import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -130,4 +132,9 @@ public interface ChargingProcessRepository extends JpaRepository<ChargingProcess
     @Query(value = "SELECT u.id FROM UserHasVehicle u WHERE u.vehicle.id= ?1 AND u.user.id= ?2")
     List<Integer> findUserHasVehicleIdByVehicleAndUser(Integer vehicleId, Integer userId);
 
+    //For HelpEndpoints
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM ChargingProcess")
+    void deleteAllFromChargingProcess();
 }
