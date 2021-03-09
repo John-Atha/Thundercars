@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 import MyNavbar from './MyNavbar'; 
+import DeviceMap from './DeviceMap';
 
 class Home extends React.Component {
 
@@ -17,18 +18,7 @@ class Home extends React.Component {
             <div className="allpage">
                 <MyNavbar />
                 <div className="general-page-container more-blur center-content">    
-                    { this.state.userId!==null && (
-                        <p className="test blackColor">User id: {this.state.userId}</p>
-                    )}
-                    { this.state.userId===null && (
-                        <p className="test blackColor">User not logged in</p>
-                    )}
-                    { this.state.role!==null && (
-                        <p className="test blackColor">Role: {this.state.role}</p>
-                    )}
-                    { this.state.role===null && (
-                        <p className="test blackColor">User's role not specified</p>
-                    )}
+                    <DeviceMap/>
                 </div>
             </div>
         )

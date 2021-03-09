@@ -2,7 +2,7 @@ import React from "react"
 import "./MyStations.css";
 import MyNavbar from './MyNavbar'; 
 import {getStations} from './api';
-
+import UnAuthorized from './UnAuthorized';
 
 class StationsDiv extends React.Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class StationsDiv extends React.Component {
     render() {
         return (
             <div className="one-station-container center-content box-colors margin-top-small">
-                <h5 className="orangeColor center-content">Station {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Station {this.state.id}: General Info</h5>
                 <div className="station-page-info-container">
                     <div className="station-info-title darker">Title: </div>
                     <div className="station-info darker">{this.state.title}</div>
@@ -42,15 +42,12 @@ class StationsDiv extends React.Component {
                     <div className="station-info-title darker">First Address: </div>
                     <div className="station-info darker">{this.state.firstAddress}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.stationPageRedirect}>More details / update</a>
+                <button className="my-button more-details-button center-content" onClick={this.stationPageRedirect}>More details / update</button>
             </div>
         )
     }
 
 }
-
-
-
 
 
 class MyStations extends React.Component {
@@ -81,8 +78,25 @@ class MyStations extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles listing"
+                    link2="/MyVehicles" 
+                />
+            )
         }
         else {
             return (
@@ -92,6 +106,11 @@ class MyStations extends React.Component {
                         <div className="specific-title orangeColor">
                             My Stations
                         </div>
+                        
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
+
                         <div id="stations-container">
                             {   
                                 this.state.stationsList.map((value, index) => {

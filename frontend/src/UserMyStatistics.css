@@ -1,5 +1,5 @@
 body {
-    --color2: rgb(233, 21, 21);
+    --color2: rgb(180, 212, 206);;
 }
 
 .allPage {
@@ -11,13 +11,6 @@ body {
     font-size: xx-large;
     border-bottom: 2px solid grey;
     color: var(--color2);
-}
-
-.general-page-container {
-    margin-top: 0%;
-    margin-bottom: 5%;
-    height: max(700px, min-content);
-    width: max(99vw, 300px);
 }
 
 .more-blur {

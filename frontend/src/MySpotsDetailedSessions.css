@@ -1,5 +1,5 @@
 body {
-    --color2: rgb(233, 21, 21);
+    --color2: rgb(180, 212, 206);
 }
 
 .one-spot-sessions-container {
@@ -57,26 +57,18 @@ body {
     column-gap: 5%;
 }
 
-.spot-choose-button {
-    color: var(--color2);
+.choice-button {
+    color: black;
     margin-bottom: 1%;
     height: min-content;
     width: 100px !important;
     border-radius: 5px;
 }
 
+
 .spot-choose-button:hover {
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
-}
-
-.time-filters-container {
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 150px 150px;
-    width: 100%;
-    /*margin-left: 500px;*/
-    column-gap: 5%;
 }
 
 .padding-bottom5 {
@@ -93,5 +85,11 @@ body {
 
 .start-date-label, .end-date-label {
     color: var(--color2);
+}
+
+.end-date-container, .start-date-container {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    margin-left: 2%;
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import './MyVehicles.css';
 import {getVehicles} from './api'
 import MyNavBar from './MyNavbar'; 
+import UnAuthorized from './UnAuthorized';
 
 class SpecVehicle extends React.Component {
     
@@ -25,14 +26,14 @@ class SpecVehicle extends React.Component {
 
     render() {
         return ( 
-            <div className="one-station-container center-content box-colors flex-item-medium-big">
-                <h5 className="orangeColor center-content">Vehicle {this.state.index}: General Info</h5>
+            <div className="one-station-container center-content box-colors flex-item">
+                <h5 className="color2 center-content">Vehicle {this.state.index}: General Info</h5>
                 <div className="station-page-info-container center-content">
                     <div className="station-info-title darker">Brand: </div><div className="station-info darker">{this.state.brand}</div>
                     <div className="station-info-title">Model: </div><div className="station-info">{this.state.model}</div>
                     <div className="station-info-title darker">Type: </div><div className="station-info darker">{this.state.type}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.vehiclePageRedirect}>More details</a>
+                <button className="more-details-button my-button center-content" onClick={this.vehiclePageRedirect}>More details</button>
             </div>
         );
     }
@@ -68,35 +69,23 @@ class MyVehicles extends React.Component {
 
     render() {
         if((!localStorage.getItem('userId'))) {
-            console.log("User not logged in error");
-            setTimeout(() =>{window.location.href = "/"},10000);
             return (
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" id="error-message">
-                        It seems that you are not logged in...
-                        You will be redirected to the login page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+                    <UnAuthorized 
+                        message="You need to create an account to have your vehicles listing page"
+                        linkMessage="Create an account"
+                        link="/register" 
+                    />
             )
         }
         else if(localStorage.getItem('role')==="StationOwner") {
-            console.log("Station Owner Error");
-            setTimeout(() =>{window.location.href = "/home"},10000);
-            return(
-                <div className="allPage">
-                    <MyNavBar />
-                    <div className="vehicle-page-container more-blur center-content">
-                        <div className= "center-content" id="error-message">
-                        It seems that you are logged in as a Station Owner...<br></br>
-                        Log in to your Vehicle Owner account to view your vehicles.<br></br>
-                        You will be redirected to the Home page in 10 seconds.
-                        </div>
-                    </div>
-                </div>
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to have your vehicles listing page"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
+                />
             )
+
         }
         else {
 

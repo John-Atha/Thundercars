@@ -1,8 +1,21 @@
+@keyframes sliding{
+    from {
+      left: 100vw;
+    }
+    
+    to {
+     left: 50vw;
+    }
+  }
+  
+
+
 .station-page-info-container {
     text-align: left;
     padding: 2% 1%;
-    width: 60%;
-    margin-left: 20%;
+    width: 70%;
+    min-width: min-content;
+    margin-left: 15%;
     display: grid;
     grid-template-columns: 40% 60%;
     grid-template-rows: min-content;
@@ -51,4 +64,33 @@
 .station-update-button:hover {
     transform: scale(1.1);
     -webkit-transform: scale(1.1);
+}
+
+.station-pop-up-container {
+    position: fixed;
+    top: 0%;
+    background-color: white;
+    /* color: black !important; */
+    z-index: 999;
+    width: 50vw !important;
+    height: min-content;
+    left: 50vw;
+    margin: 0;
+    animation: 
+        sliding 1s ;
+}
+
+.station-pop-up-info-container {
+    margin: 0%;
+    text-align: left;
+    padding: 2% 1%;
+    min-width: min-content;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: min-content;
+    column-gap: 2px;
+}
+
+.station-pop-up-link:hover {
+    cursor: pointer;
 }

@@ -3,6 +3,7 @@ import "./MyNavbar.css";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown'
+import icon from './images/user-icon.png';
 
 class MyNavbar extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class MyNavbar extends React.Component {
     return (
       <Navbar className="color-nav">
         <Nav className="mr-auto">
-          <Nav.Link id="nav-link" href="/home">Home</Nav.Link>
+          <Nav.Link id="nav-link" href="/">Home</Nav.Link>
 
           {this.state.role==="StationOwner" && (
           <NavDropdown title="My statistics" id="nav-link">
@@ -71,16 +72,22 @@ class MyNavbar extends React.Component {
           {this.state.role==="VehicleOwner" && (
             <Nav.Link id="nav-link" href="/VehiclesDetailedSessions">Detailed Sessions</Nav.Link>
           )}
-
+          {this.state.userId && (
+            <Nav.Link id="nav-link" href="/developers">For developers</Nav.Link>
+          )}
           {!this.state.userId && (
-            <Nav.Link id="nav-link" href="/">Login</Nav.Link>
+            <Nav.Link id="nav-link" href="/login">Login</Nav.Link>
           )}
           {!this.state.userId && (
             <Nav.Link id="nav-link" href="/register">Register</Nav.Link>
           )}
           {this.state.userId && (
-            <Nav.Link id="nav-link" onClick={this.logout}>Logout</Nav.Link>
+            <NavDropdown title={<img className="user-icon user-choices" src={icon} alt="user icon"/>} id="nav-link">
+              <NavDropdown.Item className="user-choices2" href="/profile">My profile</NavDropdown.Item>
+              <NavDropdown.Item className="user-choices" onClick={this.logout}>Logout</NavDropdown.Item>
+            </NavDropdown>
           )}
+
         </Nav>
       </Navbar>
       

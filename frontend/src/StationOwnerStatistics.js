@@ -4,6 +4,8 @@ import MyNavbar from './MyNavbar';
 import {getStationOwnerStatistics, getStations} from './api';
 import CanvasJSReact from './canvasjs.react';
 import Carousel from 'react-bootstrap/Carousel';
+import UnAuthorized from './UnAuthorized';
+
 //var CanvasJSReact = require('./canvasjs.react');
 //var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -75,6 +77,7 @@ class StatOwnerPiesContainer extends React.Component {
             diagramOptions2: {},
             diagramOptions3: {},
             diagramOptions4: {},
+            diagrams: true,
         }
     }
 
@@ -119,19 +122,20 @@ class StatOwnerPiesContainer extends React.Component {
 
             this.setState({
                 data: response.data.Summary,
+                diagrams: SessionsList.length>0,
                 diagramOptions1: {
                     exportEnabled: true,
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: SessionsList
                     }]
@@ -141,14 +145,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: UsersList
                     }]
@@ -158,14 +162,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: EarningsList
                     }]
@@ -175,14 +179,14 @@ class StatOwnerPiesContainer extends React.Component {
                     animationEnabled: true,
                     backgroundColor: "black",
                     axisX : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     axisY : {
-                        labelFontColor: "red",
+                        labelFontColor: "white",
                     },
                     //height: 300,
                     data: [{
-                        color: "red",
+                        color: "white",
                         type: "line",
                         dataPoints: kWhDelivered
                     }]
@@ -191,16 +195,29 @@ class StatOwnerPiesContainer extends React.Component {
         })
         .catch(err=> {
             console.log(err);
+            this.setState({
+                diagrams: false,
+            })
         })
 
     }
 
     render() {
-        return <ControlledCarousel
-            options1 = {this.state.diagramOptions1} 
-            options2 = {this.state.diagramOptions2}
-            options3 = {this.state.diagramOptions3}
-            options4 = {this.state.diagramOptions4} />
+        if (this.state.diagrams) {
+            return (
+                <ControlledCarousel
+                    options1 = {this.state.diagramOptions1} 
+                    options2 = {this.state.diagramOptions2}
+                    options3 = {this.state.diagramOptions3}
+                    options4 = {this.state.diagramOptions4} />
+            )
+        }
+        else {
+            return (
+                <div className="error-message margin-top-small center-content">No sessions found!</div>
+
+            )
+        }
         
     }
 
@@ -226,8 +243,7 @@ class StationOwnerStatistics extends React.Component {
             console.log(response);
             stationsInitList = response.data.StationsList;
             stationsInitList.forEach(element => {
-                stationsTempList.push(element.Id);
-                stationsTempList.push(element.Title);
+                stationsTempList.push(element.Id+",,"+element.Title);
             })
             this.setState({
                 stationsList: stationsTempList
@@ -241,35 +257,54 @@ class StationOwnerStatistics extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!==('StationOwner')) {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the statistics feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to this statistics feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your statistics"
+                    link2="/usermystatistics" 
+                />
+            )
         }
         else {
             return (
                 <div className="allPage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content ">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title">
                             Statistics
                         </div>
-                        <div className="station-title-container small-margin-bottom">
-                            {
-                                this.state.stationsList.map((value, key) => {
-                                        if (typeof(value)==="number") {
-                                            return (
-                                                <div key={key}>Station {value}</div>
-                                            )
-                                        }
-                                        else {
-                                            return (
-                                                <div key={key}>{value}</div>
+                        
+                        {!this.state.stationsList.length && 
+                            <div className="error-message margin-top-small center-content">No stations found,<br></br><br></br><a href="/addStation">add one from here</a></div>
+                        }
 
-                                            )
-                                        }
-                                })
-                            }       
-                        </div>
-                        <StatOwnerPiesContainer />
+                            <div className="station-title-container small-margin-bottom">
+                                {
+                                    this.state.stationsList.map((value, key) => {
+                                        let valueParts = value.split(",,");
+                                        return (
+                                            <div key={key}>Station {valueParts[0]}: {valueParts[1]}</div>
+                                        )
+                                            
+                                    })
+                                }       
+                            </div>
+                        {this.state.stationsList.length>0 &&
+                            <StatOwnerPiesContainer />
+                        }
+
                     </div>
                 </div>
             )

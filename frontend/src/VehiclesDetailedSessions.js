@@ -2,6 +2,7 @@ import React from 'react';
 import './VehiclesDetailedSessions.css';
 import {getVehicles, getAllUserVehicle, getVehicleSessions} from './api';
 import MyNavbar from './MyNavbar';
+import UnAuthorized from './UnAuthorized';
 
 //import CanvasJSReact from './canvasjs.react';
 //var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -42,7 +43,7 @@ class OneSession extends React.Component {
                 <div className="station-info">{this.state.cost}</div>
                 <div className="station-info-title darker">Cost per kWh: </div>
                 <div className="station-info darker">{this.state.costPerkWh}</div>
-                <div className="station-info-title">Energy Provider </div>
+                <div className="station-info-title">Energy Provider: </div>
                 <div className="station-info">{this.state.energyProv}</div>
             </div>
         )
@@ -92,16 +93,19 @@ class OneVehSessionsDiv extends React.Component {
             // find userHasVehicle objects that referr to current user
             userVehiclesList.forEach(el => {
                 //console.log("user: " + el.user.id);
-                if (parseInt(el.user.id)===parseInt(this.state.userId)) {
-                    console.log("brhka "+ el.user.id);
-                    let temp = this.state.userHasVehicleIds;
-                    temp.push(
-                        {userVeh: el.id,
-                         veh: el.vehicle.id,
-                        });
-                    this.setState({
-                        userHasVehicleIds: temp,
-                    })
+                
+                if (el.user && el.vehicle) {
+                    if (parseInt(el.user.id)===parseInt(this.state.userId)) {
+                        console.log("brhka "+ el.user.id);
+                        let temp = this.state.userHasVehicleIds;
+                        temp.push(
+                            {userVeh: el.id,
+                            veh: el.vehicle.id,
+                            });
+                        this.setState({
+                            userHasVehicleIds: temp,
+                        })
+                    }
                 }
             })
             // find userHasVehicle objects of current user that referr to current vehicle
@@ -131,7 +135,7 @@ class OneVehSessionsDiv extends React.Component {
             .catch(err => {
                 console.log(err);
                 this.setState({
-                    error: "Could not find sessions for this vehicle2"
+                    error: "Could not find sessions for this vehicle"
                 })            
             })
 
@@ -141,7 +145,7 @@ class OneVehSessionsDiv extends React.Component {
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not find sessions for this vehicle1"
+                error: "Could not find sessions for this vehicle"
             })
         })
     }
@@ -152,7 +156,8 @@ class OneVehSessionsDiv extends React.Component {
             console.log(`from ${prevProps.endDate} to ${this.props.endDate}`);
             // remove previous objects from dom
             this.setState({
-                procList: []
+                procList: [],
+                error: null,
             });
             this.state.userHasVehicleIds.forEach(el => {
                 if (el[1]===this.state.vehId) {
@@ -161,11 +166,11 @@ class OneVehSessionsDiv extends React.Component {
                     })
                 }
             })
-            getVehicleSessions(this.state.userHasVehicleCurrent, this.state.startDate, this.state.endDate)
+            getVehicleSessions(this.state.userHasVehicleCurrent, this.props.startDate, this.props.endDate)
             .then(response=> {
                 this.setState({
                     procList: response.data[this.attr7],
-                    totalkWh: response.data[this.attr9],
+                    totalkWh: response.data[this.attr10],
                     visitedPoints: response.data[this.attr9],
                     procNumber: response.data.Sessions
                 })
@@ -183,9 +188,9 @@ class OneVehSessionsDiv extends React.Component {
         console.log("i will show the spot's sessions");
         return (
             <div className="spot-sessions-block center-content">
-                <h5 className="orangeColor center-content">Vehicle {this.state.vehId} Sessions</h5>
+                <h5 className="color2 center-content">Vehicle {this.state.vehId} Sessions</h5>
                 { this.state.error===null &&
-                    <div className="vehicle-info-container center-content">
+                    <div className="vehicle-info-container center-content padding-0">
                         <div className="station-info-title">Processes: </div>
                         <div className="station-info">{this.state.procNumber}</div>
                         <div className="station-info-title">Total kWh delivered: </div>
@@ -218,7 +223,7 @@ class OneVehSessionsDiv extends React.Component {
                 }
                 {
                     this.state.error!==null &&
-                    <p className="loading-message">{this.state.error}</p>
+                    <p className="error-message margin-top">{this.state.error}</p>
                 }
             </div>
         )
@@ -291,16 +296,34 @@ class VehiclesDetailedSessions extends React.Component {
     }
 
     render() {
-        if ((!this.state.userId) || this.state.role!=="VehicleOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account to have access to the detailed sessions history feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
         }
+        else if (this.state.role==="StationOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a vehicle owner to the detailed sessions history per EV feature"
+                    linkMessage="Log out and create an account as a vehicle owner"
+                    link="/register"
+                    link2Message="See your spots detailed sessions history"
+                    link2="/mySpotsDetailedSessions" 
+                />
+            )
+        }
+
         else {        
             return (
                 <div className="spot-sessions-all-page">
                         <MyNavbar />
                         <div className="spots-sessions-page-container more-blur center-content padding-bottom5">
                             
-                            <div className="specific-title orangeColor">
+                            <div className="specific-title color2">
                                 Detailed Sesions Per Vehicle
                                 {!this.state.noVehicles && this.state.error!==null && ( 
                                     <div className="error-message">
@@ -314,31 +337,36 @@ class VehiclesDetailedSessions extends React.Component {
                                     <div className="error-message margin-top">
                                         You don't own any vehicles
                                     </div>
+                                    <br></br>
                                     <a href="/addVehicle">Add one</a>
                                 </div>
                             }  
 
                             {!this.state.noVehicles &&
-                                <div className="spots-buttons-container center-content">
+                                <div className="spots-buttons-container center-content flex-layout">
                                     {   
                                         this.state.vehList.map((value, index) => {
                                             //console.log(index);
-                                            return (<button className="spot-choose-button" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
+                                            return (<button className="choice-button my-button flex-item-small" key={value[0]} onClick={this.selectEV}>Vehicle {value[0]}: {value[1]}</button>)
                                         })
                                     }
                                 </div>
                             }
                             {!this.state.noVehicles &&
-                                <div className="time-filters-container center-content">
-                                    <label className="start-date-label" htmlFor="startDate">From</label>
-                                    <label className="end-date-label"   htmlFor="endDate">To</label>
-                                    <input className="start-date-input" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
-                                    <input className="start-date-input" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                <div className="time-filters-container center-content flex-layout fix-width center-content">
+                                    <div className="start-date-container flex-item-small">
+                                        <label className="start-date-label row-1" htmlFor="startDate">From</label>
+                                        <input className="start-date-input row-2" name="startDate" type="date" value={this.state.startDate} onChange={this.handleInput}/>
+                                    </div>
+                                    <div className="end-date-container flex-item-small">
+                                        <label className="end-date-label row-1" htmlFor="endDate">To</label>
+                                        <input className="end-date-input row-2" name="endDate" type="date" value={this.state.endDate} onChange={this.handleInput}/>
+                                    </div>
                                 </div>
                             }
 
                             {!this.state.noVehicles && this./*state.*/showingVehId && 
-                                    <div className="spots-container margin-top">
+                                    <div className="spots-container margin-top-small">
                                         <OneVehSessionsDiv
                                             id={this./*state.*/showingVehId}
                                             key={this./*state.*/showingVehId}

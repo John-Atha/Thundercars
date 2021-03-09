@@ -1,5 +1,5 @@
 body {
-    --color2: rgb(233, 21, 21);
+    --color2: rgb(180, 212, 206);
 }
 
 
@@ -19,31 +19,6 @@ body {
     row-gap: 0%;*/
 }
 
-.flex-layout {
-    display: flex;
-    flex-flow: row wrap;
-}
-
 .margins-top-bottom {
     margin-top: 5%;
-}
-
-.flex-item {
-    flex-grow: 1;
-    width: 500px !important;
-}
-
-.flex-item-small {
-    flex-grow: 1;
-    width: 200px !important;
-}
-
-.flex-item-medium {
-    flex-grow: 1;
-    width: 300px !important;
-}
-
-.flex-item-medium-big {
-    flex-grow: 1;
-    width: 400px !important;
 }

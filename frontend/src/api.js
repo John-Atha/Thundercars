@@ -69,6 +69,32 @@ export const countriesGet = () => {
     return axios.get(requestUrl);
 }
 
+export const userAddressPut = (id, obj) => {
+    const requestUrl = `/admin/useraddressesmod/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const userPutWithPass = (id, obj) => {
+    const requestUrl = `usersmodandpass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const userPutNoPass = (id, obj) => {
+    const requestUrl = `usersmodnopass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const stationOwnerPut = (id, obj) => {
+    const requestUrl = `admin/stationownersmod/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+export const stationOwnerPutNoPass = (id, obj) => {
+    const requestUrl = `admin/stationownersmodnopass/${id}`;
+    return axios.put(requestUrl, obj);
+}
+
+
 export const currentProvidersGet = () => {
     const requestUrl = "/admin/currentproviders";
     return axios.get(requestUrl);
@@ -144,6 +170,11 @@ export const stationSpotPost = (obj) => {
     return axios.post(requestUrl, obj);
 }
 
+export const stationSpotGet = (id) => {
+    const requestUrl = `admin/chargingstationspots/${id}`;
+    return axios.get(requestUrl);
+}
+
 
 export const userPost = (obj, postAddr) => {
     const requestUrl = `/admin/${postAddr}`;
@@ -176,11 +207,39 @@ export const UserVehicleDelete = (id) => {
     return axios.delete(requestUrl);
 }
 
+export const StationSpotDelete = (id) => {
+    const requestUrl = `admin/chargingstationspotsmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const userDelete = (id) => {
+    const requestUrl = `admin/usersmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const stationOwnerDelete = (id) => {
+    const requestUrl = `admin/stationownersmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
+export const stationDelete = (id) => {
+    const requestUrl = `admin/chargingstationsmod/${id}`;
+    return axios.delete(requestUrl);
+}
+
 export const getUserProfile = (id) => {
     const requestUrl = `user/${id}/profile`;
     return axios.get(requestUrl);
 }
 
+export const getStationOwnerProfile = (id) => {
+    const requestUrl = `stationowners/${id}/profile`;
+    return axios.get(requestUrl);
+}
+export const getAllStations = () => {
+    const requestUrl = `chargingstations`;
+    return axios.get(requestUrl);
+  }
 export const getUserOBJECT = (id) => {
     const requestUrl = `users/${id}`;
     return axios.get(requestUrl);

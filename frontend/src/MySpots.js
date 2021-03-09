@@ -2,6 +2,7 @@ import React from "react"
 import "./MySpots.css";
 import MyNavbar from './MyNavbar'; 
 import { getStations, getOneSpot } from "./api";
+import UnAuthorized from './UnAuthorized';
 
 class SpotsDiv extends React.Component {
     constructor(props) {
@@ -45,7 +46,7 @@ class SpotsDiv extends React.Component {
     render() {
         return(
             <div className="one-station-container center-content flex-item-medium-big box-colors">
-                <h5 className="orangeColor center-content">Spot {this.state.index}: General Info</h5>
+                <h5 className="color2 center-content">Spot {this.state.spotId}: General Info</h5>
                 <div className="small-spot-page-info-container">
                     <div className="station-info-title darker">Station's title: </div>
                     <div className="station-info darker">{this.state.stationTitle}</div>
@@ -56,7 +57,7 @@ class SpotsDiv extends React.Component {
                     <div className="station-info-title">Current Type: </div>
                     <div className="station-info">{this.state.currentType}</div>
                 </div>
-                <a className="station-link center-content" onClick={this.spotPageRedirect}>More details / update</a>
+                <button className="more-details-button my-button center-content" onClick={this.spotPageRedirect}>More details / update</button>
             </div>
 
         )
@@ -99,17 +100,40 @@ class MySpots extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.role!=="StationOwner") {
-            window.location.href="/";
+        if (!this.state.userId) {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your spots listing feature"
+                    linkMessage="Create an account"
+                    link="/register" 
+                />
+            )
+        }
+        else if (this.state.role==="VehicleOwner") {
+            return (
+                <UnAuthorized 
+                    message="You need to create an account as a station owner to have access to your spots listing feature"
+                    linkMessage="Log out and create an account as a station owner"
+                    link="/register"
+                    link2Message="See your vehicles listing"
+                    link2="/MyVehicles" 
+                />
+            )
         }
         else {
             return (
                 <div className="allpage">
                     <MyNavbar />
-                    <div className="general-page-container more-blur center-content">
+                    <div className="general-page-container more-blur center-content padding-bottom">
                         <div className="specific-title orangeColor">
                             My Spots
                         </div>
+                        
+                        {!this.state.spotsList.length && 
+                            <div className="error-message margin-top-small center-content">No spots found,<br></br><br></br><a href="/addSpot">add one from here</a></div>
+                        }
+
+                        
                         <div className="flex-layout all-spots-container">
                             {   
                                 this.state.spotsList.map((value, index) => {
