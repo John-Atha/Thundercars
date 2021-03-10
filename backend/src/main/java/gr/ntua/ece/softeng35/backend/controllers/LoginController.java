@@ -2,6 +2,8 @@ package gr.ntua.ece.softeng35.backend.controllers;
 
 import java.util.*;
 
+import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -67,20 +69,22 @@ public class LoginController{
   
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/evcharge/api/{apikey}/login")
-    JsonNode userLogin(@RequestBody String encoded, @PathVariable String apikey) {
+    JsonNode userLogin(@PathVariable String apikey , @RequestBody MultiValueMap credMap ) {
       CliController validator = new CliController(repository);
 
       if (!validator.validate(apikey)){
         throw new NotAuthorizedException();
       }
+
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
-      if (encoded.indexOf(":") == encoded.length()-1 || encoded.indexOf(":") == 0){
+
+      if (credMap.getFirst("username").toString() ==null || credMap.getFirst("password").toString() == null){
         throw new BadRequestException();
       }
-      String[] parts = encoded.split(":");
-      String username = parts[0];
-      String password = parts[1];
+
+      String username = credMap.getFirst("username").toString();
+      String password = credMap.getFirst("password").toString();
       if (username.contains("--")) {
         throw new BadRequestException();
       }
