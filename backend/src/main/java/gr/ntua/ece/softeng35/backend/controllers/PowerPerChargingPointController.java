@@ -19,7 +19,7 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/powerperchargingpoint")
+  @GetMapping("/evcharge/api/{apikey}/powerperchargingpoint")
   List<PowerPerChargingPoint> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod")
+  @PostMapping("/evcharge/api/{apikey}/powerperchargingpointmod")
   PowerPerChargingPoint newPowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/powerperchargingpoint/{id}")
+  @GetMapping("/evcharge/api/{apikey}/powerperchargingpoint/{id}")
   PowerPerChargingPoint one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/powerperchargingpointmod/{id}")
   PowerPerChargingPoint replacePowerPerChargingPoint(@RequestBody PowerPerChargingPoint newPowerPerChargingPoint, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -77,7 +77,7 @@ class PowerPerChargingPointController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/powerperchargingpointmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/powerperchargingpointmod/{id}")
   void deletePowerPerChargingPoint(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

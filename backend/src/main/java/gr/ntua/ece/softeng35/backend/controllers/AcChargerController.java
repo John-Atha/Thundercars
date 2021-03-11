@@ -17,6 +17,7 @@ class AcChargerController {
     this.repository2 = repository2;
   }
 
+  /*
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/{apikey}/admin/acchargers")
   List<AcCharger> all(@PathVariable String apikey) {
@@ -28,8 +29,10 @@ class AcChargerController {
     return repository.findAll();
   }
 
+  */
+
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/acchargersmod")
+  @PostMapping("/evcharge/api/{apikey}/acchargersmod")
   AcCharger newAcCharger(@RequestBody AcCharger newAcCharger,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -47,7 +50,7 @@ class AcChargerController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/acchargersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/acchargersmod/{id}")
   AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -65,7 +68,7 @@ class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/acchargersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/acchargersmod/{id}")
   void deleteAcCharger(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

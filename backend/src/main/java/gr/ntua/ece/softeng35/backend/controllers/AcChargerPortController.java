@@ -19,7 +19,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/acchargerports")
+  @GetMapping("/evcharge/api/{apikey}/acchargerports")
   List<AcChargerPort> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/acchargerportsmod")
+  @PostMapping("/evcharge/api/{apikey}/acchargerportsmod")
   AcChargerPort newAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/acchargerports/{id}")
+  @GetMapping("/evcharge/api/{apikey}/acchargerports/{id}")
   AcChargerPort one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/acchargerportsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/acchargerportsmod/{id}")
   AcChargerPort replaceAcChargerPort(@RequestBody AcChargerPort newAcChargerPort, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -71,7 +71,7 @@ class AcChargerPortController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/acchargerportsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/acchargerportsmod/{id}")
   void deleteAcChargerPort(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
