@@ -15,7 +15,8 @@ import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder";
 
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
-import {getVehicles , getAllStations} from './api';
+import google_image from './images/Google_image.jpg';
+import {getVehicles , getAllStations, getUserProfile} from './api';
 import StationMap from './StationMap';
 //import L from "leaflet";
 //import * as ELG from "esri-leaflet-geocoder";
@@ -107,6 +108,8 @@ class DeviceMap extends React.Component {
           currStation: null,
           vehList: [],
           noVehicles: false,
+          usertown: null,
+          usercountry: null,
       }
       //this.currStation = null;
       this.attr2 = "Cost Per kWh";
@@ -186,6 +189,7 @@ class DeviceMap extends React.Component {
   }
 
   componentDidMount () {
+      getUserProfile(this.state.userId).then(response => {this.setState({usertown: response.data["Town"],usercountry: response.data["Country"],})})
       //const control = geosearch();
       //control.addTo(this.leafletMap.current);
       /*const map = this.leafletMap.current;
@@ -250,6 +254,9 @@ class DeviceMap extends React.Component {
   render() {
 
     const L = require('leaflet');
+    const town = this.state.usertown;
+    const city = this.state.usercity;
+    const linkg = "https://www.google.com/maps/dir/"+town+"+"+city;
     const yellowIcon = new L.Icon({
       iconUrl: require('./images/mapIcons/yellow.png'),
       iconRetinaUrl: require('./images/mapIcons/yellow.png'),
@@ -377,7 +384,7 @@ class DeviceMap extends React.Component {
                                         </div>
 
                                         <div className="spots-free">
-                                          Spots available: {spotsAvailable} / {spotsOperational}
+                                          Spots available: {spotsAvailable} / {spotsOperational} {this.state.usertown}
                                         </div>
 
                                         <div className="address-extras-container center-content">
@@ -477,7 +484,7 @@ class DeviceMap extends React.Component {
                                         </div>
 
                                         <div className="address-extras-container center-content">
-                                          Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
+                                          Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br><a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">Google Directions:<img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/></a><br></br>
                                           Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
                                         </div>
                                       </div>
