@@ -939,7 +939,7 @@ class UserController {
   }
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/usersmod")
+  @PostMapping("/evcharge/api/{apikey}/usersmod")
   User newUser(@RequestBody User newUser, @PathVariable String apikey) {
     CliController validator = new CliController(repository);
 
@@ -962,7 +962,7 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/usersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/usersmod/{id}")
   User replaceUser(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository);
 
@@ -1025,7 +1025,7 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/usersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/usersmod/{id}")
   void deleteUser(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository);
 

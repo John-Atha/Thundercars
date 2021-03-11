@@ -19,7 +19,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/userhasvehicles")
+  @GetMapping("/evcharge/api/{apikey}/userhasvehicles")
   List<UserHasVehicle> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod")
+  @PostMapping("/evcharge/api/{apikey}/userhasvehiclesmod")
   UserHasVehicle newUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/userhasvehicles/{id}")
+  @GetMapping("/evcharge/api/{apikey}/userhasvehicles/{id}")
   UserHasVehicle one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/userhasvehiclesmod/{id}")
   UserHasVehicle replaceUserHasVehicle(@RequestBody UserHasVehicle newUserHasVehicle, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -70,7 +70,7 @@ class UserHasVehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/userhasvehiclesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/userhasvehiclesmod/{id}")
   void deleteUserHasVehicle(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
