@@ -32,7 +32,7 @@ public class Admin {
 
   public Admin() {}
 
-  public Admin(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, UserAddress address , String apiKey) {
+  public Admin(String username, String password, String emailAddr, String firstName, String lastName, Date dateOfBirth, String apiKey) {
     this.username = username;
     this.password = password;
     this.emailAddr = emailAddr;

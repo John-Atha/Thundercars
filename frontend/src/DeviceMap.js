@@ -298,7 +298,7 @@ class DeviceMap extends React.Component {
               <h5 className="color2 margin-bottom"> Welcome, pick the station you're looking for from the map</h5>
 
               {this.state.userId && !this.state.noVehicles &&
-                <div classname="vehicle-map-select">
+                <div className="vehicle-map-select">
                   <h5 className="color2"> Choose one of your vehicles to see its compatible stations</h5>
                   <div className="spots-buttons-container center-content flex-layout margin-top">
                       {   

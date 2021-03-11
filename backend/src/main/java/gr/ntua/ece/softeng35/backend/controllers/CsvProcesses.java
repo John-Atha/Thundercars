@@ -52,8 +52,15 @@ class CsvProcesses{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/admin/system/sessionsupd")
-    JsonNode CsvUpload(@RequestParam MultipartFile file) {
+    @PostMapping("/evcharge/api/{apikey}/admin/system/sessionsupd")
+    JsonNode CsvUpload(@RequestParam MultipartFile file,@PathVariable String apikey) {
+
+        CliController validator = new CliController(newUser);
+
+        if (!validator.validate(apikey)){
+            throw new NotAuthorizedException();
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode Summary = mapper.createObjectNode();
         Long sessionsImported = 0L;
