@@ -19,7 +19,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/usagetypes")
+  @GetMapping("/evcharge/api/{apikey}/usagetypes")
   List<UsageType> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/usagetypesmod")
+  @PostMapping("/evcharge/api/{apikey}/usagetypesmod")
   UsageType newUsageType(@RequestBody UsageType newUsageType, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/usagetypes/{id}")
+  @GetMapping("/evcharge/api/{apikey}/usagetypes/{id}")
   UsageType one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/usagetypesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/usagetypesmod/{id}")
   UsageType replaceUsageType(@RequestBody UsageType newUsageType, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -70,7 +70,7 @@ class UsageTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/usagetypesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/usagetypesmod/{id}")
   void deleteUsageType(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

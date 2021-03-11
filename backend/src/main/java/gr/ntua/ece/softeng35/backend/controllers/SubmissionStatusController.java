@@ -19,7 +19,7 @@ class SubmissionStatusController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/submissionstatus")
+  @GetMapping("/evcharge/api/{apikey}/submissionstatus")
   List<SubmissionStatus> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class SubmissionStatusController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/submissionstatusmod")
+  @PostMapping("/evcharge/api/{apikey}/submissionstatusmod")
   SubmissionStatus newSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class SubmissionStatusController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/submissionstatus/{id}")
+  @GetMapping("/evcharge/api/{apikey}/submissionstatus/{id}")
   SubmissionStatus one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class SubmissionStatusController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/submissionstatusmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/submissionstatusmod/{id}")
   SubmissionStatus replaceSubmissionStatus(@RequestBody SubmissionStatus newSubmissionStatus, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -71,7 +71,7 @@ submissionStatus.setIsLive(newSubmissionStatus.getIsLive());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/submissionstatusmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/submissionstatusmod/{id}")
   void deleteSubmissionStatus(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

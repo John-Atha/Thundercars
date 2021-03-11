@@ -19,7 +19,7 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/connectiontypes")
+  @GetMapping("/evcharge/api/{apikey}/connectiontypes")
   List<ConnectionType> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/connectiontypesmod")
+  @PostMapping("/evcharge/api/{apikey}/connectiontypesmod")
   ConnectionType newConnectionType(@RequestBody ConnectionType newConnectionType, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/connectiontypes/{id}")
+  @GetMapping("/evcharge/api/{apikey}/connectiontypes/{id}")
   ConnectionType one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/connectiontypesmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/connectiontypesmod/{id}")
   ConnectionType replaceConnectionType(@RequestBody ConnectionType newConnectionType, @PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -71,7 +71,7 @@ class ConnectionTypeController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/connectiontypesmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/connectiontypesmod/{id}")
   void deleteConnectionType(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

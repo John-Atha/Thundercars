@@ -3,44 +3,44 @@ import config from "./config";
 
 axios.defaults.baseURL = config.apiUrl;
 
-export const loginPost = (obj) => {
+export const loginPost = (params) => {
     const requestUrl = "/login";
     return axios.post(requestUrl,
-                      obj,
+                      params,
                       {
                           headers: {
-                              "Content-Type": "text/plain"
+                              "Content-Type": "application/x-www-form-urlencoded"
                           }
                       });
 };
 
 export const dcChargerPost = (obj) => {
-    const requestUrl = "/admin/dcchargersmod";
+    const requestUrl = "/dcchargersmod";
     return axios.post(requestUrl, obj);
 }
 
 export const acChargerPost = (obj) => {
-    const requestUrl = "/admin/acchargersmod";
+    const requestUrl = "/acchargersmod";
     return axios.post(requestUrl, obj);
 }
 
 export const acChargerPortPost = (obj) => {
-    const requestUrl = "/admin/acchargerportsmod";
+    const requestUrl = "/acchargerportsmod";
     return axios.post(requestUrl, obj);
 }
 
 export const dcChargerPortPost = (obj) => {
-    const requestUrl = "/admin/dcchargerportsmod";
+    const requestUrl = "/dcchargerportsmod";
     return axios.post(requestUrl, obj);
 }
 
 export const PowerPerChargingPost = (obj) => {
-    const requestUrl = "admin/powerperchargingpointmod";
+    const requestUrl = "powerperchargingpointmod";
     return axios.post(requestUrl, obj);
 }
 
 export const UserVehiclePost = (obj) => {
-    const requestUrl = `admin/userhasvehiclesmod`;
+    const requestUrl = `userhasvehiclesmod`;
     return axios.post(requestUrl, obj);
 }
 
@@ -60,17 +60,17 @@ export const getOneAcCharger = (acId) => {
 }
 
 export const vehiclePost = (obj) => {
-    const requestUrl = "admin/vehiclesmod";
+    const requestUrl = "vehiclesmod";
     return axios.post(requestUrl, obj);
 }
 
 export const countriesGet = () => {
-    const requestUrl = "/admin/countries";
+    const requestUrl = "/countries";
     return axios.get(requestUrl);
 }
 
 export const userAddressPut = (id, obj) => {
-    const requestUrl = `/admin/useraddressesmod/${id}`;
+    const requestUrl = `/useraddressesmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
@@ -85,38 +85,38 @@ export const userPutNoPass = (id, obj) => {
 }
 
 export const stationOwnerPut = (id, obj) => {
-    const requestUrl = `admin/stationownersmod/${id}`;
+    const requestUrl = `stationownersmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const stationOwnerPutNoPass = (id, obj) => {
-    const requestUrl = `admin/stationownersmodnopass/${id}`;
+    const requestUrl = `stationownersmodnopass/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 
 export const currentProvidersGet = () => {
-    const requestUrl = "/admin/currentproviders";
+    const requestUrl = "/currentproviders";
     return axios.get(requestUrl);
 }
 
 export const operatorsGet = () => {
-    const requestUrl = "/admin/operators";
+    const requestUrl = "/operators";
     return axios.get(requestUrl);
 }
 
 export const statusTypesGet = () => {
-    const requestUrl = "/admin/statustypes";
+    const requestUrl = "/statustypes";
     return axios.get(requestUrl);
 }
 
 export const usageTypesGet = () => {
-    const requestUrl = "/admin/usagetypes";
+    const requestUrl = "/usagetypes";
     return axios.get(requestUrl);
 }
 
 export const connTypesGet = () => {
-    const requestUrl = '/admin/connectiontypes';
+    const requestUrl = '/connectiontypes';
     return axios.get(requestUrl);
 }
 
@@ -126,7 +126,7 @@ export const currTypesGet = () => {
 }
 
 export const levelsGet = () => {
-    const requestUrl = '/admin/levels';
+    const requestUrl = '/levels';
     return axios.get(requestUrl);
 }
 
@@ -136,48 +136,48 @@ export const stationOwnerOBJECTGet = (id) => {
 }
 
 export const stationAddressPost = (obj) => {
-    const requestUrl = "/admin/addressesmod";
+    const requestUrl = "/addressesmod";
     return axios.post(requestUrl, obj);
 }
 
 export const stationPost = (obj) => {
-    const requestUrl = "/admin/chargingstationsmod";
+    const requestUrl = "/chargingstationsmod";
     return axios.post(requestUrl, obj);
 }
 
 export const stationPut = (obj, id) => {
-    const requestUrl = `/admin/chargingstationsmod/${id}`;
+    const requestUrl = `/chargingstationsmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const spotPost = (obj) => {
-    const requestUrl = "admin/chargingspotsmod";
+    const requestUrl = "chargingspotsmod";
     return axios.post(requestUrl, obj);
 }
 
 export const spotPut = (obj, id) => {
-    const requestUrl = `admin/chargingspotsmod/${id}`;
+    const requestUrl = `chargingspotsmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const userAddressPost = (obj) => {
-    const requestUrl = "/admin/useraddressesmod";
+    const requestUrl = "/useraddressesmod";
     return axios.post(requestUrl, obj);
 };
 
 export const stationSpotPost = (obj) => {
-    const requestUrl = "/admin/chargingstationspotsmod";
+    const requestUrl = "/chargingstationspotsmod";
     return axios.post(requestUrl, obj);
 }
 
 export const stationSpotGet = (id) => {
-    const requestUrl = `admin/chargingstationspots/${id}`;
+    const requestUrl = `chargingstationspots/${id}`;
     return axios.get(requestUrl);
 }
 
 
 export const userPost = (obj, postAddr) => {
-    const requestUrl = `/admin/${postAddr}`;
+    const requestUrl = `/${postAddr}`;
     return axios.post(requestUrl, obj);
 };
 
@@ -198,32 +198,32 @@ export const getVehicleSessions = (id, startDate, endDate) => {
 }
 
 export const getAllUserVehicle = () => {
-    const requestUrl = 'admin/userhasvehicles';
+    const requestUrl = 'userhasvehicles';
     return axios.get(requestUrl);
 }
 
 export const UserVehicleDelete = (id) => {
-    const requestUrl = `admin/userhasvehiclesmod/${id}`;
+    const requestUrl = `userhasvehiclesmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const StationSpotDelete = (id) => {
-    const requestUrl = `admin/chargingstationspotsmod/${id}`;
+    const requestUrl = `chargingstationspotsmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const userDelete = (id) => {
-    const requestUrl = `admin/usersmod/${id}`;
+    const requestUrl = `usersmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const stationOwnerDelete = (id) => {
-    const requestUrl = `admin/stationownersmod/${id}`;
+    const requestUrl = `stationownersmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const stationDelete = (id) => {
-    const requestUrl = `admin/chargingstationsmod/${id}`;
+    const requestUrl = `chargingstationsmod/${id}`;
     return axios.delete(requestUrl);
 }
 
@@ -256,12 +256,12 @@ export const getOneStation = (id) => {
 }
 
 export const getOneStationOBJECT = (id) => {
-    const requestUrl = `admin/chargingstations/${id}`;
+    const requestUrl = `chargingstationsdb/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getOneSpotOBJECT = (id) => {
-    const requestUrl = `admin/chargingspots/${id}`;
+    const requestUrl = `chargingspotsdb/${id}`;
     return axios.get(requestUrl);
 }
 

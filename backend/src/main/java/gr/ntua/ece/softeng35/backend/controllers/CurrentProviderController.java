@@ -19,7 +19,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders")
+  @GetMapping("/evcharge/api/{apikey}/currentproviders")
   List<CurrentProvider> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/currentprovidersmod")
+  @PostMapping("/evcharge/api/{apikey}/currentprovidersmod")
   CurrentProvider newCurrentProvider(@RequestBody CurrentProvider newCurrentProvider,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/currentproviders/{id}")
+  @GetMapping("/evcharge/api/{apikey}/currentproviders/{id}")
   CurrentProvider one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/currentprovidersmod/{id}")
   CurrentProvider replaceCurrentProvider(@RequestBody CurrentProvider newCurrentProvider, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -70,7 +70,7 @@ class CurrentProviderController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/currentprovidersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/currentprovidersmod/{id}")
   void deleteCurrentProvider(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

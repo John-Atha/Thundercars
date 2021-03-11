@@ -209,7 +209,7 @@ class ChargingSpotController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/chargingspotsmod")
+  @PostMapping("/evcharge/api/{apikey}/chargingspotsmod")
   ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -220,7 +220,7 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/chargingspots/{id}")
+  @GetMapping("/evcharge/api/{apikey}/chargingspotsdb/{id}")
   ChargingSpot one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

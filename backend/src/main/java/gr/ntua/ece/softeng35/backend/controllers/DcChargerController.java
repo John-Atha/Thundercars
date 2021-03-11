@@ -19,7 +19,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/dcchargers")
+  @GetMapping("/evcharge/api/{apikey}/dcchargersdb")
   List<DcCharger> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/dcchargersmod")
+  @PostMapping("/evcharge/api/{apikey}/dcchargersmod")
   DcCharger newDcCharger(@RequestBody DcCharger newDcCharger,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/dcchargers/{id}")
+  @GetMapping("/evcharge/api/{apikey}/dcchargersdb/{id}")
   DcCharger one(@PathVariable Integer id, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/dcchargersmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/dcchargersmod/{id}")
   DcCharger replaceDcCharger(@RequestBody DcCharger newDccharger, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -70,7 +70,7 @@ class DcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/dcchargersmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/dcchargersmod/{id}")
   void deleteDcCharger(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 

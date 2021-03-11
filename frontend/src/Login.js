@@ -34,8 +34,11 @@ class Login extends React.Component {
         this.setState( {
             error: null
         });
+        const params = new URLSearchParams();
+        params.append('username', this.state.username);
+        params.append('password', this.state.password);
         let reqObj = this.state.username+":"+this.state.password;
-        loginPost(reqObj)
+        loginPost(params)
         .then(response => {
             console.log("response => userId: " + response.data.Id);
             localStorage.setItem('userId', response.data.Id);
