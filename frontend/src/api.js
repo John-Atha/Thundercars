@@ -3,13 +3,13 @@ import config from "./config";
 
 axios.defaults.baseURL = config.apiUrl;
 
-export const loginPost = (obj) => {
+export const loginPost = (params) => {
     const requestUrl = "/login";
     return axios.post(requestUrl,
-                      obj,
+                      params,
                       {
                           headers: {
-                              "Content-Type": "text/plain"
+                              "Content-Type": "application/x-www-form-urlencoded"
                           }
                       });
 };
