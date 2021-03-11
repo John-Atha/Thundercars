@@ -19,7 +19,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/levels")
+  @GetMapping("/evcharge/api/{apikey}/levels")
   List<Level> all(@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -30,7 +30,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/admin/levelsmod")
+  @PostMapping("/evcharge/api/{apikey}/levelsmod")
   Level newLevel(@RequestBody Level newLevel, @PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -41,7 +41,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/levels/{id}")
+  @GetMapping("/evcharge/api/{apikey}/levels/{id}")
   Level one(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -53,7 +53,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/levelsmod/{id}")
+  @PutMapping("/evcharge/api/{apikey}/levelsmod/{id}")
   Level replaceLevel(@RequestBody Level newLevel, @PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
@@ -72,7 +72,7 @@ class LevelController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/levelsmod/{id}")
+  @DeleteMapping("/evcharge/api/{apikey}/levelsmod/{id}")
   void deleteLevel(@PathVariable Integer id,@PathVariable String apikey) {
     CliController validator = new CliController(repository2);
 
