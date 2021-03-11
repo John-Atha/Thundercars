@@ -11,6 +11,8 @@ sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
+	//For Testing
+	jcenter()
 }
 
 dependencies {
@@ -28,6 +30,10 @@ dependencies {
 	implementation 'org.json:json:20201115' 
 	implementation 'com.opencsv:opencsv:5.1'
 	implementation 'commons-io:commons-io:2.8.0'
+
+	//For Testing
+	testCompile 'org.mockito:mockito-core:2.21.0'
+	implementation 'org.hamcrest:hamcrest:2.2'
 }
 
 test {
