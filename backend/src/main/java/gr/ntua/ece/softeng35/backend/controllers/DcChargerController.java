@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.DcChargerRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class DcChargerController {
+public class DcChargerController {
   private final DcChargerRepository repository;
   private final UserRepository repository2;
 
@@ -49,7 +49,7 @@ class DcChargerController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new DcChargerNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -66,7 +66,7 @@ class DcChargerController {
         dcCharger.setIsDefaultChargingCurve(newDccharger.getIsDefaultChargingCurve());
         return repository.save(dcCharger);
       })
-      .orElseThrow(() -> new DcChargerNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
