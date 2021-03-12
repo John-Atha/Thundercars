@@ -160,7 +160,7 @@ class CurrentTypeTest {
 
 		CurrentType testCurrentType = new CurrentType(1,"newtitle","newdescription");
 
-        newJson.put("id",15);
+        newJson.put("id",1);
         newJson.put("title","newtitle");
         newJson.put("description","newdescription");
 

@@ -164,7 +164,7 @@ class ConnectionTypeTest {
 
 		ConnectionType testConnectionType = new ConnectionType(1,"newtitle","newformalname", "newcategory");
 
-        newJson.put("id",15);
+        newJson.put("id",1);
         newJson.put("title","newtitle");
         newJson.put("formalName","newformalname");
         newJson.put("category","newcategory");
