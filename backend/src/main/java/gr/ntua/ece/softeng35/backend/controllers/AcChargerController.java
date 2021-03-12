@@ -8,7 +8,7 @@ import gr.ntua.ece.softeng35.backend.models.AcCharger;
 import gr.ntua.ece.softeng35.backend.models.AcChargerRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 @RestController
-class AcChargerController {
+public class AcChargerController {
   private final AcChargerRepository repository;
   private final UserRepository repository2;
 
