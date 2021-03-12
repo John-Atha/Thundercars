@@ -5,6 +5,7 @@ import gr.ntua.ece.softeng35.backend.controllers.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -79,12 +80,112 @@ class AcChargerTest {
         this.mockmvc.perform(post("/evcharge/api/{apikey}/acchargersmod","123456789")
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.usablePhases", is(testAcCharger.getUsablePhases())))
+            .andExpect(jsonPath("$.maxPower", is(testAcCharger.getMaxPower())));
 
         this.mockmvc.perform(post("/evcharge/api/{apikey}/acchargersmod","123456888")
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isUnauthorized());
 	}
+
+    
+    @Test
+	void testPutAcCharger() throws Exception {
+	
+        MockitoAnnotations.initMocks(this);
+        this.mockmvc = webAppContextSetup(this.wac).build();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode newJson = mapper.createObjectNode();
+
+        AcCharger firstAcCharger = new AcCharger(1,4,7.2);
+
+		AcCharger testAcCharger = new AcCharger(1,3,3.45);
+
+        newJson.put("id",1);
+        newJson.put("usablePhases",3);
+        newJson.put("maxPower",3.45);
+
+        String json = newJson.toString();
+
+        BDDMockito.when(repository.findById(firstAcCharger.getId())).thenReturn(Optional.of(firstAcCharger));
+        BDDMockito.when(repository.save(testAcCharger)).thenReturn(testAcCharger);
+
+        List<Integer> apiKeys = new ArrayList<>();
+        apiKeys.add(1);
+
+        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
+
+        this.mockmvc.perform(put("/evcharge/api/{apikey}/acchargersmod/{id}","123456789",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.usablePhases", is(testAcCharger.getUsablePhases())))
+            .andExpect(jsonPath("$.maxPower", is(testAcCharger.getMaxPower())));
+
+        this.mockmvc.perform(put("/evcharge/api/{apikey}/acchargersmod/{id}","123456888",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
+            .andExpect(status().isUnauthorized());
+	}
+
+    @Test 
+    void testDeleteAcCharger() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockmvc = webAppContextSetup(this.wac).build();
+
+        List<Integer> apiKeys = new ArrayList<>();
+        apiKeys.add(1);
+
+        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
+
+        this.mockmvc.perform(delete("/evcharge/api/{apikey}/acchargersmod/{id}","123456789",1)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        this.mockmvc.perform(delete("/evcharge/api/{apikey}/acchargersmod/{id}","123456888",1)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+    }
+    /*
+    @Test
+    void shouldThrowAcChargerNotFoundException() throws Exception {
+        try{
+            MockitoAnnotations.initMocks(this);
+            this.mockmvc = webAppContextSetup(this.wac).build();
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode newJson = mapper.createObjectNode();
+
+            AcCharger firstAcCharger = new AcCharger(1,4,7.2);
+
+            AcCharger testAcCharger = new AcCharger(1,3,3.45);
+
+            newJson.put("id",1);
+            newJson.put("usablePhases",3);
+            newJson.put("maxPower",3.45);
+
+            String json = newJson.toString();
+
+            BDDMockito.when(repository.findById(firstAcCharger.getId())).thenReturn(Optional.of(firstAcCharger));
+            BDDMockito.when(repository.save(testAcCharger)).thenReturn(testAcCharger);
+
+            List<Integer> apiKeys = new ArrayList<>();
+            apiKeys.add(1);
+
+            BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
+
+            this.mockmvc.perform(put("/evcharge/api/{apikey}/acchargersmod/{id}","123456789",2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+        }
+        catch(RuntimeException re) {
+            String message = "Could not find Ac Charger with id 2";
+            assertEquals(message,re.getMessage());
+            throw re;
+        }
+    }*/
 
 }
