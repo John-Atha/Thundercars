@@ -58,7 +58,7 @@ class ConnectionTypeTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        ConnectionType testConnectionType = new ConnectionType(15,"mytitle","myformalname", "mycategory");
+        ConnectionType testConnectionType = new ConnectionType(1,"mytitle","myformalname", "mycategory");
 
         List<ConnectionType> myList = Arrays.asList(testConnectionType);
 
@@ -87,7 +87,7 @@ class ConnectionTypeTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        ConnectionType testConnectionType = new ConnectionType(15,"mytitle","myformalname", "mycategory");
+        ConnectionType testConnectionType = new ConnectionType(1,"mytitle","myformalname", "mycategory");
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testConnectionType));
 
@@ -112,8 +112,6 @@ class ConnectionTypeTest {
         .andExpect(status().isPaymentRequired());
     }
 
-
-
     @Test
 	void testPostConnectionType() throws Exception {
 	
@@ -123,9 +121,9 @@ class ConnectionTypeTest {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode newJson = mapper.createObjectNode();
 
-		ConnectionType testConnectionType = new ConnectionType(15,"mytitle","myformalname", "mycategory");
+		ConnectionType testConnectionType = new ConnectionType(1,"mytitle","myformalname", "mycategory");
 
-        newJson.put("id",15);
+        newJson.put("id",1);
         newJson.put("title","mytitle");
         newJson.put("formalName","myformalname");
         newJson.put("category","mycategory");
@@ -162,9 +160,9 @@ class ConnectionTypeTest {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode newJson = mapper.createObjectNode();
 
-        ConnectionType firstConnectionType = new ConnectionType(15,"mytitle","myformalname", "mycategory");
+        ConnectionType firstConnectionType = new ConnectionType(1,"mytitle","myformalname", "mycategory");
 
-		ConnectionType testConnectionType = new ConnectionType(15,"newtitle","newformalname", "newcategory");
+		ConnectionType testConnectionType = new ConnectionType(1,"newtitle","newformalname", "newcategory");
 
         newJson.put("id",15);
         newJson.put("title","newtitle");
@@ -181,7 +179,7 @@ class ConnectionTypeTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",15)
+        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",1)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isOk())
@@ -189,7 +187,7 @@ class ConnectionTypeTest {
             .andExpect(jsonPath("$.formalName", is(testConnectionType.getFormalName())))
             .andExpect(jsonPath("$.category", is(testConnectionType.getCategory())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",15)
+        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",1)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isUnauthorized());
@@ -210,11 +208,11 @@ class ConnectionTypeTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",15)
+        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",1)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",15)
+        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",1)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
     }
