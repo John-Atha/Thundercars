@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.CountryRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class CountryController {
+public class CountryController {
     private final CountryRepository repository;
     private final UserRepository repository2;
 

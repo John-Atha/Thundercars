@@ -50,7 +50,8 @@ public class Country {
 
     Country() {}
 
-    public Country(String Title, String ISOCode, String ContinentCode) {
+    public Country(Integer id, String Title, String ISOCode, String ContinentCode) {
+        this.id = id;
         this.Title = Title;
         this.ISOCode = ISOCode;
         this.ContinentCode = ContinentCode;
