@@ -374,7 +374,7 @@ class StationownerController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new StationOwnerNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
   
 
@@ -398,7 +398,7 @@ class StationownerController {
         stationOwner.setApiKey(newStationOwner.getApiKey());
         return repository.save(stationOwner);
       })
-      .orElseThrow(() -> new StationOwnerNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -420,7 +420,7 @@ class StationownerController {
         stationOwner.setApiKey(newStationOwner.getApiKey());
         return repository.save(stationOwner);
       })
-      .orElseThrow(() -> new StationOwnerNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

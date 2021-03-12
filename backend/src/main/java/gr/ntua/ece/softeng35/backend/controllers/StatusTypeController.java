@@ -49,7 +49,7 @@ class StatusTypeController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new StatusTypeNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +67,7 @@ class StatusTypeController {
         statusType.setIsUserSelectable(newStatusType.getIsUserSelectable());
         return repository.save(statusType);
       })
-      .orElseThrow(() -> new StatusTypeNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

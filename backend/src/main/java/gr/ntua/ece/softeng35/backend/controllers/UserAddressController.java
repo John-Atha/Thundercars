@@ -49,7 +49,7 @@ class UserAddressController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new UserAddressNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -71,7 +71,7 @@ class UserAddressController {
         userAddress.setCountry(newUserAddress.getCountry());
         return repository.save(userAddress);
       })
-      .orElseThrow(() -> new UserAddressNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

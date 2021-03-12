@@ -49,7 +49,7 @@ class OperatorController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new OperatorNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -74,7 +74,7 @@ class OperatorController {
         operator.setIsRestrictedEdit(newOperator.getIsRestrictedEdit());
         return repository.save(operator);
       })
-      .orElseThrow(() -> new OperatorNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

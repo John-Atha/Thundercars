@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.ConnectionTypeRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class ConnectionTypeController {
+public class ConnectionTypeController {
   private final ConnectionTypeRepository repository;
   private final UserRepository repository2;
 
@@ -49,7 +49,7 @@ class ConnectionTypeController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new ConnectionTypeNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +67,7 @@ class ConnectionTypeController {
         connectionType.setCategory(newConnectionType.getCategory());
         return repository.save(connectionType);
       })
-      .orElseThrow(() -> new ConnectionTypeNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

@@ -3472,7 +3472,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new ChargingProcessNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -3500,7 +3500,7 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
         chargingProcess.setChargingProgram(newChargingProcess.getChargingProgram());
         return repository.save(chargingProcess);
       })
-      .orElseThrow(() -> new ChargingProcessNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

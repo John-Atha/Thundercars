@@ -49,7 +49,7 @@ class DcChargerPortController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new DcChargerPortNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -63,11 +63,11 @@ class DcChargerPortController {
     return repository.findById(id)
       .map(dcChargerPort -> {
         dcChargerPort.setPortname(newDcChargerPort.getPortname());
-dcChargerPort.setDcCharger(newDcChargerPort.getDcCharger());
+        dcChargerPort.setDcCharger(newDcChargerPort.getDcCharger());
 
         return repository.save(dcChargerPort);
       })
-      .orElseThrow(() -> new DcChargerPortNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

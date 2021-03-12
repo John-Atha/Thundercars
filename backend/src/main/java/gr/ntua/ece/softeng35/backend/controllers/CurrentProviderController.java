@@ -49,7 +49,7 @@ class CurrentProviderController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new CurrentProviderNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -66,7 +66,7 @@ class CurrentProviderController {
         currentProvider.setCountry(newCurrentProvider.getCountry());
         return repository.save(currentProvider);
       })
-      .orElseThrow(() -> new CurrentProviderNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

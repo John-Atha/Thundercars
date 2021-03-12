@@ -64,7 +64,7 @@ public class AcChargerController {
 
         return repository.save(acCharger);
       })
-      .orElseThrow(() -> new AcChargerNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

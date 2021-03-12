@@ -49,7 +49,7 @@ class AcChargerPortController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new AcChargerPortNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +67,7 @@ class AcChargerPortController {
 
         return repository.save(acChargerPort);
       })
-      .orElseThrow(() -> new AcChargerPortNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

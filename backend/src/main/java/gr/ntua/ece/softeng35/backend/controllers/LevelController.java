@@ -49,7 +49,7 @@ class LevelController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new LevelNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -68,7 +68,7 @@ class LevelController {
 
         return repository.save(level);
       })
-      .orElseThrow(() -> new LevelNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

@@ -49,7 +49,7 @@ class CurrentTypeController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new CurrentTypeNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +67,7 @@ currentType.setDescription(newCurrentType.getDescription());
 
         return repository.save(currentType);
       })
-      .orElseThrow(() -> new CurrentTypeNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

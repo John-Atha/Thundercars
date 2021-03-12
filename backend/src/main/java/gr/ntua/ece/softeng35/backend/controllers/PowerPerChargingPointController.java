@@ -49,7 +49,7 @@ class PowerPerChargingPointController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new PowerPerChargingPointNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -73,7 +73,7 @@ class PowerPerChargingPointController {
         powerPerChargingPoint.setPoint430(newPowerPerChargingPoint.getPoint430());
         return repository.save(powerPerChargingPoint);
       })
-      .orElseThrow(() -> new PowerPerChargingPointNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

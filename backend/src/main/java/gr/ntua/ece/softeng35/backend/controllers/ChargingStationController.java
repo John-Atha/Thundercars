@@ -63,7 +63,7 @@ class ChargingStationController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new ChargingStationNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins= "http://localhost:3000")
@@ -434,7 +434,7 @@ class ChargingStationController {
         chargingStation.setCostPerKwh(newChargingStation.getCostPerKwh());
         return repository.save(chargingStation);
       })
-      .orElseThrow(() -> new ChargingStationNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

@@ -49,7 +49,7 @@ class SubmissionStatusController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new SubmissionStatusNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -67,7 +67,7 @@ submissionStatus.setIsLive(newSubmissionStatus.getIsLive());
 
         return repository.save(submissionStatus);
       })
-      .orElseThrow(() -> new SubmissionStatusNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

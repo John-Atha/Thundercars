@@ -49,7 +49,7 @@ class UserHasVehicleController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new UserHasVehicleNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -66,7 +66,7 @@ class UserHasVehicleController {
         userHasVehicle.setVehicle(newUserHasVehicle.getVehicle());
         return repository.save(userHasVehicle);
       })
-      .orElseThrow(() -> new UserHasVehicleNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

@@ -53,7 +53,7 @@ class CountryController {
           throw new NotAuthorizedException();
         }
         return repository.findById(id)
-            .orElseThrow(() -> new CountryNotFoundException(id));
+            .orElseThrow(() -> new NoDataFoundException());
     }
     
     @CrossOrigin(origins = "http://localhost:3000")
@@ -71,7 +71,7 @@ class CountryController {
                 country.setContinentCode(newCountry.getContinentCode());
                 return repository.save(country);
             })
-            .orElseThrow(() -> new CountryNotFoundException(id));
+            .orElseThrow(() -> new BadRequestException());
     }   
 
     @CrossOrigin(origins = "http://localhost:3000")

@@ -49,7 +49,7 @@ class AddressController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new AddressNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -79,7 +79,7 @@ class AddressController {
         address.setCountry(newAddress.getCountry());
         return repository.save(address);
       })
-      .orElseThrow(() -> new AddressNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")

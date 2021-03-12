@@ -958,7 +958,7 @@ class UserController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new UserNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -974,7 +974,7 @@ class UserController {
         user.setUsername(newUser.getUsername());
         return repository.save(user);
       })
-      .orElseThrow(() -> new UserNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -997,7 +997,7 @@ class UserController {
         user.setApiKey(newUser.getapiKey());
         return repository.save(user);
       })
-      .orElseThrow(() -> new UserNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -1019,7 +1019,7 @@ class UserController {
         user.setApiKey(newUser.getapiKey());
         return repository.save(user);
       })
-      .orElseThrow(() -> new UserNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
 

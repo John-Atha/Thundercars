@@ -49,7 +49,7 @@ class UsageTypeController {
       throw new NotAuthorizedException();
     }
     return repository.findById(id)
-      .orElseThrow(() -> new UsageTypeNotFoundException(id));
+      .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
@@ -66,7 +66,7 @@ class UsageTypeController {
         usageType.setIsMembershipRequired(newUsageType.getIsMembershipRequired());
         return repository.save(usageType);
       })
-      .orElseThrow(() -> new UsageTypeNotFoundException(id));
+      .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
