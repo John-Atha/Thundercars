@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.CurrentTypeRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class CurrentTypeController {
+public class CurrentTypeController {
   private final CurrentTypeRepository repository;
   private final UserRepository repository2;
 
