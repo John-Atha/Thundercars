@@ -3,8 +3,16 @@ import config from "./config";
 
 axios.defaults.baseURL = config.apiUrl;
 
+const out = config.notLoggedKey;
+const logged = localStorage.getItem('token');
+
+export const isLogged = () => {
+    const requestUrl = `/${logged}/admin/healthcheck`;
+    return axios.get(requestUrl);
+}
+
 export const loginPost = (params) => {
-    const requestUrl = "/login";
+    const requestUrl = `/${out}/login`;
     return axios.post(requestUrl,
                       params,
                       {
@@ -15,179 +23,178 @@ export const loginPost = (params) => {
 };
 
 export const dcChargerPost = (obj) => {
-    const requestUrl = "/dcchargersmod";
+    const requestUrl = `/${logged}/dcchargersmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const acChargerPost = (obj) => {
-    const requestUrl = "/acchargersmod";
+    const requestUrl = `/${logged}/acchargersmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const acChargerPortPost = (obj) => {
-    const requestUrl = "/acchargerportsmod";
+    const requestUrl = `/${logged}/acchargerportsmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const dcChargerPortPost = (obj) => {
-    const requestUrl = "/dcchargerportsmod";
+    const requestUrl = `/${logged}/dcchargerportsmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const PowerPerChargingPost = (obj) => {
-    const requestUrl = "powerperchargingpointmod";
+    const requestUrl = `/${logged}/powerperchargingpointmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const UserVehiclePost = (obj) => {
-    const requestUrl = `userhasvehiclesmod`;
+    const requestUrl = `/${logged}/userhasvehiclesmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const getVehicles = (id) => {
-    const requestUrl = `/user/${id}/myvehicles`;
+    const requestUrl = `/${logged}/user/${id}/myvehicles`;
     return axios.get(requestUrl);
 };
 
 export const getOneVehicle = (userId,vehId) => {
-    const requestUrl = `user/${userId}/myvehicles/${vehId}`;
+    const requestUrl = `/${logged}/user/${userId}/myvehicles/${vehId}`;
     return axios.get(requestUrl);
 }
 
 export const getOneAcCharger = (acId) => {
-    const requestUrl = `acchargers/${acId}`;
+    const requestUrl = `/${out}/acchargers/${acId}`;
     return axios.get(requestUrl);
 }
 
 export const vehiclePost = (obj) => {
-    const requestUrl = "vehiclesmod";
+    const requestUrl = `/${logged}/vehiclesmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const countriesGet = () => {
-    const requestUrl = "/countries";
+    const requestUrl = `/${out}/countries`;
     return axios.get(requestUrl);
 }
 
 export const userAddressPut = (id, obj) => {
-    const requestUrl = `/useraddressesmod/${id}`;
+    const requestUrl = `/${logged}/useraddressesmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const userPutWithPass = (id, obj) => {
-    const requestUrl = `usersmodandpass/${id}`;
+    const requestUrl = `/${logged}/usersmodandpass/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const userPutNoPass = (id, obj) => {
-    const requestUrl = `usersmodnopass/${id}`;
+    const requestUrl = `/${logged}/usersmodnopass/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const stationOwnerPut = (id, obj) => {
-    const requestUrl = `stationownersmod/${id}`;
+    const requestUrl = `/${logged}/stationownersmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const stationOwnerPutNoPass = (id, obj) => {
-    const requestUrl = `stationownersmodnopass/${id}`;
+    const requestUrl = `/${logged}/stationownersmodnopass/${id}`;
     return axios.put(requestUrl, obj);
 }
 
-
 export const currentProvidersGet = () => {
-    const requestUrl = "/currentproviders";
+    const requestUrl = `/${out}/currentproviders`;
     return axios.get(requestUrl);
 }
 
 export const operatorsGet = () => {
-    const requestUrl = "/operators";
+    const requestUrl = `/${out}/operators`;
     return axios.get(requestUrl);
 }
 
 export const statusTypesGet = () => {
-    const requestUrl = "/statustypes";
+    const requestUrl = `/${out}/statustypes`;
     return axios.get(requestUrl);
 }
 
 export const usageTypesGet = () => {
-    const requestUrl = "/usagetypes";
+    const requestUrl = `/${out}/usagetypes`;
     return axios.get(requestUrl);
 }
 
 export const connTypesGet = () => {
-    const requestUrl = '/connectiontypes';
+    const requestUrl = `/${out}/connectiontypes`;
     return axios.get(requestUrl);
 }
 
 export const currTypesGet = () => {
-    const requestUrl = '/currenttypes';
+    const requestUrl = `/${out}/currenttypes`;
     return axios.get(requestUrl);
 }
 
 export const levelsGet = () => {
-    const requestUrl = '/levels';
+    const requestUrl = `/${out}/levels`;
     return axios.get(requestUrl);
 }
 
 export const stationOwnerOBJECTGet = (id) => {
-    const requestUrl = `/stationowners/${id}`;
+    const requestUrl = `/${logged}/stationowners/${id}`;
     return axios.get(requestUrl);
 }
 
 export const stationAddressPost = (obj) => {
-    const requestUrl = "/addressesmod";
+    const requestUrl = `/${logged}/addressesmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const stationPost = (obj) => {
-    const requestUrl = "/chargingstationsmod";
+    const requestUrl = `/${logged}/chargingstationsmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const stationPut = (obj, id) => {
-    const requestUrl = `/chargingstationsmod/${id}`;
+    const requestUrl = `/${logged}/chargingstationsmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const spotPost = (obj) => {
-    const requestUrl = "chargingspotsmod";
+    const requestUrl = `/${logged}/chargingspotsmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const spotPut = (obj, id) => {
-    const requestUrl = `chargingspotsmod/${id}`;
+    const requestUrl = `/${logged}/chargingspotsmod/${id}`;
     return axios.put(requestUrl, obj);
 }
 
 export const userAddressPost = (obj) => {
-    const requestUrl = "/useraddressesmod";
+    const requestUrl = `/${out}/useraddressesmod`;
     return axios.post(requestUrl, obj);
 };
 
 export const stationSpotPost = (obj) => {
-    const requestUrl = "/chargingstationspotsmod";
+    const requestUrl = `/${logged}/chargingstationspotsmod`;
     return axios.post(requestUrl, obj);
 }
 
 export const stationSpotGet = (id) => {
-    const requestUrl = `chargingstationspots/${id}`;
+    const requestUrl = `/${logged}/chargingstationspots/${id}`;
     return axios.get(requestUrl);
 }
 
 
 export const userPost = (obj, postAddr) => {
-    const requestUrl = `/${postAddr}`;
+    const requestUrl = `/${out}/${postAddr}`;
     return axios.post(requestUrl, obj);
 };
 
 export const getUserStats = (id) => {
-    const requestUrl = `/user/${id}/statistics`;
+    const requestUrl = `/${logged}/user/${id}/statistics`;
     return axios.get(requestUrl);
 }
 
 export const getVehicleSessions = (id, startDate, endDate) => {
-    let requestUrl = `SessionsPerEV/${id}`;
+    let requestUrl = `/${logged}/SessionsPerEV/${id}`;
     if (startDate.length!==0) {
         requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
         if (endDate.length!==0) {
@@ -198,75 +205,75 @@ export const getVehicleSessions = (id, startDate, endDate) => {
 }
 
 export const getAllUserVehicle = () => {
-    const requestUrl = 'userhasvehicles';
+    const requestUrl = `/${logged}/userhasvehicles`;
     return axios.get(requestUrl);
 }
 
 export const UserVehicleDelete = (id) => {
-    const requestUrl = `userhasvehiclesmod/${id}`;
+    const requestUrl = `/${logged}/userhasvehiclesmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const StationSpotDelete = (id) => {
-    const requestUrl = `chargingstationspotsmod/${id}`;
+    const requestUrl = `/${logged}/chargingstationspotsmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const userDelete = (id) => {
-    const requestUrl = `usersmod/${id}`;
+    const requestUrl = `/${logged}/usersmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const stationOwnerDelete = (id) => {
-    const requestUrl = `stationownersmod/${id}`;
+    const requestUrl = `/${logged}/stationownersmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const stationDelete = (id) => {
-    const requestUrl = `chargingstationsmod/${id}`;
+    const requestUrl = `/${logged}/chargingstationsmod/${id}`;
     return axios.delete(requestUrl);
 }
 
 export const getUserProfile = (id) => {
-    const requestUrl = `user/${id}/profile`;
+    const requestUrl = `/${logged}/user/${id}/profile`;
     return axios.get(requestUrl);
 }
 
 export const getStationOwnerProfile = (id) => {
-    const requestUrl = `stationowners/${id}/profile`;
+    const requestUrl = `/${logged}/stationowners/${id}/profile`;
     return axios.get(requestUrl);
 }
 export const getAllStations = () => {
-    const requestUrl = `chargingstations`;
+    const requestUrl = `/${out}/chargingstations`;
     return axios.get(requestUrl);
   }
 export const getUserOBJECT = (id) => {
-    const requestUrl = `users/${id}`;
+    const requestUrl = `/${logged}/users/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getStations = (id) => {
-    const requestUrl = `stationowners/${id}/mystations`;
+    const requestUrl = `/${logged}/stationowners/${id}/mystations`;
     return axios.get(requestUrl);
 }
 
 export const getOneStation = (id) => {
-    const requestUrl = `chargingstations/${id}`;
+    const requestUrl = `/${out}/chargingstations/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getOneStationOBJECT = (id) => {
-    const requestUrl = `chargingstationsdb/${id}`;
+    const requestUrl = `/${out}/chargingstationsdb/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getOneSpotOBJECT = (id) => {
-    const requestUrl = `chargingspotsdb/${id}`;
+    const requestUrl = `/${out}/chargingspotsdb/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getStationStats = (id, startDate, endDate) => {
-    let requestUrl = `SessionsPerStation/${id}`;
+    let requestUrl = `/${logged}/SessionsPerStation/${id}`;
     if (startDate.length!==0) {
         requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
         if (endDate.length!==0) {
@@ -277,17 +284,17 @@ export const getStationStats = (id, startDate, endDate) => {
 }
 
 export const getOneSpot = (id) => {
-    const requestUrl = `chargingspots/${id}`;
+    const requestUrl = `/${out}/chargingspots/${id}`;
     return axios.get(requestUrl);
 }
 
 export const getStationOwnerStatistics = (id) => {
-    const requestUrl = `stationowners/${id}/mystatistics`;
+    const requestUrl = `/${logged}/stationowners/${id}/mystatistics`;
     return axios.get(requestUrl);
 }
 
 export const getSpotSessions = (id, startDate, endDate) => {
-    let requestUrl = `SessionsPerPoint/${id}`;
+    let requestUrl = `/${logged}/SessionsPerPoint/${id}`;
     if (startDate.length!==0) {
         requestUrl = requestUrl.concat('/').concat(startDate.replace('-','').replace('-',''));
         if (endDate.length!==0) {
