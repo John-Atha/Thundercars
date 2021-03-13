@@ -1718,10 +1718,10 @@ LocalDateTime now = LocalDateTime.now();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = { "evcharge/api/{apikey}/SessionsPerEV",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"})
+  @GetMapping(value = { "evcharge/api/SessionsPerEV",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"})
   JsonNode vehicleProcess(@PathVariable Optional<Integer> userHasVehicleId,
                           @PathVariable Optional<String> startDate,
                           @PathVariable Optional<String> endDate,
@@ -2246,10 +2246,10 @@ LocalDateTime now = LocalDateTime.now();
   }
  
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = { "evcharge/api/{apikey}/SessionsPerEV",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"},
+  @GetMapping(value = { "evcharge/api/SessionsPerEV",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"},
                         params="format=csv")
   String csvvehicleProcess(@PathVariable Optional<Integer> userHasVehicleId,
                           @PathVariable Optional<String> startDate,
