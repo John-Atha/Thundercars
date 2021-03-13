@@ -1,97 +1,15 @@
 import React from 'react';
 import Rating from 'react-rating';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-//import { geosearch } from 'esri-leaflet-geocoder';
-//import { BasemapLayer, FeatureLayer } from 'react-esri-leaflet/v2';
-import EsriLeafletGeoSearch from 'react-esri-leaflet/plugins/EsriLeafletGeoSearch';
 import "leaflet/dist/leaflet.css";
-import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css";
-import 'esri-leaflet';
-//import Search from "react-leaflet-search";
-//import { LatLng } from "leaflet";
-
 import "leaflet/dist/leaflet";
-import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder";
 
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import google_image from './images/Google_image.jpg';
 import {getVehicles , getAllStations, getUserProfile, getStationOwnerProfile} from './api';
 import StationMap from './StationMap';
-//import L from "leaflet";
-//import * as ELG from "esri-leaflet-geocoder";
 
-/*
-    class SpecStation extends React.Component {
-        
-      constructor(props) {
-          super(props);
-          this.state = {
-              key: this.props.key,
-              stationId: this.props.stationId,
-              title: this.props.title,
-              longtitude: this.props.longtitude,
-              latitude: this.props.latitude,
-              rating: this.props.rating,
-              costperkw: this.props.costperkw,
-              addressLine: this.props.addressline ? this.props.addressline : "-",
-              telephone1 : this.props.tel1 ? this.props.tel1 : "-",   
-          }
-          this.attr2 = "Cost Per kWh";
-          //this.showing= false;
-          this.showStation=this.showStation.bind(this);
-      }
-
-      showStation = () => {
-        console.log('Open station pop up')
-        window.location.href=`/stations/${this.state.stationId}`
-        //this.showing=true;
-        //console.log("showing: " + this.showing);
-      }
-
-      /*
-              {this.showing===true &&
-              <StationMap id={this.state.stationId} />
-            }
-      */
-    /*
-      render() {
-        
-          return ( 
-            <div>
-            <StationMap id="2" />
-            <Marker position={[ this.state.latitude+0.00001, this.state.longtitude+0.0001]} >
-              <Popup className="request-popup">
-                <div className="pop-up-content center-content color2"> 
-                  <div className="pop-up-head center-content">
-                    <a onClick={this.showStation}>
-                      {this.props.title}
-                    </a>
-                  </div>
-                  
-                  <div className="cost-per-kWh-container center-content">
-                    Cost Per kWh: {this.props.costperkw}€
-                  </div>
-                  
-                  <div className="rating-text center-content">
-                    Rating:<br></br>
-                    <Rating initialRating={this.props.rating} readonly={true} fullSymbol={<img className="logorating" src={logo} alt="Thundercars-logo"/>}></Rating>
-                  </div>
-
-                  <div className="address-extras-container center-content">
-                    Address Line: {this.state.addressLine} <br></br>
-                    Tel: {this.state.telephone1}
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-            </div>
-          );
-
-      }
-
-    }
-*/
 
 
 class DeviceMap extends React.Component {
@@ -120,7 +38,6 @@ class DeviceMap extends React.Component {
       this.selectEV = this.selectEV.bind(this);  
       this.showStation=this.showStation.bind(this);
       this.handleClick = this.handleClick.bind(this);
-      //this.leafletMap = React.createRef();
   }    
 
   selectEV = (event) => {
@@ -190,18 +107,7 @@ class DeviceMap extends React.Component {
 
   componentDidMount () {
     if (this.state.userId && this.state.role==="VehicleOwner")getUserProfile(this.state.userId).then(response => {this.setState({usertown: response.data["Town"],usercountry: response.data["Country"],})})
-      //const control = geosearch();
-      //control.addTo(this.leafletMap.current);
-      /*const map = this.leafletMap.current;
-      const searchControl = new ELG.Geosearch().addTo(map);
-      const results = new L.LayerGroup().addTo(map);
-  
-      searchControl.on("results", function(data) {
-        results.clearLayers();
-        for (let i = data.results.length - 1; i >= 0; i--) {
-          results.addLayer(L.marker(data.results[i].latlng));
-        }
-      });*/
+
       getAllStations()
       .then(response => {
           console.log(response);
@@ -316,26 +222,11 @@ class DeviceMap extends React.Component {
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
                 }
-                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}
-                       /* ref={m => {
-                          this.leafletMap = m;
-                        }}*/>
+                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}>
                   <TileLayer attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
                       {
                           this.state.stations.map((value, key)=> {
-                            /*<SpecStation
-                                  key= {key}
-                                  stationId = {value.Id}
-                                  longtitude = {value.Longtitude} 
-                                  latitude = {value.Latitude}
-                                  title = {value.Title}
-                                  rating = {value.Rating}
-                                  costperkw = {value[this.attr2]}
-                                  addressline = {value["First Address"]}
-                                  tel1 = {value["Contact Telephone 1"]}
-                                  accessComm = {value["Access Comments"]}
-                                  */
- 
+
                             let spots = value.Spots;
                             let spotsAvailable = 0;
                             let spotsOperational = 0;
@@ -402,14 +293,6 @@ class DeviceMap extends React.Component {
                             }
                           })
                       }  
-
-                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
-                        eventHandlers={{
-                          requeststart: () => console.log('Started request...'),
-                          requestend: () => console.log('Ended request...'),
-                          results: (r) => console.log(r)
-                        }}
-                      />      
                 </MapContainer>
               </div>
               }
@@ -419,25 +302,10 @@ class DeviceMap extends React.Component {
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
                 }
-                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}
-                        /*ref={m => {
-                          this.leafletMap = m;
-                        }}*/>
+                <MapContainer center={[0, 0]} zoom={3} scrollWheelZoom={false}>
                   <TileLayer attribution="&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors" url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" /> 
                       {
                           this.state.stations.map((value, key)=> {
-                            /*<SpecStation
-                                  key= {key}
-                                  stationId = {value.Id}
-                                  longtitude = {value.Longtitude} 
-                                  latitude = {value.Latitude}
-                                  title = {value.Title}
-                                  rating = {value.Rating}
-                                  costperkw = {value[this.attr2]}
-                                  addressline = {value["First Address"]}
-                                  tel1 = {value["Contact Telephone 1"]}
-                                  accessComm = {value["Access Comments"]}
-                                  */  
                             let spots = value.Spots;
                             let spotsAvailable = 0;
                             let spotsOperational = 0;
@@ -502,14 +370,6 @@ class DeviceMap extends React.Component {
                             }
                           })
                       }
-
-                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
-                        eventHandlers={{
-                          requeststart: () => console.log('Started request...'),
-                          requestend: () => console.log('Ended request...'),
-                          results: (r) => console.log(r)
-                        }}
-                      /> 
                 </MapContainer>
               </div>
               }
@@ -519,13 +379,5 @@ class DeviceMap extends React.Component {
       );
   }
 }
-/*
-                      <EsriLeafletGeoSearch useMapBounds={false} position="topleft" 
-                        eventHandlers={{
-                          requeststart: () => console.log('Started request...'),
-                          requestend: () => console.log('Ended request...'),
-                          results: (r) => console.log(r)
-                        }}
-                      /> 
-*/
+
 export default DeviceMap;

@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddVehicle.css';
 import MyNavbar from './MyNavbar';
-import {dcChargerPost, acChargerPost, dcChargerPortPost, acChargerPortPost, PowerPerChargingPost, vehiclePost, UserVehiclePost, getUserOBJECT} from './api';
+import {dcChargerPost, acChargerPost, dcChargerPortPost, acChargerPortPost, PowerPerChargingPost, vehiclePost, UserVehiclePost, getUserOBJECT, isLogged} from './api';
 import UnAuthorized from './UnAuthorized';
 
 class AddVehicle extends React.Component {
@@ -33,6 +33,7 @@ class AddVehicle extends React.Component {
             point220: 11.0,
             point430: 11.0,
             submitDisabled: true,
+            logged: false,
         }
         this.hasAc = true;
         this.hasDc = true;
@@ -43,6 +44,22 @@ class AddVehicle extends React.Component {
         this.acChange = this.acChange.bind(this);
         this.dcChange = this.dcChange.bind(this);
         this.submitActivate = this.submitActivate.bind(this);
+    }
+
+    componentDidMount() {
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
+            })
+        })
     }
 
     handleSubmit = (e) => {
@@ -473,7 +490,7 @@ class AddVehicle extends React.Component {
 
     render() {
 
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to add your vehicles"

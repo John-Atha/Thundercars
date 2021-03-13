@@ -1,7 +1,7 @@
 import React from 'react';
 import './Login.css';
 import logo from './images/thundera.png';
-import {loginPost} from './api';
+import {loginPost, isLogged} from './api';
 
 
 class Login extends React.Component {
@@ -13,13 +13,30 @@ class Login extends React.Component {
             password: "",
             sumbitDisabled: true,
             error: null,
-            userId: null
+            userId: null,
+            logged: false,
         }
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);    
         this.submitActivate = this.submitActivate.bind(this);    
     }
 
+    componentDidMount() {
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
+            })
+        })
+    }
+    
     handleInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -37,12 +54,12 @@ class Login extends React.Component {
         const params = new URLSearchParams();
         params.append('username', this.state.username);
         params.append('password', this.state.password);
-        let reqObj = this.state.username+":"+this.state.password;
         loginPost(params)
         .then(response => {
             console.log("response => userId: " + response.data.Id);
             localStorage.setItem('userId', response.data.Id);
-            localStorage.setItem('role', response.data.Token);
+            localStorage.setItem('role', response.data.Role);
+            localStorage.setItem('token', response.data.Token);
             window.location.href = "/";
         })
         .catch(err => {
@@ -89,7 +106,7 @@ class Login extends React.Component {
     }
  
     render() {
-        if (localStorage.getItem('userId')) {
+        if (this.state.logged) {
             window.location.href="/";
         }
         else {

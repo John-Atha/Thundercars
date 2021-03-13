@@ -1,6 +1,6 @@
 import React from 'react';
 import './UserMyStatistics.css';
-import {getUserStats, getUserProfile} from './api'
+import {getUserStats, getUserProfile, isLogged} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
 import Carousel from 'react-bootstrap/Carousel';
@@ -248,8 +248,7 @@ class UserMyStatistics extends React.Component {
             error: null,
             firstname: null,
             username: null,
-
-            //userStatsList: [],
+            logged: false,
         }
 
         // because names contain space char and values cannot be retrieved
@@ -261,42 +260,38 @@ class UserMyStatistics extends React.Component {
         this.attr4 = "First Name";
     }
 
-    /*componentDidMount () {
-        
-        if (this.state.role==="VehicleOwner") {
-            getUserStats(this.state.userId)
-            .then(response => {
+    componentDidMount() {
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+            getUserProfile(this.state.userId)
+            .then(response =>{
                 console.log(response);
                 this.setState({
-                    userStatsList: response.data.Summary
-                })
-                console.log(this.state.userStatsList);
+                    firstname: response.data[this.attr4],
+                    username: response.data.Username
+                });
             })
             .catch(err => {
                 console.log(err);
+                this.setState({
+                    error: "Could not find data, please try again later"
+                })
             })
-        }
-    }*/
-
-    componentDidMount() {
-        getUserProfile(this.state.userId)
-        .then(response =>{
-            console.log(response);
-            this.setState({
-                firstname: response.data[this.attr4],
-                username: response.data.Username
-            });
         })
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not find data, please try again later"
+                logged: false,
             })
         })
     }
 
     render() {
-        if (!localStorage.getItem('userId')) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the statistics feature"

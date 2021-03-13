@@ -2,7 +2,7 @@ import React from 'react';
 import './Register.css';
 import md5 from 'crypto-js/md5'
 import logo from './images/thundera.png';
-import {countriesGet, userAddressPost, userPost} from './api';
+import {countriesGet, userAddressPost, userPost, isLogged} from './api';
 
 class Register extends React.Component {
     
@@ -38,7 +38,8 @@ class Register extends React.Component {
             tel2: "",
             //----
             submitDisabled: true,
-            error: null//"Insert compulsory info"
+            error: null,
+            logged: false,
         }
         this.countries = [];
         this.handleSubmit = this.handleSubmit.bind(this);    
@@ -49,14 +50,27 @@ class Register extends React.Component {
 
 
     componentDidMount() {
-        countriesGet()
+        isLogged()
         .then(response => {
-            //console.log(response.data);
-            this.countries = response.data;
-            this.updateCountriesSelect();
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+            countriesGet()
+            .then(response => {
+                //console.log(response.data);
+                this.countries = response.data;
+                this.updateCountriesSelect();
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                logged: false,
+            })
         })
     }
 
@@ -139,6 +153,7 @@ class Register extends React.Component {
                 console.log(response);
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('role', this.state.role);
+                localStorage.setItem('token', response.data.apiKey);
                 window.location.href="/";
             })
             .catch(err => {
@@ -209,7 +224,7 @@ class Register extends React.Component {
     }
 
     render() {
-        if (localStorage.getItem('userId')) {
+        if (this.state.logged) {
             window.location.href="/";
         }
         else {
