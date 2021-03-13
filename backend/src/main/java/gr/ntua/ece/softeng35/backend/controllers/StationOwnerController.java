@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.StationOwner;
 import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,13 +26,15 @@ import org.json.*;
 
 
 @RestController
-class StationownerController {
-  private final StationOwnerRepository repository;
+public class StationOwnerController {
+  private final StationOwnerRepository repository3;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
 
-  StationownerController(StationOwnerRepository repository, UserRepository repository2) {      
-    this.repository = repository;
+  StationOwnerController(StationOwnerRepository repository3,  AdminRepository repository1, UserRepository repository2) {      
+    this.repository3 = repository3;
     this.repository2 = repository2;
+    this.repository1 = repository1;
   }
   
   /*
@@ -66,30 +69,30 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/profile")
-  JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/stationowners/{id}/profile")
+  JsonNode myProfile(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    List<Integer> allStationOwners = repository.findAllStationOwnersIds();
+    List<Integer> allStationOwners = repository3.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
     }
     else {
-      List<List<Object>> info=repository.findInfoForStationOwner(id);
+      List<List<Object>> info=repository3.findInfoForStationOwner(id);
       List<Object> userBasic = info.get(0);
       if (userBasic.size()==0) {
         throw new NoDataFoundException();
       }
-      List<Integer> addresses=repository.findAddressForStationOwner(id);
+      List<Integer> addresses=repository3.findAddressForStationOwner(id);
       Integer addressId = addresses.get(0);
       Boolean hasAddress = true;
       Boolean hasCountry = true;
       List<List<Object>> addressInfo;
       List<Object> addressBasic = new ArrayList();
-      List<Integer> countries=repository.findCountryForStationOwner(addressId);
+      List<Integer> countries=repository3.findCountryForStationOwner(addressId);
       Integer countryId = null;
       if (countries.size()!=0) {
         countryId= countries.get(0);
@@ -101,7 +104,7 @@ class StationownerController {
         hasCountry=false;
       }
       else {
-        addressInfo = repository.findAddressInfoForStationOwner(addressId);
+        addressInfo = repository3.findAddressInfoForStationOwner(addressId);
         addressBasic = addressInfo.get(0);
       }
       if (hasAddress==true) {
@@ -109,12 +112,12 @@ class StationownerController {
           hasCountry=false;
         }
         else {
-          countryInfo = repository.findCountryInfoForStationOwner(countryId);
+          countryInfo = repository3.findCountryInfoForStationOwner(countryId);
           countryBasic = countryInfo.get(0);
         }
       }
       
-      List<List<Object>> stationIDsAndTitles = repository.findOwnersStationsIdAndAddress(id);
+      List<List<Object>> stationIDsAndTitles = repository3.findOwnersStationsIdAndAddress(id);
 
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
@@ -150,7 +153,7 @@ class StationownerController {
         ObjectNode curr = mapper.createObjectNode();
         curr.put("Station Id", (Integer) station.get(0));
         if (station.get(1)!=null) {
-          curr.put("Station Title", repository.findStationsTitle((Integer) station.get(1)));
+          curr.put("Station Title", repository3.findStationsTitle((Integer) station.get(1)));
         }
         else {
           curr.put("Station Title", "Unknown");
@@ -172,14 +175,14 @@ class StationownerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/mystations")
-  JsonNode myStations(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/stationowners/{id}/mystations")
+  JsonNode myStations(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    List<Integer> allStationOwners = repository.findAllStationOwnersIds();
+    List<Integer> allStationOwners = repository3.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
     }
@@ -187,27 +190,27 @@ class StationownerController {
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode finalAnswer = mapper.createObjectNode();;
       ArrayNode all = mapper.createArrayNode();
-      List<Integer> MyStations = repository.findOwnersStationsIds(id);
+      List<Integer> MyStations = repository3.findOwnersStationsIds(id);
       
       for (Integer i : MyStations) {
-        List<List<Object>> basicInfos = repository.findStationsBasicInfo(i);
+        List<List<Object>> basicInfos = repository3.findStationsBasicInfo(i);
         if (basicInfos.size()==0) {
           continue;
         }
         List<Object> basicInfo = basicInfos.get(0);
-        List<List<Object>> operatorInfos = repository.findStationsOperatorInfo((Integer) basicInfo.get(2));
+        List<List<Object>> operatorInfos = repository3.findStationsOperatorInfo((Integer) basicInfo.get(2));
         List<Object> operatorInfo = new ArrayList();
         if (operatorInfos.size()!=0) {
           operatorInfo = operatorInfos.get(0);
         }
         
-        List<List<Object>> addressInfos = repository.findStationsAddressInfo((Integer) basicInfo.get(3));
+        List<List<Object>> addressInfos = repository3.findStationsAddressInfo((Integer) basicInfo.get(3));
         List<Object> addressInfo = new ArrayList();
         if  (addressInfos.size()!=0) {
           addressInfo = addressInfos.get(0);
         }
 
-        List<Integer> spots = repository.findStationSpotsFromStation(i);
+        List<Integer> spots = repository3.findStationSpotsFromStation(i);
         
         ObjectNode answer = mapper.createObjectNode();
         answer.put("Id", i);
@@ -216,7 +219,7 @@ class StationownerController {
         }
         answer.put("UUID", (String) basicInfo.get(0));
         if (basicInfo.get(1)!=null) {
-          answer.put("Current Provider's Name", (String) repository.findCurrentProviderName((Integer) basicInfo.get(1)));
+          answer.put("Current Provider's Name", (String) repository3.findCurrentProviderName((Integer) basicInfo.get(1)));
         }
         else {
           answer.put("Current Provider", "Unknown");
@@ -227,20 +230,20 @@ class StationownerController {
         answer.put("Comments", (String) basicInfo.get(5));
         answer.put("Date Created", basicInfo.get(6)!=null ? basicInfo.get(6).toString() : null);
         if (basicInfo.get(7)!=null) {
-          answer.put("Status Type", (String) repository.findStatusTypeTitle((Integer) basicInfo.get(7)));
+          answer.put("Status Type", (String) repository3.findStatusTypeTitle((Integer) basicInfo.get(7)));
         }
         else {
           answer.put("Status Type", "Unknown");
         }
         if (basicInfo.get(8)!=null) {
-          answer.put("Submission Status", (String) repository.findSubmissionStatusTitle((Integer) basicInfo.get(8)));
+          answer.put("Submission Status", (String) repository3.findSubmissionStatusTitle((Integer) basicInfo.get(8)));
         }
         else {
           answer.put("Submission Status", "Unknown");
         }
 
         if (basicInfo.get(4)!=null) {
-          answer.put("Usage Type", (String) repository.findUsageTypeTitle((Integer) basicInfo.get(4))); 
+          answer.put("Usage Type", (String) repository3.findUsageTypeTitle((Integer) basicInfo.get(4))); 
         }
         else {
           answer.put("Usage Type", "Unknown");
@@ -269,7 +272,7 @@ class StationownerController {
           answer.put("Address' Related URL", (String) addressInfo.get(11));
           answer.put("Adderss' General Comments", (String) addressInfo.get(12));
           if (addressInfo.get(13)!=null) {
-            List<List<Object>> countryInfos = repository.findStationsCountryInfo((Integer) addressInfo.get(13));
+            List<List<Object>> countryInfos = repository3.findStationsCountryInfo((Integer) addressInfo.get(13));
             List<Object> countryInfo =  new ArrayList();
             if (addressInfos.size()!=0) {
               countryInfo = countryInfos.get(0);
@@ -316,19 +319,19 @@ class StationownerController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/mystatistics")
-  JsonNode myStatistics(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/stationowners/{id}/mystatistics")
+  JsonNode myStatistics(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    List<Integer> allStationOwners = repository.findAllStationOwnersIds();
+    List<Integer> allStationOwners = repository3.findAllStationOwnersIds();
     if (!allStationOwners.contains(id)) {
       throw new BadRequestException();
     }
     else {
-      List<List<Object>> statistics = repository.findSessionsByStationMonth(id);
+      List<List<Object>> statistics = repository3.findSessionsByStationMonth(id);
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
       ArrayNode statList = mapper.createArrayNode();      
@@ -360,51 +363,51 @@ class StationownerController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/stationowners")
-  List<StationOwner> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/stationowners")
+  List<StationOwner> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findAll();
+    return repository3.findAll();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/stationownersmod")
-  StationOwner newStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/stationownersmod")
+  StationOwner newStationOwner(@RequestBody StationOwner newStationOwner, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
     newStationOwner.setApiKey(generateToken());
-    return repository.save(newStationOwner);
+    return repository3.save(newStationOwner);
   }
 
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/stationowners/{id}")
-  StationOwner one(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/stationowners/{id}")
+  StationOwner one(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository3.findById(id)
       .orElseThrow(() -> new NoDataFoundException());
   }
   
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/stationownersmod/{id}")
-  StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/stationownersmod/{id}")
+  StationOwner replaceStationOwner(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository3.findById(id)
       .map(stationOwner -> {
         stationOwner.setUsername(newStationOwner.getUsername());
         stationOwner.setPassword(newStationOwner.getPassword());
@@ -414,20 +417,20 @@ class StationownerController {
         stationOwner.setAddress(newStationOwner.getAddress());
         stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
         stationOwner.setApiKey(newStationOwner.getApiKey());
-        return repository.save(stationOwner);
+        return repository3.save(stationOwner);
       })
       .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/stationownersmodnopass/{id}")
-  StationOwner replaceStationOwnerNoPass(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/stationownersmodnopass/{id}")
+  StationOwner replaceStationOwnerNoPass(@RequestBody StationOwner newStationOwner, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository3.findById(id)
       .map(stationOwner -> {
         stationOwner.setUsername(newStationOwner.getUsername());
         stationOwner.setEmailAddr(newStationOwner.getEmailAddr());
@@ -436,19 +439,19 @@ class StationownerController {
         stationOwner.setAddress(newStationOwner.getAddress());
         stationOwner.setDateOfBirth(newStationOwner.getDateOfBirth());
         stationOwner.setApiKey(newStationOwner.getApiKey());
-        return repository.save(stationOwner);
+        return repository3.save(stationOwner);
       })
       .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/stationownersmod/{id}")
-  void deleteStationOwner(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/stationownersmod/{id}")
+  void deleteStationOwner(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    repository.deleteById(id);
+    repository3.deleteById(id);
   }
 }

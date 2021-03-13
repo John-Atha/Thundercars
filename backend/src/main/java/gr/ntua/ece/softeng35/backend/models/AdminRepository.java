@@ -26,4 +26,6 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     @Query(value = "SELECT u.username, u.password FROM Admin u WHERE u.firstName ='Admin' AND u.apiKey = ?1 ")
     List<List<String>> findHeadAdminByApiKey(String apiKey);
+
+    List<Admin> findByIdAndApiKey(Integer id, String apiKey);
 }

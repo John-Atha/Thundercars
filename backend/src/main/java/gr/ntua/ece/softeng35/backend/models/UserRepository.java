@@ -125,4 +125,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u.id FROM Admin u WHERE u.apiKey = ?1")
     List<Integer> findAdminByApiKey(String apikey);
 
+    List<User> findByIdAndApiKey(Integer id, String apiKey);
 }
