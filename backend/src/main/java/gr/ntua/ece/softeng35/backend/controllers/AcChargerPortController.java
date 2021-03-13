@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.AcChargerPortRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class AcChargerPortController {
+public class AcChargerPortController {
   private final AcChargerPortRepository repository;
   private final UserRepository repository2;
 
