@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet";
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import google_image from './images/Google_image.jpg';
-import {getVehicles , getAllStations, getUserProfile, getStationOwnerProfile} from './api';
+import {getVehicles , getAllStations, getUserProfile, getStationOwnerProfile, isLogged} from './api';
 import StationMap from './StationMap';
 
 
@@ -28,6 +28,7 @@ class DeviceMap extends React.Component {
           noVehicles: false,
           usertown: null,
           usercountry: null,
+          logged: false,
       }
       //this.currStation = null;
       this.attr2 = "Cost Per kWh";
@@ -106,55 +107,78 @@ class DeviceMap extends React.Component {
   }
 
   componentDidMount () {
-    if (this.state.userId && this.state.role==="VehicleOwner")getUserProfile(this.state.userId).then(response => {this.setState({usertown: response.data["Town"],usercountry: response.data["Country"],})})
+    isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+            if (this.state.userId && this.state.role==="VehicleOwner") {
+              getUserProfile(this.state.userId)
+              .then(response => {
+                this.setState({
+                  usertown: response.data["Town"],
+                  usercountry: response.data["Country"],
+                })
+              })
+              .catch(err => {
+                console.log(err);
+              })
+            }
 
-      getAllStations()
-      .then(response => {
-          console.log(response);
-          this.setState({
-              stations: response.data["StationsList"]
-          })
-      })
-      .catch(err => {
+            getAllStations()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    stations: response.data["StationsList"]
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "No stations found, please try again later"
+                })
+            })
+            if (this.state.userId && this.state.role==="VehicleOwner") {
+              getVehicles(this.state.userId)
+              .then( response => {
+                  console.log(response);
+                  let tempVehiclesList = [];
+                  response.data[this.attr1].forEach(element => {
+                      let acPorts = element["Ac Charger Ports"];
+                      let dcPorts = element["Dc Charger Ports"];
+                      let result = [element.Vehicle, element.Brand+" "+element.Type];
+                      acPorts.forEach(el => {
+                        result.push(el["Port Name"])
+                      })
+                      dcPorts.forEach(el => {
+                        result.push(el["Port Name"])
+                      })
+                      tempVehiclesList.push(result);     // spot's id
+                  });
+                  this.setState({
+                      vehList: tempVehiclesList,
+                      //showingVehId: tempVehiclesList[0][0],
+                  });
+                  console.log("Vehicles: ");
+                  console.log(this.state.vehList);
+                  //console.log(this.state.showingVehId);
+
+              })
+              .catch(err=> {
+                  console.log(err);
+                  this.setState({
+                      noVehicles: true,
+                  })
+              })
+            }
+        })
+        .catch(err => {
           console.log(err);
           this.setState({
-              error: "No stations found, please try again later"
+            logged: false,
           })
-      })
-      if (this.state.userId && this.state.role==="VehicleOwner") {
-        getVehicles(this.state.userId)
-        .then( response => {
-            console.log(response);
-            let tempVehiclesList = [];
-            response.data[this.attr1].forEach(element => {
-                let acPorts = element["Ac Charger Ports"];
-                let dcPorts = element["Dc Charger Ports"];
-                let result = [element.Vehicle, element.Brand+" "+element.Type];
-                acPorts.forEach(el => {
-                  result.push(el["Port Name"])
-                })
-                dcPorts.forEach(el => {
-                  result.push(el["Port Name"])
-                })
-                tempVehiclesList.push(result);     // spot's id
-            });
-            this.setState({
-                vehList: tempVehiclesList,
-                //showingVehId: tempVehiclesList[0][0],
-            });
-            console.log("Vehicles: ");
-            console.log(this.state.vehList);
-            //console.log(this.state.showingVehId);
-
         })
-        .catch(err=> {
-            console.log(err);
-            this.setState({
-                noVehicles: true,
-            })
-        })
-      }
-    
   }
 
   render() {
@@ -203,7 +227,7 @@ class DeviceMap extends React.Component {
             <div className="page padding-bottom padding-top">
               <h5 className="color2 margin-bottom"> Welcome, pick the station you're looking for from the map</h5>
 
-              {this.state.userId && !this.state.noVehicles &&
+              {this.state.userId && !this.state.noVehicles && this.state.logged &&
                 <div className="vehicle-map-select">
                   <h5 className="color2"> Choose one of your vehicles to see its compatible stations</h5>
                   <div className="spots-buttons-container center-content flex-layout margin-top">
@@ -217,7 +241,7 @@ class DeviceMap extends React.Component {
                 </div>
               }
 
-              { this.state.userId && this.state.role==="VehicleOwner" && this.showingVehId &&
+              { this.state.userId && this.state.role==="VehicleOwner" && this.showingVehId && this.state.logged &&
                 <div className="map-pop-up-container">
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
@@ -280,10 +304,16 @@ class DeviceMap extends React.Component {
 
                                         <div className="address-extras-container center-content">
                                           Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
-                                          <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">
-                                            Google Directions:
-                                            <img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/>
-                                          </a><br></br>
+                                          
+                                          {value["First Address"] && value["Town"] && town && city && (
+                                            <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">
+                                              Google Directions:
+                                              <img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/>
+                                            </a> )
+                                          }
+                                          {value["First Address"] && value["Town"] && town && city && (
+                                            <br></br> )
+                                          }
                                           Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
                                         </div>
                                       </div>
@@ -297,7 +327,7 @@ class DeviceMap extends React.Component {
               </div>
               }
 
-              { (!this.state.userId || this.state.role!=="VehicleOwner") &&
+              { (!this.state.userId ||  (this.state.role==="VehicleOwner" && this.state.noVehicles)  || !this.state.logged || this.state.role!=="VehicleOwner") &&
                 <div className="map-pop-up-container">
                 {this.state.currStation && /*this.state.change!==null &&*/
                   <StationMap id={this.state.currStation} />
