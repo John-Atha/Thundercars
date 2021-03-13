@@ -149,43 +149,4 @@ class AcChargerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
     }
-    /*
-    @Test
-    void shouldThrowAcChargerNotFoundException() throws Exception {
-        try{
-            MockitoAnnotations.initMocks(this);
-            this.mockmvc = webAppContextSetup(this.wac).build();
-
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode newJson = mapper.createObjectNode();
-
-            AcCharger firstAcCharger = new AcCharger(1,4,7.2);
-
-            AcCharger testAcCharger = new AcCharger(1,3,3.45);
-
-            newJson.put("id",1);
-            newJson.put("usablePhases",3);
-            newJson.put("maxPower",3.45);
-
-            String json = newJson.toString();
-
-            BDDMockito.when(repository.findById(firstAcCharger.getId())).thenReturn(Optional.of(firstAcCharger));
-            BDDMockito.when(repository.save(testAcCharger)).thenReturn(testAcCharger);
-
-            List<Integer> apiKeys = new ArrayList<>();
-            apiKeys.add(1);
-
-            BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-            this.mockmvc.perform(put("/evcharge/api/{apikey}/acchargersmod/{id}","123456789",2)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json));
-        }
-        catch(RuntimeException re) {
-            String message = "Could not find Ac Charger with id 2";
-            assertEquals(message,re.getMessage());
-            throw re;
-        }
-    }*/
-
 }
