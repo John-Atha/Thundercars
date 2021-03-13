@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.OperatorRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class OperatorController {
+public class OperatorController {
   private final OperatorRepository repository;
   private final UserRepository repository2;
 
