@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.ChargingSpot;
 import gr.ntua.ece.softeng35.backend.models.ChargingSpotRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -23,20 +25,24 @@ import java.lang.*;
 import org.json.*;
 
 @RestController
-class ChargingSpotController {
+public class ChargingSpotController {
   private final ChargingSpotRepository repository;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  ChargingSpotController(ChargingSpotRepository repository, UserRepository repository2) {
+  ChargingSpotController(ChargingSpotRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/{apikey}/chargingspots",
-                     "/evcharge/api/{apikey}/chargingspots/{id}"})
-  JsonNode spot(@PathVariable Optional<Integer> id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping(value={"/evcharge/api/chargingspots",
+                     "/evcharge/api/chargingspots/{id}"})
+  JsonNode spot(@PathVariable Optional<Integer> id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -209,9 +215,9 @@ class ChargingSpotController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/chargingspotsmod")
-  ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/chargingspotsmod")
+  ChargingSpot newChargingSpot(@RequestBody ChargingSpot newChargingSpot,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -220,9 +226,9 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/chargingspotsdb/{id}")
-  ChargingSpot one(@PathVariable Integer id,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/chargingspotsdb/{id}")
+  ChargingSpot one(@PathVariable Integer id,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -232,9 +238,9 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
-  ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/admin/chargingspotsmod/{id}")
+  ChargingSpot replaceChargingSpot(@RequestBody ChargingSpot newChargingSpot, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -254,9 +260,9 @@ class ChargingSpotController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/admin/chargingspotsmod/{id}")
-  void deleteChargingSpot(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/admin/chargingspotsmod/{id}")
+  void deleteChargingSpot(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
