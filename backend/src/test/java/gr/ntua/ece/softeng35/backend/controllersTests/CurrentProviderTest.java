@@ -126,7 +126,7 @@ class CurrentProviderTest {
 
     
     @Test
-	void testPostCountry() throws Exception {
+	void testPostCurrentProvider() throws Exception {
 	
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
@@ -181,7 +181,7 @@ class CurrentProviderTest {
 
     
     @Test
-	void testPutCountry() throws Exception {
+	void testPutCurrentProvider() throws Exception {
 	
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
