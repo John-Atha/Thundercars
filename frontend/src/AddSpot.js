@@ -204,7 +204,7 @@ class AddSpot extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.logged===false) {
+        if (!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a station owner to to add a new spot"

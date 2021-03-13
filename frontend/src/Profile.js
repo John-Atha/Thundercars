@@ -191,7 +191,7 @@ class Profile extends React.Component {
 
     render() {
         
-        if (!this.state.userId || this.state.logged===false) {
+        if (!this.state.userId || !this.state.logged) {
             return(
                 <UnAuthorized 
                     message="You need to create an account to have your personal profile page"

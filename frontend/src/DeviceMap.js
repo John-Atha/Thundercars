@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet";
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import google_image from './images/Google_image.jpg';
-import {getVehicles , getAllStations, getUserProfile, getStationOwnerProfile, isLogged} from './api';
+import {getVehicles , getAllStations, getUserProfile, isLogged} from './api';
 import StationMap from './StationMap';
 
 
@@ -306,7 +306,7 @@ class DeviceMap extends React.Component {
                                           Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
                                           
                                           {value["First Address"] && value["Town"] && town && city && (
-                                            <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">
+                                            <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank" rel="noopener noreferrer" class="buttongoogle">
                                               Google Directions:
                                               <img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/>
                                             </a> )

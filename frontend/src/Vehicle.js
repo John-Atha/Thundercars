@@ -172,7 +172,7 @@ class Vehicle extends React.Component {
     }
     
     render() {
-        if(!this.state.userId || this.state.logged===false) {
+        if(!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to see information about a vehicle you own"

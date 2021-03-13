@@ -342,7 +342,7 @@ class MyStationStatistics extends React.Component {
     }
 
     render() {
-        if (!this.state.userId || this.state.logged===false) {
+        if (!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the statistics feature"
