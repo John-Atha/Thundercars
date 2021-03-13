@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import org.springframework.web.bind.annotation.*;
 
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 import gr.ntua.ece.softeng35.backend.models.User;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
@@ -32,10 +34,14 @@ import java.security.NoSuchAlgorithmException;
 public class LoginController{
 
     private final UserRepository repository;
+    private final AdminRepository repository1;
+    private final StationOwnerRepository repository2;
     
 
-    LoginController(UserRepository repository){
+    LoginController(UserRepository repository, AdminRepository repository1, StationOwnerRepository repository2){
         this.repository = repository;
+        this.repository1 = repository1;
+        this.repository2 = repository2;
     }
 
 
@@ -67,6 +73,24 @@ public class LoginController{
         } 
     } 
   
+    public static String generateToken() {
+      String key = new String();
+      key = "";
+      List<Character> chars = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+      
+      Random ran = new Random();
+      int randIndex = ran.nextInt(chars.size());
+      for (int i=0; i<14; i++) {
+          if (i==4 || i==9) {
+              key += '-';
+          }
+          else {
+              key += chars.get(ran.nextInt(chars.size()));
+          }
+      }
+      return key;
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/evcharge/api/{apikey}/login")
     JsonNode userLogin(@PathVariable String apikey , @RequestBody MultiValueMap credMap ) {
@@ -96,8 +120,19 @@ public class LoginController{
         List<Object> user = repository.findIdByAdminnameAndPassword(username, HashedPassword);
         if (user.size() != 0){
           Integer userId = (Integer) user.get(0);
+          
+          String token = generateToken();
+          repository1.findById(userId)
+          .map(thisUser -> {
+            thisUser.setApiKey(token);
+            return repository1.save(thisUser);
+          })
+          .orElseThrow(() -> new BadRequestException());
+
           answer.put("Id", userId);
-          answer.put("Token", "Admin");
+          answer.put("Role", "Admin");
+          answer.put("Token", token);
+
           String ugly = answer.toString();
           try {
             JsonNode node = mapper.readTree(ugly);
@@ -116,8 +151,19 @@ public class LoginController{
           }
           else {
             Integer userId = (Integer) user.get(0);
+
+            String token = generateToken();
+            repository.findById(userId)
+            .map(thisUser -> {
+              thisUser.setApiKey(token);
+              return repository.save(thisUser);
+            })
+            .orElseThrow(() -> new BadRequestException());
+  
+           
             answer.put("Id", userId);
-            answer.put("Token", "VehicleOwner");
+            answer.put("Role", "VehicleOwner");
+            answer.put("Token", token);
             try {
             String ugly = answer.toString();
               JsonNode node = mapper.readTree(ugly);
@@ -130,8 +176,18 @@ public class LoginController{
         }
         else {
           Integer userId = (Integer) user.get(0);
+          
+          String token = generateToken();
+          repository2.findById(userId)
+          .map(thisUser -> {
+            thisUser.setApiKey(token);
+            return repository2.save(thisUser);
+          })
+          .orElseThrow(() -> new BadRequestException());
+          
           answer.put("Id", userId);
-          answer.put("Token", "StationOwner");
+          answer.put("Role", "StationOwner");
+          answer.put("Token", token);
           String ugly = answer.toString();
           try {
             JsonNode node = mapper.readTree(ugly);

@@ -47,6 +47,24 @@ class StationownerController {
   }
    */
   
+  public static String generateToken() {
+    String key = new String();
+    key = "";
+    List<Character> chars = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+    
+    Random ran = new Random();
+    int randIndex = ran.nextInt(chars.size());
+    for (int i=0; i<14; i++) {
+        if (i==4 || i==9) {
+            key += '-';
+        }
+        else {
+            key += chars.get(ran.nextInt(chars.size()));
+        }
+    }
+    return key;
+  }
+
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/{apikey}/stationowners/{id}/profile")
   JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
@@ -341,7 +359,6 @@ class StationownerController {
   }
 
 
-
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/{apikey}/stationowners")
   List<StationOwner> all(@PathVariable String apikey) {
@@ -361,6 +378,7 @@ class StationownerController {
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
+    newStationOwner.setApiKey(generateToken());
     return repository.save(newStationOwner);
   }
 

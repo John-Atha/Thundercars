@@ -31,6 +31,24 @@ class UserController {
     this.repository = repository;
   }
 
+  public static String generateToken() {
+    String key = new String();
+    key = "";
+    List<Character> chars = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+    
+    Random ran = new Random();
+    int randIndex = ran.nextInt(chars.size());
+    for (int i=0; i<14; i++) {
+        if (i==4 || i==9) {
+            key += '-';
+        }
+        else {
+            key += chars.get(ran.nextInt(chars.size()));
+        }
+    }
+    return key;
+  }
+
   @CrossOrigin(origins = "http://localhost:3000")
   @GetMapping("/evcharge/api/{apikey}/user/{id}/profile")
   JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
@@ -946,6 +964,7 @@ class UserController {
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
+    newUser.setApiKey(generateToken());
     return repository.save(newUser);
   }
 
