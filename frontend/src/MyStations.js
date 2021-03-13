@@ -1,7 +1,7 @@
 import React from "react"
 import "./MyStations.css";
 import MyNavbar from './MyNavbar'; 
-import {getStations} from './api';
+import {getStations, isLogged} from './api';
 import UnAuthorized from './UnAuthorized';
 
 class StationsDiv extends React.Component {
@@ -57,7 +57,8 @@ class MyStations extends React.Component {
         this.state = {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
-            stationsList: []
+            logged: false,
+            stationsList: [],
         }
         this.attr1Name="Current Provider's Name";
         this.attr2Name="First Address";
@@ -65,20 +66,33 @@ class MyStations extends React.Component {
     }
     
     componentDidMount() {
-        getStations(this.state.userId)
-        .then( response => {
+        isLogged()
+        .then(response => {
             console.log(response);
             this.setState({
-                stationsList: response.data.StationsList
+                logged: true,
+            })
+            getStations(this.state.userId)
+            .then( response => {
+                console.log(response);
+                this.setState({
+                    stationsList: response.data.StationsList
+                })
+            })
+            .catch(err => {
+                console.log(err);
             })
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                logged:false,
+            })
         })
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a station owner to have access to your stations listing feature"

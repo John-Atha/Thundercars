@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
-import {getUserProfile, getStationOwnerProfile, stationOwnerDelete, userDelete } from './api';
+import {getUserProfile, getStationOwnerProfile, stationOwnerDelete, userDelete, isLogged, logoutPost} from './api';
 import UnAuthorized from './UnAuthorized';
 
 class Profile extends React.Component {
@@ -28,6 +28,7 @@ class Profile extends React.Component {
             country: null,
             continent: null,
             showModal: false,
+            logged: false,
         }
         this.delete = this.delete.bind(this);
         this.preDelete = this.preDelete.bind(this);
@@ -37,9 +38,22 @@ class Profile extends React.Component {
     }
 
     logout = () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('role');
-        window.location.href="/";
+        logoutPost(localStorage.getItem('userId'), localStorage.getItem('role'))
+        .then(response => {
+            console.log(response);
+            localStorage.removeItem('userId');
+            localStorage.removeItem('role');
+            localStorage.removeItem('token');  
+            window.location.href="/";
+          }
+        )
+        .catch(err => {
+          console.log(err);
+          localStorage.removeItem('userId');
+          localStorage.removeItem('role');
+          localStorage.removeItem('token');
+          window.location.href="/";
+        })
     }
 
     preDelete = () => {
@@ -100,71 +114,84 @@ class Profile extends React.Component {
 
 
     componentDidMount() {
-        if (this.state.role==="VehicleOwner") {
-            getUserProfile(this.state.userId)
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    username: response.data.Username,
-                    email: response.data.Email,
-                    firstName: response.data["First Name"],
-                    lastName: response.data["Last Name"],
-                    dateOfBirth: response.data["Date Of Birth"],
-                    address1: response.data["AddressLine 1"],
-                    town: response.data.Town,
-                    stateOrProvince: response.data["State Or Province"],
-                    postcode: response.data.Postcode,
-                    tel1: response.data["Contact Telephone 1"],
-                    tel2: response.data["Contact Telephone 2"],
-                    country: response.data.Country,
-                    continent: response.data.Continent,
-                })
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
             })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    error: "We couldn't find your info, please try again later"
+            if (this.state.role==="VehicleOwner") {
+                getUserProfile(this.state.userId)
+                .then(response => {
+                    console.log(response);
+                    this.setState({
+                        username: response.data.Username,
+                        email: response.data.Email,
+                        firstName: response.data["First Name"],
+                        lastName: response.data["Last Name"],
+                        dateOfBirth: response.data["Date Of Birth"],
+                        address1: response.data["AddressLine 1"],
+                        town: response.data.Town,
+                        stateOrProvince: response.data["State Or Province"],
+                        postcode: response.data.Postcode,
+                        tel1: response.data["Contact Telephone 1"],
+                        tel2: response.data["Contact Telephone 2"],
+                        country: response.data.Country,
+                        continent: response.data.Continent,
+                    })
                 })
-            })
-
-        }
-
-        else if (this.state.role==="StationOwner") {
-            getStationOwnerProfile(this.state.userId)
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    username: response.data["Station Owner name"],
-                    email: response.data.Email,
-                    firstName: response.data["First Name"],
-                    lastName: response.data["Last Name"],
-                    dateOfBirth: response.data["Date Of Birth"],
-                    address1: response.data["AddressLine 1"],
-                    town: response.data.Town,
-                    stateOrProvince: response.data["State Or Province"],
-                    postcode: response.data.Postcode,
-                    tel1: response.data["Contact Telephone 1"],
-                    tel2: response.data["Contact Telephone 2"],
-                    country: response.data.Country,
-                    continent: response.data.Continent,
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        error: "We couldn't find your info, please try again later"
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    error: "We couldn't find your info, please try again later"
+
+            }
+
+            else if (this.state.role==="StationOwner") {
+                getStationOwnerProfile(this.state.userId)
+                .then(response => {
+                    console.log(response);
+                    this.setState({
+                        username: response.data["Station Owner name"],
+                        email: response.data.Email,
+                        firstName: response.data["First Name"],
+                        lastName: response.data["Last Name"],
+                        dateOfBirth: response.data["Date Of Birth"],
+                        address1: response.data["AddressLine 1"],
+                        town: response.data.Town,
+                        stateOrProvince: response.data["State Or Province"],
+                        postcode: response.data.Postcode,
+                        tel1: response.data["Contact Telephone 1"],
+                        tel2: response.data["Contact Telephone 2"],
+                        country: response.data.Country,
+                        continent: response.data.Continent,
+                    })
                 })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        error: "We couldn't find your info, please try again later"
+                    })
+                })
+
+
+            }
+        })
+        .catch(err=> {
+            console.log(err);
+            this.setState({
+                logged: false,
             })
-
-
-        }
+        })
 
 
     }
 
     render() {
         
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return(
                 <UnAuthorized 
                     message="You need to create an account to have your personal profile page"

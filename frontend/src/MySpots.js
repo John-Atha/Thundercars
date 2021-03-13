@@ -1,7 +1,7 @@
 import React from "react"
 import "./MySpots.css";
 import MyNavbar from './MyNavbar'; 
-import { getStations, getOneSpot } from "./api";
+import { getStations, getOneSpot, isLogged } from "./api";
 import UnAuthorized from './UnAuthorized';
 
 class SpotsDiv extends React.Component {
@@ -71,36 +71,50 @@ class MySpots extends React.Component {
             userId: localStorage.getItem('userId'),
             role: localStorage.getItem('role'),
             stationsList: [],
-            spotsList: []
+            spotsList: [],
+            logged: false,
         }
     }
 
     componentDidMount() {
-        getStations(this.state.userId)
-        .then( response => {
+        isLogged()
+        .then(response => {
             console.log(response);
             this.setState({
-                stationsList: response.data.StationsList
-            });
-            let tempSpotsList = [];
-            this.state.stationsList.forEach(element => {
-                element.Spots.forEach(spot => {
-                    tempSpotsList.push(spot.Spot);
-                })
-            });
-            this.setState({
-                spotsList: tempSpotsList
-            });
-            console.log("Spots: ");
-            console.log(this.state.spotsList);
+                logged: true,
+            })
+            getStations(this.state.userId)
+            .then( response => {
+                console.log(response);
+                this.setState({
+                    stationsList: response.data.StationsList
+                });
+                let tempSpotsList = [];
+                this.state.stationsList.forEach(element => {
+                    element.Spots.forEach(spot => {
+                        tempSpotsList.push(spot.Spot);
+                    })
+                });
+                this.setState({
+                    spotsList: tempSpotsList
+                });
+                console.log("Spots: ");
+                console.log(this.state.spotsList);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                logged: false,
+            })
         })
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a station owner to have access to your spots listing feature"

@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
-import {getStations, getOneStationOBJECT, spotPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet} from './api';
+import {getStations, getOneStationOBJECT, spotPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, isLogged} from './api';
 import UnAuthorized from './UnAuthorized';
 
 class AddSpot extends React.Component {
@@ -29,6 +29,7 @@ class AddSpot extends React.Component {
             quantity: "",
             quantityAvailable: "",
             quantityOperational: "",
+            logged: false,
         }
         
         this.handleInput = this.handleInput.bind(this);    
@@ -46,53 +47,66 @@ class AddSpot extends React.Component {
     }
 
     componentDidMount() {
-        getStations(this.state.userId)
+        isLogged()
         .then(response => {
             console.log(response);
             this.setState({
-                stations: response.data.StationsList,
-                station: response.data.StationsList.length>0 ? response.data.StationsList[0].Id+",,"+response.data.StationsList[0].Title : null,
-                //stationId: response.data.StationsList.length>0 ? response.data.StationsList[1].Id : null,
-                //stationTitle: response.data.StationsList.length>0 ? (response.data.StationsList[1].Title ? response.data.StationsList[1].Title : "Unknown title") : null,
-            });
-            console.log(this.state.stations);
-            console.log(this.state.stationId);
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-        connTypesGet()
-        .then(response =>{
-            console.log(response);
-            this.setState({
-                connTypes: response.data,
-                connType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].formalName+",,"+response.data[0].category
+                logged: true,
+            })
+            getStations(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    stations: response.data.StationsList,
+                    station: response.data.StationsList.length>0 ? response.data.StationsList[0].Id+",,"+response.data.StationsList[0].Title : null,
+                    //stationId: response.data.StationsList.length>0 ? response.data.StationsList[1].Id : null,
+                    //stationTitle: response.data.StationsList.length>0 ? (response.data.StationsList[1].Title ? response.data.StationsList[1].Title : "Unknown title") : null,
+                });
+                console.log(this.state.stations);
+                console.log(this.state.stationId);
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+            connTypesGet()
+            .then(response =>{
+                console.log(response);
+                this.setState({
+                    connTypes: response.data,
+                    connType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].formalName+",,"+response.data[0].category
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            currTypesGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    currTypes: response.data,
+                    currType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].description
+                })
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+            levelsGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    levels: response.data,
+                    level: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].comments+",,"+response.data[0].isFastChargeCapable
+                })
+            })
+            .catch(err => {
+                console.log(err);
             })
         })
         .catch(err => {
             console.log(err);
-        })
-        currTypesGet()
-        .then(response => {
-            console.log(response);
             this.setState({
-                currTypes: response.data,
-                currType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].description
+                logged: false,
             })
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-        levelsGet()
-        .then(response => {
-            console.log(response);
-            this.setState({
-                levels: response.data,
-                level: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].comments+",,"+response.data[0].isFastChargeCapable
-            })
-        })
-        .catch(err => {
-            console.log(err);
         })
 
     }
@@ -190,7 +204,7 @@ class AddSpot extends React.Component {
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a station owner to to add a new spot"

@@ -5,7 +5,7 @@ import {getStations, getOneStationOBJECT,
     countriesGet, currentProvidersGet,
     operatorsGet, statusTypesGet, usageTypesGet,
     stationOwnerOBJECTGet, stationAddressPost,
-    stationPut} from './api';
+    stationPut, isLogged} from './api';
 import UnAuthorized from './UnAuthorized';
  
 
@@ -52,6 +52,7 @@ class UpdateStation extends React.Component {
             operators: [{}],
             statusTypes: [{}],
             usageTypes: [{}],
+            logged: false,
         }
         this.submitActivate=this.submitActivate.bind(this);
         this.allowed=this.allowed.bind(this);
@@ -61,159 +62,172 @@ class UpdateStation extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.role==="StationOwner") {
-            getStations(this.state.userId)
-            .then(response => {
-                console.log(response);
-                for (var i=0; i<response.data.StationsList.length; i++) {
-                    console.log(response.data.StationsList[i].Id);
-                    console.log(this.state.stationId);
-                    if (parseInt(response.data.StationsList[i].Id)===parseInt(this.state.stationId)) {
-                        this.setState({
-                            ownership: true,
-                        });
-                        break;
-                    }
-                }
-                console.log(this.state.ownership);
-                if (this.state.ownership===true) {
-                    getOneStationOBJECT(this.state.stationId)
-                    .then(response => {
-                        // initializations
-                        this.initObject = response.data;
-                        this.setState({
-                            uuid: response.data.uuid ? response.data.uuid : "",
-                            //currentProvider: response.data.currentProvider,
-                            stationOwner: response.data.stationOwner,
-                            //usageType: response.data.usageType,
-                            address: response.data.address,
-                            //country: response.data.address ? response.data.address.country : null, 
-                            addressLine1: response.data.address      ? (response.data.address.addressLine1      ? ( response.data.address.addressLine1.length===0 ? ""  : response.data.address.addressLine1     ): ""): "",
-                            addressLine2: response.data.address      ? (response.data.address.addressLine2      ? ( response.data.address.addressLine2.length===0 ? ""  : response.data.address.addressLine2     ): ""): "",
-                            contactTelephone1: response.data.address ? (response.data.address.contactTelephone1 ? ( response.data.address.contactTelephone1.length===0 ? ""  : response.data.address.contactTelephone1): ""): "",
-                            contactTelephone2: response.data.address ? (response.data.address.contactTelephone2 ? ( response.data.address.contactTelephone2.length===0 ? ""  : response.data.address.contactTelephone2): ""): "",
-                            town: response.data.address              ? (response.data.address.town              ? ( response.data.address.town.length===0 ? ""  : response.data.address.town             ): ""): "",
-                            title: response.data.address             ? (response.data.address.title             ? ( response.data.address.title.length===0 ? ""  : response.data.address.title            ): ""): "",
-                            latitude: response.data.address          ? (response.data.address.latitude          ? ( response.data.address.latitude.length===0 ? ""  : response.data.address.latitude         ): ""):"",
-                            longtitude: response.data.address        ? (response.data.address.longtitude        ? ( response.data.address.longtitude.length===0 ? ""  : response.data.address.longtitude       ): ""):"",
-                            relatedUrl: response.data.address        ? (response.data.address.relatedUrl        ? ( response.data.address.relatedUrl.length===0 ? ""  : response.data.address.relatedUrl       ): ""):"",
-                            postCode: response.data.address          ? (response.data.address.postcode          ? ( response.data.address.postcode.length===0 ? ""  : response.data.address.postcode         ): ""):"",
-                            contactEmail: response.data.address      ? (response.data.address.contactEmail      ? ( response.data.address.contactEmail.length===0 ? ""  : response.data.address.contactEmail     ): ""):"",
-                            generalComments: response.data.address   ? (response.data.address.generalComments   ? ( response.data.address.generalComments.length===0 ? ""  : response.data.address.generalComments  ): ""):"",
-                            accessComments: response.data.address    ? (response.data.address.accessComments    ? ( response.data.address.accessComments.length===0 ? ""  : response.data.address.accessComments   ): ""):"",
-                            stateOrProvince: response.data.address   ? (response.data.address.stateOrProvince   ? ( response.data.address.stateOrProvince.length===0 ? ""  : response.data.address.stateOrProvince  ): ""):"",
-                            comments: response.data.comments    ? response.data.comments : "",
-                            costPerkWh: response.data.costPerKwh ? (response.data.costPerKwh.length===0 ? "" : response.data.costPerKwh) : "",
-                            //statusType: response.data.statusType,
-                            //submissionStatus: response.data.submissionStatus,
-                        })
-                            //prefill select menus
-                        countriesGet()
-                        .then(response => {
-                            console.log(response);
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
+            if (this.state.role==="StationOwner") {
+                getStations(this.state.userId)
+                .then(response => {
+                    console.log(response);
+                    for (var i=0; i<response.data.StationsList.length; i++) {
+                        console.log(response.data.StationsList[i].Id);
+                        console.log(this.state.stationId);
+                        if (parseInt(response.data.StationsList[i].Id)===parseInt(this.state.stationId)) {
                             this.setState({
-                                countries: response.data,
-                                country: this.initObject.address ? (
-                                        this.initObject.address.country ? ( 
-                                        this.initObject.address.country.id+",,"+
-                                        this.initObject.address.country.title+",,"+
-                                        this.initObject.address.country.continentCode+",,"+
-                                        this.initObject.address.country.isocode )
-                                        : "null,,null,,null,null" )
-                                        : "null,,null,,null,null"
-                            })
-
-                            //console.log(this.state.countries);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        currentProvidersGet()
-                        .then(response => {
-                            console.log(response);
-                            this.setState({
-                                currentProviders: response.data,
-                                currentProvider: this.initObject.currentProvider.id+",,"+this.initObject.currentProvider.name+",,"+
-                                    ( this.initObject.currentProvider.country ? 
-                                        (this.initObject.currentProvider.country.id+",,"+
-                                        this.initObject.currentProvider.country.title+",,"+
-                                        this.initObject.currentProvider.country.continentCode+",,"+
-                                        this.initObject.currentProvider.country.isocode)
-                                        : "null,,null,,null,,null")
-                            })
-                            //console.log(this.state.currentProviders);
-                        })
-                        .catch(err=> {
-                            console.log(err);
-                        })
-                        operatorsGet()
-                        .then(response => {
-                            console.log(response);
-                            this.setState({
-                                operators: response.data,
-                                operator: this.initObject.operator.id+",,"+this.initObject.operator.title+",,"+this.initObject.operator.websiteUrl+",,"+this.initObject.operator.comments+",,"+this.initObject.operator.primaryPhone+",,"+this.initObject.operator.secondaryPhone+","
-                                +this.initObject.operator.isPrivateIndividual+",,"+this.initObject.operator.bookingUrl+",,"+this.initObject.operator.contactEmail+",,"+this.initObject.operator.isRestrictedEdit+",,"+this.initObject.operator.faultReportEmail
-                            })
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        statusTypesGet()
-                        .then(response=>{
-                            this.setState({
-                                statusTypes: response.data,
-                                statusType: this.initObject.statusType.id+",,"+
-                                    this.initObject.statusType.title+",,"+
-                                    this.initObject.statusType.isOperational+",,"+
-                                    this.initObject.statusType.isUserSelectable,
-                            })
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        usageTypesGet()
-                        .then(response => {
-                            console.log(response);
-                            this.setState({
-                                usageTypes: response.data,
-                                usageType: this.initObject.usageType.id+",,"+
-                                    this.initObject.usageType.title+",,"+
-                                    this.initObject.usageType.isMembershipRequired
-                            })
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        stationOwnerOBJECTGet(this.state.userId)
-                        .then(response => {
-                            console.log(response);
-                            this.setState({
-                                stationOwner: response.data
+                                ownership: true,
                             });
-                            console.log(this.state.stationOwner);
+                            break;
+                        }
+                    }
+                    console.log(this.state.ownership);
+                    if (this.state.ownership===true) {
+                        getOneStationOBJECT(this.state.stationId)
+                        .then(response => {
+                            // initializations
+                            this.initObject = response.data;
+                            this.setState({
+                                uuid: response.data.uuid ? response.data.uuid : "",
+                                //currentProvider: response.data.currentProvider,
+                                stationOwner: response.data.stationOwner,
+                                //usageType: response.data.usageType,
+                                address: response.data.address,
+                                //country: response.data.address ? response.data.address.country : null, 
+                                addressLine1: response.data.address      ? (response.data.address.addressLine1      ? ( response.data.address.addressLine1.length===0 ? ""  : response.data.address.addressLine1     ): ""): "",
+                                addressLine2: response.data.address      ? (response.data.address.addressLine2      ? ( response.data.address.addressLine2.length===0 ? ""  : response.data.address.addressLine2     ): ""): "",
+                                contactTelephone1: response.data.address ? (response.data.address.contactTelephone1 ? ( response.data.address.contactTelephone1.length===0 ? ""  : response.data.address.contactTelephone1): ""): "",
+                                contactTelephone2: response.data.address ? (response.data.address.contactTelephone2 ? ( response.data.address.contactTelephone2.length===0 ? ""  : response.data.address.contactTelephone2): ""): "",
+                                town: response.data.address              ? (response.data.address.town              ? ( response.data.address.town.length===0 ? ""  : response.data.address.town             ): ""): "",
+                                title: response.data.address             ? (response.data.address.title             ? ( response.data.address.title.length===0 ? ""  : response.data.address.title            ): ""): "",
+                                latitude: response.data.address          ? (response.data.address.latitude          ? ( response.data.address.latitude.length===0 ? ""  : response.data.address.latitude         ): ""):"",
+                                longtitude: response.data.address        ? (response.data.address.longtitude        ? ( response.data.address.longtitude.length===0 ? ""  : response.data.address.longtitude       ): ""):"",
+                                relatedUrl: response.data.address        ? (response.data.address.relatedUrl        ? ( response.data.address.relatedUrl.length===0 ? ""  : response.data.address.relatedUrl       ): ""):"",
+                                postCode: response.data.address          ? (response.data.address.postcode          ? ( response.data.address.postcode.length===0 ? ""  : response.data.address.postcode         ): ""):"",
+                                contactEmail: response.data.address      ? (response.data.address.contactEmail      ? ( response.data.address.contactEmail.length===0 ? ""  : response.data.address.contactEmail     ): ""):"",
+                                generalComments: response.data.address   ? (response.data.address.generalComments   ? ( response.data.address.generalComments.length===0 ? ""  : response.data.address.generalComments  ): ""):"",
+                                accessComments: response.data.address    ? (response.data.address.accessComments    ? ( response.data.address.accessComments.length===0 ? ""  : response.data.address.accessComments   ): ""):"",
+                                stateOrProvince: response.data.address   ? (response.data.address.stateOrProvince   ? ( response.data.address.stateOrProvince.length===0 ? ""  : response.data.address.stateOrProvince  ): ""):"",
+                                comments: response.data.comments    ? response.data.comments : "",
+                                costPerkWh: response.data.costPerKwh ? (response.data.costPerKwh.length===0 ? "" : response.data.costPerKwh) : "",
+                                //statusType: response.data.statusType,
+                                //submissionStatus: response.data.submissionStatus,
+                            })
+                                //prefill select menus
+                            countriesGet()
+                            .then(response => {
+                                console.log(response);
+                                this.setState({
+                                    countries: response.data,
+                                    country: this.initObject.address ? (
+                                            this.initObject.address.country ? ( 
+                                            this.initObject.address.country.id+",,"+
+                                            this.initObject.address.country.title+",,"+
+                                            this.initObject.address.country.continentCode+",,"+
+                                            this.initObject.address.country.isocode )
+                                            : "null,,null,,null,null" )
+                                            : "null,,null,,null,null"
+                                })
+
+                                //console.log(this.state.countries);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                            currentProvidersGet()
+                            .then(response => {
+                                console.log(response);
+                                this.setState({
+                                    currentProviders: response.data,
+                                    currentProvider: this.initObject.currentProvider.id+",,"+this.initObject.currentProvider.name+",,"+
+                                        ( this.initObject.currentProvider.country ? 
+                                            (this.initObject.currentProvider.country.id+",,"+
+                                            this.initObject.currentProvider.country.title+",,"+
+                                            this.initObject.currentProvider.country.continentCode+",,"+
+                                            this.initObject.currentProvider.country.isocode)
+                                            : "null,,null,,null,,null")
+                                })
+                                //console.log(this.state.currentProviders);
+                            })
+                            .catch(err=> {
+                                console.log(err);
+                            })
+                            operatorsGet()
+                            .then(response => {
+                                console.log(response);
+                                this.setState({
+                                    operators: response.data,
+                                    operator: this.initObject.operator.id+",,"+this.initObject.operator.title+",,"+this.initObject.operator.websiteUrl+",,"+this.initObject.operator.comments+",,"+this.initObject.operator.primaryPhone+",,"+this.initObject.operator.secondaryPhone+","
+                                    +this.initObject.operator.isPrivateIndividual+",,"+this.initObject.operator.bookingUrl+",,"+this.initObject.operator.contactEmail+",,"+this.initObject.operator.isRestrictedEdit+",,"+this.initObject.operator.faultReportEmail
+                                })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                            statusTypesGet()
+                            .then(response=>{
+                                this.setState({
+                                    statusTypes: response.data,
+                                    statusType: this.initObject.statusType.id+",,"+
+                                        this.initObject.statusType.title+",,"+
+                                        this.initObject.statusType.isOperational+",,"+
+                                        this.initObject.statusType.isUserSelectable,
+                                })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                            usageTypesGet()
+                            .then(response => {
+                                console.log(response);
+                                this.setState({
+                                    usageTypes: response.data,
+                                    usageType: this.initObject.usageType.id+",,"+
+                                        this.initObject.usageType.title+",,"+
+                                        this.initObject.usageType.isMembershipRequired
+                                })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                            stationOwnerOBJECTGet(this.state.userId)
+                            .then(response => {
+                                console.log(response);
+                                this.setState({
+                                    stationOwner: response.data
+                                });
+                                console.log(this.state.stationOwner);
+                            })
+                            .catch(err=> {
+                                console.log(err);
+                            })
                         })
                         .catch(err=> {
                             console.log(err);
                         })
-                    })
-                    .catch(err=> {
-                        console.log(err);
-                    })
-                }
-                else {
-                    this.setState({
-                        error: "Only the station owner is allowed to update the station's information",
-                    })
-                    console.log(this.state.error);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    error: "You don't own any stations"
+                    }
+                    else {
+                        this.setState({
+                            error: "Only the station owner is allowed to update the station's information",
+                        })
+                        console.log(this.state.error);
+                    }
                 })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        error: "You don't own any stations"
+                    })
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
             })
-        }
+        })
 
 
     }
@@ -430,10 +444,10 @@ class UpdateStation extends React.Component {
 
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
-                    message="You need to create an account as a station owner to have access to your stations listing feature"
+                    message="You need to create an account as a station owner to update one of your stations"
                     linkMessage="Create an account"
                     link="/register" 
                 />

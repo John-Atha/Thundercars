@@ -1,12 +1,10 @@
 import React from 'react';
 import './MyStationStatistics.css';
-import {getStationStats, getStations} from './api'
+import {getStationStats, getStations, isLogged} from './api'
 import MyNavbar from './MyNavbar'; 
 import CanvasJSReact from './canvasjs.react';
 import UnAuthorized from './UnAuthorized';
 
-//var CanvasJSReact = require('./canvasjs.react');
-//var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class StationStatisticsDiv extends React.Component {
@@ -291,6 +289,7 @@ class MyStationStatistics extends React.Component {
             stationsList: [],
             startDate: "2021-01-27",
             endDate: "",
+            logged: false,
         }
 
         // because names contain space char and values cannot be retrieved
@@ -303,8 +302,12 @@ class MyStationStatistics extends React.Component {
     }
 
     componentDidMount () {
-        
-        if (this.state.role==="StationOwner") {
+        isLogged()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                logged: true,
+            })
             getStations(this.state.userId)
             .then( response => {
                 console.log(response);
@@ -319,7 +322,13 @@ class MyStationStatistics extends React.Component {
                     error: true,
                 })
             })
-        }
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
+            })
+        })
     }
 
     handleInput = (e) => {
@@ -333,7 +342,7 @@ class MyStationStatistics extends React.Component {
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the statistics feature"
