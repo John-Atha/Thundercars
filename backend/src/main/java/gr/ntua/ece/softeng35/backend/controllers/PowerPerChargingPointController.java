@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.PowerPerChargingPointRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class PowerPerChargingPointController {
+public class PowerPerChargingPointController {
   private final PowerPerChargingPointRepository repository;
   private final UserRepository repository2;
 
