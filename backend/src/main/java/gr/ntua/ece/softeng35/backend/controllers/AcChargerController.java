@@ -7,21 +7,29 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.AcCharger;
 import gr.ntua.ece.softeng35.backend.models.AcChargerRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
+
 @RestController
 public class AcChargerController {
   private final AcChargerRepository repository;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  AcChargerController(AcChargerRepository repository, UserRepository repository2) {
+  AcChargerController(AcChargerRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   /*
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/admin/acchargers")
-  List<AcCharger> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/admin/acchargers")
+  List<AcCharger> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+            CliController2 validator = new CliController2(repository2, repository1, repository3);
+
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -32,9 +40,9 @@ public class AcChargerController {
   */
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/acchargersmod")
-  AcCharger newAcCharger(@RequestBody AcCharger newAcCharger,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/acchargersmod")
+  AcCharger newAcCharger(@RequestBody AcCharger newAcCharger,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -50,9 +58,9 @@ public class AcChargerController {
   }*/
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/acchargersmod/{id}")
-  AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/acchargersmod/{id}")
+  AcCharger replaceAcCharger(@RequestBody AcCharger newAccharger, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -68,9 +76,9 @@ public class AcChargerController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/acchargersmod/{id}")
-  void deleteAcCharger(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/acchargersmod/{id}")
+  void deleteAcCharger(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();

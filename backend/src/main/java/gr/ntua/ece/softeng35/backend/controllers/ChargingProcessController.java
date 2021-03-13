@@ -16,6 +16,8 @@ import gr.ntua.ece.softeng35.backend.models.Operator;
 import gr.ntua.ece.softeng35.backend.models.ChargingStation;
 import gr.ntua.ece.softeng35.backend.models.ChargingStationRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;    
@@ -27,19 +29,24 @@ import java.lang.*;
 import org.json.*;
 
 @RestController
-class ChargingProcessController {
+public class ChargingProcessController {
 
   private final ChargingProcessRepository repository;
   private final UserRepository repository2;
-  ChargingProcessController(ChargingProcessRepository repository, UserRepository repository2) {
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
+
+  ChargingProcessController(ChargingProcessRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/chargingprocesses")
-  List<ChargingProcess> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/chargingprocesses")
+  List<ChargingProcess> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -58,16 +65,16 @@ class ChargingProcessController {
   */
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerPoint",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}/{startDate}",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}/{startDate}/{endDate}"})
+  @GetMapping(value = {"/evcharge/api/SessionsPerPoint",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}/{endDate}"})
   Object spotProcess(@PathVariable Optional<Integer> stationSpotId,
                            @PathVariable Optional<String> startDate,
                            @PathVariable Optional<String> endDate,
                            @RequestParam(value = "format") Optional<String> format,
-                           @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                           @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -457,16 +464,16 @@ class ChargingProcessController {
   //If format given is csv,this means "?format=csv",we define a new Mapping and handle this separately.
   //csvspotProcess(...) returns a csv containing the same values as the JSONs returned above
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerPoint",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}/{startDate}",
-                       "/evcharge/api/{apikey}/SessionsPerPoint/{stationSpotId}/{startDate}/{endDate}"},
+  @GetMapping(value = {"/evcharge/api/SessionsPerPoint",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}",
+                       "/evcharge/api/SessionsPerPoint/{stationSpotId}/{startDate}/{endDate}"},
                        params ="format=csv" )
   String csvspotProcess(@PathVariable Optional<Integer> stationSpotId,
                         @PathVariable Optional<String> startDate,
                         @PathVariable Optional<String> endDate,
-                        @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                        @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -788,16 +795,16 @@ LocalDateTime now = LocalDateTime.now();
   */
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerStation",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}/{startDate}/{endDate}",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}/{startDate}"})
+  @GetMapping(value = {"/evcharge/api/SessionsPerStation",
+                       "/evcharge/api/SessionsPerStation/{stationId}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}/{endDate}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}"})
   JsonNode stationProcess(@PathVariable Optional<Integer> stationId,
                                        @PathVariable Optional<String> startDate, 
                                        @PathVariable Optional<String> endDate,
                                        @RequestParam Optional<String> format,
-                                       @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                                       @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -1289,16 +1296,16 @@ LocalDateTime now = LocalDateTime.now();
   
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerStation",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}/{startDate}/{endDate}",
-                       "/evcharge/api/{apikey}/SessionsPerStation/{stationId}/{startDate}"},
+  @GetMapping(value = {"/evcharge/api/SessionsPerStation",
+                       "/evcharge/api/SessionsPerStation/{stationId}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}/{endDate}",
+                       "/evcharge/api/SessionsPerStation/{stationId}/{startDate}"},
                        params = "format=csv")
   String csvstationProcess(@PathVariable Optional<Integer> stationId,
                         @PathVariable Optional<String> startDate,
                         @PathVariable Optional<String> endDate,
-                        @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                        @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -1711,16 +1718,16 @@ LocalDateTime now = LocalDateTime.now();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = { "evcharge/api/{apikey}/SessionsPerEV",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"})
+  @GetMapping(value = { "evcharge/api/SessionsPerEV",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"})
   JsonNode vehicleProcess(@PathVariable Optional<Integer> userHasVehicleId,
                           @PathVariable Optional<String> startDate,
                           @PathVariable Optional<String> endDate,
                           @RequestParam Optional<String> format,
-                          @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                          @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -2239,17 +2246,17 @@ LocalDateTime now = LocalDateTime.now();
   }
  
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = { "evcharge/api/{apikey}/SessionsPerEV",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}",
-                        "evcharge/api/{apikey}/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"},
+  @GetMapping(value = { "evcharge/api/SessionsPerEV",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}",
+                        "evcharge/api/SessionsPerEV/{userHasVehicleId}/{startDate}/{endDate}"},
                         params="format=csv")
   String csvvehicleProcess(@PathVariable Optional<Integer> userHasVehicleId,
                           @PathVariable Optional<String> startDate,
                           @PathVariable Optional<String> endDate,
-                          @PathVariable String apikey) {
+                          @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
     
-    CliController validator = new CliController(repository2);
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -2683,16 +2690,16 @@ LocalDateTime now = LocalDateTime.now();
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerProvider",
-                       "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}",
-                       "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}/{startDate}",
-                       "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}/{startDate}/{endDate}"})
+  @GetMapping(value = {"/evcharge/api/SessionsPerProvider",
+                       "/evcharge/api/SessionsPerProvider/{providerId}",
+                       "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}",
+                       "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}/{endDate}"})
   JsonNode providerProcess(@PathVariable Optional<Integer> providerId,
                            @PathVariable Optional<String> startDate,
                            @PathVariable Optional<String> endDate,
                            @RequestParam Optional<String> format,
-                           @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                           @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -3105,16 +3112,16 @@ LocalDateTime now = LocalDateTime.now();
   }
 
 @CrossOrigin(origins = "http://localhost:3000")
-@GetMapping(value = {"/evcharge/api/{apikey}/SessionsPerProvider",
-                     "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}",
-                     "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}/{startDate}",
-                     "/evcharge/api/{apikey}/SessionsPerProvider/{providerId}/{startDate}/{endDate}"},
+@GetMapping(value = {"/evcharge/api/SessionsPerProvider",
+                     "/evcharge/api/SessionsPerProvider/{providerId}",
+                     "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}",
+                     "/evcharge/api/SessionsPerProvider/{providerId}/{startDate}/{endDate}"},
                      params="format=csv")
 String csvproviderProcess(@PathVariable Optional<Integer> providerId,
                          @PathVariable Optional<String> startDate,
                          @PathVariable Optional<String> endDate,
-                         @PathVariable String apikey) {
-  CliController validator = new CliController(repository2);
+                         @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+  CliController2 validator = new CliController2(repository2, repository1, repository3);
 
   if (!validator.validate(apikey)){
     throw new NotAuthorizedException();
@@ -3453,9 +3460,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
 }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/chargingprocessesmod")
-  ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/chargingprocessesmod")
+  ChargingProcess newChargingProcess(@RequestBody ChargingProcess newChargingProcess,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -3464,9 +3471,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/chargingprocesses/{id}")
-  ChargingProcess one(@PathVariable Integer id,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/chargingprocesses/{id}")
+  ChargingProcess one(@PathVariable Integer id,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -3476,9 +3483,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/chargingprocessesmod/{id}")
-  ChargingProcess replaceChargingProcess(@RequestBody ChargingProcess newChargingProcess, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/chargingprocessesmod/{id}")
+  ChargingProcess replaceChargingProcess(@RequestBody ChargingProcess newChargingProcess, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -3504,9 +3511,9 @@ String csvproviderProcess(@PathVariable Optional<Integer> providerId,
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/chargingprocessesmod/{id}")
-  void deleteChargingProcess(@PathVariable Integer id,@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/chargingprocessesmod/{id}")
+  void deleteChargingProcess(@PathVariable Integer id,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();

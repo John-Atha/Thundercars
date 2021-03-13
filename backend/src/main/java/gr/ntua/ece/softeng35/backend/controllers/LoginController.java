@@ -33,15 +33,15 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 public class LoginController{
 
-    private final UserRepository repository;
+    private final UserRepository repository2;
     private final AdminRepository repository1;
-    private final StationOwnerRepository repository2;
+    private final StationOwnerRepository repository3;
     
 
-    LoginController(UserRepository repository, AdminRepository repository1, StationOwnerRepository repository2){
-        this.repository = repository;
-        this.repository1 = repository1;
+    LoginController(UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3){
         this.repository2 = repository2;
+        this.repository1 = repository1;
+        this.repository3 = repository3;
     }
 
 
@@ -92,13 +92,13 @@ public class LoginController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/login")
-    JsonNode userLogin(@PathVariable String apikey , @RequestBody MultiValueMap credMap ) {
-      CliController validator = new CliController(repository);
+    @PostMapping("/evcharge/api/login")
+    JsonNode userLogin(/*@RequestHeader("X-OBSERVATORY-AUTH") String apikey ,*/ @RequestBody MultiValueMap credMap) {
+      //CliController2 validator = new CliController2(repository2, repository1, repository3);
 
-      if (!validator.validate(apikey)){
-        throw new NotAuthorizedException();
-      }
+      //if (!validator.validate(apikey)){
+      //  throw new NotAuthorizedException();
+     // }
 
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode answer = mapper.createObjectNode();
@@ -117,7 +117,7 @@ public class LoginController{
         HashedPassword = getMd5(password);
         
         
-        List<Object> user = repository.findIdByAdminnameAndPassword(username, HashedPassword);
+        List<Object> user = repository2.findIdByAdminnameAndPassword(username, HashedPassword);
         if (user.size() != 0){
           Integer userId = (Integer) user.get(0);
           
@@ -143,9 +143,9 @@ public class LoginController{
           }
         }
 
-        user = repository.findStationOwnerIdByUsernameAndPassword(username, HashedPassword);
+        user = repository2.findStationOwnerIdByUsernameAndPassword(username, HashedPassword);
         if (user.size()==0) {
-          user = repository.findIdByUsernameAndPassword(username,HashedPassword);
+          user = repository2.findIdByUsernameAndPassword(username,HashedPassword);
           if (user.size() == 0){
             throw new BadRequestException();
           }
@@ -153,10 +153,10 @@ public class LoginController{
             Integer userId = (Integer) user.get(0);
 
             String token = generateToken();
-            repository.findById(userId)
+            repository2.findById(userId)
             .map(thisUser -> {
               thisUser.setApiKey(token);
-              return repository.save(thisUser);
+              return repository2.save(thisUser);
             })
             .orElseThrow(() -> new BadRequestException());
   
@@ -178,10 +178,10 @@ public class LoginController{
           Integer userId = (Integer) user.get(0);
           
           String token = generateToken();
-          repository2.findById(userId)
+          repository3.findById(userId)
           .map(thisUser -> {
             thisUser.setApiKey(token);
-            return repository2.save(thisUser);
+            return repository3.save(thisUser);
           })
           .orElseThrow(() -> new BadRequestException());
           

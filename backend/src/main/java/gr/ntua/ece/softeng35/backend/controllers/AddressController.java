@@ -7,21 +7,27 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.Address;
 import gr.ntua.ece.softeng35.backend.models.AddressRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 @RestController
-class AddressController {
+public class AddressController {
   private final AddressRepository repository;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  AddressController(AddressRepository repository, UserRepository repository2) {
+  AddressController(AddressRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/addresses")
-  List<Address> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/addresses")
+  List<Address> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -30,9 +36,9 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/addressesmod")
-  Address newAddress(@RequestBody Address newAddress, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/addressesmod")
+  Address newAddress(@RequestBody Address newAddress, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -41,9 +47,9 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/addresses/{id}")
-  Address one(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/addresses/{id}")
+  Address one(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -53,9 +59,9 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/addressesmod/{id}")
-  Address replaceAddress(@RequestBody Address newAddress, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/addressesmod/{id}")
+  Address replaceAddress(@RequestBody Address newAddress, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -83,9 +89,9 @@ class AddressController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/addressesmod/{id}")
-  void deleteAddress(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/addressesmod/{id}")
+  void deleteAddress(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();

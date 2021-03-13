@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import gr.ntua.ece.softeng35.backend.models.User;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -24,12 +26,16 @@ import org.json.*;
 
 
 @RestController
-class UserController {
-  private final UserRepository repository;
+public class UserController {
+  private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  UserController(UserRepository repository) {
-    this.repository = repository;
-  }
+  UserController(UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
+    this.repository1 = repository1;
+    this.repository2 = repository2;
+    this.repository3 = repository3;
+}
 
   public static String generateToken() {
     String key = new String();
@@ -50,30 +56,30 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/profile")
-  JsonNode myProfile(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @GetMapping("/evcharge/api/user/{id}/profile")
+  JsonNode myProfile(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    List<Integer> allUsers = repository.findAllUsersIds();
+    List<Integer> allUsers = repository2.findAllUsersIds();
     if (!allUsers.contains(id)) {
       throw new BadRequestException();
     }
     else {
-      List<List<Object>> info=repository.findInfoForUser(id);
+      List<List<Object>> info=repository2.findInfoForUser(id);
       List<Object> userBasic = info.get(0);
       if (userBasic.size()==0) {
         throw new NoDataFoundException();
       }
-      List<Integer> addresses=repository.findAddressForUser(id);
+      List<Integer> addresses=repository2.findAddressForUser(id);
       Integer addressId = addresses.get(0);
       Boolean hasAddress = true;
       Boolean hasCountry = true;
       List<List<Object>> addressInfo;
       List<Object> addressBasic = new ArrayList();
-      List<Integer> countries=repository.findCountryForUser(addressId);
+      List<Integer> countries=repository2.findCountryForUser(addressId);
       Integer countryId = null;
       if (countries.size()!=0) {
         countryId= countries.get(0);
@@ -85,7 +91,7 @@ class UserController {
         hasCountry=false;
       }
       else {
-        addressInfo = repository.findAddressInfoForUser(addressId);
+        addressInfo = repository2.findAddressInfoForUser(addressId);
         addressBasic = addressInfo.get(0);
       }
 
@@ -94,7 +100,7 @@ class UserController {
           hasCountry=false;
         }
         else {
-          countryInfo = repository.findCountryInfoForUser(countryId);
+          countryInfo = repository2.findCountryInfoForUser(countryId);
           countryBasic = countryInfo.get(0);
         }
       } 
@@ -141,19 +147,19 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/myvehicles")
-  JsonNode myVehicles(@PathVariable Integer id,@PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @GetMapping("/evcharge/api/user/{id}/myvehicles")
+  JsonNode myVehicles(@PathVariable Integer id,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    List<Integer> allUsers = repository.findAllUsersIds();
+    List<Integer> allUsers = repository2.findAllUsersIds();
     if (!allUsers.contains(id)) {
       throw new BadRequestException();
     }
     else {
-      List<Integer> vehicles = repository.findUserVehicles(id);
+      List<Integer> vehicles = repository2.findUserVehicles(id);
       if (vehicles.size()==0) {
         throw new NoDataFoundException();
       }
@@ -164,9 +170,9 @@ class UserController {
       for (Integer vehicleId : vehicles) {
         if (vehicleId!=null) {
           ObjectNode current = mapper.createObjectNode();
-          List<List<Object>> basicsListList = repository.findVehicleBasics(vehicleId);
-          List<Integer> acChargers = repository.findVehicleAcCharger(vehicleId);
-          List<Integer> dcChargers = repository.findVehicleDcCharger(vehicleId);
+          List<List<Object>> basicsListList = repository2.findVehicleBasics(vehicleId);
+          List<Integer> acChargers = repository2.findVehicleAcCharger(vehicleId);
+          List<Integer> dcChargers = repository2.findVehicleDcCharger(vehicleId);
           if (basicsListList.size()==0) {
             continue;  
           }
@@ -200,7 +206,7 @@ class UserController {
             ArrayNode PortNamesList = mapper.createArrayNode();
             
             for (Integer charger : acChargers) {
-              List<String> ports = repository.findAcChargerPortNames(charger);
+              List<String> ports = repository2.findAcChargerPortNames(charger);
               for (String name : ports) {
                 allPortNames.add(name);
               }            
@@ -229,7 +235,7 @@ class UserController {
             ArrayNode PortNamesList = mapper.createArrayNode();
             
             for (Integer charger : dcChargers) {
-              List<String> ports = repository.findDcChargerPortNames(charger);
+              List<String> ports = repository2.findDcChargerPortNames(charger);
               for (String name : ports) {
                 allPortNames.add(name);
               }            
@@ -259,17 +265,17 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/{apikey}/acchargers",
-                     "/evcharge/api/{apikey}/acchargers/{chargerid}"})
-  JsonNode acCharger(@PathVariable Optional<Integer> chargerid,@PathVariable String apikey) {       
-    CliController validator = new CliController(repository);
+  @GetMapping(value={"/evcharge/api/acchargers",
+                     "/evcharge/api/acchargers/{chargerid}"})
+  JsonNode acCharger(@PathVariable Optional<Integer> chargerid,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {       
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     } 
     
     if (!chargerid.isPresent()) {
-      List<Integer> allChargers = repository.findAllAcChargersIds();
+      List<Integer> allChargers = repository2.findAllAcChargersIds();
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode finalAnswer = mapper.createObjectNode();
       ArrayNode all = mapper.createArrayNode();
@@ -279,9 +285,9 @@ class UserController {
         ArrayNode portnamesList = mapper.createArrayNode();
         //ArrayNode PowerPerChargingList = mapper.createArrayNode();
 
-        List<List<Object>> basics = repository.findAcChargerBasics(i);
-        List<String> portnames = repository.findAcChargerPortNames(i);
-        List<List<Double>> PowerPerCharging = repository.findAcChargerPowerPerChargingPoint(i);
+        List<List<Object>> basics = repository2.findAcChargerBasics(i);
+        List<String> portnames = repository2.findAcChargerPortNames(i);
+        List<List<Double>> PowerPerCharging = repository2.findAcChargerPowerPerChargingPoint(i);
         if (basics.size()==0) {
           continue;
         }
@@ -333,7 +339,7 @@ class UserController {
       }
     }
     else {
-      List<Integer> allChargers = repository.findAllAcChargersIds();
+      List<Integer> allChargers = repository2.findAllAcChargersIds();
       if (!allChargers.contains(chargerid.get())) {
         throw new BadRequestException();
       }
@@ -342,9 +348,9 @@ class UserController {
       ArrayNode portnamesList = mapper.createArrayNode();
       //ArrayNode PowerPerChargingList = mapper.createArrayNode();
 
-      List<List<Object>> basics = repository.findAcChargerBasics(chargerid.get());
-      List<String> portnames = repository.findAcChargerPortNames(chargerid.get());
-      List<List<Double>> PowerPerCharging = repository.findAcChargerPowerPerChargingPoint(chargerid.get());
+      List<List<Object>> basics = repository2.findAcChargerBasics(chargerid.get());
+      List<String> portnames = repository2.findAcChargerPortNames(chargerid.get());
+      List<List<Double>> PowerPerCharging = repository2.findAcChargerPowerPerChargingPoint(chargerid.get());
       if (basics.size()==0) {
         throw new NoDataFoundException();
       }
@@ -395,16 +401,16 @@ class UserController {
    }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping(value={"/evcharge/api/{apikey}/dcchargers",
-                     "/evcharge/api/{apikey}/dcchargers/{chargerid}"})
-  JsonNode dcCharger(@PathVariable Optional<Integer> chargerid,@PathVariable String apikey) {  
-    CliController validator = new CliController(repository);
+  @GetMapping(value={"/evcharge/api/dcchargers",
+                     "/evcharge/api/dcchargers/{chargerid}"})
+  JsonNode dcCharger(@PathVariable Optional<Integer> chargerid,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {  
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }      
     if (!chargerid.isPresent()) {
-      List<Integer> allChargers = repository.findAllDcChargersIds();
+      List<Integer> allChargers = repository2.findAllDcChargersIds();
 
       ObjectMapper mapper = new ObjectMapper();
       ObjectNode finalAnswer = mapper.createObjectNode();
@@ -412,8 +418,8 @@ class UserController {
       for (Integer i : allChargers) {
         ObjectNode answer = mapper.createObjectNode();
         ArrayNode portnamesList = mapper.createArrayNode();
-        List<Object> basics = repository.findDcChargerBasics(i);
-        List<String> portnames = repository.findDcChargerPortNames(i);
+        List<Object> basics = repository2.findDcChargerBasics(i);
+        List<String> portnames = repository2.findDcChargerPortNames(i);
         
         if (basics.size()==0) {
           continue;
@@ -449,7 +455,7 @@ class UserController {
       }      
     }
     else {
-      List<Integer> allChargers = repository.findAllDcChargersIds();
+      List<Integer> allChargers = repository2.findAllDcChargersIds();
       if (!allChargers.contains(chargerid.get())) {
         throw new BadRequestException();
       }
@@ -458,8 +464,8 @@ class UserController {
       ArrayNode portnamesList = mapper.createArrayNode();
       //ArrayNode PowerPerChargingList = mapper.createArrayNode();
 
-      List<Object> basics = repository.findDcChargerBasics(chargerid.get());
-      List<String> portnames = repository.findDcChargerPortNames(chargerid.get());
+      List<Object> basics = repository2.findDcChargerBasics(chargerid.get());
+      List<String> portnames = repository2.findDcChargerPortNames(chargerid.get());
       
       if (basics.size()==0) {
         throw new NoDataFoundException();
@@ -495,9 +501,9 @@ class UserController {
   }
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions")
-  List<JsonNode> mySessions(@PathVariable Optional<Integer> id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @GetMapping("/evcharge/api/user/{id}/mysessions")
+  List<JsonNode> mySessions(@PathVariable Optional<Integer> id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -511,7 +517,7 @@ class UserController {
             ObjectNode answer = mapper.createObjectNode();
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
 
-            List<List<Object>> ChargingProcesses = repository.findByProcessesByUser(id.get());
+            List<List<Object>> ChargingProcesses = repository2.findByProcessesByUser(id.get());
             if(ChargingProcesses.size() ==0) 
             {
               ;
@@ -551,7 +557,7 @@ class UserController {
             ObjectNode answer2 = mapper.createObjectNode();
             ArrayNode AllStations2 = mapper.createArrayNode();
 
-            List<List<Object>> allStations = repository.findByStationsVisitedByUser(id.get());
+            List<List<Object>> allStations = repository2.findByStationsVisitedByUser(id.get());
             if (allStations.size()==0) {
               ;
             }
@@ -584,7 +590,7 @@ class UserController {
             ObjectNode answer3 = mapper.createObjectNode();
             ArrayNode AllProviders = mapper.createArrayNode();
 
-            List<List<Object>> allProviders = repository.findByProviderVisitedByUser(id.get());
+            List<List<Object>> allProviders = repository2.findByProviderVisitedByUser(id.get());
             if (allProviders.size()==0) {
               ;
             }
@@ -606,7 +612,7 @@ class UserController {
             ObjectNode answer4 = mapper.createObjectNode();
             ArrayNode AllCars = mapper.createArrayNode();
 
-            List<List<Object>> allCars = repository.findByVehicleByUser(id.get());
+            List<List<Object>> allCars = repository2.findByVehicleByUser(id.get());
             if (allCars.size()==0) {
               ;
             }
@@ -659,11 +665,11 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/perstation/{stationid}")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/perstation/{stationid}")
   JsonNode mySessions(@PathVariable Optional<Integer> id,
                       @PathVariable Optional<Integer> stationid,
-                      @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+                      @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -678,14 +684,14 @@ class UserController {
             ObjectNode answer = mapper.createObjectNode();
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
                     
-            List<List<Object>> temp = repository.findByStationForUser(stationid.get(),id.get());
+            List<List<Object>> temp = repository2.findByStationForUser(stationid.get(),id.get());
             if (temp.size()==0) {
               throw new NoDataFoundException();
             }
             Boolean flag = false;
 
             /* retrieve sums from sessions  */
-            List<List<Object>> PointsSessions = repository.findBySumsByStationForUser(stationid.get(),id.get());
+            List<List<Object>> PointsSessions = repository2.findBySumsByStationForUser(stationid.get(),id.get());
             if (PointsSessions.size()==0) {
               throw new NoDataFoundException();
             }
@@ -719,10 +725,10 @@ class UserController {
             /*Integer spotid = (Integer) PointsSessions.get(0);
             Integer stationId = stationid.get();
             PointsSessions.remove(0);
-            Integer stationspotid = repository.findStationSpotId(stationId, spotid, id.get());
+            Integer stationspotid = repository2.findStationSpotId(stationId, spotid, id.get());
             PointsSessions.add(0, stationspotid);*/
 
-            List<List<Object>> ChargingProcesses = repository.findByStationByUser(stationid.get(), id.get());
+            List<List<Object>> ChargingProcesses = repository2.findByStationByUser(stationid.get(), id.get());
             if (ChargingProcesses.size()==0) {
               throw new NoDataFoundException();
             }
@@ -770,12 +776,12 @@ class UserController {
 }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/perprovider/{providerid}")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/perprovider/{providerid}")
   JsonNode myProvSessions(@PathVariable Optional<Integer> id,
                       @PathVariable Optional<Integer> providerid,
-                      @PathVariable String apikey) {
+                      @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
 
-    CliController validator = new CliController(repository);
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -790,7 +796,7 @@ class UserController {
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
 
             /* retrieve sums from sessions  */
-            List<List<Object>> PointsSessions = repository.findBySumsByProvider(id.get(),providerid.get());
+            List<List<Object>> PointsSessions = repository2.findBySumsByProvider(id.get(),providerid.get());
             if (PointsSessions.size()==0) {
               throw new NoDataFoundException();
             }
@@ -804,7 +810,7 @@ class UserController {
             answer.put("Average Cost per kWh", Math.round(avgCost*100d)/100d);
             answer.put("Request Time", PointsSessions.get(0).get(5).toString());  // current time
             
-            List<List<Object>> ProvidersSess = repository.findByProcessesByProvider(id.get(),providerid.get());
+            List<List<Object>> ProvidersSess = repository2.findByProcessesByProvider(id.get(),providerid.get());
             
             if (ProvidersSess.size()==0) {
               throw new NoDataFoundException();
@@ -854,11 +860,11 @@ class UserController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/mysessions/pervehicle/{vehicleid}")
+  @GetMapping("/evcharge/api/user/{id}/mysessions/pervehicle/{vehicleid}")
   JsonNode myEVSessions(@PathVariable Optional<Integer> id,
                       @PathVariable Optional<Integer> vehicleid,
-                      @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+                      @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -873,7 +879,7 @@ class UserController {
             ObjectNode answer = mapper.createObjectNode();
             ArrayNode ChargingSessionsList = mapper.createArrayNode();
 
-            List<List<Object>> allCars = repository.findBySpecificVehicleByUser(id.get(),vehicleid.get());
+            List<List<Object>> allCars = repository2.findBySpecificVehicleByUser(id.get(),vehicleid.get());
             if (allCars.size()==0) {
               throw new NoDataFoundException();
             }
@@ -896,7 +902,7 @@ class UserController {
                 answer.put("Total Vehicle's Cost",Math.round(totCost*100d)/100d);
             }
             
-            List<List<Object>> VehiclesSess = repository.findByProcessesByVehicle(id.get(),vehicleid.get());
+            List<List<Object>> VehiclesSess = repository2.findByProcessesByVehicle(id.get(),vehicleid.get());
             
             if (VehiclesSess.size()==0) {
               throw new NoDataFoundException();
@@ -946,65 +952,65 @@ class UserController {
 
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/users")
-  List<User> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @GetMapping("/evcharge/api/users")
+  List<User> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findAll();
+    return repository2.findAll();
   }
   
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/usersmod")
-  User newUser(@RequestBody User newUser, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @PostMapping("/evcharge/api/usersmod")
+  User newUser(@RequestBody User newUser, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
     newUser.setApiKey(generateToken());
-    return repository.save(newUser);
+    return repository2.save(newUser);
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/users/{id}")
-  User one(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @GetMapping("/evcharge/api/users/{id}")
+  User one(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository2.findById(id)
       .orElseThrow(() -> new NoDataFoundException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/usersmod/{id}")
-  User replaceUser(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @PutMapping("/evcharge/api/usersmod/{id}")
+  User replaceUser(@RequestBody User newUser, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository2.findById(id)
       .map(user -> {
         user.setUsername(newUser.getUsername());
-        return repository.save(user);
+        return repository2.save(user);
       })
       .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/usersmodandpass/{id}")
-  User replaceUserWithPass(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @PutMapping("/evcharge/api/usersmodandpass/{id}")
+  User replaceUserWithPass(@RequestBody User newUser, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository2.findById(id)
       .map(user -> {
         user.setUsername(newUser.getUsername());
         user.setPassword(newUser.getPassword());
@@ -1014,20 +1020,20 @@ class UserController {
         user.setUserAddress(newUser.getUserAddress());
         user.setDateOfBirth(newUser.getDateOfBirth());
         user.setApiKey(newUser.getapiKey());
-        return repository.save(user);
+        return repository2.save(user);
       })
       .orElseThrow(() -> new BadRequestException());
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/usersmodnopass/{id}")
-  User replaceUserNoPass(@RequestBody User newUser, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @PutMapping("/evcharge/api/usersmodnopass/{id}")
+  User replaceUserNoPass(@RequestBody User newUser, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    return repository.findById(id)
+    return repository2.findById(id)
       .map(user -> {
         user.setUsername(newUser.getUsername());
         user.setEmailAddr(newUser.getEmailAddr());
@@ -1036,7 +1042,7 @@ class UserController {
         user.setUserAddress(newUser.getUserAddress());
         user.setDateOfBirth(newUser.getDateOfBirth());
         user.setApiKey(newUser.getapiKey());
-        return repository.save(user);
+        return repository2.save(user);
       })
       .orElseThrow(() -> new BadRequestException());
   }
@@ -1044,13 +1050,13 @@ class UserController {
 
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/usersmod/{id}")
-  void deleteUser(@PathVariable Integer id,@PathVariable String apikey) {
-    CliController validator = new CliController(repository);
+  @DeleteMapping("/evcharge/api/usersmod/{id}")
+  void deleteUser(@PathVariable Integer id,@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
     }
-    repository.deleteById(id);
+    repository2.deleteById(id);
   }
 }

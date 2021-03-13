@@ -16,6 +16,8 @@ import gr.ntua.ece.softeng35.backend.models.UserRepository;
 import gr.ntua.ece.softeng35.backend.models.StationOwner;
 import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,12 +34,14 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 public class AdminController{
     
-    private final UserRepository repository;
-    private final StationOwnerRepository repository2;
+    private final UserRepository repository2;
+    private final StationOwnerRepository repository3;
+    private final AdminRepository repository1;
 
-    AdminController(UserRepository repository, StationOwnerRepository repository2){
-        this.repository = repository;
+    AdminController(UserRepository repository2, StationOwnerRepository repository3, AdminRepository repository1){
+        this.repository1 = repository1;
         this.repository2 = repository2;
+        this.repository3 = repository3;
     }
 
     
@@ -70,25 +74,9 @@ public class AdminController{
     
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/{apikey}/admin/users/{username}")
-    User oneUser(@PathVariable String username, @PathVariable String apikey) {
-        CliController validator = new CliController(repository);
-
-        if (!validator.validate(apikey)){
-          throw new NotAuthorizedException();
-        }
-        if (repository.findByUsername(username)!=null) {
-            return repository.findByUsername(username);
-        }
-        else {
-            throw new NoDataFoundException();
-        }
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/{apikey}/admin/stationowners/{username}")
-    StationOwner oneOwner(@PathVariable String username, @PathVariable String apikey) {
-        CliController validator = new CliController(repository);
+    @GetMapping("/evcharge/api/admin/users/{username}")
+    User oneUser(@PathVariable String username, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
           throw new NotAuthorizedException();
@@ -102,57 +90,73 @@ public class AdminController{
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/admin/usermod/{username}/{password}")
-    User newUser(@PathVariable String username,
-                 @PathVariable String password,
-                 @PathVariable String apikey) {
-        CliController validator = new CliController(repository);
+    @GetMapping("/evcharge/api/admin/stationowners/{username}")
+    StationOwner oneOwner(@PathVariable String username, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
           throw new NotAuthorizedException();
-        }             
-        List<String> Usernames = repository.findAllUsernames();
-        if (Usernames.contains(username)) {
-            User user1 = repository.findByUsername(username);
-            String givenPassword = password;
-            String newPassword =  getMd5(givenPassword);
-            user1.setPassword(newPassword);
-            return repository.save(user1);
+        }
+        if (repository3.findByUsername(username)!=null) {
+            return repository3.findByUsername(username);
         }
         else {
-            User newUser = new User();
-            newUser.setUsername(username);
-            String newPassword = getMd5(password);
-            newUser.setPassword(newPassword);
-            return repository.save(newUser);
+            throw new NoDataFoundException();
         }
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/admin/stationownermod/{username}/{password}")
-    StationOwner newOwner(@PathVariable String username,
+    @PostMapping("/evcharge/api/admin/usermod/{username}/{password}")
+    User newUser(@PathVariable String username,
                  @PathVariable String password,
-                 @PathVariable String apikey) {
-
-        CliController validator = new CliController(repository);
+                 @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
           throw new NotAuthorizedException();
-        }
+        }             
         List<String> Usernames = repository2.findAllUsernames();
         if (Usernames.contains(username)) {
-            StationOwner user1 = repository2.findByUsername(username);
+            User user1 = repository2.findByUsername(username);
             String givenPassword = password;
             String newPassword =  getMd5(givenPassword);
             user1.setPassword(newPassword);
             return repository2.save(user1);
         }
         else {
-            StationOwner newUser = new StationOwner();
+            User newUser = new User();
             newUser.setUsername(username);
             String newPassword = getMd5(password);
             newUser.setPassword(newPassword);
             return repository2.save(newUser);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/evcharge/api/admin/stationownermod/{username}/{password}")
+    StationOwner newOwner(@PathVariable String username,
+                 @PathVariable String password,
+                 @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
+
+        if (!validator.validate(apikey)){
+          throw new NotAuthorizedException();
+        }
+        List<String> Usernames = repository3.findAllUsernames();
+        if (Usernames.contains(username)) {
+            StationOwner user1 = repository3.findByUsername(username);
+            String givenPassword = password;
+            String newPassword =  getMd5(givenPassword);
+            user1.setPassword(newPassword);
+            return repository3.save(user1);
+        }
+        else {
+            StationOwner newUser = new StationOwner();
+            newUser.setUsername(username);
+            String newPassword = getMd5(password);
+            newUser.setPassword(newPassword);
+            return repository3.save(newUser);
         }
     }
 }

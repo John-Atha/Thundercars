@@ -19,6 +19,8 @@ import gr.ntua.ece.softeng35.backend.models.ChargingSpotRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 import gr.ntua.ece.softeng35.backend.models.VehicleRepository;
 import gr.ntua.ece.softeng35.backend.models.ChargingProcess;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 
 import java.text.SimpleDateFormat;
@@ -32,30 +34,35 @@ import org.json.*;
 import java.io.*;
 
 @RestController
-class CsvProcesses{
+public class CsvProcesses{
 
     ChargingProcessRepository newRepository;
     VehicleRepository newVehicle;
     ChargingSpotRepository newCharSpot;
     ChargingStationRepository newCharStation;
-    UserRepository newUser;
+    UserRepository repository2;
+    AdminRepository repository1;
+    StationOwnerRepository repository3;
 
-    CsvProcesses(ChargingProcessRepository newRepository,UserRepository newUser,
+    CsvProcesses(ChargingProcessRepository newRepository,UserRepository repository2,
                            ChargingStationRepository newCharStation, ChargingSpotRepository newCharSpot,
-                           VehicleRepository newVehicle) 
+                           VehicleRepository newVehicle, AdminRepository repository1, StationOwnerRepository repository3) 
     {
         this.newRepository = newRepository;
         this.newVehicle = newVehicle;
-        this.newUser = newUser;
+        this.repository2 = repository2;
         this.newCharStation = newCharStation;
         this.newCharSpot = newCharSpot;
+        this.repository1 = repository1;
+        this.repository3 = repository3;
+
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/admin/system/sessionsupd")
-    JsonNode CsvUpload(@RequestParam MultipartFile file,@PathVariable String apikey) {
+    @PostMapping("/evcharge/api/admin/system/sessionsupd")
+    JsonNode CsvUpload(@RequestParam MultipartFile file, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
 
-        CliController validator = new CliController(newUser);
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
             throw new NotAuthorizedException();
@@ -198,11 +205,11 @@ class CsvProcesses{
                         newCharProc.setChargingStation((newCharStation.findById(Integer.parseInt(data[stationidx]))).get());
                     }
                     //findbyid returns optional so we check if it is present 
-                    if(!newUser.findById(Integer.parseInt(data[useridx])).isPresent()) {
+                    if(!repository2.findById(Integer.parseInt(data[useridx])).isPresent()) {
                         newCharProc.setUser(null);  
                     }
                     else {
-                        newCharProc.setUser((newUser.findById(Integer.parseInt(data[useridx]))).get());  
+                        newCharProc.setUser((repository2.findById(Integer.parseInt(data[useridx]))).get());  
                     }
                     newRepository.save(newCharProc);
                 }

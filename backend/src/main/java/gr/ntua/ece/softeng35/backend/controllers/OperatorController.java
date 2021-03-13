@@ -7,21 +7,27 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.Operator;
 import gr.ntua.ece.softeng35.backend.models.OperatorRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 @RestController
 public class OperatorController {
   private final OperatorRepository repository;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  OperatorController(OperatorRepository repository, UserRepository repository2) {
+  OperatorController(OperatorRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/operators")
-  List<Operator> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/operators")
+  List<Operator> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -30,9 +36,9 @@ public class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/operatorsmod")
-  Operator newOperator(@RequestBody Operator newOperator, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/operatorsmod")
+  Operator newOperator(@RequestBody Operator newOperator, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -41,9 +47,9 @@ public class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/operators/{id}")
-  Operator one(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/operators/{id}")
+  Operator one(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -53,9 +59,9 @@ public class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/operatorsmod/{id}")
-  Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/operatorsmod/{id}")
+  Operator replaceOperator(@RequestBody Operator newOperator, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -78,9 +84,9 @@ public class OperatorController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/operatorsmod/{id}")
-  void deleteOperator(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/operatorsmod/{id}")
+  void deleteOperator(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
