@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.UserAddressRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class UserAddressController {
+public class UserAddressController {
   private final UserAddressRepository repository;
   private final UserRepository repository2;
 
