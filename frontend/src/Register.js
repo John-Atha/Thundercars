@@ -139,6 +139,7 @@ class Register extends React.Component {
                 console.log(response);
                 localStorage.setItem('userId', response.data.id);
                 localStorage.setItem('role', this.state.role);
+                localStorage.setItem('token', response.data.apiKey);
                 window.location.href="/";
             })
             .catch(err => {
