@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.LevelRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class LevelController {
+public class LevelController {
   private final LevelRepository repository;
   private final UserRepository repository2;
 
