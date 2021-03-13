@@ -1,12 +1,8 @@
 import React from 'react';
 import './VehiclesDetailedSessions.css';
-import {getVehicles, getAllUserVehicle, getVehicleSessions} from './api';
+import {getVehicles, getAllUserVehicle, getVehicleSessions, isLogged} from './api';
 import MyNavbar from './MyNavbar';
 import UnAuthorized from './UnAuthorized';
-
-//import CanvasJSReact from './canvasjs.react';
-//var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
 
 class OneSession extends React.Component {
     constructor(props){
@@ -243,6 +239,7 @@ class VehiclesDetailedSessions extends React.Component {
             startDate: "2019-01-01",
             endDate: "",
             noVehicles: false,
+            logged: false,
         }
         this.showingVehId = null;
         this.attr1="Vehicles List";
@@ -251,25 +248,38 @@ class VehiclesDetailedSessions extends React.Component {
     }
 
     componentDidMount() {
-        getVehicles(this.state.userId)
-        .then( response => {
+        isLogged()
+        .then(response => {
             console.log(response);
-            let tempVehiclesList = [];
-            response.data[this.attr1].forEach(element => {
-                tempVehiclesList.push([element.Vehicle, element.Brand+" "+element.Type]);     // spot's id
-            });
             this.setState({
-                vehList: tempVehiclesList,
-                //showingVehId: tempVehiclesList[0][0],
-            });
-            console.log("Vehicles: ");
-            console.log(this.state.vehList);
-            //console.log(this.state.showingVehId);
+                logged: true,
+            })
+            getVehicles(this.state.userId)
+            .then( response => {
+                console.log(response);
+                let tempVehiclesList = [];
+                response.data[this.attr1].forEach(element => {
+                    tempVehiclesList.push([element.Vehicle, element.Brand+" "+element.Type]);     // spot's id
+                });
+                this.setState({
+                    vehList: tempVehiclesList,
+                    //showingVehId: tempVehiclesList[0][0],
+                });
+                console.log("Vehicles: ");
+                console.log(this.state.vehList);
+                //console.log(this.state.showingVehId);
+            })
+            .catch(err=> {
+                console.log(err);
+                this.setState({
+                    noVehicles: true,
+                })
+            })
         })
-        .catch(err=> {
+        .catch(err => {
             console.log(err);
             this.setState({
-                noVehicles: true,
+                logged: false,
             })
         })
     }
@@ -296,7 +306,7 @@ class VehiclesDetailedSessions extends React.Component {
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the detailed sessions history feature"

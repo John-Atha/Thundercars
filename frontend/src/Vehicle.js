@@ -1,6 +1,6 @@
 import React from 'react';
 import './Vehicle.css';
-import {getOneVehicle, getAllUserVehicle, UserVehicleDelete} from './api'
+import {getOneVehicle, getAllUserVehicle, UserVehicleDelete, isLogged} from './api'
 import MyNavBar from './MyNavbar'; 
 import UnAuthorized from './UnAuthorized'
 
@@ -27,6 +27,7 @@ class Vehicle extends React.Component {
             dcChargerTypes: null,
             error: null,
             showModal: false,
+            logged: false,
         }
 
         this.attr1Name = "Release Year"
@@ -43,60 +44,73 @@ class Vehicle extends React.Component {
     }    
 
     componentDidMount () {
-        getOneVehicle(this.state.userId,this.state.vehId)
+        isLogged()
         .then(response => {
             console.log(response);
             this.setState({
-                brand: response.data.Brand ? (response.data.Brand.length!==0 ? response.data.Brand : "-") : "-",
-                type: response.data.Type ? (response.data.Type.length!==0 ? response.data.Type : "-") : "-",
-                model : response.data.Model ?(response.data.Model.length!==0 ? response.data.Model : "-"): "-",
-                releaseYear : response.data[this.attr1Name] ? (response.data[this.attr1Name].length !==0 ? response.data[this.attr1Name] : "-"):"-",
-                usableBatterySize : response.data[this.attr2Name] ? (response.data[this.attr2Name].length !==0 ? response.data[this.attr2Name] : "-"):"-",
-                energyConsumption :response.data[this.attr3Name] ? (response.data[this.attr3Name].length !==0 ? response.data[this.attr3Name] : "-"):"-",
-                acCharging : response.data[this.attr4Name] ? (response.data[this.attr4Name].length !==0 ? response.data[this.attr4Name] : "-"):"-",
-                acChargers : response.data[this.attr5Name] ? (response.data[this.attr5Name].length !==0 ? response.data[this.attr5Name] : "-"):"-",
-                dcCharging : response.data[this.attr6Name] ? (response.data[this.attr6Name].length !==0 ? response.data[this.attr6Name] : "-"):"-",
-                dcChargers : response.data[this.attr7Name] ? (response.data[this.attr7Name].length !==0 ? response.data[this.attr7Name] : "-"):"-",
-                acChargerId : response.data.AcChargers[0].AcCharger ? (response.data.AcChargers[0].AcCharger.length !== 0 ? response.data.AcChargers[0].AcCharger : "-"):"-",
-                dcChargerId : response.data.DcChargers[0].DcCharger ? (response.data.DcChargers[0].DcCharger.length !== 0 ? response.data.DcChargers[0].DcCharger : "-"):"-"
+                logged: true,
             })
+            getOneVehicle(this.state.userId,this.state.vehId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    brand: response.data.Brand ? (response.data.Brand.length!==0 ? response.data.Brand : "-") : "-",
+                    type: response.data.Type ? (response.data.Type.length!==0 ? response.data.Type : "-") : "-",
+                    model : response.data.Model ?(response.data.Model.length!==0 ? response.data.Model : "-"): "-",
+                    releaseYear : response.data[this.attr1Name] ? (response.data[this.attr1Name].length !==0 ? response.data[this.attr1Name] : "-"):"-",
+                    usableBatterySize : response.data[this.attr2Name] ? (response.data[this.attr2Name].length !==0 ? response.data[this.attr2Name] : "-"):"-",
+                    energyConsumption :response.data[this.attr3Name] ? (response.data[this.attr3Name].length !==0 ? response.data[this.attr3Name] : "-"):"-",
+                    acCharging : response.data[this.attr4Name] ? (response.data[this.attr4Name].length !==0 ? response.data[this.attr4Name] : "-"):"-",
+                    acChargers : response.data[this.attr5Name] ? (response.data[this.attr5Name].length !==0 ? response.data[this.attr5Name] : "-"):"-",
+                    dcCharging : response.data[this.attr6Name] ? (response.data[this.attr6Name].length !==0 ? response.data[this.attr6Name] : "-"):"-",
+                    dcChargers : response.data[this.attr7Name] ? (response.data[this.attr7Name].length !==0 ? response.data[this.attr7Name] : "-"):"-",
+                    acChargerId : response.data.AcChargers[0].AcCharger ? (response.data.AcChargers[0].AcCharger.length !== 0 ? response.data.AcChargers[0].AcCharger : "-"):"-",
+                    dcChargerId : response.data.DcChargers[0].DcCharger ? (response.data.DcChargers[0].DcCharger.length !== 0 ? response.data.DcChargers[0].DcCharger : "-"):"-"
+                })
 
-            let sizeofac = this.state.acChargers.length;
-            let sizeofdc = this.state.dcChargers.length;
-            let dcchargers = "";
-            let acchargers = "";
-            for(let i = sizeofac; i > 0; i--) {
-                if(i === 1) {
-                    acchargers = acchargers+this.state.acChargers[i-1]["Port Name"];
+                let sizeofac = this.state.acChargers.length;
+                let sizeofdc = this.state.dcChargers.length;
+                let dcchargers = "";
+                let acchargers = "";
+                for(let i = sizeofac; i > 0; i--) {
+                    if(i === 1) {
+                        acchargers = acchargers+this.state.acChargers[i-1]["Port Name"];
+                    }
+                    else {
+                        acchargers = acchargers+this.state.acChargers[i-1]["Port Name"]+", ";
+                    }
                 }
-                else {
-                    acchargers = acchargers+this.state.acChargers[i-1]["Port Name"]+", ";
+                for(let i = sizeofdc; i > 0; i--) {
+                    if(i === 1) {
+                        dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"];
+                    }
+                    else {
+                        dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"]+", ";
+                    }
                 }
-            }
-            for(let i = sizeofdc; i > 0; i--) {
-                if(i === 1) {
-                    dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"];
+                if (dcchargers === "") {
+                    dcchargers = "Undefined";
                 }
-                else {
-                    dcchargers = dcchargers+this.state.dcChargers[i-1]["Port Name"]+", ";
+                if (acchargers === "") {
+                    acchargers = "Undefined";
                 }
-            }
-            if (dcchargers === "") {
-                dcchargers = "Undefined";
-            }
-            if (acchargers === "") {
-                acchargers = "Undefined";
-            }
 
-            this.setState({
-                acChargerTypes : acchargers,
-                dcChargerTypes : dcchargers
+                this.setState({
+                    acChargerTypes : acchargers,
+                    dcChargerTypes : dcchargers
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Could not find information about this vehicle (probably you don't own it)"
+                })
             })
         })
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "Could not find information about this vehicle (probably you don't own it)"
+                logged: false,
             })
         })
     }
@@ -158,7 +172,7 @@ class Vehicle extends React.Component {
     }
     
     render() {
-        if((!localStorage.getItem('userId'))) {
+        if(!this.state.userId || this.state.logged===false) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to see information about a vehicle you own"
