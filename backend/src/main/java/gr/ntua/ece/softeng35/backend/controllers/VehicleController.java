@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import gr.ntua.ece.softeng35.backend.models.Vehicle;
 import gr.ntua.ece.softeng35.backend.models.VehicleRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
+import gr.ntua.ece.softeng35.backend.models.AdminRepository;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -22,19 +24,23 @@ import java.lang.*;
 import org.json.*;
 
 @RestController
-class VehicleController {
+public class VehicleController {
   private final VehicleRepository repository;
   private final UserRepository repository2;
+  private final AdminRepository repository1;
+  private final StationOwnerRepository repository3;
 
-  VehicleController(VehicleRepository repository, UserRepository repository2) {
+  VehicleController(VehicleRepository repository, UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3) {
     this.repository = repository;
+    this.repository1 = repository1;
     this.repository2 = repository2;
-  }
+    this.repository3 = repository3;
+}
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/vehicles")
-  List<Vehicle> all(@PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/vehicles")
+  List<Vehicle> all(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -43,9 +49,9 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PostMapping("/evcharge/api/{apikey}/vehiclesmod")
-  Vehicle newVehicle(@RequestBody Vehicle newVehicle, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PostMapping("/evcharge/api/vehiclesmod")
+  Vehicle newVehicle(@RequestBody Vehicle newVehicle, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -54,9 +60,9 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/vehicles/{id}")
-  Vehicle one(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @GetMapping("/evcharge/api/vehicles/{id}")
+  Vehicle one(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -66,11 +72,11 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @GetMapping("/evcharge/api/{apikey}/user/{id}/myvehicles/{vehicleId}")
+  @GetMapping("/evcharge/api/user/{id}/myvehicles/{vehicleId}")
   JsonNode myVehicle(@PathVariable Integer id,
                      @PathVariable Integer vehicleId,
-                     @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+                     @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -179,9 +185,9 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @PutMapping("/evcharge/api/{apikey}/vehiclesmod/{id}")
-  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @PutMapping("/evcharge/api/vehiclesmod/{id}")
+  Vehicle replaceVehicle(@RequestBody  Vehicle newVehicle, @PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
@@ -203,9 +209,9 @@ class VehicleController {
   }
 
   @CrossOrigin(origins = "http://localhost:3000")
-  @DeleteMapping("/evcharge/api/{apikey}/vehiclesmod/{id}")
-  void deleteVehicle(@PathVariable Integer id, @PathVariable String apikey) {
-    CliController validator = new CliController(repository2);
+  @DeleteMapping("/evcharge/api/vehiclesmod/{id}")
+  void deleteVehicle(@PathVariable Integer id, @RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    CliController2 validator = new CliController2(repository2, repository1, repository3);
 
     if (!validator.validate(apikey)){
       throw new NotAuthorizedException();
