@@ -16,7 +16,7 @@ import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder";
 import "./DeviceMap.css";
 import logo from './images/thundera.png';
 import google_image from './images/Google_image.jpg';
-import {getVehicles , getAllStations, getUserProfile} from './api';
+import {getVehicles , getAllStations, getUserProfile, getStationOwnerProfile} from './api';
 import StationMap from './StationMap';
 //import L from "leaflet";
 //import * as ELG from "esri-leaflet-geocoder";
@@ -189,7 +189,7 @@ class DeviceMap extends React.Component {
   }
 
   componentDidMount () {
-      getUserProfile(this.state.userId).then(response => {this.setState({usertown: response.data["Town"],usercountry: response.data["Country"],})})
+    if (this.state.userId && this.state.role==="VehicleOwner")getUserProfile(this.state.userId).then(response => {this.setState({usertown: response.data["Town"],usercountry: response.data["Country"],})})
       //const control = geosearch();
       //control.addTo(this.leafletMap.current);
       /*const map = this.leafletMap.current;
@@ -389,6 +389,10 @@ class DeviceMap extends React.Component {
 
                                         <div className="address-extras-container center-content">
                                           Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
+                                          <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">
+                                            Google Directions:
+                                            <img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/>
+                                          </a><br></br>
                                           Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
                                         </div>
                                       </div>
@@ -484,7 +488,11 @@ class DeviceMap extends React.Component {
                                         </div>
 
                                         <div className="address-extras-container center-content">
-                                          Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br><a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">Google Directions:<img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/></a><br></br>
+                                          Address Line: {value["First Address"] ? value["First Address"] : "-"} <br></br>
+                                          <a href={linkg+"/"+value["First Address"]+" "+value["Town"]} target="_blank"  class="buttongoogle">
+                                            Google Directions:
+                                            <img className="google_image" src={google_image} alt="Thundercars-logo" height="20px" width = "20px" overflow ="hidden"/>
+                                          </a><br></br>
                                           Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
                                         </div>
                                       </div>
