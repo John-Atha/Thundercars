@@ -11,6 +11,18 @@ export const isLogged = () => {
     return axios.get(requestUrl);
 }
 
+export const logoutPost = (userId, role) => {
+    const requestUrl = `/${logged}/logout`;
+    return axios.post(requestUrl,
+                    userId+":"+role,
+                    {
+                        headers: {
+                            "Content-Type": "text/plain"
+                        }
+                    }
+    )
+}
+
 export const loginPost = (params) => {
     const requestUrl = `/${out}/login`;
     return axios.post(requestUrl,

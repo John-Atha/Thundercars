@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import icon from './images/user-icon.png';
+import {logoutPost} from './api';
 
 class MyNavbar extends React.Component {
   constructor(props) {
@@ -15,9 +16,22 @@ class MyNavbar extends React.Component {
   }
 
   logout = () => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('role');
-    window.location.href="/";
+    logoutPost(localStorage.getItem('userId'), localStorage.getItem('role'))
+    .then(response => {
+        console.log(response);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');  
+        window.location.href="/";
+      }
+    )
+    .catch(err => {
+      console.log(err);
+      localStorage.removeItem('userId');
+      localStorage.removeItem('role');
+      localStorage.removeItem('token');
+      window.location.href="/";
+    })
   }
 
 
