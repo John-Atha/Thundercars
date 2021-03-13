@@ -1,6 +1,6 @@
 import React from 'react';
 import './MySpotsDetailedSessions.css';
-import {getStations, getSpotSessions} from './api';
+import {getStations, getSpotSessions, isLogged} from './api';
 import MyNavbar from './MyNavbar';
 import UnAuthorized from './UnAuthorized';
 
@@ -184,27 +184,41 @@ class MySpotsDetailedSessions extends React.Component {
             error: "Choose a spot to see its sessions",
             startDate: "2021-01-27",
             endDate: "",
+            logged: false,
         }
         this.selectSpot = this.selectSpot.bind(this);  
         this.handleInput = this.handleInput.bind(this);  
     }
 
     componentDidMount() {
-        getStations(this.state.userId)
-        .then( response => {
+        isLogged()
+        .then(response => {
             console.log(response);
-            let tempSpotsList = [];
-            response.data.StationsList.forEach(element => {
-                element.Spots.forEach(spot => {
-                    tempSpotsList.push(spot.Spot);     // spot's id
-                })
-            });
             this.setState({
-                stationsList: response.data.StationsList,
-                spotsList: tempSpotsList
-            });
-            console.log("Spots: ");
-            console.log(this.state.spotsList);
+                logged: true,
+            })
+            getStations(this.state.userId)
+            .then( response => {
+                console.log(response);
+                let tempSpotsList = [];
+                response.data.StationsList.forEach(element => {
+                    element.Spots.forEach(spot => {
+                        tempSpotsList.push(spot.Spot);     // spot's id
+                    })
+                });
+                this.setState({
+                    stationsList: response.data.StationsList,
+                    spotsList: tempSpotsList
+                });
+                console.log("Spots: ");
+                console.log(this.state.spotsList);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
+            })
         })
     }
 
@@ -228,7 +242,7 @@ class MySpotsDetailedSessions extends React.Component {
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the detailed sessions history feature"

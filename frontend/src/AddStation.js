@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddStation.css';
 import MyNavbar from './MyNavbar';
-import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, spotPost} from './api';
+import {countriesGet, currentProvidersGet, operatorsGet, statusTypesGet, usageTypesGet, stationOwnerOBJECTGet, stationAddressPost, stationPost, stationSpotPost, connTypesGet, currTypesGet, levelsGet, spotPost, isLogged} from './api';
 import UnAuthorized from './UnAuthorized';
 
 class AddStation extends React.Component {
@@ -58,6 +58,7 @@ class AddStation extends React.Component {
             quantity: "",
             quantityAvailable: "",
             quantityOperational: "",
+            logged: false,
         }
         
         this.handleInput = this.handleInput.bind(this);    
@@ -121,107 +122,120 @@ class AddStation extends React.Component {
     }
 
     componentDidMount() {
-        countriesGet()
+        isLogged()
         .then(response => {
             console.log(response);
             this.setState({
-                countries: response.data,
-                country: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].continentCode+",,"+response.data[0].isocode
+                logged: true,
             })
+            countriesGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    countries: response.data,
+                    country: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].continentCode+",,"+response.data[0].isocode
+                })
 
-            //console.log(this.state.countries);
+                //console.log(this.state.countries);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            currentProvidersGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    currentProviders: response.data,
+                    currentProvider:response.data[0].id+",,"+response.data[0].name+",,"+( response.data[0].country ? (response.data[0].country.id+",,"+response.data[0].country.title+",,"+response.data[0].country.continentCode+",,"+response.data[0].country.isocode) : "null,,null,,null,,null")
+                })
+                //console.log(this.state.currentProviders);
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+            operatorsGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    operators: response.data,
+                    operator: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].websiteUrl+",,"+response.data[0].comments+",,"+response.data[0].primaryPhone+",,"+response.data[0].secondaryPhone+","
+                    +response.data[0].isPrivateIndividual+",,"+response.data[0].bookingUrl+",,"+response.data[0].contactEmail+",,"+response.data[0].isRestrictedEdit+",,"+response.data[0].faultReportEmail
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            statusTypesGet()
+            .then(response=>{
+                this.setState({
+                    statusTypes: response.data,
+                    statusType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isOperational+",,"+response.data[0].isUserSelectable,
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            usageTypesGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    usageTypes: response.data,
+                    usageType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isMembershipRequired
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            stationOwnerOBJECTGet(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    stationOwner: response.data
+                });
+                console.log(this.state.stationOwner);
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+            connTypesGet()
+            .then(response =>{
+                console.log(response);
+                this.setState({
+                    connTypes: response.data,
+                    connType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].formalName+",,"+response.data[0].category
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            currTypesGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    currTypes: response.data,
+                    currType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].description
+                })
+            })
+            .catch(err=> {
+                console.log(err);
+            })
+            levelsGet()
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    levels: response.data,
+                    level: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].comments+",,"+response.data[0].isFastChargeCapable
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
         .catch(err => {
             console.log(err);
-        })
-        currentProvidersGet()
-        .then(response => {
-            console.log(response);
             this.setState({
-                currentProviders: response.data,
-                currentProvider:response.data[0].id+",,"+response.data[0].name+",,"+( response.data[0].country ? (response.data[0].country.id+",,"+response.data[0].country.title+",,"+response.data[0].country.continentCode+",,"+response.data[0].country.isocode) : "null,,null,,null,,null")
+                logged: false,
             })
-            //console.log(this.state.currentProviders);
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-        operatorsGet()
-        .then(response => {
-            console.log(response);
-            this.setState({
-                operators: response.data,
-                operator: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].websiteUrl+",,"+response.data[0].comments+",,"+response.data[0].primaryPhone+",,"+response.data[0].secondaryPhone+","
-                +response.data[0].isPrivateIndividual+",,"+response.data[0].bookingUrl+",,"+response.data[0].contactEmail+",,"+response.data[0].isRestrictedEdit+",,"+response.data[0].faultReportEmail
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        statusTypesGet()
-        .then(response=>{
-            this.setState({
-                statusTypes: response.data,
-                statusType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isOperational+",,"+response.data[0].isUserSelectable,
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        usageTypesGet()
-        .then(response => {
-            console.log(response);
-            this.setState({
-                usageTypes: response.data,
-                usageType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].isMembershipRequired
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        stationOwnerOBJECTGet(this.state.userId)
-        .then(response => {
-            console.log(response);
-            this.setState({
-                stationOwner: response.data
-            });
-            console.log(this.state.stationOwner);
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-        connTypesGet()
-        .then(response =>{
-            console.log(response);
-            this.setState({
-                connTypes: response.data,
-                connType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].formalName+",,"+response.data[0].category
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        })
-        currTypesGet()
-        .then(response => {
-            console.log(response);
-            this.setState({
-                currTypes: response.data,
-                currType: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].description
-            })
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-        levelsGet()
-        .then(response => {
-            console.log(response);
-            this.setState({
-                levels: response.data,
-                level: response.data[0].id+",,"+response.data[0].title+",,"+response.data[0].comments+",,"+response.data[0].isFastChargeCapable
-            })
-        })
-        .catch(err => {
-            console.log(err);
         })
 
     }
@@ -434,7 +448,7 @@ class AddStation extends React.Component {
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account as a station owner to to add a new station"

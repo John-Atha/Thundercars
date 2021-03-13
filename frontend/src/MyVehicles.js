@@ -1,6 +1,6 @@
 import React from 'react';
 import './MyVehicles.css';
-import {getVehicles} from './api'
+import {getVehicles, isLogged} from './api'
 import MyNavBar from './MyNavbar'; 
 import UnAuthorized from './UnAuthorized';
 
@@ -46,29 +46,43 @@ class MyVehicles extends React.Component {
         this.state={
             userId: localStorage.getItem('userId'),
             error: null,
-            vehicles: []
+            vehicles: [],
+            logged: false,
         }
     }    
 
     componentDidMount () {
-        getVehicles(this.state.userId)
+        isLogged()
         .then(response => {
             console.log(response);
             this.setState({
-                vehicles: response.data["Vehicles List"]
+                logged: true,
             })
-            console.log(this.state.vehicles);
+            getVehicles(this.state.userId)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    vehicles: response.data["Vehicles List"]
+                })
+                console.log(this.state.vehicles);
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "You don't own any vehicles"
+                })
+            })
         })
         .catch(err => {
             console.log(err);
             this.setState({
-                error: "You don't own any vehicles"
+                logged: false,
             })
         })
     }
 
     render() {
-        if((!localStorage.getItem('userId'))) {
+        if(!this.state.userId || !this.state.logged) {
             return (
                     <UnAuthorized 
                         message="You need to create an account to have your vehicles listing page"

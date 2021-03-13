@@ -1,7 +1,7 @@
 import React from 'react';
 import './UpdateProfile.css';
 import md5 from 'crypto-js/md5';
-import { getUserOBJECT, stationOwnerOBJECTGet, countriesGet, userAddressPut, stationOwnerPut, stationOwnerPutNoPass, userPutWithPass, userPutNoPass} from './api';
+import { getUserOBJECT, stationOwnerOBJECTGet, countriesGet, userAddressPut, stationOwnerPut, stationOwnerPutNoPass, userPutWithPass, userPutNoPass, isLogged} from './api';
 import MyNavbar from './MyNavbar';
 import icon from './images/user-icon.png';
 import UnAuthorized from './UnAuthorized';
@@ -34,6 +34,7 @@ class UpdateProfile extends React.Component {
             success: null,
             apiKey: null,
             passChanged: false,
+            logged: false,
         }
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -260,89 +261,102 @@ class UpdateProfile extends React.Component {
     }
 
     componentDidMount() {
-        countriesGet()
+        isLogged()
         .then(response => {
             console.log(response);
             this.setState({
-                countries: response.data
+                logged: true,
             })
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({
-                error: "Couldn't retrieve info from db",
-                success: null,
-            })
-        })
-        
-        if (this.state.role==="VehicleOwner") {
-            getUserOBJECT(this.state.userId)
+            countriesGet()
             .then(response => {
                 console.log(response);
-                console.log(response.data.dateOfBirth);
-                    
+                this.setState({
+                    countries: response.data
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: "Couldn't retrieve info from db",
+                    success: null,
+                })
+            })
+            
+            if (this.state.role==="VehicleOwner") {
+                getUserOBJECT(this.state.userId)
+                .then(response => {
+                    console.log(response);
+                    console.log(response.data.dateOfBirth);
+                        
+                        this.setState({
+                            username: response.data.username,
+                            email: response.data.emailAddr,
+                            firstName: response.data.firstName,
+                            lastName: response.data.lastName,
+                            password: "hidden password",
+                            confirmPassword: "hidden password",
+                            dateOfBirth: response.data.dateOfBirth,
+                            apiKey: response.data.apiKey,
+                            addressId: response.data.userAddress ? response.data.userAddress.id : null,
+                            country: response.data.userAddress ? (response.data.userAddress.country ? response.data.userAddress.country.id+",,"+response.data.userAddress.country.title+",,"+response.data.userAddress.country.isocode+",,"+response.data.userAddress.country.continentcode : "null,,null,,null,null") : "5,,Afghanistan,,AS,,AF",
+                            postCode: response.data.userAddress ?                    (response.data.userAddress.postcode          ? response.data.userAddress.postcode          : "") : "",
+                            town: response.data.userAddress ?                        (response.data.userAddress.town              ? response.data.userAddress.town              : "") : "",
+                            stateOrProvince: response.data.userAddress ?             (response.data.userAddress.stateOrProvince   ? response.data.userAddress.stateOrProvince   : "") : "",
+                            tel1: response.data.userAddress                   ?      (response.data.userAddress.contactTelephone1 ? response.data.userAddress.contactTelephone1 : "") : "",
+                            tel2: response.data.userAddress ?                        (response.data.userAddress.contactTelephone2 ? response.data.userAddress.contactTelephone2 : "") : "",
+                            addrLine: response.data.userAddress ?                    (response.data.userAddress.userAddressLine1  ? response.data.userAddress.userAddressLine1  : "") : "",
+
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+            else if (this.state.role==="StationOwner") {
+                stationOwnerOBJECTGet(this.state.userId)
+                .then(response => {
+                    console.log(response);
+                    console.log(response.data.dateOfBirth);
+                    console.log("got the address object:");
+                    console.log(response.data.address);
                     this.setState({
                         username: response.data.username,
                         email: response.data.emailAddr,
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,
-                        password: "hidden password",
+                        password:        "hidden password",
                         confirmPassword: "hidden password",
                         dateOfBirth: response.data.dateOfBirth,
                         apiKey: response.data.apiKey,
-                        addressId: response.data.userAddress ? response.data.userAddress.id : null,
-                        country: response.data.userAddress ? (response.data.userAddress.country ? response.data.userAddress.country.id+",,"+response.data.userAddress.country.title+",,"+response.data.userAddress.country.isocode+",,"+response.data.userAddress.country.continentcode : "null,,null,,null,null") : "5,,Afghanistan,,AS,,AF",
-                        postCode: response.data.userAddress ?                    (response.data.userAddress.postcode          ? response.data.userAddress.postcode          : "") : "",
-                        town: response.data.userAddress ?                        (response.data.userAddress.town              ? response.data.userAddress.town              : "") : "",
-                        stateOrProvince: response.data.userAddress ?             (response.data.userAddress.stateOrProvince   ? response.data.userAddress.stateOrProvince   : "") : "",
-                        tel1: response.data.userAddress                   ?      (response.data.userAddress.contactTelephone1 ? response.data.userAddress.contactTelephone1 : "") : "",
-                        tel2: response.data.userAddress ?                        (response.data.userAddress.contactTelephone2 ? response.data.userAddress.contactTelephone2 : "") : "",
-                        addrLine: response.data.userAddress ?                    (response.data.userAddress.userAddressLine1  ? response.data.userAddress.userAddressLine1  : "") : "",
+                        addressId: response.data.address ? response.data.address.id : null,
+                        country: response.data.address ? (response.data.address.country ? response.data.address.country.id+",,"+response.data.address.country.title+",,"+response.data.address.country.isocode+",,"+response.data.address.country.continentcode : "null,,null,,null,null") : "5,,Afghanistan,,AS,,AF",
+                        postCode: response.data.address ?                    (response.data.address.postcode          ? response.data.address.postcode          : "") : "",
+                        town: response.data.address ?                        (response.data.address.town              ? response.data.address.town              : "") : "",
+                        stateOrProvince: response.data.address ?             (response.data.address.stateOrProvince   ? response.data.address.stateOrProvince   : "") : "",
+                        tel1: response.data.address                   ?      (response.data.address.contactTelephone1 ? response.data.address.contactTelephone1 : "") : "",
+                        tel2: response.data.address ?                        (response.data.address.contactTelephone2 ? response.data.address.contactTelephone2 : "") : "",
+                        addrLine: response.data.address ?                    (response.data.address.userAddressLine1  ? response.data.address.userAddressLine1  : "") : "",
 
                     })
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        }
-        else if (this.state.role==="StationOwner") {
-            stationOwnerOBJECTGet(this.state.userId)
-            .then(response => {
-                console.log(response);
-                console.log(response.data.dateOfBirth);
-                console.log("got the address object:");
-                console.log(response.data.address);
-                this.setState({
-                    username: response.data.username,
-                    email: response.data.emailAddr,
-                    firstName: response.data.firstName,
-                    lastName: response.data.lastName,
-                    password:        "hidden password",
-                    confirmPassword: "hidden password",
-                    dateOfBirth: response.data.dateOfBirth,
-                    apiKey: response.data.apiKey,
-                    addressId: response.data.address ? response.data.address.id : null,
-                    country: response.data.address ? (response.data.address.country ? response.data.address.country.id+",,"+response.data.address.country.title+",,"+response.data.address.country.isocode+",,"+response.data.address.country.continentcode : "null,,null,,null,null") : "5,,Afghanistan,,AS,,AF",
-                    postCode: response.data.address ?                    (response.data.address.postcode          ? response.data.address.postcode          : "") : "",
-                    town: response.data.address ?                        (response.data.address.town              ? response.data.address.town              : "") : "",
-                    stateOrProvince: response.data.address ?             (response.data.address.stateOrProvince   ? response.data.address.stateOrProvince   : "") : "",
-                    tel1: response.data.address                   ?      (response.data.address.contactTelephone1 ? response.data.address.contactTelephone1 : "") : "",
-                    tel2: response.data.address ?                        (response.data.address.contactTelephone2 ? response.data.address.contactTelephone2 : "") : "",
-                    addrLine: response.data.address ?                    (response.data.address.userAddressLine1  ? response.data.address.userAddressLine1  : "") : "",
-
                 })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                logged: false,
             })
-            .catch(err => {
-                console.log(err);
-            })
-        }
+        })
 
 
     }
 
     render() {
         
-        if (!this.state.userId) {
+        if (!this.state.userId || !this.state.logged) {
             return(
                 <UnAuthorized 
                     message="You need to create an account to have your personal profile page"

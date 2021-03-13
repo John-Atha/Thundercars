@@ -1,13 +1,11 @@
 import React from "react"
 import "./StationOwnerStatistics.css";
 import MyNavbar from './MyNavbar'; 
-import {getStationOwnerStatistics, getStations} from './api';
+import {getStationOwnerStatistics, getStations, isLogged} from './api';
 import CanvasJSReact from './canvasjs.react';
 import Carousel from 'react-bootstrap/Carousel';
 import UnAuthorized from './UnAuthorized';
 
-//var CanvasJSReact = require('./canvasjs.react');
-//var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class ControlledCarousel extends React.Component {
@@ -232,32 +230,46 @@ class StationOwnerStatistics extends React.Component {
             role: localStorage.getItem('role'),
             statsList: [],
             stationsList: [],
+            logged: false,
         }
     }
 
     componentDidMount() {
-        getStations(this.state.userId)
-        .then( response => {
-            let stationsInitList = []
-            let stationsTempList = []
+        isLogged()
+        .then(response => {
             console.log(response);
-            stationsInitList = response.data.StationsList;
-            stationsInitList.forEach(element => {
-                stationsTempList.push(element.Id+",,"+element.Title);
-            })
             this.setState({
-                stationsList: stationsTempList
+                logged: true,
             })
-            console.log("stationsList:");
-            console.log(this.state.stationsList);
+            getStations(this.state.userId)
+            .then( response => {
+                let stationsInitList = []
+                let stationsTempList = []
+                console.log(response);
+                stationsInitList = response.data.StationsList;
+                stationsInitList.forEach(element => {
+                    stationsTempList.push(element.Id+",,"+element.Title);
+                })
+                this.setState({
+                    stationsList: stationsTempList
+                })
+                console.log("stationsList:");
+                console.log(this.state.stationsList);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
         .catch(err => {
             console.log(err);
+            this.setState({
+                logged: false,
+            })
         })
     }
 
     render() {
-        if (!this.state.userId) {
+        if (!this.state.userId || !this.state.logged) {
             return (
                 <UnAuthorized 
                     message="You need to create an account to have access to the statistics feature"
