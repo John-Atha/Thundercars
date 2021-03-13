@@ -208,7 +208,7 @@ class Vehicle extends React.Component {
                             <div className="station-info-title center-content darker">Usable Battery Size (kWh): </div><div className="station-info darker center-content">{this.state.usableBatterySize}</div>
                             <div className="station-info-title center-content">Energy Consumption (Wh/km): </div><div className="station-info center-content">{this.state.energyConsumption}</div>
                             <div className="station-info-title center-content darker">AC Charging: </div><div className="station-info darker center-content ">{this.state.acCharging}</div>
-                            <div className="station-info-title center-content">AC Charger Type(s): </div><a className="station-link station-info center-content" onClick={this.acChargerPageRedirect}>{this.state.acChargerTypes}</a>
+                            <div className="station-info-title center-content">AC Charger Type(s): </div><a className="station-link station-info center-content" onClick={this.state.acChargerTypes!=="undefined" ?  this.acChargerPageRedirect : null}>{this.state.acChargerTypes!=="undefined" ? this.state.acChargerTypes : "-"}</a>
                             <div className="station-info-title center-content darker">DC Charging: </div><div className="station-info darker center-content">{this.state.dcCharging}</div>
                             <div className="station-info-title center-content">DC Charger Type(s): </div><div className="station-info center-content">{this.state.dcChargerTypes}</div>
                         </div>            
