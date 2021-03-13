@@ -106,7 +106,7 @@ class UserController {
       answer.put("Email", (String) userBasic.get(1));
       answer.put("First Name", (String) userBasic.get(2));
       answer.put("Last Name", (String) userBasic.get(3));
-      answer.put("Date Of Birth", userBasic.get(4).toString());
+      answer.put("Date Of Birth", userBasic.get(4)!=null ? userBasic.get(4).toString() : null);
 
       if (hasAddress==false) {
         answer.put("Address", "Unknown");
