@@ -9,7 +9,7 @@ import gr.ntua.ece.softeng35.backend.models.UserHasVehicleRepository;
 import gr.ntua.ece.softeng35.backend.models.UserRepository;
 
 @RestController
-class UserHasVehicleController {
+public class UserHasVehicleController {
   private final UserHasVehicleRepository repository;
   private final UserRepository repository2;
 
