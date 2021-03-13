@@ -207,7 +207,6 @@ class AcChargerPortTest {
         this.mockmvc.perform(put("/evcharge/api/{apikey}/acchargerportsmod/{id}","123456789",1)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
-            .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.portname", is(testAcChargerPort.getPortname())))
             .andExpect(jsonPath("$.acCharger.id", is(testAcCharger.getId())))
