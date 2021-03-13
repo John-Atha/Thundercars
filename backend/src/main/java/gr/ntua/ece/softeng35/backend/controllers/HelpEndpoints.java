@@ -24,15 +24,19 @@ import gr.ntua.ece.softeng35.backend.models.ChargingProcessRepository;
 import gr.ntua.ece.softeng35.backend.models.Admin;
 import gr.ntua.ece.softeng35.backend.models.AdminRepository;
 
-@RestController
-class HelpEndpoints {
-    private final UserRepository repository;
-    private final ChargingProcessRepository repository2;
-    private final AdminRepository repository3;
+import gr.ntua.ece.softeng35.backend.models.StationOwnerRepository;
 
-    HelpEndpoints(UserRepository repository, ChargingProcessRepository repository2, AdminRepository repository3) {
-        this.repository = repository;
+@RestController
+public class HelpEndpoints {
+    private final UserRepository repository2;
+    private final ChargingProcessRepository repositoryProcess;
+    private final AdminRepository repository1;
+    private final StationOwnerRepository repository3;
+
+    HelpEndpoints(UserRepository repository2, ChargingProcessRepository repositoryProcess, AdminRepository repository1, StationOwnerRepository repository3) {
         this.repository2 = repository2;
+        this.repositoryProcess = repositoryProcess;
+        this.repository1 = repository1;
         this.repository3 = repository3;
     }
 
@@ -66,10 +70,10 @@ class HelpEndpoints {
 
     /*Health check endpoint for CLI Usage. This endpoint ensures the end to end connectivity of the Database.*/
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/evcharge/api/{apikey}/admin/healthcheck")
-    JsonNode healthcheck(@PathVariable String apikey) {
+    @GetMapping("/evcharge/api/admin/healthcheck")
+    JsonNode healthcheck(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
 
-        CliController validator = new CliController(repository);
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
             throw new NotAuthorizedException();
@@ -78,7 +82,7 @@ class HelpEndpoints {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode healthcheckReport = mapper.createObjectNode();
 
-        List<Integer> FoundApiKey = repository.findAdminByApiKey("123456789");
+        List<Integer> FoundApiKey = repository2.findAdminByApiKey("123456789");
 
         if(FoundApiKey.size() > 0) {
             healthcheckReport.put("status","OK");
@@ -103,9 +107,9 @@ class HelpEndpoints {
     and initializes the Admin table with the default Administrator Account.*/
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/admin/resetsessions")
-    JsonNode resetsessions(@PathVariable String apikey) {
-        CliController validator = new CliController(repository);
+    @PostMapping("/evcharge/api/admin/resetsessions")
+    JsonNode resetsessions(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
 
         if (!validator.validate(apikey)){
             throw new NotAuthorizedException();
@@ -117,12 +121,12 @@ class HelpEndpoints {
         String password = getMd5("petrol4ever");
 
         //Endpoint Main Actions
-        repository2.deleteAllFromChargingProcess();
-        repository3.updateHeadAdminFromAdmin("admin",password,"123456789");
+        repositoryProcess.deleteAllFromChargingProcess();
+        repository1.updateHeadAdminFromAdmin("admin",password,"123456789");
 
-        Long countAfter = repository2.countAllProcesses();
+        Long countAfter = repositoryProcess.countAllProcesses();
         
-        List<List<String>> headAdminAfter = repository3.findHeadAdminByApiKey("123456789");
+        List<List<String>> headAdminAfter = repository1.findHeadAdminByApiKey("123456789");
         String username = headAdminAfter.get(0).get(0);
         String password2 = headAdminAfter.get(0).get(1);
 

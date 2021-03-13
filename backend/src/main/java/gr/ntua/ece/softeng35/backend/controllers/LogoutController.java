@@ -33,22 +33,22 @@ import java.security.NoSuchAlgorithmException;
 @RestController
 public class LogoutController{
 
-    private final UserRepository repository;
+    private final UserRepository repository2;
     private final AdminRepository repository1;
-    private final StationOwnerRepository repository2;
+    private final StationOwnerRepository repository3;
     
 
-    LogoutController(UserRepository repository, AdminRepository repository1, StationOwnerRepository repository2){
-        this.repository = repository;
-        this.repository1 = repository1;
+    LogoutController(UserRepository repository2, AdminRepository repository1, StationOwnerRepository repository3){
         this.repository2 = repository2;
+        this.repository1 = repository1;
+        this.repository3 = repository3;
     }
 
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("/evcharge/api/{apikey}/logout")
-    void userLogout(@PathVariable String apikey , @RequestBody String cred) {
-      CliController validator = new CliController(repository);
+    @PostMapping("/evcharge/api/logout")
+    void userLogout(@RequestHeader("X-OBSERVATORY-AUTH") String apikey , @RequestBody String cred) {
+      CliController2 validator = new CliController2(repository2, repository1, repository3);
 
       if (!validator.validate(apikey)) {
         throw new NotAuthorizedException();
@@ -67,18 +67,18 @@ public class LogoutController{
           .orElseThrow(() -> new BadRequestException());
       }
       else if (role.equals("StationOwner")) {
-        repository2.findById(userId)
+        repository3.findById(userId)
         .map(thisUser -> {
             thisUser.setApiKey(null);
-            return repository2.save(thisUser);
+            return repository3.save(thisUser);
           })
           .orElseThrow(() -> new BadRequestException());
       }
       else if (role.equals("VehicleOwner")) {
-        repository.findById(userId)
+        repository2.findById(userId)
         .map(thisUser -> {
             thisUser.setApiKey(null);
-            return repository.save(thisUser);
+            return repository2.save(thisUser);
           })
           .orElseThrow(() -> new BadRequestException());
       }
