@@ -52,6 +52,12 @@ class DcChargerPortTest {
     @MockBean
     private UserRepository repository2;
 
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
+
     @Test
     void testGetDcChargerPort () throws Exception { 
 
@@ -65,13 +71,17 @@ class DcChargerPortTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/dcchargerports","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/dcchargerports")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id", is(testPort.getId())))
             .andExpect(jsonPath("$[0].portname", is(testPort.getPortname())))
@@ -79,8 +89,9 @@ class DcChargerPortTest {
             .andExpect(jsonPath("$[0].dcCharger.maxPower", is(myDcCharger.getMaxPower())))
             .andExpect(jsonPath("$[0].dcCharger.isDefaultChargingCurve", is(myDcCharger.getIsDefaultChargingCurve())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/dcchargerports","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/dcchargerports")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -95,13 +106,17 @@ class DcChargerPortTest {
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testPort));
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/dcchargerports/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/dcchargerports/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", is(testPort.getId())))
             .andExpect(jsonPath("$.portname", is(testPort.getPortname())))
@@ -109,12 +124,14 @@ class DcChargerPortTest {
             .andExpect(jsonPath("$.dcCharger.maxPower", is(myDcCharger.getMaxPower())))
             .andExpect(jsonPath("$.dcCharger.isDefaultChargingCurve", is(myDcCharger.getIsDefaultChargingCurve())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/dcchargerports/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/dcchargerports/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/dcchargerports/{id}","123456789",2)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/dcchargerports/{id}",2)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isPaymentRequired());
     }
 
@@ -142,14 +159,18 @@ class DcChargerPortTest {
 
         BDDMockito.when(repository.save(testPort)).thenReturn(testPort);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/dcchargerportsmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/dcchargerportsmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", is(testPort.getId())))
             .andExpect(jsonPath("$.portname", is(testPort.getPortname())))
@@ -157,9 +178,10 @@ class DcChargerPortTest {
             .andExpect(jsonPath("$.dcCharger.maxPower", is(myDcCharger.getMaxPower())))
             .andExpect(jsonPath("$.dcCharger.isDefaultChargingCurve", is(myDcCharger.getIsDefaultChargingCurve())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/dcchargerportsmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/dcchargerportsmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 	}
 
@@ -191,14 +213,18 @@ class DcChargerPortTest {
         BDDMockito.when(repository.findById(testPort.getId())).thenReturn(Optional.of(testPort));
         BDDMockito.when(repository.save(testPort2)).thenReturn(testPort2);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/dcchargerportsmod/{id}","123456789",150)
+        this.mockmvc.perform(put("/evcharge/api/dcchargerportsmod/{id}",150)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", is(testPort2.getId())))
             .andExpect(jsonPath("$.portname", is(testPort2.getPortname())))
@@ -206,14 +232,16 @@ class DcChargerPortTest {
             .andExpect(jsonPath("$.dcCharger.maxPower", is(myDcCharger2.getMaxPower())))
             .andExpect(jsonPath("$.dcCharger.isDefaultChargingCurve", is(myDcCharger2.getIsDefaultChargingCurve())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/dcchargerportsmod/{id}","123456888",150)
+        this.mockmvc.perform(put("/evcharge/api/dcchargerportsmod/{id}",150)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/dcchargerportsmod/{id}","123456789",151)
+        this.mockmvc.perform(put("/evcharge/api/dcchargerportsmod/{id}",151)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
 
@@ -222,17 +250,22 @@ class DcChargerPortTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/dcchargerportsmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/dcchargerportsmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/dcchargerportsmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/dcchargerportsmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 }
