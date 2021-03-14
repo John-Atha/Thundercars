@@ -78,15 +78,17 @@ class VehicleOwnerTest {
 
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
-        Date date = java.sql.Date.valueOf(LocalDate.parse("20201010", DateTimeFormatter.BASIC_ISO_DATE));
-
+        
         Country testCountry = new Country(1,"mytitle","myiso", "mycont");
+        
         UserAddress testUserAddress = new UserAddress(1,"test_address_line", "testTown", "TestState", "TestPostcode",
                         "testPhone1", "testPhone2", testCountry);
 
         User testUser = new User("user1", "pass1", "email1" , "name1", "name2" , date, testUserAddress,"apikey" );
 
-        BDDMockito.when(repository.findAll()).thenReturn(myList);
+        List<User> myList = Arrays.asList(testUser);
+
+        BDDMockito.when(repository.findAll()).thenReturn(myLiist);
 
         List<Integer> apiKeys = new ArrayList<>();
         apiKeys.add(1);
@@ -134,7 +136,7 @@ class VehicleOwnerTest {
 
 
 
-        BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testUserHasVehicle));
+        BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testuser));
 
         List<Integer> apiKeys = new ArrayList<>();
         apiKeys.add(1);
