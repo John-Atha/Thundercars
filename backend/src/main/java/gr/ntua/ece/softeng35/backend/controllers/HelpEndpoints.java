@@ -71,18 +71,19 @@ public class HelpEndpoints {
     /*Health check endpoint for CLI Usage. This endpoint ensures the end to end connectivity of the Database.*/
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/evcharge/api/admin/healthcheck")
-    JsonNode healthcheck(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+    JsonNode healthcheck(/*@RequestHeader("X-OBSERVATORY-AUTH") String apikey*/) {
 
-        CliController2 validator = new CliController2(repository2, repository1, repository3);
+       // CliController2 validator = new CliController2(repository2, repository1, repository3);
 
-        if (!validator.validate(apikey)){
-            throw new NotAuthorizedException();
-        }
+       // if (!validator.validate(apikey)){
+       //     throw new NotAuthorizedException();
+       // }
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode healthcheckReport = mapper.createObjectNode();
 
-        List<Integer> FoundApiKey = repository2.findAdminByApiKey("123456789");
+        //List<Integer> FoundApiKey = repository2.findAdminByApiKey("123456789");
+        List<Integer> FoundApiKey = repository2.findAdminByApiKey("1234-5678-9123");
 
         if(FoundApiKey.size() > 0) {
             healthcheckReport.put("status","OK");
@@ -108,12 +109,12 @@ public class HelpEndpoints {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/evcharge/api/admin/resetsessions")
-    JsonNode resetsessions(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
-        CliController2 validator = new CliController2(repository2, repository1, repository3);
+    JsonNode resetsessions(/*@RequestHeader("X-OBSERVATORY-AUTH") String apikey*/) {
+        //CliController2 validator = new CliController2(repository2, repository1, repository3);
 
-        if (!validator.validate(apikey)){
-            throw new NotAuthorizedException();
-        }
+        //if (!validator.validate(apikey)){
+        //    throw new NotAuthorizedException();
+        //}
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode resetSessions = mapper.createObjectNode();
@@ -149,5 +150,38 @@ public class HelpEndpoints {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/evcharge/api/admin/auth")
+    JsonNode authorize(@RequestHeader("X-OBSERVATORY-AUTH") String apikey) {
+
+        CliController2 validator = new CliController2(repository2, repository1, repository3);
+
+        if (!validator.validate(apikey)){
+            throw new NotAuthorizedException();
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode healthcheckReport = mapper.createObjectNode();
+
+        List<Integer> FoundApiKey = repository2.findAdminByApiKey("123456789");
+
+        if(FoundApiKey.size() > 0) {
+            healthcheckReport.put("status","OK");
+        }
+        else {
+            healthcheckReport.put("status","failed");
+        }
+
+        String healthcheckString = healthcheckReport.toString();
+
+        try {
+            JsonNode node = mapper.readTree(healthcheckString);
+            return node;
+        }
+        catch (Exception e) {
+            JsonNode node = null;
+            return node;
+        }
+    }
 
 }
