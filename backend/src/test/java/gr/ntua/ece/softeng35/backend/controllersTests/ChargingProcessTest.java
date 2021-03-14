@@ -309,4 +309,272 @@ class ChargingProcessTest {
             .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isPaymentRequired());
     }
+
+    //@Test
+    void testPostChargingProcess() throws Exception {
+    
+        MockitoAnnotations.initMocks(this);
+        this.mockmvc = webAppContextSetup(this.wac).build();
+
+        Date date = java.sql.Date.valueOf(LocalDate.parse("20201010", DateTimeFormatter.BASIC_ISO_DATE));
+        //for vehicle
+        AcCharger testAcCharger = new AcCharger(150,3,3.45);
+        DcCharger testDcCharger = new DcCharger(3,3.3,true);
+
+        Vehicle testVehicle = new Vehicle(1,"toyota", "test_brandid", "ix", "corolla" , 1992, 1.5, 0.5, testAcCharger, testDcCharger);  
+
+        //for user
+        Country testCountry = new Country(1,"mytitle","myiso", "mycont");
+        UserAddress testUserAddress = new UserAddress(1,"test_address_line", "testTown", "TestState", "TestPostcode",
+                        "testPhone1", "testPhone2", testCountry);
+
+        User testUser = new User("user1", "pass1", "email1" , "name1", "name2" , date, testUserAddress,"apikey" );
+
+        //for Station
+        CurrentProvider testCurrentProvider = new CurrentProvider(1, "provName");
+        testCurrentProvider.setCountry(testCountry);
+        StationOwner testStationOwner = new StationOwner(1,"user1", "pass1", "email1" , "name1", "name2" , testUserAddress,date,"apikey" );
+        Operator testOperator = new Operator(1,"mytitle","myUrl","mycomms","myphone1","myphone2",false,"mybookUrl","myEmail","myFault",true);
+        UsageType testUsageType = new UsageType(1,"mytitle",true);
+        Address testAddress = new Address(1,"mytitle","test_address_line1","test_address_line2", "testTown", "TestState", "TestPostcode",1.2,1.2,
+                                    "testPhone1", "testPhone2", "testemail","testcomms","testUrl","testGeneral",testCountry);
+        StatusType testStatusType = new StatusType(1,"mytitle",true,true);
+        SubmissionStatus testSubmission = new SubmissionStatus(1,"mytitle",true);
+        
+        ChargingStation testStation = new ChargingStation(1,"myuuid",testOperator,testUsageType,testAddress,"mycomms",date,date,date,testStatusType,testSubmission,3.1,0.23,testStationOwner);
+
+        //for Spot
+        ConnectionType testConnection = new ConnectionType(1,"mytitle","myformal","mycategory");
+        Level testLevel = new Level(1,"mytitle","mycomms",true);
+        CurrentType testCurrent = new CurrentType(1,"mytitle","mydescr");
+
+        ChargingSpot testSpot = new ChargingSpot(1,testConnection,testLevel,1.2,1.2,1.2,testCurrent,"mycomms");
+
+		ChargingProcess testChargingProcess = new ChargingProcess(1,testUser,testVehicle,testStation,testSpot,date,date,date,"local",1.2,1.2,"credit",3.1,"medium");
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode newJson = mapper.createObjectNode();
+
+        ObjectNode acJson = mapper.createObjectNode();
+        acJson.put("id", testAcCharger.getId());
+        acJson.put("usablePhases", testAcCharger.getUsablePhases());
+        acJson.put("maxPower", testAcCharger.getMaxPower());
+        
+        ObjectNode dcJson = mapper.createObjectNode();
+        dcJson.put("id", testDcCharger.getId());
+        dcJson.put("maxPower", testDcCharger.getMaxPower());
+        dcJson.put("isDefaultChargingCurve", testDcCharger.getIsDefaultChargingCurve());
+
+        ObjectNode VehicleJson = mapper.createObjectNode();
+        VehicleJson.put("id", testVehicle.getId());
+        VehicleJson.put("brand", testVehicle.getBrand());
+        VehicleJson.put("brandId", testVehicle.getBrandId());
+        VehicleJson.put("type", testVehicle.getType());
+        VehicleJson.put("model", testVehicle.getModel());
+        VehicleJson.put("releaseYear", testVehicle.getReleaseYear());
+        VehicleJson.put("usableBatterySize", testVehicle.getUsableBatterySize());
+        VehicleJson.put("energyConsumption", testVehicle.getEnergyConsumption());
+        VehicleJson.put("acCharger", acJson);
+        VehicleJson.put("dcCharger", dcJson);
+
+        ObjectNode CountryJson = mapper.createObjectNode();
+        CountryJson.put("id",testCountry.getId());
+        CountryJson.put("continentCode", testCountry.getContinentCode());
+        CountryJson.put("isocode", testCountry.getISOCode());
+        CountryJson.put("title", testCountry.getTitle());
+
+        ObjectNode AddressJson = mapper.createObjectNode();
+        AddressJson.put("id", testUserAddress.getId());
+        AddressJson.put("country", CountryJson);
+        AddressJson.put("contactTelephone2", testUserAddress.getContactTelephone2());
+        AddressJson.put("contactTelephone1", testUserAddress.getContactTelephone1());
+        AddressJson.put("stateOrProvince", testUserAddress.getStateOrProvince());
+        AddressJson.put("userAddressLine1", testUserAddress.getUserAddressLine1());
+        AddressJson.put("town", testUserAddress.getTown());
+        AddressJson.put("postcode", testUserAddress.getPostcode());
+        
+    
+        ObjectNode UserJson = mapper.createObjectNode();
+        UserJson.put("id", testUser.getId());
+        UserJson.put("username", testUser.getUsername());
+        UserJson.put("password", testUser.getPassword());
+        UserJson.put("emailAddr", testUser.getEmailAddr());
+        UserJson.put("firstName", testUser.getFirstName());
+        UserJson.put("lastName", testUser.getLastName());
+        UserJson.put("dateOfBirth", "20201010");
+        UserJson.put("apiKey", testUser.getapiKey());
+        UserJson.put("userAddress", AddressJson);
+
+        ObjectNode currentJson = mapper.createObjectNode();
+        currentJson.put("id",testCurrentProvider.getId());
+        currentJson.put("name",testCurrentProvider.getName());
+        currentJson.put("country",CountryJson);
+
+        ObjectNode OwnerJson = mapper.createObjectNode();
+        OwnerJson.put("id", testStationOwner.getId());
+        OwnerJson.put("username", testStationOwner.getUsername());
+        OwnerJson.put("password", testStationOwner.getPassword());
+        OwnerJson.put("emailAddr", testStationOwner.getEmailAddr());
+        OwnerJson.put("firstName", testStationOwner.getFirstName());
+        OwnerJson.put("lastName", testStationOwner.getLastName());
+        OwnerJson.put("apiKey", testStationOwner.getApiKey());
+        OwnerJson.put("address", AddressJson);
+        OwnerJson.put("dateOfBirth", "20201010");
+
+        ObjectNode operatorJson = mapper.createObjectNode();
+        operatorJson.put("id",1);
+        operatorJson.put("title","mytitle");
+        operatorJson.put("websiteUrl","myUrl");
+        operatorJson.put("comments","mycomms");
+        operatorJson.put("primaryPhone","myphone1");
+        operatorJson.put("secondaryPhone","myphone2");
+        operatorJson.put("isPrivateIndividual",false);
+        operatorJson.put("bookingUrl","mybookUrl");
+        operatorJson.put("contactEmail","myEmail");
+        operatorJson.put("isRestrictedEdit",true);
+        operatorJson.put("faultReportEmail","myFault");
+
+        ObjectNode usageJson = mapper.createObjectNode();
+        usageJson.put("id",1);
+        usageJson.put("title","mytitle");
+        usageJson.put("isMembershipRequired",true);
+
+        ObjectNode stationAddressJson = mapper.createObjectNode();
+        stationAddressJson.put("id", testAddress.getId());
+        stationAddressJson.put("country", CountryJson);
+        stationAddressJson.put("contactTelephone2", testAddress.getContactTelephone2());
+        stationAddressJson.put("contactTelephone1", testAddress.getContactTelephone1());
+        stationAddressJson.put("generalComments",testAddress.getGeneralComments());
+        stationAddressJson.put("stateOrProvince", testAddress.getStateOrProvince());
+        stationAddressJson.put("accessComments",testAddress.getAccessComments());
+        stationAddressJson.put("title",testAddress.getTitle());
+        stationAddressJson.put("addressLine1", testAddress.getAddressLine1());
+        stationAddressJson.put("addressLine2", testAddress.getAddressLine2());
+        stationAddressJson.put("longtitude",String.valueOf(testAddress.getLongtitude()));
+        stationAddressJson.put("town", testAddress.getTown());
+        stationAddressJson.put("relatedurl",testAddress.getRelatedurl());
+        stationAddressJson.put("postcode", testAddress.getPostcode());
+        stationAddressJson.put("contactEmail", testAddress.getContactEmail());
+        stationAddressJson.put("latitude",String.valueOf(testAddress.getLatitude()));
+
+        ObjectNode statusJson = mapper.createObjectNode();
+        statusJson.put("id",testStatusType.getId());
+        statusJson.put("title",testStatusType.getTitle());
+        statusJson.put("isOperational",testStatusType.getIsOperational());
+        statusJson.put("isUserSelectable",testStatusType.getIsUserSelectable());
+
+        ObjectNode SubmissionJson = mapper.createObjectNode();
+        SubmissionJson.put("id",testSubmission.getId());
+        SubmissionJson.put("title",testSubmission.getTitle());
+        SubmissionJson.put("isLive",testSubmission.getIsLive());
+
+        ObjectNode stationJson = mapper.createObjectNode();
+        stationJson.put("id",testStation.getId());
+        stationJson.put("uuid",testStation.getUuid());
+        stationJson.put("currentProvider",currentJson);
+        stationJson.put("stationOwner",OwnerJson);
+        stationJson.put("operator",operatorJson);
+        stationJson.put("usageType",usageJson);
+        stationJson.put("address",stationAddressJson);
+        stationJson.put("comments",testStation.getComments());
+        stationJson.put("dateLastConfirmed","20201010");
+        stationJson.put("dateLastStatusUpdate","20201010");
+        stationJson.put("dateCreated","20201010");
+        stationJson.put("statusType",statusJson);
+        stationJson.put("submissionStatus",SubmissionJson);
+        stationJson.put("rating",String.valueOf(testStation.getRating()));
+        stationJson.put("costPerKwh",String.valueOf(testStation.getCostPerKwh()));
+
+        ObjectNode ConnectionTypeJson = mapper.createObjectNode();
+        ConnectionTypeJson.put("id",testConnection.getId());
+        ConnectionTypeJson.put("title",testConnection.getTitle());
+        ConnectionTypeJson.put("formalName",testConnection.getFormalName());
+        ConnectionTypeJson.put("category",testConnection.getCategory());
+
+        ObjectNode LevelJson = mapper.createObjectNode();
+        LevelJson.put("id",testLevel.getId());
+        LevelJson.put("title",testLevel.getTitle());
+        LevelJson.put("comments",testLevel.getComments());
+        LevelJson.put("isFastChargeCapable",testLevel.getIsFastChargeCapable());
+
+        ObjectNode CurrentTypeJson = mapper.createObjectNode();
+        CurrentTypeJson.put("id",testCurrent.getId());
+        CurrentTypeJson.put("title",testCurrent.getTitle());
+        CurrentTypeJson.put("description",testCurrent.getDescription());
+
+        ObjectNode SpotJson = mapper.createObjectNode();
+        SpotJson.put("id",testSpot.getId());
+        SpotJson.put("connectionType",ConnectionTypeJson);
+        SpotJson.put("level",LevelJson);
+        SpotJson.put("amps",String.valueOf(testSpot.getAmps()));
+        SpotJson.put("voltage",String.valueOf(testSpot.getVoltage()));
+        SpotJson.put("powerkw",String.valueOf(testSpot.getPowerkw()));
+        SpotJson.put("currentType",CurrentTypeJson);
+        SpotJson.put("comments",testSpot.getComments());
+
+        ObjectNode ProcessJson = mapper.createObjectNode();
+        ProcessJson.put("id",testChargingProcess.getId());
+        ProcessJson.put("user",UserJson);
+        ProcessJson.put("vehicle",VehicleJson);
+        ProcessJson.put("chargingStation",stationJson);
+        ProcessJson.put("chargingSpot",SpotJson);
+        ProcessJson.put("connectionTime","20201010");
+        ProcessJson.put("disconnectTime","20201010");
+        ProcessJson.put("doneChargingTime","20201010");
+        ProcessJson.put("timezone",testChargingProcess.getTimezone());
+        ProcessJson.put("kwhDelivered",String.valueOf(testChargingProcess.getKwhDelivered()));
+        ProcessJson.put("cost",String.valueOf(testChargingProcess.getCost()));
+        ProcessJson.put("paymentWay",testChargingProcess.getPaymentWay());
+        ProcessJson.put("rating",testChargingProcess.getRating());
+        ProcessJson.put("chargingProgram",testChargingProcess.getChargingProgram());
+
+
+        String json = ProcessJson.toString();
+
+        BDDMockito.when(repository.save(testChargingProcess)).thenReturn(testChargingProcess);
+
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
+
+        this.mockmvc.perform(post("/evcharge/api/chargingprocessesmod")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
+            .andExpect(status().isOk());
+
+
+        this.mockmvc.perform(post("/evcharge/api/chargingprocessesmod")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test 
+    void testDeleteChargingProcess() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockmvc = webAppContextSetup(this.wac).build();
+
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
+
+        this.mockmvc.perform(delete("/evcharge/api/chargingprocessesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
+            .andExpect(status().isOk());
+
+        this.mockmvc.perform(delete("/evcharge/api/chargingprocessesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
+            .andExpect(status().isUnauthorized());
+    }
 }
