@@ -1,0 +1,6 @@
+Click
+requests
+DateTime
+regex
+pyjwt
+pytest
