@@ -340,8 +340,8 @@ public class StationOwnerController {
       }
       for (List<Object> stat : statistics) {
         ObjectNode curr = mapper.createObjectNode();
-        curr.put("Year", stat.get(1).toString());
-        curr.put("Month", stat.get(0).toString());
+        curr.put("Year", stat.get(1)!=null ? stat.get(1).toString() : null);
+        curr.put("Month", stat.get(0)!=null ? stat.get(0).toString() : null);
         curr.put("Sessions", (Long) stat.get(2));
         curr.put("Users", (Long) stat.get(3));
         curr.put("Earnings", Math.round(((Double)stat.get(4))*100d)/100d);
