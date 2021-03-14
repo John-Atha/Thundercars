@@ -85,7 +85,6 @@ class Spot extends React.Component {
         .catch(err => {
             console.log(err);
         }) 
-        
         getOneSpot(this.state.spotId)
         .then( response => {
             console.log(response);
