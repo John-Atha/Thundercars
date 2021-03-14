@@ -26,7 +26,7 @@ class Spot extends React.Component {
             showModal: false, 
             ownership: false,  
         }
-        this.attr1="Connection Type";
+        this.attr1="connectionType";
         this.attr2="Station Title";
         this.attr6="Station Id";
         this.attr3="Current Type";
@@ -100,6 +100,7 @@ class Spot extends React.Component {
                 })
                 getOneSpotOBJECT(this.state.realSpotId)
                 .then(response => {
+                    console.log(response);
                     this.setState({
                         connType:          response.data[this.attr1]  ? response.data[this.attr1].title : "-",   
                         level:             response.data.level        ? response.data.level.title       : "-", 
