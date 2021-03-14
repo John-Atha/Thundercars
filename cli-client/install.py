@@ -50,7 +50,7 @@ Team Members:
         ex_code = os.system("pip install -e .")      
         print("\n\n\n")
         if ex_code:
-            print(bcolors.FAIL + "There was a problem during building the application. Please report the issue to the develop team." + bcolors.ENDC)
+            print(bcolors.FAIL + "There was a problem during building the application. Please report the issue to the developers' team." + bcolors.ENDC)
         else:
             print(bcolors.OKGREEN + "Everything has been configured correctly. Thank you for installing our software! " +bcolors.ENDC +"\n")
     
