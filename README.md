@@ -1,7 +1,8 @@
 # Software Engineering ECE NTUA 2020-2021
 
 ## thundercars.gr
- - - -
+<img src="frontend/src/images/thundera.png" alt="Thundercars logo"
+	width="150" height="150"/><br><br>
 Aim of the project 
 
 The aim of the project is to create a Web Application for EV Charging. 
