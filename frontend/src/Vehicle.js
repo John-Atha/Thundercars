@@ -28,6 +28,7 @@ class Vehicle extends React.Component {
             error: null,
             showModal: false,
             logged: false,
+            deleteLoading: "",
         }
 
         this.attr1Name = "Release Year"
@@ -135,6 +136,9 @@ class Vehicle extends React.Component {
 
     deleteVehicle = () => {
         console.log("chose to delete")
+        this.setState({
+            deleteLoading: "Deleting...",
+        })
         getAllUserVehicle()
         .then(response => {
             console.log(response);
@@ -232,6 +236,7 @@ class Vehicle extends React.Component {
                                 Are you sure you want delete this vehicle?<br></br>
                                 All of its statistics will be lost...
                             </div>
+                            <div className="error-message">{this.state.deleteLoading}</div>
                             <div className="modal-buttons-container flex-layout margin-top-small">
                                 <button className="update-button my-button flex-item-expand margin-top-small" onClick={this.hideModal}>No, I changed my mind</button>
                                 <button className="delete-button my-button flex-item-expand" onClick={this.deleteVehicle}>Yes, delete anyway</button>                                        
