@@ -32,12 +32,20 @@ public class CliController2{
             return true;
         }
         else {
-            String[] parts = cred.split(":");
-            String token = parts[0].toString(); 
-            Integer userId = Integer.parseInt(parts[1]); 
-            Integer roleFlag = Integer.parseInt(parts[2]);
-            //String role = roleFlag==1 ? "Admin" : (roleFlag==2 ? "VehicleOnwer" : "StationOwner");
-
+            String[] parts;
+            String token;
+            Integer userId;
+            Integer roleFlag;
+            try {
+                parts = cred.split(":");
+                token = parts[0].toString(); 
+                userId = Integer.parseInt(parts[1]); 
+                roleFlag = Integer.parseInt(parts[2]);
+                //String role = roleFlag==1 ? "Admin" : (roleFlag==2 ? "VehicleOnwer" : "StationOwner");
+            }
+            catch(Exception e) {
+                throw new BadRequestException();
+            }
             if (roleFlag==1) { //admin
                 List<Admin> adm = repository1.findByIdAndApiKey(userId, token);
                 if (adm.size()==0) {

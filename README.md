@@ -8,20 +8,17 @@
 >
 >Our Web Application consists of the following:
 >>* The back-end:\
->>The one part back-end of our application's back-end supports both user management ability (sign up , log in , log out )\
->>so that they access data through a REST API. \
->>The other part of our back-end is responsible for data management and access to it through a REST API (PUT, GET).
->
+>>It is responsible for the data management and the access to it through a REST API.
+>>It supports user management (sign up , log in , log out ) so that they can get access to the data through a REST API. \
 >
 >>* The CLI(Command Line Interface):\
->>The CLI is used for the functions of data fetching and user management. The interface will act us a client of the REST API 
->>giving to its user the ability to add or remove a user , to log in to a user account ,but also the ability to add or read data.
->
+>>The interface is used by the admins for data and users management and it will act us a client of the REST API.
 >
 >>* The Web Application:\
->>Our web application will allow the user to view the data through diagrams ,statistics and maps. The application will will act us our 
->>front end , on a web browser environment which will actually be our REST API's second client after the CLI.
+>>Our web application will allow the user to view the data through diagrams ,statistics and maps. 
+>>It works on a web browser environment and will actually be our REST API's second client.
 
+* For the installation, follow the steps in the READMEs of each part.
 
 * Developers 
 

@@ -113,7 +113,7 @@ class DeviceMap extends React.Component {
             this.setState({
                 logged: true,
             })
-            if (this.state.userId && this.state.role==="VehicleOwner") {
+            if (this.state.logged && this.state.role==="VehicleOwner") {
               getUserProfile(this.state.userId)
               .then(response => {
                 this.setState({
@@ -125,21 +125,7 @@ class DeviceMap extends React.Component {
                 console.log(err);
               })
             }
-
-            getAllStations()
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    stations: response.data["StationsList"]
-                })
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    error: "No stations found, please try again later"
-                })
-            })
-            if (this.state.userId && this.state.role==="VehicleOwner") {
+            if (this.state.logged && this.state.role==="VehicleOwner") {
               getVehicles(this.state.userId)
               .then( response => {
                   console.log(response);
@@ -178,6 +164,19 @@ class DeviceMap extends React.Component {
           this.setState({
             logged: false,
           })
+        })
+        getAllStations()
+        .then(response => {
+            console.log(response);
+            this.setState({
+                stations: response.data["StationsList"]
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: "No stations found, please try again later"
+            })
         })
   }
 
