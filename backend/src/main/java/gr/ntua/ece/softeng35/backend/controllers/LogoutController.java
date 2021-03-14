@@ -47,18 +47,25 @@ public class LogoutController{
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/evcharge/api/logout")
-    void userLogout(@RequestHeader("X-OBSERVATORY-AUTH") String apikey , @RequestBody String cred) {
+    void userLogout(@RequestHeader("X-OBSERVATORY-AUTH") String apikey /*, @RequestBody String cred*/) {
       CliController2 validator = new CliController2(repository2, repository1, repository3);
 
       if (!validator.validate(apikey)) {
         throw new NotAuthorizedException();
       }
 
-      String[] parts = cred.split(":");
-      Integer userId = Integer.parseInt(parts[0]); 
-      String role = parts[1].toString();
-
-      if (role.equals("Admin")) {
+      String[] parts;
+      Integer userId;
+      Integer role;
+      try {
+        parts = apikey.split(":");
+        userId = Integer.parseInt(parts[1]); 
+        role = Integer.parseInt(parts[2]);
+      }
+      catch(Exception e) {
+        throw new BadRequestException();
+      }
+      if (role==1) {
         repository1.findById(userId)
         .map(thisUser -> {
             thisUser.setApiKey(null);
@@ -66,7 +73,7 @@ public class LogoutController{
           })
           .orElseThrow(() -> new BadRequestException());
       }
-      else if (role.equals("StationOwner")) {
+      else if (role==3) {
         repository3.findById(userId)
         .map(thisUser -> {
             thisUser.setApiKey(null);
@@ -74,7 +81,7 @@ public class LogoutController{
           })
           .orElseThrow(() -> new BadRequestException());
       }
-      else if (role.equals("VehicleOwner")) {
+      else if (role==2) {
         repository2.findById(userId)
         .map(thisUser -> {
             thisUser.setApiKey(null);
