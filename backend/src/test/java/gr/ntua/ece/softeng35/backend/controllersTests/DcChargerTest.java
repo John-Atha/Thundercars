@@ -212,7 +212,7 @@ class DcChargerTest {
             this.mockmvc.perform(put("/evcharge/api/dcchargersmod/{id}",151)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header("X-OBSERVATORY-AUTH", "1:1:1"))
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
 
