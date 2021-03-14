@@ -51,6 +51,12 @@ class ConnectionTypeTest {
 
     @MockBean
     private UserRepository repository2;
+
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
  
     @Test
     void testGetConnectionTypes() throws Exception { 
@@ -64,20 +70,24 @@ class ConnectionTypeTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/connectiontypes","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/connectiontypes")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].title", is(testConnectionType.getTitle())))
             .andExpect(jsonPath("$[0].formalName", is(testConnectionType.getFormalName())))
             .andExpect(jsonPath("$[0].category", is(testConnectionType.getCategory())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/connectiontypes","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/connectiontypes")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -91,25 +101,30 @@ class ConnectionTypeTest {
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testConnectionType));
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/connectiontypes/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/connectiontypes/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testConnectionType.getTitle())))
             .andExpect(jsonPath("$.formalName", is(testConnectionType.getFormalName())))
             .andExpect(jsonPath("$.category", is(testConnectionType.getCategory())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/connectiontypes/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/connectiontypes/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
         
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/connectiontypes/{id}","123456789",10000)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isPaymentRequired());
+        this.mockmvc.perform(get("/evcharge/api/connectiontypes/{id}",10000)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
+            .andExpect(status().isPaymentRequired());
     }
 
     @Test
@@ -132,22 +147,26 @@ class ConnectionTypeTest {
 
         BDDMockito.when(repository.save(testConnectionType)).thenReturn(testConnectionType);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/connectiontypesmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/connectiontypesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testConnectionType.getTitle())))
             .andExpect(jsonPath("$.formalName", is(testConnectionType.getFormalName())))
             .andExpect(jsonPath("$.category", is(testConnectionType.getCategory())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/connectiontypesmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/connectiontypesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 	}
 
@@ -174,27 +193,32 @@ class ConnectionTypeTest {
         BDDMockito.when(repository.findById(firstConnectionType.getId())).thenReturn(Optional.of(firstConnectionType));
         BDDMockito.when(repository.save(testConnectionType)).thenReturn(testConnectionType);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",1)
+        this.mockmvc.perform(put("/evcharge/api/connectiontypesmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testConnectionType.getTitle())))
             .andExpect(jsonPath("$.formalName", is(testConnectionType.getFormalName())))
             .andExpect(jsonPath("$.category", is(testConnectionType.getCategory())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",1)
+        this.mockmvc.perform(put("/evcharge/api/connectiontypesmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",10000)
+        this.mockmvc.perform(put("/evcharge/api/connectiontypesmod/{id}",10000)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
 
@@ -203,17 +227,21 @@ class ConnectionTypeTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/connectiontypesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/connectiontypesmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/connectiontypesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
     

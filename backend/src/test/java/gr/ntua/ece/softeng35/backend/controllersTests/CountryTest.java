@@ -51,6 +51,12 @@ class CountryTest {
 
     @MockBean
     private UserRepository repository2;
+
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
  
     @Test
     void testGetCountries() throws Exception { 
@@ -64,20 +70,24 @@ class CountryTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/countries","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/countries")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$[0].isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$[0].continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/countries","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/countries")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -91,24 +101,29 @@ class CountryTest {
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testCountry));
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/countries/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/countries/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/countries/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/countries/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
         
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/countries/{id}","123456789",10000)
-        .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/countries/{id}",10000)
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
         .andExpect(status().isPaymentRequired());
     }
 
@@ -132,22 +147,26 @@ class CountryTest {
 
         BDDMockito.when(repository.save(testCountry)).thenReturn(testCountry);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/countriesmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/countriesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/countriesmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/countriesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 	}
 
@@ -174,27 +193,32 @@ class CountryTest {
         BDDMockito.when(repository.findById(firstCountry.getId())).thenReturn(Optional.of(firstCountry));
         BDDMockito.when(repository.save(testCountry)).thenReturn(testCountry);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/countriesmod/{id}","123456789",1)
+        this.mockmvc.perform(put("/evcharge/api/countriesmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/countriesmod/{id}","123456888",1)
+        this.mockmvc.perform(put("/evcharge/api/countriesmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/countriesmod/{id}","123456789",10000)
+        this.mockmvc.perform(put("/evcharge/api/countriesmod/{id}",10000)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
 
@@ -203,17 +227,21 @@ class CountryTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/countriesmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/countriesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/countriesmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/countriesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
     
