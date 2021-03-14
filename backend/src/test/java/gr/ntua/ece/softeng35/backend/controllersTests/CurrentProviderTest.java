@@ -55,6 +55,12 @@ class CurrentProviderTest {
 
     @MockBean
     private UserRepository repository2;
+
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
  
     @Test
     void testGetCurrentProviders() throws Exception { 
@@ -70,13 +76,16 @@ class CurrentProviderTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/currentproviders","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/currentproviders")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].name", is(testCurrentProvider.getName())))
             .andExpect(jsonPath("$[0].country.id", is(testCountry.getId())))
@@ -84,8 +93,9 @@ class CurrentProviderTest {
             .andExpect(jsonPath("$[0].country.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$[0].country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/currentproviders","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/currentproviders")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -101,13 +111,16 @@ class CurrentProviderTest {
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testCurrentProvider));
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/currentproviders/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/currentproviders/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is(testCurrentProvider.getName())))
             .andExpect(jsonPath("$.country.id", is(testCountry.getId())))
@@ -115,12 +128,14 @@ class CurrentProviderTest {
             .andExpect(jsonPath("$.country.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/currentproviders/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/currentproviders/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
         
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/currentproviders/{id}","123456789",10000)
-        .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/currentproviders/{id}",10000)
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
         .andExpect(status().isPaymentRequired());
     }
 
@@ -158,14 +173,17 @@ class CurrentProviderTest {
 
         BDDMockito.when(repository.save(testCurrentProvider)).thenReturn(testCurrentProvider);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/currentprovidersmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/currentprovidersmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is(testCurrentProvider.getName())))
             .andExpect(jsonPath("$.country.id", is(testCountry.getId())))
@@ -173,9 +191,10 @@ class CurrentProviderTest {
             .andExpect(jsonPath("$.country.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/currentprovidersmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/currentprovidersmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 	}
 
@@ -216,14 +235,17 @@ class CurrentProviderTest {
         BDDMockito.when(repository.findById(firstCurrentProvider.getId())).thenReturn(Optional.of(firstCurrentProvider));
         BDDMockito.when(repository.save(testCurrentProvider)).thenReturn(testCurrentProvider);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/currentprovidersmod/{id}","123456789",1)
+        this.mockmvc.perform(put("/evcharge/api/currentprovidersmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is(testCurrentProvider.getName())))
             .andExpect(jsonPath("$.country.id", is(testCountry.getId())))
@@ -231,14 +253,16 @@ class CurrentProviderTest {
             .andExpect(jsonPath("$.country.title", is(testCountry.getTitle())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/currentprovidersmod/{id}","123456888",1)
+        this.mockmvc.perform(put("/evcharge/api/currentprovidersmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/currentprovidersmod/{id}","123456789",10000)
+        this.mockmvc.perform(put("/evcharge/api/currentprovidersmod/{id}",10000)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
     
@@ -249,17 +273,21 @@ class CurrentProviderTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/currentprovidersmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/currentprovidersmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/currentprovidersmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/currentprovidersmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
     

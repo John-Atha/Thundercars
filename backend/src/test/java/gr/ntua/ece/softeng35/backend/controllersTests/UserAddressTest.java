@@ -54,6 +54,12 @@ class UserAddressTest {
 
     @MockBean
     private UserRepository repository2;
+
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
  
     @Test
     void testGetUserAddress() throws Exception { 
@@ -70,13 +76,16 @@ class UserAddressTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/useraddresses","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/useraddresses")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].country.id", is(testCountry.getId())))
             .andExpect(jsonPath("$[0].country.title", is(testCountry.getTitle())))
@@ -89,8 +98,9 @@ class UserAddressTest {
             .andExpect(jsonPath("$[0].contactTelephone2", is(testUserAddress.getContactTelephone2())))
             .andExpect(jsonPath("$[0].userAddressLine1", is(testUserAddress.getUserAddressLine1())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/useraddresses","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/useraddresses")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -112,8 +122,9 @@ class UserAddressTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/useraddresses/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/useraddresses/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.userAddressLine1", is(testUserAddress.getUserAddressLine1())))
             .andExpect(jsonPath("$.town", is(testUserAddress.getTown())))
@@ -126,12 +137,14 @@ class UserAddressTest {
             .andExpect(jsonPath("$.country.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/useraddresses/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/useraddresses/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
         
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/useraddresses/{id}","123456789",10000)
-        .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/useraddresses/{id}",10000)
+        .contentType(MediaType.APPLICATION_JSON)
+        .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
         .andExpect(status().isPaymentRequired());
     }
 
@@ -178,9 +191,10 @@ class UserAddressTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/useraddressesmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/useraddressesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(jsonPath("$.userAddressLine1", is(testUserAddress.getUserAddressLine1())))
             .andExpect(jsonPath("$.town", is(testUserAddress.getTown())))
             .andExpect(jsonPath("$.stateOrProvince", is(testUserAddress.getStateOrProvince())))
@@ -192,9 +206,10 @@ class UserAddressTest {
             .andExpect(jsonPath("$.country.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/useraddressesmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/useraddressesmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -244,9 +259,10 @@ class UserAddressTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/useraddressesmod/{id}","123456789",1)
+        this.mockmvc.perform(put("/evcharge/api/useraddressesmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.userAddressLine1", is(testUserAddress.getUserAddressLine1())))
             .andExpect(jsonPath("$.town", is(testUserAddress.getTown())))
@@ -259,15 +275,17 @@ class UserAddressTest {
             .andExpect(jsonPath("$.country.isocode", is(testCountry.getISOCode())))
             .andExpect(jsonPath("$.country.continentCode", is(testCountry.getContinentCode())));
 
-        // this.mockmvc.perform(put("/evcharge/api/{apikey}/useraddressessmod/{id}","123456888",1)
-        //     .contentType(MediaType.APPLICATION_JSON)
-        //     .content(json))
-        //     .andExpect(status().isUnauthorized());
+        /*this.mockmvc.perform(put("/evcharge/api/useraddressessmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
+            .andExpect(status().isUnauthorized());*/
 
-        // this.mockmvc.perform(put("/evcharge/api/{apikey}/useraddressessmod/{id}","123456789",10000)
-        //     .contentType(MediaType.APPLICATION_JSON)
-        //     .content(json))
-        //     .andExpect(status().isBadRequest());
+        /*this.mockmvc.perform(put("/evcharge/api/useraddressessmod/{id}",10000)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
+            .andExpect(status().isBadRequest());*/
     }
 
     @Test 
@@ -280,12 +298,14 @@ class UserAddressTest {
 
         BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/useraddressesmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/useraddressesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/useraddressesmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/useraddressesmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
     
