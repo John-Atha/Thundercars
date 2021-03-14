@@ -363,7 +363,7 @@ export const stationSpotGet = (id) => {
     return axios.get(requestUrl, {
                     
         headers: {
-            'X-OBSERVATORY-AUTH' : headerData,
+            'X-OBSERVATORY-AUTH' : dummy,
         }
     });
 }
