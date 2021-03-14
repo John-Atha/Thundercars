@@ -135,7 +135,7 @@ def cli():
     pass
 
 
-@cli.command(help = 'Specify your username(required) with --username flag. You will be prompted to enter your password')    
+@cli.command(help = 'Login')    
 @click.option('--username', '-U', help = 'Register user Username',
                 required=True)
 @click.option('--password', '-P',required = True, help='Password option')
@@ -198,7 +198,7 @@ def logout(apikey):
     else:
         print(bcolors.FAIL + "You are aunauthorized to make this call. Please Login first" + bcolors.ENDC)
 
-@cli.command(help = 'Get list of charging processes for specific charging point')
+@cli.command(help = 'List charging processes per point')
 @click.option('--point',required=True, type=int )
 @click.option('--datefrom', default='1900-01-01', type=click.DateTime())
 @click.option('--dateto', default = '2025-01-01', type=click.DateTime())
@@ -208,7 +208,7 @@ def logout(apikey):
 def SessionsPerPoint(point, datefrom, dateto, format, apikey):
     sessionsper('SessionsPerPoint', point, datefrom,dateto, format,apikey)
 
-@cli.command(help = 'Get list of charging processes for specific station')
+@cli.command(help = 'List charging processes per station')
 @click.option('--station',required=True, type=int )
 @click.option('--datefrom', default='1900-01-01', type=click.DateTime())
 @click.option('--dateto', default = '2025-01-01', type=click.DateTime())
@@ -218,7 +218,7 @@ def SessionsPerPoint(point, datefrom, dateto, format, apikey):
 def SessionsPerStation(station, datefrom, dateto, format, apikey):
     sessionsper('SessionsPerStation', station, datefrom,dateto, format, apikey)
 
-@cli.command(help = 'Get list of charging processes for specific Electic Vehicle')
+@cli.command(help = 'List charging processes per Vehicle')
 @click.option('--ev',required=True, type=int )
 @click.option('--datefrom', default='1900-01-01', type=click.DateTime())
 @click.option('--dateto', default = '2025-01-01', type=click.DateTime())
@@ -230,7 +230,7 @@ def SessionsPerEV(ev, datefrom, dateto, format, apikey):
     
 
 
-@cli.command(help = 'Get list of charging processes from specific current provider')
+@cli.command(help = 'List charging processes per current provider')
 @click.option('--provider',required=True, type=int )
 @click.option('--datefrom', default='1900-01-01', type=click.DateTime())
 @click.option('--dateto', default = '2025-01-01', type=click.DateTime())
@@ -240,7 +240,7 @@ def SessionsPerEV(ev, datefrom, dateto, format, apikey):
 def SessionsPerProvider(provider, datefrom, dateto, format, apikey):
     sessionsper('SessionsPerProvider', provider, datefrom,dateto, format, apikey)
 
-@cli.command()
+@cli.command(help = "Perform a quick healthcheck")
 def healthcheck():
 
     try:
@@ -252,7 +252,7 @@ def healthcheck():
     print(json.dumps(json.loads(resp.text), indent=4))
 
 
-@cli.command()
+@cli.command(help = "Reset all charging processes")
 def resetsessions():
     
     try:
@@ -265,7 +265,7 @@ def resetsessions():
 
 
 
-@cli.command(help = 'Admin commands for managing the software.')
+@cli.command(help = 'Admin commands for managing the database.')
 @click.option('--usermod', help = 'Add or update a user. Specify user with --username and password with --passw', is_flag = True)
 @click.option('--username', help = 'Specify username to add or update. Required with --usermod and --users')
 @click.option('--passw', help = 'Specify password for the updated user. Required with --usermod')
