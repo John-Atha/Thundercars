@@ -23,7 +23,7 @@ const header = {
 }
 
 export const isLogged = () => {
-    const requestUrl = `/admin/healthcheck`;
+    const requestUrl = `/admin/auth`;
     return axios.get(requestUrl, {
                     
                     headers: {
