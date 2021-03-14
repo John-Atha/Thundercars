@@ -274,7 +274,7 @@ def resetsessions():
 @click.option('--source', help = 'Specify csv file with the sessions to insert.')
 @click.option('--healthcheck', help='Perform a healthcheck to ensure servers are running smoothly', is_flag = True)
 @click.option('--resetsessions', help = 'Delete all saved charging process sessions', is_flag = True)
-@click.option('--apikey', help = "Specify your API key. If you don't have one, make sure to get from our website", required = True)
+@click.option('--apikey', help = "Specify the API key we provided you.", required = True)
 def Admin(usermod, username, passw, users, sessionsupd, source, healthcheck, resetsessions, apikey):
     
     if not regex(apikey):
