@@ -500,7 +500,7 @@ export const getAllStations = () => {
     return axios.get(requestUrl, {
                     
         headers: {
-            'X-OBSERVATORY-AUTH' : headerData,
+            'X-OBSERVATORY-AUTH' : dummy,
         }
     });
   }

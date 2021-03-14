@@ -56,21 +56,21 @@ class Register extends React.Component {
             this.setState({
                 logged: true,
             })
-            countriesGet()
-            .then(response => {
-                //console.log(response.data);
-                this.countries = response.data;
-                this.updateCountriesSelect();
-            })
-            .catch(err => {
-                console.log(err);
-            })
         })
         .catch(err => {
             console.log(err);
             this.setState({
                 logged: false,
             })
+        })
+        countriesGet()
+        .then(response => {
+            console.log(response.data);
+            this.countries = response.data;
+            this.updateCountriesSelect();
+        })
+        .catch(err => {
+            console.log(err);
         })
     }
 
