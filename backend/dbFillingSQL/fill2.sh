@@ -23,3 +23,6 @@ mysql -u root db < current_type.sql;
 mysql -u root db < charging_spot.sql;
 mysql -u root db < mystations.sql
 mysql -u root db < charging_station_spots.sql
+mysql -u root db < admins.sql
+mysql -u root db < charging_process1.sql
+mysql -u root db < charging_process2.sql

@@ -186,5 +186,26 @@ class VehicleOwnerTest {
             .andExpect(status().isPaymentRequired());
     }
 
-    
+    @Test 
+    void testDeleteUser() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        this.mockmvc = webAppContextSetup(this.wac).build();
+
+        List<User> users = new ArrayList<User>();
+        List<Admin> admins = new ArrayList<Admin>();
+        List<StationOwner> stationOwners = new ArrayList<StationOwner>();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
+
+        this.mockmvc.perform(delete("/evcharge/api/usersmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
+            .andExpect(status().isOk());
+
+        this.mockmvc.perform(delete("/evcharge/api/usersmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
+            .andExpect(status().isUnauthorized());
+    }
 }
