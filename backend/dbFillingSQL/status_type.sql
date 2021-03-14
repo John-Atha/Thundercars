@@ -1,0 +1,10 @@
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(1, "Unknown", null, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(10, "Currently Available (Automated Status)", TRUE, FALSE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(20, "Currently In Use (Automated Status)", TRUE, FALSE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(30, "Temporarily Unavailable", TRUE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(50, "Operational", TRUE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(75, "Partly Operational (Mixed)", TRUE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(100, "Not Operational", FALSE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(150, "Planned For Future Date", FALSE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(200, "Removed (Decommissioned)", FALSE, TRUE);
+INSERT INTO `db`.`status_type`(`id`, `title`, `is_operational`, `is_user_selectable`) VALUES(210, "Removed (Duplicate Listing)", FALSE, TRUE);

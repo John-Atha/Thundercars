@@ -1,0 +1,3 @@
+INSERT INTO `db`.`level`( `id`, `title`, `comments`, `is_fast_charge_capable`) VALUES(1,"Level 1 : Low (Under 2kW)","Under 2 kW, usually domestic socket types",false);
+INSERT INTO `db`.`level`( `id`, `title`, `comments`, `is_fast_charge_capable`) VALUES(2,"Level 2 : Medium (Over 2kW)","Over 2 kW, usually non-domestic socket type",false);
+INSERT INTO `db`.`level`( `id`, `title`, `comments`, `is_fast_charge_capable`) VALUES(3,"Level 3:  High (Over 40kW)","40KW and Higher",true);

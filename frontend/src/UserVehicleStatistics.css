@@ -1,0 +1,22 @@
+
+body {
+    --color2: rgb(180, 212, 206);
+}
+
+.loading-message {
+    color: var(--color2);
+}
+
+.fix-width {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.vehicle-page-info-container {
+    text-align: center;
+    padding: 2% 1%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: min-content;
+    column-gap: 2px;
+}

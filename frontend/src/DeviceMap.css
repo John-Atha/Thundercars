@@ -1,0 +1,75 @@
+.DeviceMap {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.padding-top {
+  padding-top: 3%;
+}
+  
+.leaflet-container {
+  height: 95vh;
+  width: 100%;
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.logorating {
+  height: 30px;
+  width: 30px;
+}
+
+.request-popup .leaflet-popup-content-wrapper {
+  border-radius: 15px;
+  background-color: rgb(37, 36, 36);
+  opacity: 0.9;
+  color:aliceblue;
+}
+
+.pop-up-head  {
+  width:100%;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.pop-up-head:hover {
+  cursor: pointer;
+}
+
+.rating-text {
+  font-size: medium;
+  margin-bottom: 3%;
+}
+
+.cost-per-kWh-container {
+  font-size: medium;
+}
+.buttongoogle{
+  background-color: rgb(255, 255, 255);
+  border: none;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  height: 40px;
+  font-size: 21px;
+  cursor: pointer; 
+  text-decoration: none;
+}
+.buttongoogle:hover ,.buttongoogle:link{
+  background-color: rgb(255, 255, 255);
+  cursor:pointer;
+  color: rgba(0, 0, 0, 0.616);
+}
+.buttongoogle:link {
+  color: black;
+  text-decoration: none;
+}
+.google_image{
+
+  object-fit: cover;
+  object-position: 0% 0;
+  width: 20px;
+  height: 20px;
+}

@@ -1,0 +1,113 @@
+body {
+    --red: rgb(233, 21, 21);
+}
+
+
+
+.login-page-container {
+    display: grid;
+    grid-template-rows: 27% 12% 35% 13% 13%;
+    height: 450px;
+    width: 400px;
+    margin-left: 10vw;
+    margin-top: 05%;
+    grid-template-columns: 100%;
+    border-radius: 4px;
+    padding-bottom: 2%;
+}
+
+.row-5 {
+    grid-row: 5;
+}
+
+.center-content {
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title-container {
+    grid-row: 2;
+    color: white;
+    font-size: 40px;
+}
+
+.blur {
+    background: inherit;
+    box-shadow: 0 8px 32px 0 rgba(163, 13, 13, 0.37);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+.login-form-container {
+    grid-row: 3;
+    width: 60%;
+    margin-top: 0%;
+    display: grid;
+    grid-template-rows: 30% 70%;
+    height: 100%;
+}
+
+
+#login-form {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: 25% 25% 25%;
+    row-gap: 6%;
+    height: 100%;
+    margin-top: 2%;
+}
+
+.login-input {
+    height: 100%;
+    border-radius: 3px;
+    border: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+#login-title {
+    color: white;
+    font-size: larger;
+}
+
+#username-input {
+    grid-row: 1;
+}
+
+#password-input {
+    grid-row: 2;
+}
+
+#submit-input {
+    grid-row: 3;
+    /*width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;*/
+    background-color: #9999;
+    color: white; 
+}
+
+
+#submit-input:hover {
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+}
+
+.logo {
+    height: 90%;
+    padding-top: 1%;
+}
+
+.register-container {
+    color: white;
+    font-size: large;
+}
+
+.register-link {
+    color: var(--red);
+    text-decoration: none;
+}
