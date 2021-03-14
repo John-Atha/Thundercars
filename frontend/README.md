@@ -1,3 +1,23 @@
+# FRONTEND
+
+* Inside the directory `frontend\src`, you can find the code used for the web interface of the project.
+* The routes followed are in the index.js file.
+* Each one of the rest javascript files is a module used in one or more pages of the website.
+* The css files define the styling of the content displayed.   
+
+### Installation
+
+* We consider that npm is already installed in your system.
+* Run `npx create-react-app frontend`.
+* In order to install all the necessary files whose dependencies are declared in the `package-lock.json` and `package.json` files, run `npm install` inside the frontend directory.
+* Finally, run `npm start` inside the frontend directory to run the server and head to the address `http://localhost:3000`.
+
+### External packages used
+* [React-Bootstrap](https://react-bootstrap.github.io/) for the Ui styling.
+* [React-canvas-js](https://canvasjs.com/docs/charts/integration/react/) for the charts displayed.
+* [React-Leaflet](https://react-leaflet.js.org/) for the maps.
+* [md5](https://www.npmjs.com/package/md5) for encoding the passwords.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
