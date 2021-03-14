@@ -1,4 +1,4 @@
-# Thundercars.gr
+# Command Line Interface
 
 
 ![THUNDERCARS](img/thundercars.png "Thundercars")
