@@ -105,7 +105,7 @@ public class VehicleController {
         current.put("Type", (String) basicsList.get(1));
         current.put("Model", (String) basicsList.get(2));
         if (basicsList.get(3)!=null) {
-          current.put("Release Year", basicList.get(3)!=null ? basicsList.get(3).toString():null);
+          current.put("Release Year", basicsList.get(3)!=null ? basicsList.get(3).toString():null);
         }
         else {
           current.put("Release Year","Unknown");
