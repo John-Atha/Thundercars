@@ -163,7 +163,7 @@ public class HelpEndpoints {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode healthcheckReport = mapper.createObjectNode();
 
-        List<Integer> FoundApiKey = repository2.findAdminByApiKey("123456789");
+        List<Integer> FoundApiKey = repository2.findAdminByApiKey("1234-5678-9123");
 
         if(FoundApiKey.size() > 0) {
             healthcheckReport.put("status","OK");
