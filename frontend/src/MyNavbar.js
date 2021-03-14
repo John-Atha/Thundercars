@@ -18,7 +18,7 @@ class MyNavbar extends React.Component {
   }
 
   logout = () => {
-    logoutPost(localStorage.getItem('userId'), localStorage.getItem('role'))
+    logoutPost()
     .then(response => {
         console.log(response);
         localStorage.removeItem('userId');
