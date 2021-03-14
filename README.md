@@ -23,7 +23,7 @@ For the installation, follow the steps in the READMEs of each part.
 - - -
 Developers 
 
-Ioannis Athanasiou (giannisj3@gmail.com)
-Athanasios Karavangelis (thanosblv@gmail.com)
-Andreas Mantzoutas (anmantzoutas@gmail.com)
+Ioannis Athanasiou (giannisj3@gmail.com)<br>
+Athanasios Karavangelis (thanosblv@gmail.com)<br>
+Andreas Mantzoutas (anmantzoutas@gmail.com)<br>
 Antonis Tsitsis (antonyts1717@gmail.com)
