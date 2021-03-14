@@ -53,6 +53,12 @@ class OperatorTest {
     @MockBean
     private UserRepository repository2;
 
+    @MockBean
+    private StationOwnerRepository repository4;
+
+    @MockBean
+    private AdminRepository repository5;
+
     @Test
     void testGetOperators() throws Exception { 
 
@@ -65,13 +71,16 @@ class OperatorTest {
 
         BDDMockito.when(repository.findAll()).thenReturn(myList);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/operators","123456789")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/operators")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id", is(testOperator.getId())))
             .andExpect(jsonPath("$[0].title", is(testOperator.getTitle())))
@@ -86,8 +95,9 @@ class OperatorTest {
             .andExpect(jsonPath("$[0].isRestrictedEdit", is(testOperator.getIsRestrictedEdit())));
 
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/operators","123456888")
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/operators")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -101,13 +111,16 @@ class OperatorTest {
 
         BDDMockito.when(repository.findById(1)).thenReturn(Optional.of(testOperator));
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/operators/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/operators/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", is(testOperator.getId())))
             .andExpect(jsonPath("$.title", is(testOperator.getTitle())))
@@ -121,31 +134,17 @@ class OperatorTest {
             .andExpect(jsonPath("$.faultReportEmail", is(testOperator.getFaultReportEmail())))
             .andExpect(jsonPath("$.isRestrictedEdit", is(testOperator.getIsRestrictedEdit())));
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/operators/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/operators/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-        this.mockmvc.perform(get("/evcharge/api/{apikey}/operators/{id}","123456789",2)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(get("/evcharge/api/operators/{id}",2)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isPaymentRequired());
     }
 
-    /*
-    Operator firstOperator = new Operator(1,"mytitle1","myUrl1","mycomms1","myphone11","myphone21",false,"mybookUrl1","myEmail1","myFault1",true);
-        Operator testOperator = new Operator(1,"mytitle","myUrl","mycomms","myphone1","myphone2",false,"mybookUrl","myEmail","myFault",true);
-
-        newJson.put("id",1);
-        newJson.put("title","mytitle");
-        newJson.put("websiteUrl","myUrl");
-        newJson.put("comments","mycomms");
-        newJson.put("primaryPhone","myphone1");
-        newJson.put("secondaryPhone","myphone2");
-        newJson.put("isPrivateIndividual",false);
-        newJson.put("bookingUrl","mybookUrl");
-        newJson.put("contactEmail","myEmail");
-        newJson.put("FaultReportEmail","myFault");
-        newJson.put("isRestrictedEdit",true);
-        */
 
     @Test
     void testPostOperator() throws Exception {
@@ -176,14 +175,17 @@ class OperatorTest {
 
         BDDMockito.when(repository.save(testOperator)).thenReturn(testOperator);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/operatorsmod","123456789")
+        this.mockmvc.perform(post("/evcharge/api/operatorsmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testOperator.getTitle())))
             .andExpect(jsonPath("$.websiteUrl", is(testOperator.getWebsiteUrl())))
@@ -196,9 +198,10 @@ class OperatorTest {
             .andExpect(jsonPath("$.isRestrictedEdit", is(testOperator.getIsRestrictedEdit())))
             .andExpect(jsonPath("$.faultReportEmail", is(testOperator.getFaultReportEmail())));
 
-        this.mockmvc.perform(post("/evcharge/api/{apikey}/operatorsmod","123456888")
+        this.mockmvc.perform(post("/evcharge/api/operatorsmod")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 
@@ -232,14 +235,17 @@ class OperatorTest {
         BDDMockito.when(repository.findById(firstOperator.getId())).thenReturn(Optional.of(firstOperator));
         BDDMockito.when(repository.save(testOperator)).thenReturn(testOperator);
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/operatorsmod/{id}","123456789",1)
+        this.mockmvc.perform(put("/evcharge/api/operatorsmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title", is(testOperator.getTitle())))
             .andExpect(jsonPath("$.websiteUrl", is(testOperator.getWebsiteUrl())))
@@ -252,14 +258,16 @@ class OperatorTest {
             .andExpect(jsonPath("$.isRestrictedEdit", is(testOperator.getIsRestrictedEdit())))
             .andExpect(jsonPath("$.faultReportEmail", is(testOperator.getFaultReportEmail())));
 
-        this.mockmvc.perform(put("/evcharge/api/{apikey}/operatorsmod/{id}","123456888",1)
+        this.mockmvc.perform(put("/evcharge/api/operatorsmod/{id}",1)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
 
-            this.mockmvc.perform(put("/evcharge/api/{apikey}/operatorsmod/{id}","123456789",151)
+            this.mockmvc.perform(put("/evcharge/api/operatorsmod/{id}",151)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+            .content(json)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isBadRequest());
 	}
 
@@ -268,17 +276,21 @@ class OperatorTest {
         MockitoAnnotations.initMocks(this);
         this.mockmvc = webAppContextSetup(this.wac).build();
 
-        List<Integer> apiKeys = new ArrayList<>();
-        apiKeys.add(1);
+        List<User> users = new ArrayList();
+        List<Admin> admins = new ArrayList();
+        List<StationOwner> stationOwners = new ArrayList();
+        BDDMockito.when(repository2.findByIdAndApiKey(1,"1")).thenReturn(users);
+        BDDMockito.when(repository4.findByIdAndApiKey(1,"1")).thenReturn(stationOwners);
+        BDDMockito.when(repository5.findByIdAndApiKey(1,"1")).thenReturn(admins);
 
-        BDDMockito.when(repository2.findAdminByApiKey("123456789")).thenReturn(apiKeys);
-
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/operatorsmod/{id}","123456789",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/operatorsmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "wiefweifhbv2397f2vfu22837514899tyjiwbc"))
             .andExpect(status().isOk());
 
-        this.mockmvc.perform(delete("/evcharge/api/{apikey}/operatorsmod/{id}","123456888",1)
-            .contentType(MediaType.APPLICATION_JSON))
+        this.mockmvc.perform(delete("/evcharge/api/operatorsmod/{id}",1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("X-OBSERVATORY-AUTH", "1:1:1"))
             .andExpect(status().isUnauthorized());
     }
 }
