@@ -12,7 +12,6 @@ def EqualsOverride(Entity, AttributesList):
         else:
             out = out + ";\n\t}"
         print(out)
-
 Entity = "Address"
 L = ["id", "Title", "AddressLine1", "Town", "StateOrProvince", "PostCode", "Latitude", "Longtitude", 
 "ContactTelephone1", "ContactTelephone2", "ContactEmail", "AccessComments", "RelatedURL", "GeneralComments", "country"]
