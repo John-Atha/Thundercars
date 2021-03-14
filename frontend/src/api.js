@@ -3,10 +3,6 @@ import config from "./config";
 
 axios.defaults.baseURL = config.apiUrl;
 
-const out = config.notLoggedKey;
-const logged = localStorage.getItem('token');
-
-
 let USERID = localStorage.getItem('userId')!==null ?  localStorage.getItem('userId').toString() : "52";
 let ROLE = localStorage.getItem('role')!==null     ?  localStorage.getItem('role') : "VehicleOwner";
 let TOKEN = localStorage.getItem('token')!==null   ?  localStorage.getItem('token').toString() : "1";
@@ -17,10 +13,6 @@ console.log("ROLE: " + ROLE);
 console.log("TOKEN: " + TOKEN);
 let headerData = TOKEN + ":" + USERID + ":" + (ROLE==="Admin" ? "1" : (ROLE==="VehicleOwner" ? "2" : "3")) ;
 console.log(headerData);
-
-const header = {
-    'X-OBSERVATORY-AUTH' : headerData,
-}
 
 export const isLogged = () => {
     const requestUrl = `/admin/auth`;
@@ -33,13 +25,11 @@ export const isLogged = () => {
     });
 }
 
-export const logoutPost = (userId, role) => {
+export const logoutPost = () => {
     const requestUrl = `/logout`;
     return axios.post(requestUrl,
-                    userId+":"+role,
                     {
                         headers: {
-                            "Content-Type": "text/plain",
                             'X-OBSERVATORY-AUTH' : headerData,
                         }
                     }
