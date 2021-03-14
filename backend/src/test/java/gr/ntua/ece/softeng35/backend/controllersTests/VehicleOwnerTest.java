@@ -44,7 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 
 @WebMvcTest(UserHasVehicleController.class)
-class UserHasVehicleTest {
+class VehicleOwnerTest {
 
     @Autowired
     private MockMvc mockmvc;
