@@ -1,0 +1,13 @@
+#labelInput, #kWhInput {
+    margin: 1%;
+}
+
+.start-charge-button {
+    background-color: green;
+    color: white;
+    padding: 3% !important;
+}
+
+.big-font-size {
+    font-size: x-large;
+}

@@ -39,6 +39,7 @@ class DeviceMap extends React.Component {
       this.selectEV = this.selectEV.bind(this);  
       this.showStation=this.showStation.bind(this);
       this.handleClick = this.handleClick.bind(this);
+      //this.goCharge = this.goCharge.bind(this);
   }    
 
   selectEV = (event) => {
@@ -67,6 +68,10 @@ class DeviceMap extends React.Component {
     console.log("pressed: " + event.target.innerText.substring(0, event.target.innerText.indexOf(':')).replace('Vehicle ', ''))
     console.log("pressed: " + this./*state.*/showingVehId)
   }
+/*
+  goCharge = (event) => {
+    window.location.href=`/addProcess/${event.target.dataSet.goal}`;
+  }*/
 
   handleClick = (e) => {
     let area = document.getElementById('curr-station-container') ? document.getElementById('curr-station-container') : null;
@@ -313,7 +318,8 @@ class DeviceMap extends React.Component {
                                           {value["First Address"] && value["Town"] && town && city && (
                                             <br></br> )
                                           }
-                                          Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}
+                                          Tel: {value["Contact Telephone 1"] ? value["Contact Telephone 1"] : "-"}<br></br>
+                                          <a className="color2 margin-top big-font-size" href={`/AddProcess/${value.Id}`}>Charge here</a>
                                         </div>
                                       </div>
                                     </Popup>

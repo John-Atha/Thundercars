@@ -10,6 +10,7 @@ import UpdateProfile from './UpdateProfile';
 import MyVehicles from './MyVehicles';
 import Vehicle from './Vehicle';
 import AddVehicle from './AddVehicle';
+import AddProcess from './AddProcess';
 import AcCharger from './AcCharger';
 import NotFound from './NotFound';
 import UserMyStatistics from './UserMyStatistics';
@@ -53,6 +54,11 @@ function FindVehicle() {
 function FindAcCharger() {
   let {id} = useParams();
   return <AcCharger id={id}/>;
+}
+
+function FindAddProcess() {
+  let {id} = useParams();
+  return <AddProcess id={id} />;
 }
 
 ReactDOM.render(
@@ -124,6 +130,9 @@ ReactDOM.render(
         </Route>
         <Route path="/spots/:id" exact>
           <FindSpot />
+        </Route>
+        <Route path="/addProcess/:id" exatc>
+          <FindAddProcess />
         </Route> 
         <Route path="*">
           <NotFound />
