@@ -69,6 +69,14 @@ class AddProcess extends React.Component {
             kWh: 0,
             finish: true,
         })
+        setTimeout(() =>{
+            Array.from(document.getElementsByClassName('general-page-container')).forEach(el => {
+                console.log(el);
+                console.log(el.childNodes);
+                console.log(el.childNodes[2]);
+                el.removeChild(el.childNodes[2]);
+            }) 
+        }, 50)
     }
 
     selectSpot = (event) => {
@@ -305,7 +313,7 @@ class AddProcess extends React.Component {
                         { this.state.finish===false &&
                             <div className="spots-buttons-container center-content flex-layout stationChoose">
                                         {
-                                            this.state.spotsList.map((value, index,) => {
+                                            this.state.spotsList.map((value, index) => {
                                                 //console.log(value);
                                                 //console.log("Spot" + value.Spot);
                                                 if (this.chargers.includes(value.Category) && value.QuantityAvailable>0) {
