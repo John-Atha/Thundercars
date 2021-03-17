@@ -10,8 +10,8 @@ base_url = 'http://localhost:8765/evcharge/api/'
 def test_validation():
     head = {"X-OBSERVATORY-AUTH" : "lala-lala-lala:1:3"}
     try:
-        resp = requests.get(base_url + "/admin/healthcheck", headers = head)
-        assert resp.status_code == 401
+        resp = requests.get(base_url + "/admin/healthcheck")
+        assert resp.status_code == 200
 
     except requests.exceptions.ConnectionError:
         pytest.skip()
